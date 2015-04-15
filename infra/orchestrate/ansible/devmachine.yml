@@ -1,0 +1,5 @@
+---
+- hosts: devmachine
+  roles:
+    - webui_devtools
+

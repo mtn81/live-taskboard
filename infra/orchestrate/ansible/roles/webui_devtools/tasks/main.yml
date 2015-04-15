@@ -1,0 +1,21 @@
+---
+
+- name: install basic tools
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - vim
+    - curl
+    - git
+
+- name: install nvm
+  shell: curl https://raw.githubusercontent.com/creationix/nvm/v0.24.1/install.sh | bash
+
+- name: install node
+  raw: source ~/.nvm/nvm.sh && nvm install 0.10.38
+
+- name: install node modules
+  npm: name={{ item }} global=yes executable=~/.nvm/v0.10.38/bin/npm
+  with_items:
+    - gulp
+    - jspm
