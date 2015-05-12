@@ -8,9 +8,11 @@ export class App {
   constructor(router) {
     this.router = router;
     this.router.configure(config => {
-      config.title = 'live-taskboard';
+      config.title = 'Aurelia';
       config.map([
-        { route: ['','login'], moduleId: './login', nav: false, title: 'ログイン' }
+        { route: ['','welcome'],  moduleId: './welcome',      nav: true, title:'Welcome' },
+        { route: 'flickr',        moduleId: './flickr',       nav: true },
+        { route: 'child-router',  moduleId: './child-router', nav: true, title:'Child Router' }
       ]);
     });
   }
