@@ -9,6 +9,9 @@ repositories {
 }
 
 dependencies {
+	
+	def fluentLeniumVersion = '0.10.3'
+
     compile 'org.scala-lang:scala-library:2.11.5'
     compile fileTree(dir: 'libs', include: '*.jar')
  
@@ -19,7 +22,11 @@ dependencies {
     compile 'org.specs2:specs2-scalacheck_2.11:3.6-scalaz-7.0.7'
     compile 'org.specs2:specs2-mock_2.11:3.6-scalaz-7.0.7'
     compile 'org.specs2:specs2-junit_2.11:3.6-scalaz-7.0.7'
+    
     compile 'junit:junit:4.12'
+    compile "org.fluentlenium:fluentlenium-core:${fluentLeniumVersion}"
+	compile "org.fluentlenium:fluentlenium-assertj:${fluentLeniumVersion}"
+    
     compile 'com.sun.jersey:jersey-client:1.19'
 }
 
