@@ -16,9 +16,8 @@ export class AuthService {
         id: loginId,
         password: password
       })
-      .then(r => {
-        auth.id = "hoge";
-        auth.userName = "hogehoge";
+      .then(response => {
+        jQuery.extend(auth, response.content.data);
         this.eventAggregator.publish(new AuthSuccessed());
       });
     return auth;

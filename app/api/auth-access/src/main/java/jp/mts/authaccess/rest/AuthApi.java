@@ -11,6 +11,9 @@ public class AuthApi {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResponse authenticate(@RequestBody AuthenticateRequest request){
-		return new RestResponse();
+		Auth auth = new Auth();
+		auth.id = "hoge";
+		auth.userName = "foo";
+		return new RestResponse(auth);
 	}
 }
