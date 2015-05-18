@@ -1,12 +1,15 @@
 package jp.mts.authaccess.rest;
 
-public class RestResponse {
+public class RestResponse<T> {
 	
-	public Object data;
+	private T data;
 	
 	public RestResponse(){
 	}
-	public RestResponse(Object data){
+	public RestResponse(T data){
 		this.data = data;
+	}
+	public T getData(){
+		return data;
 	}
 }
