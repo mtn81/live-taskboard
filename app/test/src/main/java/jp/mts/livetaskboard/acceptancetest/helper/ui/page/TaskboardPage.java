@@ -1,9 +1,8 @@
 package jp.mts.livetaskboard.acceptancetest.helper.ui.page;
 
-import org.fluentlenium.core.FluentPage;
 import org.openqa.selenium.WebDriver;
 
-public class TaskboardPage extends FluentPage {
+public class TaskboardPage extends TestablePage {
 	
 	public TaskboardPage(WebDriver webDriver){
 		super(webDriver);
@@ -11,11 +10,10 @@ public class TaskboardPage extends FluentPage {
 
 	@Override
 	public String getUrl() {
-		return "http://192.168.77.11:9000/#/taskboard";
+		return hashedUrl("taskboard");
 	}
 	
 	public String loginUserName(){
-		await().until("span.login-user").isPresent();
-		return findFirst("span.login-user").getText();
+		return findElement("span.login-user").getText();
 	}
 }
