@@ -13,7 +13,7 @@ public class AuthApi {
 	public RestResponse authenticate(@RequestBody AuthenticateRequest request){
 		Auth auth = new Auth();
 		auth.id = "hoge";
-		auth.userName = "foo";
+		auth.userName = "タスク太郎";
 		return new RestResponse(auth);
 	}
 }

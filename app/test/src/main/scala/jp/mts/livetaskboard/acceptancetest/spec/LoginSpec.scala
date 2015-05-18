@@ -9,6 +9,7 @@ import jp.mts.livetaskboard.acceptancetest.fixture.UserFixture
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.dsl.GWT
 import org.specs2.specification.script.StandardDelimitedStepParsers
+import jp.mts.livetaskboard.acceptancetest.helper.ui.TaskboardUi
 
 @RunWith(classOf[JUnitRunner])
 class LoginSpec extends Specification with GWT with StandardDelimitedStepParsers { def is = s2"""
@@ -22,6 +23,7 @@ class LoginSpec extends Specification with GWT with StandardDelimitedStepParsers
     
   val authApi = new AuthApi()
   val loginUi = new LoginUi()
+  val taskboardUi = new TaskboardUi()
 
   def g1 = step(threeStrings) { _ match { case (loginId, password, userName) =>
     authApi.registerUser(loginId, password, userName)
@@ -30,7 +32,7 @@ class LoginSpec extends Specification with GWT with StandardDelimitedStepParsers
     loginUi.login(loginId, password) 
   }} 
   def t1 = example(aString) { userName => 
-    loginUi.displaysUserName(userName) must beTrue
+    taskboardUi.displaysUserName(userName) must beTrue
   }
     
 }

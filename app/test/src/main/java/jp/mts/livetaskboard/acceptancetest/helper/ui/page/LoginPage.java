@@ -12,7 +12,7 @@ public class LoginPage extends FluentPage {
 
 	@Override
 	public String getUrl() {
-		return "http://192.168.77.11:9000/";
+		return "http://192.168.77.11:9000/#/login";
 	}
 	
 	public void login(String loginId, String password){
