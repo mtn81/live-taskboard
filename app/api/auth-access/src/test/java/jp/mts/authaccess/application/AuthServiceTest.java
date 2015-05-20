@@ -2,16 +2,13 @@ package jp.mts.authaccess.application;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import jp.mts.authaccess.domain.model.Auth;
 import jp.mts.authaccess.domain.model.AuthRepository;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
+
+import org.junit.Test;
 
 public class AuthServiceTest {
 	
