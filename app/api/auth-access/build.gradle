@@ -90,8 +90,8 @@ def addUrlIfNotPresent( to, what ) {
 // Instrument models: borowed from the Griffon ActiveJDBC plugin.
 compileJava.doLast {
     Instrumentation instrumentation = new Instrumentation()
-    projectMainClassesDir = sourceSets.main.output.classesDir.getPath()
-    rootLoader = this.class.classLoader.rootLoader
+    def projectMainClassesDir = sourceSets.main.output.classesDir.getPath()
+    def rootLoader = this.class.classLoader.rootLoader
     instrumentation.outputDirectory = projectMainClassesDir
     addUrlIfNotPresent rootLoader, projectMainClassesDir
     addUrlIfNotPresent Instrumentation.class.classLoader, projectMainClassesDir

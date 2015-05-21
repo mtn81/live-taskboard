@@ -1,2 +1,6 @@
 server:
   context-path: /auth-access
+ 
+spring:
+  profiles:
+    active: dev
