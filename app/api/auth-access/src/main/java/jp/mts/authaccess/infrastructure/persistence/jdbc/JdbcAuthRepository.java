@@ -1,7 +1,5 @@
 package jp.mts.authaccess.infrastructure.persistence.jdbc;
 
-import java.sql.SQLException;
-
 import javax.sql.DataSource;
 
 import jp.mts.authaccess.domain.model.Auth;

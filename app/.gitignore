@@ -1,8 +1,10 @@
 .project
 .classpath
 .settings/
+.externalToolBuilders/
 .cache
 .gradle/
+gradle/
 build/
 bin/
 target/
