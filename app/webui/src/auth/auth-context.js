@@ -1,8 +1,8 @@
 export class AuthContext {
-  auth = null;
+  auth = {};
 
   store(auth){
-    this.auth = auth;
+    jQuery.extend(this.auth, auth);
   }
 
   isAuthenticated(){

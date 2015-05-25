@@ -5,4 +5,3 @@ import org.javalite.activejdbc.annotations.Table;
 
 @Table("users")
 public class UserModel extends Model {}
-
