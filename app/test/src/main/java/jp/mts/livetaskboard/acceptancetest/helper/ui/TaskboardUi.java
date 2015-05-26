@@ -9,4 +9,11 @@ public class TaskboardUi {
 	public boolean displaysUserName(String userName){ 
 		return userName.equals(page.loginUserName()); 
 	}
+	
+	public void logout() {
+		
+	}
+	public void intendToUse() {
+		
+	}
 }

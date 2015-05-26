@@ -19,6 +19,9 @@ public class AuthApi {
 	@RequestMapping(method = RequestMethod.POST)
 	public RestResponse<AuthView> authenticate(@RequestBody AuthenticateRequest request){
 		Auth auth = authService.authenticate(request.id, request.password);
+		if(auth == null){
+			throw new IllegalStateException("auth not found"); //TODO 
+		}
 		return new RestResponse<AuthView>(new AuthView(auth));
 	}
 }

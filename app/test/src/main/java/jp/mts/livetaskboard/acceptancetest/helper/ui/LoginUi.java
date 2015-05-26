@@ -10,6 +10,9 @@ public class LoginUi {
 		page.go();
 		page.login(loginId, password);
 	}
-	public boolean displaysUserName(String userName){ return true; }
+	
+	public boolean promptLogin() {
+		return false;
+	}
 
 }
