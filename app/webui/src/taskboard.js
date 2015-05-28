@@ -1,11 +1,21 @@
 import {inject} from 'aurelia-framework';
+import {Router} from 'aurelia-router';
 import {AuthContext} from './auth/auth-context';
 
-@inject(AuthContext)
+@inject(Router, AuthContext)
 export class Taskboard {
-  auth = null;
-  
-  constructor(authContext){
-    this.auth = authContext.auth;
+
+  constructor(router, authContext){
+    this.router = router;
+    this.authContext = authContext;
+  }
+
+  get auth(){
+    return this.authContext.getAuth();
+  }
+
+  logout(){
+    this.authContext.remove();
+    this.router.navigate('login');
   }
 }

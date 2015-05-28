@@ -3,6 +3,7 @@ import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 import 'bootstrap';
 import 'bootstrap/css/bootstrap.css!';
+import {AuthContext} from 'auth/auth-context';
 
 @inject(Router, HttpClient)
 export class App {
@@ -10,9 +11,10 @@ export class App {
     this.router = router;
     this.router.configure(config => {
       config.title = 'live-taskboard';
+      config.addPipelineStep('authorize', AuthorizeStep);
       config.map([
         { route: ['','login'], moduleId: './login', nav: false, title: 'ログイン' },
-        { route: ['taskboard'], moduleId: './taskboard', nav: false, title: 'タスクボード'}
+        { route: ['taskboard'], moduleId: './taskboard', nav: false, title: 'タスクボード', auth: true}
       ]);
     });
     
@@ -22,3 +24,17 @@ export class App {
   }
 }
 
+@inject(AuthContext)
+class AuthorizeStep {
+  constructor(authContext){
+    this.authContext = authContext;
+  }
+  run(routingContext, next){
+    if (routingContext.nextInstructions.some(i => i.config.auth)) {
+      if(!this.authContext.isAuthenticated()){
+        return next.cancel(new Redirect('login'));
+      }
+    }
+    return next();
+  }
+}

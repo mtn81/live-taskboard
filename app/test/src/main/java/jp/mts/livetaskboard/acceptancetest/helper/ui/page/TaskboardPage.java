@@ -9,11 +9,15 @@ public class TaskboardPage extends TestablePage {
 	}
 
 	@Override
-	public String getUrl() {
-		return hashedUrl("taskboard");
+	protected String urlHash() {
+		return "taskboard";
 	}
 	
 	public String loginUserName(){
 		return findElement("span.login-user").getText();
+	}
+	
+	public void logout(){
+		findElement("#logout").click();
 	}
 }

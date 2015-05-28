@@ -10,8 +10,8 @@ public class LoginPage extends TestablePage {
 	}
 
 	@Override
-	public String getUrl() {
-		return hashedUrl("login");
+	protected String urlHash() {
+		return "login";
 	}
 	
 	public void login(String loginId, String password){

@@ -12,7 +12,7 @@ public class LoginUi {
 	}
 	
 	public boolean promptLogin() {
-		return false;
+		return page.isAppearing();
 	}
 
 }

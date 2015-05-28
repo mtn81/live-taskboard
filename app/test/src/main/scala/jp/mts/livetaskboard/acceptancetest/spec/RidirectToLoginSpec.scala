@@ -17,9 +17,9 @@ class RidirectToLoginSpec extends Specification with GWT with StandardDelimitedS
   ログインしていない場合、ログインにリダイレクトされること
     Given ログインID {taro2@RidirectToLoginSpec}、パスワード {pass} のユーザが存在する  $g1
     Given ログインID {taro2@RidirectToLoginSpec}、パスワード {pass} でログインする  $g2
-    When ログアウトする  w1
-    When タスクボードを利用しようとする  w2
-    Then ログインが求められる  $t
+    When ログアウトする  $w1
+    When タスクボードを利用しようとする  $w2
+    Then ログインが求められる  $t1
     
   """
     
@@ -33,14 +33,8 @@ class RidirectToLoginSpec extends Specification with GWT with StandardDelimitedS
   def g2 = step(twoStrings) { _ match { case (loginId, password) =>
     loginUi.login(loginId, password) 
   }} 
-  def w1 = step {
-    taskboardUi.logout()
-  } 
-  def w2 = step {
-    taskboardUi.intendToUse()
-  } 
-  def t1 = example(aString) { s =>
-    loginUi.promptLogin() must beTrue
-  }
+  def w1 = step { taskboardUi.logout() } 
+  def w2 = step { taskboardUi.intendToUse() } 
+  def t1 = { loginUi.promptLogin() must beTrue }
     
 }
