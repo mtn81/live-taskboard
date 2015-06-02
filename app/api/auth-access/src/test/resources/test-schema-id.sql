@@ -1,0 +1,1 @@
+alter table users add column id integer auto_increment;

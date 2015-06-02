@@ -32,13 +32,13 @@ public abstract class RepositoryTestBase {
 	@Configuration
 	@Profile("test")
 	public static class TestConfig {
-		
 		@Bean
 		public DataSource dataSource(){
 			return new TransactionAwareDataSourceProxy(
 				new EmbeddedDatabaseBuilder()
 					.setType(EmbeddedDatabaseType.H2)
-					.addScript("classpath:schema.sql")
+					.addScript("classpath:/develop/V1.1__schema.sql")
+					.addScript("classpath:test-schema-id.sql")
 					.addScript("classpath:test-schema.sql")
 					.build());
 		}

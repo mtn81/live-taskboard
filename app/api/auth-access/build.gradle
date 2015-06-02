@@ -58,6 +58,10 @@ dependencies {
 
 	compile "com.h2database:h2:1.4.187"
 	compile "org.javalite:activejdbc:1.4.10"
+	compile 'org.postgresql:postgresql:9.3-1102-jdbc4'	
+	
+	compile 'org.flywaydb:flyway-core:3.2.1'
+	 
 }
 
 sourceSets.test.compileClasspath = configurations.testMock + sourceSets.test.compileClasspath

@@ -4,3 +4,9 @@ server:
 spring:
   profiles:
     active: dev
+  datasource:
+    url: jdbc:postgresql://192.168.77.11:5432/auth-access
+    username: app
+    password: pass
+    driver-class-name: org.postgresql.Driver
+    

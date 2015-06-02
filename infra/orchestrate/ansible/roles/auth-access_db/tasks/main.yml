@@ -1,0 +1,53 @@
+---
+
+- name: set up locale
+  locale_gen: name=ja_JP.UTF-8 state=present
+  sudo: yes
+
+- name: install postgresql
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - postgresql
+    - libpq-dev
+    - python-psycopg2
+
+- name: copy conf files
+  copy: src=postgresql/conf/{{ item }}
+        dest=/etc/postgresql/9.3/main
+        owner=postgres group=postgres
+        mode='u=rw,g=r,o=r'
+  sudo: yes
+  with_items:
+    - pg_hba.conf
+    - postgresql.conf
+
+- name: restart postgresql
+  service: name=postgresql state=restarted
+  sudo: yes
+
+- name: create db
+  postgresql_db: name=auth-access
+                 encoding='UTF-8'
+                 lc_collate='ja_JP.utf8'
+                 lc_ctype='ja_JP.utf8'
+                 template='template0'
+  sudo: yes
+  sudo_user: postgres
+
+- name: create db user
+  postgresql_user: name=app password=pass
+  sudo: yes
+  sudo_user: postgres
+
+- name: add privilege to db user
+  postgresql_privs: >
+    db=auth-access
+    state=present
+    privs=ALL
+    type=schema
+    objs=public
+    roles=app
+  sudo: yes
+  sudo_user: postgres
+
