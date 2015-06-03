@@ -16,7 +16,7 @@ public class AuthApi {
 	@Autowired
 	private AuthService authService;
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value="/", method = RequestMethod.POST)
 	public RestResponse<AuthView> authenticate(@RequestBody AuthenticateRequest request){
 		Auth auth = authService.authenticate(request.id, request.password);
 		if(auth == null){

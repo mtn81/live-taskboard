@@ -26,4 +26,5 @@ public class ActiveJdbcIntegrateAspect {
 			db.detach();
 		}
 	}
+
 }

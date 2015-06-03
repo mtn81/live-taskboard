@@ -59,8 +59,6 @@ dependencies {
 	compile "com.h2database:h2:1.4.187"
 	compile "org.javalite:activejdbc:1.4.10"
 	compile 'org.postgresql:postgresql:9.3-1102-jdbc4'	
-	
-	compile 'org.flywaydb:flyway-core:3.2.1'
 	 
 }
 
@@ -93,11 +91,11 @@ def addUrlIfNotPresent( to, what ) {
 }
 
 // Instrument models: borowed from the Griffon ActiveJDBC plugin.
-compileJava.doLast {
+compileJava << {
 	tasks.activeJdbcInstrument.execute()
 }
 
-task activeJdbcInstrument {
+task activeJdbcInstrument << {
     Instrumentation instrumentation = new Instrumentation()
     def projectMainClassesDir = sourceSets.main.output.classesDir.getPath()
     def rootLoader = this.class.classLoader.rootLoader
@@ -105,5 +103,6 @@ task activeJdbcInstrument {
     addUrlIfNotPresent rootLoader, projectMainClassesDir
     addUrlIfNotPresent Instrumentation.class.classLoader, projectMainClassesDir
     instrumentation.instrument()
+    println projectMainClassesDir
+    println rootLoader
 }
-
