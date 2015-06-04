@@ -1,4 +1,4 @@
-package jp.mts.authaccess.infrastructure.persistence.jdbc.model;
+package jp.mts.authaccess.infrastructure.repository.jdbc.model;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;

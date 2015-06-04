@@ -9,9 +9,10 @@ import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
 
 @Service
-public class UserService {
+public class UserAppService {
 	
 	@Autowired UserRepository userRepository;
+	@Autowired UserFactory userFactory;
 
 	public User register(
 			String userIdValue, 
@@ -19,7 +20,7 @@ public class UserService {
 			String name, 
 			String password) {
 
-		User newUser = new UserFactory().create(
+		User newUser = userFactory.create(
 				new UserId(userIdValue), email, name, password);
 		
 		userRepository.save(newUser);

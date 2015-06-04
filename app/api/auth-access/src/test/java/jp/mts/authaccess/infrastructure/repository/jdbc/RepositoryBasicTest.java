@@ -1,9 +1,9 @@
-package jp.mts.authaccess.infrastructure.persistence.jdbc;
+package jp.mts.authaccess.infrastructure.repository.jdbc;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
-import jp.mts.authaccess.infrastructure.persistence.jdbc.model.UserModel;
+import jp.mts.authaccess.infrastructure.repository.jdbc.model.UserModel;
 
 import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;

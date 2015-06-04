@@ -1,7 +1,7 @@
 package jp.mts.authaccess.rest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import jp.mts.authaccess.application.UserService;
+import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersApi {
 	
 	@Autowired
-	private UserService userService;
+	private UserAppService userAppService;
 	
 	@RequestMapping(value="/", method=POST)
 	public RestResponse<UserRegisterView> register(
 			@RequestBody UserRegisterRequest request){
 
-		User registeredUser = userService.register(
+		User registeredUser = userAppService.register(
 				request.userId,
 				request.email, 
 				request.name, 
 				request.password);
 
-		return new RestResponse<UserRegisterView>(
-				new UserRegisterView(registeredUser));
+		return RestResponse.of(new UserRegisterView(registeredUser));
 	}
 }

@@ -1,4 +1,4 @@
-package jp.mts.authaccess.infrastructure.persistence.jdbc;
+package jp.mts.authaccess.infrastructure.repository.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,7 +1,13 @@
 package jp.mts.authaccess.rest;
 
-import jp.mts.authaccess.application.AuthService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import jp.mts.authaccess.application.ApplicationException;
+import jp.mts.authaccess.application.AuthAppService;
+import jp.mts.authaccess.application.ErrorType;
 import jp.mts.authaccess.domain.model.Auth;
+import jp.mts.authaccess.rest.RestResponse.ApiError;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,14 +20,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApi {
 	
 	@Autowired
-	private AuthService authService;
+	private AuthAppService authService;
 	
 	@RequestMapping(value="/", method = RequestMethod.POST)
-	public RestResponse<AuthView> authenticate(@RequestBody AuthenticateRequest request){
-		Auth auth = authService.authenticate(request.id, request.password);
-		if(auth == null){
-			throw new IllegalStateException("auth not found"); //TODO 
+	public RestResponse<AuthView> authenticate(
+			@RequestBody AuthenticateRequest request,
+			HttpServletResponse response){
+		
+		try{
+			Auth auth = authService.authenticate(request.id, request.password);
+			return RestResponse.of(new AuthView(auth));
+		}catch(ApplicationException e){
+			if(e.hasErrorOf(ErrorType.AUTH_FAILED)){
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return RestResponse.of(new ApiError(ErrorType.AUTH_FAILED.getErrorCode(), ""));
+			}
+			throw e;
 		}
-		return new RestResponse<AuthView>(new AuthView(auth));
 	}
 }

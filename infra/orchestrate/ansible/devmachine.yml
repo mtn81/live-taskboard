@@ -3,4 +3,5 @@
   roles:
     # - webui_devtools
     - auth-access_db
+    - auth-access_db_migrate
 

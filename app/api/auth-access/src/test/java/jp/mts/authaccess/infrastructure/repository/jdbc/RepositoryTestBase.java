@@ -1,8 +1,8 @@
-package jp.mts.authaccess.infrastructure.persistence.jdbc;
+package jp.mts.authaccess.infrastructure.repository.jdbc;
 
 import javax.sql.DataSource;
 
-import jp.mts.authaccess.infrastructure.persistence.jdbc.RepositoryTestBase.TestConfig;
+import jp.mts.authaccess.infrastructure.repository.jdbc.RepositoryTestBase.TestConfig;
 
 import org.javalite.activejdbc.DB;
 import org.junit.Rule;

@@ -10,7 +10,7 @@ public class AuthView {
 	}
 	
 	public String getId(){
-		return auth.id();
+		return auth.id().value();
 	}
 	public String getUserName(){
 		return auth.name();

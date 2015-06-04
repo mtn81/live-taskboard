@@ -17,14 +17,14 @@
   command: rm -fR {{ flyway_home }}/sql
 
 - name: copy migration scripts
-  copy: src=migration/{{ migration_scripts }}/ dest={{ flyway_home }}/sql
+  copy: src=scripts/{{ migration_scripts }}/ dest={{ flyway_home }}/sql
 
 - name: copy flyway conf
-  copy: src=migration/flyway.conf dest={{ flyway_home }}/conf
+  copy: src=flyway/flyway.conf dest={{ flyway_home }}/conf
 
 - name: clean up schema
-  command: {{ flyway_home }}/flyway clean
+  command: "{{ flyway_home }}/flyway clean"
 
 - name: migrate schema
-  command: {{ flyway_home }}/flyway migrate
+  command: "{{ flyway_home }}/flyway migrate"
 

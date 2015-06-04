@@ -12,7 +12,7 @@ export class AuthService {
   authenticate(loginId, password){
     var auth = {};
     this.http
-      .post("/api/auth-access/auth",{
+      .post("/api/auth-access/auth/",{
         id: loginId,
         password: password
       })

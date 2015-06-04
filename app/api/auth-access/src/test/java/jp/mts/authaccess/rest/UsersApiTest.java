@@ -2,8 +2,9 @@ package jp.mts.authaccess.rest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import jp.mts.authaccess.application.UserService;
+import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserBuilder;
 import jp.mts.authaccess.domain.model.UserId;
 import mockit.Deencapsulation;
 import mockit.Expectations;
@@ -11,9 +12,11 @@ import mockit.Mocked;
 
 import org.junit.Test;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 public class UsersApiTest {
 	
-	@Mocked UserService userService;
+	@Mocked UserAppService userService;
 
 	@Test
 	public void test_register_successful() {
@@ -22,7 +25,7 @@ public class UsersApiTest {
 		Deencapsulation.setField(target, userService);
 		new Expectations() {{
 			userService.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
-				result = new User(new UserId("u01"));
+				result = new UserBuilder().build();
 		}};
 		
 		UserRegisterRequest request = new UserRegisterRequest();

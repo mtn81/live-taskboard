@@ -4,10 +4,7 @@ public class UserBuilder {
 	private User user;
 	
 	public UserBuilder(){
-		user = new User(new UserId("u01"));
-		user.setEmail("task@test.jp");
-		user.setName("タスク太郎");
-		user.setPassword("pass");
+		user = new User(new UserId("u01"),"task@test.jp", "pass", "タスク太郎");
 	}
 	
 	public User build(){
