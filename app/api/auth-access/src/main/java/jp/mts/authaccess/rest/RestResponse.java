@@ -3,6 +3,8 @@ package jp.mts.authaccess.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.mts.authaccess.application.ErrorType;
+
 
 public class RestResponse<T> {
 	
@@ -42,6 +44,9 @@ public class RestResponse<T> {
 		private String errorCode;
 		private String message;
 
+		public ApiError(ErrorType errorType) {
+			this(errorType.getErrorCode(), errorType.getMessage());
+		}
 		public ApiError(String errorCode, String message) {
 			this.errorCode = errorCode;
 			this.message = message;

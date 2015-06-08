@@ -23,7 +23,7 @@ public class AuthenticateServiceTest {
 			userPasswordEncriptinService.encrypt(new UserId("u01"), "pass");
 				result = "encryptedPass";
 			userRepository.findByAuthCredential(new UserId("u01"), "encryptedPass");
-				result = new UserBuilder().build();
+				result = new UserFixture().build();
 		}};
 		Auth auth = target.authenticate("u01", "pass");
 		

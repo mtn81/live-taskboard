@@ -1,0 +1,21 @@
+<template>
+
+<style>
+div.global-msgs {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+}
+</style>
+
+<div ref="messageContainer" class="global-msgs alert alert-danger alert-dismissible" >
+  <button click.delegate="toggleContainer()" type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <ul>
+    <li repeat.for="error of errors">${error.message}</li>
+  </ul>
+</div>
+
+</template>

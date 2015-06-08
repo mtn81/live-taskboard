@@ -1,9 +1,9 @@
 package jp.mts.authaccess.domain.model;
 
-public class UserBuilder {
+public class UserFixture {
 	private User user;
 	
-	public UserBuilder(){
+	public UserFixture(){
 		user = new User(new UserId("u01"),"task@test.jp", "pass", "タスク太郎");
 	}
 	

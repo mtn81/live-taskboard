@@ -13,6 +13,9 @@ public class AuthAppService {
 	private AuthenticateService authenticateService;
 
 	public Auth authenticate(String id, String password) {
-		return authenticateService.authenticate(id, password);
+		Auth auth = authenticateService.authenticate(id, password);
+		if(auth == null) 
+			throw new ApplicationException(ErrorType.AUTH_FAILED);		
+		return auth;
 	}
 }

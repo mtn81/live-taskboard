@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserBuilder;
+import jp.mts.authaccess.domain.model.UserFixture;
 import jp.mts.authaccess.domain.model.UserId;
 import mockit.Deencapsulation;
 import mockit.Expectations;
@@ -25,7 +25,7 @@ public class UsersApiTest {
 		Deencapsulation.setField(target, userService);
 		new Expectations() {{
 			userService.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
-				result = new UserBuilder().build();
+				result = new UserFixture().build();
 		}};
 		
 		UserRegisterRequest request = new UserRegisterRequest();

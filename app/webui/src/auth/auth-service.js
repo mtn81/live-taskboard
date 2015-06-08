@@ -1,6 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {GlobalError} from '../global-error';
 
 @inject(HttpClient, EventAggregator)
 export class AuthService {
@@ -19,6 +20,9 @@ export class AuthService {
       .then(response => {
         jQuery.extend(auth, response.content.data);
         this.eventAggregator.publish(new AuthSuccessed());
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
     return auth;
   }

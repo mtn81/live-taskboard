@@ -33,7 +33,7 @@ public class AuthApi {
 		}catch(ApplicationException e){
 			if(e.hasErrorOf(ErrorType.AUTH_FAILED)){
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				return RestResponse.of(new ApiError(ErrorType.AUTH_FAILED.getErrorCode(), ""));
+				return RestResponse.of(new ApiError(ErrorType.AUTH_FAILED));
 			}
 			throw e;
 		}

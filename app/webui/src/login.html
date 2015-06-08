@@ -1,7 +1,12 @@
 <link rel="stylesheet" type="text/css" href="../styles/login.css">
 
 <template>
-
+  <require from="./global-messages"></require>
+  
+  <header>
+    <global-messages id="global-msgs"></global-messages>
+  </header>
+  
   <main>
     <form id="loginForm" submit.delegate="login()">
       <div class="form-group">

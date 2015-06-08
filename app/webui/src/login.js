@@ -3,6 +3,7 @@ import {Router} from 'aurelia-router';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthService, AuthSuccessed} from 'auth/auth-service';
 import {AuthContext} from 'auth/auth-context';
+import {GlobalError} from 'global-error';
 
 @inject(Router, EventAggregator, AuthService, AuthContext)
 export class Login {

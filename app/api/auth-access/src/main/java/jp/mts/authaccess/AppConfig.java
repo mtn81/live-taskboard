@@ -2,7 +2,6 @@ package jp.mts.authaccess;
 
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.PasswordEncriptionService;
-import jp.mts.authaccess.domain.model.UserFactory;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.authaccess.infrastructure.service.Pbkdf2UserPasswrodEncriptionService;
 
@@ -19,11 +18,6 @@ public class AppConfig {
 	@Bean
 	public PasswordEncriptionService passwordEncriptionService(){
 		return new Pbkdf2UserPasswrodEncriptionService();
-	}
-	
-	@Bean
-	public UserFactory userFactory(){
-		return new UserFactory(passwordEncriptionService());
 	}
 	
 	@Bean
