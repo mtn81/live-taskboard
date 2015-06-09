@@ -103,6 +103,4 @@ task activeJdbcInstrument << {
     addUrlIfNotPresent rootLoader, projectMainClassesDir
     addUrlIfNotPresent Instrumentation.class.classLoader, projectMainClassesDir
     instrumentation.instrument()
-    println projectMainClassesDir
-    println rootLoader
 }

@@ -12,12 +12,21 @@ export class GlobalMessages {
       this.errors.length = 0;
       jQuery.merge(this.errors, event.errors);
 
-      this.toggleContainer();
+      if(!this.showing){
+        this.showing = true;
+        toggleSlide(this.messageContainer);
+      }
     });
   }
 
-  toggleContainer(){
-    jQuery(this.messageContainer).slideToggle( "slow" );
+  close(){
+    if(this.showing){
+      this.showing = false;
+      toggleSlide(this.messageContainer);
+    }
   }
+}
 
+function toggleSlide(element){
+  jQuery(element).slideToggle( "slow" );
 }

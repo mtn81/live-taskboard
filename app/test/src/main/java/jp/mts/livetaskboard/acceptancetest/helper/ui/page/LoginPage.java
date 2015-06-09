@@ -1,5 +1,8 @@
 package jp.mts.livetaskboard.acceptancetest.helper.ui.page;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.fluentlenium.core.domain.FluentWebElement;
 import org.openqa.selenium.WebDriver;
 
@@ -29,5 +32,12 @@ public class LoginPage extends TestablePage {
 	}
 	private FluentWebElement loginAction(){
 		return findElement("button#loginForm_loginAction");
+	}
+
+	public List<String> errorMessages() {
+		FluentWebElement msgs = findElement("div.global-msgs");
+		return msgs.find("li").stream()
+				.map(element -> element.getText())
+				.collect(Collectors.toList());
 	}
 }
