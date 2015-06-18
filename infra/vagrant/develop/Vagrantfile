@@ -1,27 +1,37 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+product_home = "/home/vagrant/products/live-taskboard"
+
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.network "private_network", ip: "192.168.77.11"
 
-  config.vm.synced_folder "../../../app/api", "/home/vagrant/products/live-taskboard/app/api",
+  config.vm.synced_folder "../../../app/api", "#{product_home}/app/api",
     type: "rsync",
     rsync__exclude: [
       "build/",
       "target/"
     ]
-  config.vm.synced_folder "../../../app/webui", "/home/vagrant/products/live-taskboard/app/webui",
+  config.vm.synced_folder "../../../app/webui", "#{product_home}/app/webui",
     type: "rsync",
     rsync__exclude: [
       "node_modules/",
       "jspm_packages/",
       "dist/"
     ]
+  config.vm.synced_folder "../../../infra/orchestrate", "#{product_home}/infra/orchestrate",
+    type: "rsync"
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.inventory_path = "../../orchestrate/ansible/inventories/develop"
-    ansible.playbook       = "../../orchestrate/ansible/site.yml"
+  config.vm.provision "shell" do |s|
+    s.path = "exec_ansible.sh"
+    s.args = "#{product_home}/infra/orchestrate/ansible"
+    s.privileged = false  #rootユーザで実行するとansibleでログインできないため
   end
+
+#  config.vm.provision "ansible" do |ansible|
+#    ansible.inventory_path = "../../orchestrate/ansible/inventories/develop"
+#    ansible.playbook       = "../../orchestrate/ansible/site.yml"
+#  end
 
 end

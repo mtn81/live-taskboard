@@ -1,0 +1,80 @@
+---
+
+######################################
+# general tools
+######################################
+- name: install basic tools
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - vim
+    - curl
+    - git
+    - sshpass
+
+######################################
+# node
+######################################
+- name: check node already installed
+  stat: path=~/.nvm/nvm.sh
+  register: is_node_installed
+
+- name: install nvm
+  shell: curl https://raw.githubusercontent.com/creationix/nvm/v0.24.1/install.sh | bash
+  when: is_node_installed.stat.exists == False
+    
+- name: install node
+  raw: source ~/.nvm/nvm.sh && nvm install 0.10.38
+  when: is_node_installed.stat.exists == False
+
+- name: install node modules
+  npm: name={{ item }} global=yes executable=~/.nvm/v0.10.38/bin/npm
+  with_items:
+    - gulp
+    - jspm
+
+######################################
+# docker
+######################################
+- name: check already installed
+  shell: docker -v
+  register: is_docker_installed
+  ignore_errors : yes
+
+- name: install docker
+  shell: curl https://get.docker.com/ | sh
+  when: is_docker_installed.rc != 0
+
+######################################
+# jdk
+######################################
+- name: check already installed
+  shell: java -version 2>&1 | grep 'java version "1.8.*"'
+  register: is_java_installed
+  ignore_errors : yes
+
+- name: add apt repo
+  apt_repository: repo='ppa:webupd8team/java'
+  sudo: yes
+  when: is_java_installed.rc != 0
+
+- name: setting for accepting licence
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  sudo: yes
+  when: is_java_installed.rc != 0
+
+- name: install jdk
+  apt: name=oracle-java8-installer
+  sudo: yes
+  when: is_java_installed.rc != 0
+
+######################################
+# ansible tools
+######################################
+- name: install docker-py
+  pip: name=docker-py version=1.1.0
+  sudo: yes
+
+- name: copy pipework
+  copy: src=pipework dest=/usr/local/bin mode=755
+  sudo: yes

@@ -5,3 +5,7 @@ create table users (
   password varchar(100)
 );
 
+create table auths (
+  auth_id varchar(100),
+  user_id varchar(100)
+);

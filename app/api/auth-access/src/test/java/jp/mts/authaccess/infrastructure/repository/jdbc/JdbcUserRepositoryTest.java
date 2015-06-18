@@ -21,7 +21,7 @@ public class JdbcUserRepositoryTest extends RepositoryTestBase {
 	@Test
 	public void test_persistence() {
 
-		User user = new UserFixture().build();
+		User user = new UserFixture().get();
 		target.save(user);
 
 		assertThat(target.findById(user.id()), is(user));
@@ -30,7 +30,7 @@ public class JdbcUserRepositoryTest extends RepositoryTestBase {
 	@Test
 	public void test_findByAuthCredential(){
 
-		User user = new UserFixture().build();
+		User user = new UserFixture().get();
 		target.save(user);
 
 		assertThat(target.findByAuthCredential(user.id(), user.encryptedPassword()), is(user));

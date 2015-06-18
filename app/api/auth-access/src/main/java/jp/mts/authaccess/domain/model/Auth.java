@@ -2,19 +2,26 @@ package jp.mts.authaccess.domain.model;
 
 public class Auth {
 	
-	private UserId id;
-	private String name;
+	private AuthId id;
+	private UserId userId;
 
-	public Auth(UserId id, String name) {
-		this.id = id;
-		this.name = name;
+	public Auth(AuthId id, UserId userId) {
+		setId(id);
+		setUserId(userId);
 	}
 	
-	public UserId id(){
+	public AuthId id(){
 		return id;
 	}
-	public String name(){
-		return name;
+	public UserId userId(){
+		return userId;
+	}
+	
+	void setId(AuthId id){
+		this.id = id;
+	}
+	void setUserId(UserId userId){
+		this.userId = userId;
 	}
 
 	@Override
@@ -22,7 +29,6 @@ public class Auth {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -40,13 +46,9 @@ public class Auth {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
 		return true;
 	}
+	
 	
 	
 }

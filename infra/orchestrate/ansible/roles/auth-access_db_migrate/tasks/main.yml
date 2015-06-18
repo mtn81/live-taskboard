@@ -1,26 +1,14 @@
 ---
 
-- name: check flyway already installed
-  stat: path={{ flyway_home }}
-  register: flyway_stat
-
-- name: copy flyway cli
-  copy: src=migration/flyway-commandline-3.2.1-linux-x64.tar.gz
-        dest=~/flyway.tar.gz
-  when: not flyway_stat.stat.exists
-
-- name: expand flyway
-  shell: cd ~ && tar zxvf ~/flyway.tar.gz
-  when: not flyway_stat.stat.exists
+- name: restart postgresql
+  service: name=postgresql state=restarted
+  sudo: yes
 
 - name: clear migration scripts
   command: rm -fR {{ flyway_home }}/sql
 
 - name: copy migration scripts
-  copy: src=scripts/{{ migration_scripts }}/ dest={{ flyway_home }}/sql
-
-- name: copy flyway conf
-  copy: src=flyway/flyway.conf dest={{ flyway_home }}/conf
+  copy: src=scripts/{{ stage }}/ dest={{ flyway_home }}/sql
 
 - name: clean up schema
   command: "{{ flyway_home }}/flyway clean"

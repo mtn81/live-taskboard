@@ -1,0 +1,8 @@
+---
+
+- hosts: auth-access_dbservers
+  roles:
+    - { role: auth-access_db, when: stage != 'develop', tags: ['base_image'] }
+    - auth-access_db_migrate
+
+

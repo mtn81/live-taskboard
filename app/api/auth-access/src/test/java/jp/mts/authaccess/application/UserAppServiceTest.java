@@ -28,7 +28,7 @@ public class UserAppServiceTest {
 		Deencapsulation.setField(target, userRepository);
 		Deencapsulation.setField(target, authenticateService);
 
-		final User user = new UserFixture().build();
+		final User user = new UserFixture().get();
 		new Expectations() {{
 			authenticateService.createUser("u01", "taro@hoge.jp", "タスク太郎", "pass");
 				result = user;

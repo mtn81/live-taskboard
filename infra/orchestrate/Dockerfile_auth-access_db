@@ -1,0 +1,14 @@
+FROM mts/base:v1
+
+ADD ansible /ansible
+ADD docker-ansible-hosts /ansible/
+WORKDIR /ansible
+
+RUN touch /var/lib/locales/supported.d/local
+# RUN touch /etc/ssl/private/ssl-cert-snakeoil.key
+# RUN chmod 777 /etc/ssl/private/ssl-cert-snakeoil.key
+
+RUN ansible-playbook auth-access_dbservers.yml -i docker-ansible-hosts -c local --tags "base_image"
+
+EXPOSE 5432
+

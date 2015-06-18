@@ -1,0 +1,8 @@
+---
+
+auth_access_dbservers: "{{ groups['auth-access_dbservers'] }}"
+
+#docker_containers:
+#  - image: mts/auth-access_db:v1
+#    containers: "{{ auth_access_dbservers }}"
+

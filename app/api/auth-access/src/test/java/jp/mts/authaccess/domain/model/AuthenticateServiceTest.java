@@ -2,32 +2,36 @@ package jp.mts.authaccess.domain.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 public class AuthenticateServiceTest {
 
 	@Mocked	UserRepository userRepository;
+	@Mocked	AuthRepository authRepository;
 	@Mocked PasswordEncriptionService userPasswordEncriptinService;
 	
 	@Test
 	public void test() {
-		AuthenticateService target = new AuthenticateService(userRepository, userPasswordEncriptinService);
-		
+		AuthenticateService target = new AuthenticateService(
+				userRepository, authRepository, userPasswordEncriptinService);
+
+		final UserId userId = new UserId("u01");
+		final AuthId authId = new AuthId("a01");
 		new Expectations() {{
-			userPasswordEncriptinService.encrypt(new UserId("u01"), "pass");
+			userPasswordEncriptinService.encrypt(userId, "pass");
 				result = "encryptedPass";
-			userRepository.findByAuthCredential(new UserId("u01"), "encryptedPass");
-				result = new UserFixture().build();
+			userRepository.findByAuthCredential(userId, "encryptedPass");
+				result = new UserFixture().get();
+			authRepository.newAuthId();
+				result = authId;
+			authRepository.save((Auth)any);
 		}};
-		Auth auth = target.authenticate("u01", "pass");
+		Auth auth = target.authenticate(userId, "pass");
 		
-		assertThat(auth, is(new Auth(new UserId("u01"), "タスク太郎")));
+		assertThat(auth.id(), is(authId));
 	}
 
 }

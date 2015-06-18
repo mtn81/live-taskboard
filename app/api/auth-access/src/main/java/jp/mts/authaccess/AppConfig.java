@@ -1,5 +1,6 @@
 package jp.mts.authaccess;
 
+import jp.mts.authaccess.domain.model.AuthRepository;
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.PasswordEncriptionService;
 import jp.mts.authaccess.domain.model.UserRepository;
@@ -24,6 +25,7 @@ public class AppConfig {
 	public AuthenticateService authenticateService(){
 		return new AuthenticateService(
 				applicationContext.getBean(UserRepository.class), 
+				applicationContext.getBean(AuthRepository.class), 
 				passwordEncriptionService());
 	}
 

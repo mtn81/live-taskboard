@@ -10,6 +10,10 @@ import jp.mts.authaccess.application.ApplicationException;
 import jp.mts.authaccess.application.AuthAppService;
 import jp.mts.authaccess.application.ErrorType;
 import jp.mts.authaccess.domain.model.Auth;
+import jp.mts.authaccess.domain.model.AuthFixture;
+import jp.mts.authaccess.domain.model.AuthId;
+import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserFixture;
 import jp.mts.authaccess.domain.model.UserId;
 import mockit.Deencapsulation;
 import mockit.Expectations;
@@ -18,6 +22,8 @@ import mockit.NonStrictExpectations;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AuthApiTest {
 	
@@ -37,7 +43,7 @@ public class AuthApiTest {
 		
 		new NonStrictExpectations() {{
 			authAppService.authenticate("hoge", "pass");
-				result = new Auth(new UserId("hoge"), "taro");
+				result = new AuthAppService.AuthResult(new AuthFixture().get(), new UserFixture().get());
 		}};
 		AuthenticateRequest request = new AuthenticateRequest();
 		request.id = "hoge";
@@ -46,8 +52,8 @@ public class AuthApiTest {
 		RestResponse<AuthView> response = target.authenticate(request, mockHttpServletResponse);
 		AuthView authView = response.getData();
 		
-		assertThat(authView.getId(), is("hoge"));
-		assertThat(authView.getUserName(), is("taro"));
+		assertThat(authView.getId(), is("a01"));
+		assertThat(authView.getUserName(), is("タスク太郎"));
 	}
 
 	@Test

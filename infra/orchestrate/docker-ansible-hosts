@@ -1,0 +1,5 @@
+[auth-access_dbservers]
+localhost
+
+[all:vars]
+stage=base_image
