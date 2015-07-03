@@ -1,6 +1,7 @@
 ---
 
 auth_access_dbservers: "{{ groups['auth-access_dbservers'] }}"
+task_manage_dbservers: "{{ groups['task-manage_dbservers'] }}"
 
 #docker_containers:
 #  - image: mts/auth-access_db:v1

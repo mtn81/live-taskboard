@@ -12,11 +12,12 @@ public class AuthenticateServiceTest {
 	@Mocked	UserRepository userRepository;
 	@Mocked	AuthRepository authRepository;
 	@Mocked PasswordEncriptionService userPasswordEncriptinService;
+	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Test
 	public void test() {
 		AuthenticateService target = new AuthenticateService(
-				userRepository, authRepository, userPasswordEncriptinService);
+				userRepository, authRepository, userPasswordEncriptinService, domainEventPublisher);
 
 		final UserId userId = new UserId("u01");
 		final AuthId authId = new AuthId("a01");

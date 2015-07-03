@@ -1,5 +1,8 @@
 [auth-access_dbservers]
 localhost
 
+[task-manage_dbservers]
+localhost
+
 [all:vars]
 stage=base_image

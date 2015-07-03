@@ -15,6 +15,9 @@ public class AuthView {
 	public String getId(){
 		return auth.id().value();
 	}
+	public String getUserId(){
+		return auth.userId().value();
+	}
 	public String getUserName(){
 		return user.name();
 	}

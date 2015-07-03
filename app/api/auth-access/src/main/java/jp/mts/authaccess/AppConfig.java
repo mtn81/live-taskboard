@@ -2,6 +2,7 @@ package jp.mts.authaccess;
 
 import jp.mts.authaccess.domain.model.AuthRepository;
 import jp.mts.authaccess.domain.model.AuthenticateService;
+import jp.mts.authaccess.domain.model.DomainEventPublisher;
 import jp.mts.authaccess.domain.model.PasswordEncriptionService;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.authaccess.infrastructure.service.Pbkdf2UserPasswrodEncriptionService;
@@ -26,7 +27,13 @@ public class AppConfig {
 		return new AuthenticateService(
 				applicationContext.getBean(UserRepository.class), 
 				applicationContext.getBean(AuthRepository.class), 
-				passwordEncriptionService());
+				passwordEncriptionService(),
+				domainEventPublisher());
+	}
+	
+	@Bean
+	public DomainEventPublisher domainEventPublisher(){
+		return new DomainEventPublisher();
 	}
 
 }

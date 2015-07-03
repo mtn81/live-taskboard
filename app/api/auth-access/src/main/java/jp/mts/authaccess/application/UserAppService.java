@@ -18,7 +18,7 @@ public class UserAppService {
 			String email, 
 			String name, 
 			String password) {
-
+		
 		User newUser = authenticateService.createUser(
 				userId, email, name, password);
 		

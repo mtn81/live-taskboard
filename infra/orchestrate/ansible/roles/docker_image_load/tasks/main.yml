@@ -17,6 +17,7 @@
   sudo: yes
   with_items:
     - mts/auth-access_db:v1
+    - mts/task-manage_db:v1
 
 - name: run aadb container
   docker:
@@ -27,17 +28,30 @@
   sudo: yes
   with_items: auth_access_dbservers
 
+- name: run tmdb container
+  docker:
+    name: "{{ item }}"
+    state: started
+    image: "mts/task-manage_db:v1"
+    ports: "{{ hostvars[item]['forwarded_port'] }}:5432"
+  sudo: yes
+  with_items: task_manage_dbservers
+
 - name: assign ip address to all containers
   shell: pipework br1 {{ item }} {{ hostvars[item]['ansible_ssh_host'] }}/24
   sudo: yes
-  with_items: auth_access_dbservers
+  with_flattened: 
+    - auth_access_dbservers
+    - task_manage_dbservers
 
 - name: check containers bridge created
   shell: ip addr show br1 | grep "{{ bridge_address }}"
   sudo: yes
   register: bridge_created
+  ignore_errors: yes
 
 - name: assign ip address to bridge
   command: ip addr add {{ bridge_address }}/24 dev br1
   sudo: yes
   when: bridge_created.rc != 0
+

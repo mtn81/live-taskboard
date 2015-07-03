@@ -1,5 +1,6 @@
 server:
   context-path: /auth-access
+  port: 18080
  
 spring:
   profiles:

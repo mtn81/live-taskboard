@@ -1,0 +1,1 @@
+alter table groups add column id integer auto_increment;

@@ -9,3 +9,9 @@ create table auths (
   auth_id varchar(100),
   user_id varchar(100)
 );
+
+create table events (
+  type varchar(100),
+  occurred timestamp,
+  body bytea
+);

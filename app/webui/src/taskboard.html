@@ -1,9 +1,41 @@
 <template>
+
   <header>
     <p class="login-user-msg">こんにちは。<span class="login-user">${auth.userName}</span> さん。 </p>
     <button id="logout" class="btn btn-default" click.delegate="logout()">ログアウト</button>
   </header>
   <main>
-    タスクボードページ
+    <div class="row">
+      <div class="col-md-2">
+        <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
+        <div class="list-group">
+          <a class="list-group-item" repeat.for="group of groups">${group.name}</a>
+        </div>
+      </div>
+      <div class="taskbord col-md-10">
+        タスクボード
+      </div>
+    </div>
   </main>
+
+  <div class="modal fade" ref="groupRegisterModal">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">グループ登録</h4>
+      </div>
+      <div class="modal-body">
+        <compose view-model="group-register"></compose>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" click.trigger="fire('group-register.register')">登録</button>
+      </div>
+  </div>
+  </div>
+  </div>
+
 </template>

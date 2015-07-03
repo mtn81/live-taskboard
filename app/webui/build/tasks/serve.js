@@ -4,8 +4,10 @@ var url = require('url');
 var proxy = require('proxy-middleware');
 
 // proxying to api on host os for develop
-var proxyOptions = url.parse('http://10.0.2.2:8080/auth-access/api');
-proxyOptions.route = '/api/auth-access';
+var aa_proxy = url.parse('http://10.0.2.2:18080/auth-access/api');
+aa_proxy.route = '/api/auth-access';
+var tm_proxy = url.parse('http://10.0.2.2:28080/task-manage/api');
+tm_proxy.route = '/api/task-manage';
 
 // this task utilizes the browsersync plugin
 // to create a dev server instance
@@ -17,7 +19,8 @@ gulp.task('serve', ['build'], function(done) {
     server: {
       baseDir: ['.'],
       middleware: [
-        proxy(proxyOptions),
+        proxy(aa_proxy),
+        proxy(tm_proxy),
         function (req, res, next) {
           res.setHeader('Access-Control-Allow-Origin', '*');
           next();

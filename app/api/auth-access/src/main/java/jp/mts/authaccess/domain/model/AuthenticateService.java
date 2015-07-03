@@ -5,14 +5,17 @@ public class AuthenticateService {
 	private UserRepository userRepository;
 	private AuthRepository authRepository;
 	private PasswordEncriptionService passwordEncriptionService;
+	private DomainEventPublisher domainEventPublisher;
 
 	public AuthenticateService(
 			UserRepository userRepository,
 			AuthRepository authRepository,
-			PasswordEncriptionService passwordEncriptionService) {
+			PasswordEncriptionService passwordEncriptionService,
+			DomainEventPublisher domainEventPublisher) {
 		this.userRepository = userRepository;
 		this.authRepository = authRepository;
 		this.passwordEncriptionService = passwordEncriptionService;
+		this.domainEventPublisher = domainEventPublisher;
 	}
 
 	public Auth authenticate(UserId userId, String password) {
@@ -20,15 +23,19 @@ public class AuthenticateService {
 		User user = userRepository.findByAuthCredential(userId, encriptedPassword);
 		if(user == null) return null;
 
-		Auth auth = new Auth(authRepository.newAuthId(), userId);
+		AuthId authId = authRepository.newAuthId();
+		Auth auth = new Auth(authId, userId);
+
+		domainEventPublisher.publish(new UserAuthenticated(authId, userId));
 		authRepository.save(auth);
 		return auth;
 	}
 	
 	public User createUser(String id, String password, String email, String name){
 		UserId userId = new UserId(id);
-		return new User(userId, email, 
+		User newUser =  new User(userId, email, 
 				passwordEncriptionService.encrypt(userId, password), name);
+		return newUser;
 	}
 	
 	public void changePassword(User user, String password){

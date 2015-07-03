@@ -1,0 +1,8 @@
+---
+
+- hosts: task-manage_dbservers
+  roles:
+    - { role: task-manage_db, when: stage != 'develop', tags: ['base_image'] }
+    - task-manage_db_migrate
+
+

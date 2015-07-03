@@ -1,0 +1,13 @@
+server:
+  context-path: /task-manage
+  port: 28080
+ 
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://192.168.77.11:25432/task-manage
+    username: app
+    password: pass
+    driver-class-name: org.postgresql.Driver
+    
