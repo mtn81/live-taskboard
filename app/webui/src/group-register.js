@@ -7,16 +7,12 @@ export class GroupRegister {
 
   groupName = '';
   groupDescription = '';
+  subscription = [];
 
   constructor(eventAggregator, groupService){
     this.groupService = groupService;
+    this.eventAggregator = eventAggregator;
 
-    eventAggregator.subscribe('group-register.register', payload => {
-      this.register();
-    });
-    eventAggregator.subscribe(GroupRegistered, message => {
-      eventAggregator.publish('group-register.register.success');
-    });
   }
 
   register(){
@@ -24,6 +20,24 @@ export class GroupRegister {
       name: this.groupName,
       description: this.groupDescription
     });
+  }
+
+  attached(){
+    this.subscription.push(
+      this.eventAggregator.subscribe('group-register.register', payload => {
+        this.register();
+      })
+    );
+    this.subscription.push(
+      this.eventAggregator.subscribe(GroupRegistered, message => {
+        this.eventAggregator.publish('group-register.register.success');
+      })
+    );
+  }
+  detached(){
+    for(var i=0; i < this.subscription.length; i++){
+      this.subscription[i]();
+    }
   }
 
 }

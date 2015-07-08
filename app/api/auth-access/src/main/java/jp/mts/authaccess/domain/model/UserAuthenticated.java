@@ -10,10 +10,10 @@ public class UserAuthenticated extends DomainEvent {
 		this.userId = userId;
 	}
 	
-	public AuthId getAuthId() {
+	public AuthId authId() {
 		return authId;
 	}
-	public UserId getUserId() {
+	public UserId userId() {
 		return userId;
 	}
 }

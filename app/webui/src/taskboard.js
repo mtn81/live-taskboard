@@ -38,8 +38,7 @@ export class Taskboard {
 
   //life cycle methods
   activate(){
-    this.groups.length = 0;
-    jQuery.merge(this.groups, this.groupService.groups(this.authContext.getAuth().userId));
+    this.groups = this.groupService.groups();
   }
 
 }

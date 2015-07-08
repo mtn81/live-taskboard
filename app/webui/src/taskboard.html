@@ -9,7 +9,7 @@
       <div class="col-md-2">
         <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
         <div class="list-group">
-          <a class="list-group-item" repeat.for="group of groups">${group.name}</a>
+          <a class="list-group-item" repeat.for="group of groups">${group.groupName}</a>
         </div>
       </div>
       <div class="taskbord col-md-10">
@@ -32,7 +32,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" click.trigger="fire('group-register.register')">登録</button>
+        <button type="button" class="btn btn-primary" click.delegate="fire('group-register.register')">登録</button>
       </div>
   </div>
   </div>

@@ -25,8 +25,8 @@ public class GroupSave {
 	}
 
 	//exec
-	public void create(GroupAppService groupAppService){
-		this.group = groupAppService.register(name, description);
+	public void create(String memberId, GroupAppService groupAppService){
+		this.group = groupAppService.register(memberId, name, description);
 	}
 	
 }

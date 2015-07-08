@@ -47,18 +47,20 @@ configurations {
 dependencies {
 	def jmockitDependency = "org.jmockit:jmockit:1.17";
 
-  testMock jmockitDependency    //実行時にモックを有効にするために先に読み込む必要があるため別で管理
+    testMock jmockitDependency    //実行時にモックを有効にするために先に読み込む必要があるため別で管理
 	testCompile jmockitDependency //eclipse用に設定
 	testCompile "junit:junit:4.11"
 
-  compile "org.springframework.boot:spring-boot-starter-web" 
-  compile "org.springframework.boot:spring-boot-starter-jdbc" 
-  compile "org.springframework.boot:spring-boot-starter-aop" 
-  testCompile "org.springframework.boot:spring-boot-starter-test" 
+    compile "org.springframework.boot:spring-boot-starter-web" 
+    compile "org.springframework.boot:spring-boot-starter-jdbc" 
+    compile "org.springframework.boot:spring-boot-starter-aop" 
+    testCompile "org.springframework.boot:spring-boot-starter-test" 
 
 	compile "com.h2database:h2:1.4.187"
 	compile "org.javalite:activejdbc:1.4.10"
 	compile 'org.postgresql:postgresql:9.3-1102-jdbc4'	
+	
+	compile 'com.google.guava:guava:18.0'
 	 
 }
 

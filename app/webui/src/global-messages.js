@@ -10,7 +10,7 @@ export class GlobalMessages {
   constructor(eventAggregator){
     eventAggregator.subscribe(GlobalError, event => {
       this.errors.length = 0;
-      jQuery.merge(this.errors, event.errors);
+      if (event.errors) jQuery.merge(this.errors, event.errors);
 
       if(!this.showing){
         this.showing = true;

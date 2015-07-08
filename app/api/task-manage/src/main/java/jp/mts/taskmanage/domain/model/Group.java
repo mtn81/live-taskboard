@@ -1,20 +1,26 @@
 package jp.mts.taskmanage.domain.model;
 
+
 public class Group {
 	
 	private GroupId groupId;
+	private MemberId ownerMemberId;
 	private String name;
 	private String description;
 
-	public Group(GroupId groupId, String name, String description) {
+	public Group(GroupId groupId, MemberId ownerMemberId, String name, String description) {
 		super();
 		this.groupId = groupId;
+		this.ownerMemberId = ownerMemberId;
 		setName(name);
 		setDescription(description);
 	}
 
 	public GroupId groupId() {
 		return groupId;
+	}
+	public MemberId ownerMemberId() {
+		return ownerMemberId;
 	}
 	public String name() {
 		return name;
@@ -60,6 +66,5 @@ public class Group {
 			return false;
 		return true;
 	}
-	
 	
 }

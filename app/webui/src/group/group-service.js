@@ -2,18 +2,20 @@ import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
+import {AuthContext} from 'auth/auth-context';
 
-@inject(HttpClient, EventAggregator)
+@inject(HttpClient, EventAggregator, AuthContext)
 export class GroupService {
 
-  constructor(http, eventAggregator) {
+  constructor(http, eventAggregator, authContext) {
     this.http = http;
     this.eventAggregator = eventAggregator;
+    this.authContext = authContext;
   }
 
   register(group){
     this.http
-      .post("/api/task-manage/groups/", group)
+      .post("/api/task-manage/members/" + this.memberId() + "/groups/", group)
       .then(response => {
         this.eventAggregator.publish(new GroupRegistered());
       })
@@ -22,11 +24,11 @@ export class GroupService {
       });
   }
 
-  groups(memberId){
+  groups(){
     var groups = [];
 
     this.http
-      .get("/api/task-manage/member/" + memberId + '/groups/')
+      .get("/api/task-manage/members/" + this.memberId() + '/groups/?type=belonging')
       .then(response => {
         jQuery.merge(groups, response.content.data.groups);
       })
@@ -35,6 +37,10 @@ export class GroupService {
       });
 
     return groups;
+  }
+
+  memberId() {
+    return this.authContext.getAuth().userId;
   }
 }
 

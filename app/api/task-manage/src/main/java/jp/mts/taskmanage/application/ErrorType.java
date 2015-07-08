@@ -1,7 +1,7 @@
 package jp.mts.taskmanage.application;
 
 public enum ErrorType {
-	AUTH_FAILED("e001", "認証に失敗しました。IDまたはパスワードが間違っています。")
+	MEMBER_NOT_EXIST("e-tm-001", "指定されたメンバーは存在しません")
 	;
 	
 	private String errorCode;

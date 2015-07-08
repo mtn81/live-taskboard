@@ -5,7 +5,17 @@ public class GroupFixture {
 	private Group group;
 	
 	public GroupFixture(){
-		group = new Group(new GroupId("g01"), "task group01", "this is a test group");
+		this("g01");
+	}
+	public GroupFixture(String groupId){
+		this(groupId, "m01");
+	}
+	public GroupFixture(String groupId, String memberId){
+		group = new Group(
+				new GroupId(groupId), 
+				new MemberId(memberId),
+				"task group01", 
+				"this is a test group");
 	}
 	
 	public Group get(){
