@@ -1,2 +1,2 @@
-cd $(dirname $0)/..
-./gradlew activeJdbInstrument
+cd $(dirname $0)/../..
+./gradlew :auth-access:activeJdbInstrument

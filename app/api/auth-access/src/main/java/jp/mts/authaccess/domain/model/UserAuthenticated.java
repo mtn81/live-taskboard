@@ -1,5 +1,7 @@
 package jp.mts.authaccess.domain.model;
 
+import jp.mts.base.domain.model.DomainEvent;
+
 public class UserAuthenticated extends DomainEvent {
 	
 	private AuthId authId;

@@ -3,6 +3,7 @@ package jp.mts.authaccess.rest;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.base.rest.RestResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

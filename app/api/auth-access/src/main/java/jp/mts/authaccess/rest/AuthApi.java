@@ -2,11 +2,12 @@ package jp.mts.authaccess.rest;
 
 import javax.servlet.http.HttpServletResponse;
 
-import jp.mts.authaccess.application.ApplicationException;
 import jp.mts.authaccess.application.AuthAppService;
 import jp.mts.authaccess.application.AuthAppService.AuthResult;
 import jp.mts.authaccess.application.ErrorType;
-import jp.mts.authaccess.rest.RestResponse.ApiError;
+import jp.mts.base.application.ApplicationException;
+import jp.mts.base.rest.RestResponse;
+import jp.mts.base.rest.RestResponse.ApiError;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

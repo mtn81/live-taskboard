@@ -5,6 +5,7 @@ import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
+import jp.mts.base.application.ApplicationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

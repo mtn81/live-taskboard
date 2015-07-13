@@ -3,16 +3,13 @@ package jp.mts.authaccess.rest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import jp.mts.authaccess.application.UserAppService;
-import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserFixture;
-import jp.mts.authaccess.domain.model.UserId;
+import jp.mts.base.rest.RestResponse;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class UsersApiTest {
 	

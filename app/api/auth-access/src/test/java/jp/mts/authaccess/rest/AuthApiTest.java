@@ -1,20 +1,17 @@
 package jp.mts.authaccess.rest;
 
-import static jp.mts.authaccess.test.helper.RestResponseMatcher.hasError;
+import static jp.mts.base.unittest.RestResponseMatcher.hasError;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import javax.servlet.http.HttpServletResponse;
 
-import jp.mts.authaccess.application.ApplicationException;
 import jp.mts.authaccess.application.AuthAppService;
 import jp.mts.authaccess.application.ErrorType;
-import jp.mts.authaccess.domain.model.Auth;
 import jp.mts.authaccess.domain.model.AuthFixture;
-import jp.mts.authaccess.domain.model.AuthId;
-import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserFixture;
-import jp.mts.authaccess.domain.model.UserId;
+import jp.mts.base.application.ApplicationException;
+import jp.mts.base.rest.RestResponse;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
@@ -22,8 +19,6 @@ import mockit.NonStrictExpectations;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class AuthApiTest {
 	

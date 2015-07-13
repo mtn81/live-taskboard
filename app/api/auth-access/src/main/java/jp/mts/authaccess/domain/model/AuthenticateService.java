@@ -1,5 +1,7 @@
 package jp.mts.authaccess.domain.model;
 
+import jp.mts.base.domain.model.DomainEventPublisher;
+
 public class AuthenticateService {
 
 	private UserRepository userRepository;

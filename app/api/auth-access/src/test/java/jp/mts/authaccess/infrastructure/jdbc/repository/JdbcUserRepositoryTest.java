@@ -4,8 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserFixture;
-import jp.mts.authaccess.infrastructure.jdbc.repository.JdbcUserRepository;
-import jp.mts.authaccess.test.helper.JdbcTestBase;
+import jp.mts.base.unittest.JdbcTestBase;
 
 import org.junit.Before;
 import org.junit.Test;

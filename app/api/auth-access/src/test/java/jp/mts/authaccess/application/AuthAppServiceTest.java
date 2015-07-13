@@ -11,6 +11,7 @@ import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserFixture;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
+import jp.mts.base.application.ApplicationException;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;

@@ -2,6 +2,7 @@ package jp.mts.authaccess.domain.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import jp.mts.base.domain.model.DomainEventPublisher;
 import mockit.Expectations;
 import mockit.Mocked;
 

@@ -1,6 +1,6 @@
 package jp.mts.authaccess.application;
 
-public enum ErrorType {
+public enum ErrorType implements jp.mts.base.application.ErrorType {
 	AUTH_FAILED("e001", "認証に失敗しました。IDまたはパスワードが間違っています。")
 	;
 	
