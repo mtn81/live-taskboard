@@ -6,8 +6,8 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupFixture;
@@ -21,9 +21,6 @@ import mockit.Injectable;
 import mockit.Tested;
 
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class GroupAppServiceTest {
 

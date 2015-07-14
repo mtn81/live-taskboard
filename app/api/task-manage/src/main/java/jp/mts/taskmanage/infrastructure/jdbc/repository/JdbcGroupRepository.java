@@ -1,14 +1,15 @@
-package jp.mts.taskmanage.infrastructure.repository.jdbc;
+package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import jp.mts.base.infrastructure.jdbc.SqlInClause;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.infrastructure.repository.jdbc.model.GroupModel;
+import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 
 import org.springframework.stereotype.Repository;
 

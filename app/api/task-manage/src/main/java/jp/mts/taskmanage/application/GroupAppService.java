@@ -5,6 +5,7 @@ import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;

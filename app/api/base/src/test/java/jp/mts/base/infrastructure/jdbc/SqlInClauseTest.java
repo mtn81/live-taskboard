@@ -1,4 +1,4 @@
-package jp.mts.taskmanage.infrastructure.repository.jdbc;
+package jp.mts.base.infrastructure.jdbc;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,20 +1,21 @@
-package jp.mts.taskmanage.infrastructure.repository.jdbc;
+package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
+import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.infrastructure.jdbc.repository.JdbcGroupRepository;
 
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
-public class JdbcGroupRepositoryTest extends JdbcRepositoryTestBase {
+public class JdbcGroupRepositoryTest extends JdbcTestBase {
 	
 	JdbcGroupRepository groupRepository = new JdbcGroupRepository();
 	

@@ -1,11 +1,11 @@
-package jp.mts.taskmanage.infrastructure.repository.jdbc;
+package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import org.springframework.stereotype.Repository;
 
 import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
-import jp.mts.taskmanage.infrastructure.repository.jdbc.model.MemberModel;
+import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
 
 @Repository
 public class JdbcMemberRepository implements MemberRepository {

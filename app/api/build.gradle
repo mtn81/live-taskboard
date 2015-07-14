@@ -136,10 +136,13 @@ project(':ut-base') {
 }
 project(':auth-access') {
   dependencies {
-    compile project(':libs:event')
-    compile project(':base')
-
-    testCompile project(':libs:unit-test')
-    testCompile project(':ut-base')
+    compile project(':libs:event'), project(':base')
+    testCompile project(':libs:unit-test'), project(':ut-base')
+  }
+}
+project(':task-manage') {
+  dependencies {
+    compile project(':libs:event'), project(':base')
+    testCompile project(':libs:unit-test'), project(':ut-base')
   }
 }

@@ -1,3 +1,17 @@
 jar {
   baseName = 'auth-access'
 }
+
+configurations {
+  sqlScripts
+}
+
+dependencies {
+  sqlScripts files('../../../infra/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts')
+}
+
+eclipse {
+  classpath {
+    plusConfigurations += [ configurations.sqlScripts ]
+  }
+}

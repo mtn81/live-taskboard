@@ -1,6 +1,6 @@
 package jp.mts.taskmanage.application;
 
-public enum ErrorType {
+public enum ErrorType implements jp.mts.base.application.ErrorType{
 	MEMBER_NOT_EXIST("e-tm-001", "指定されたメンバーは存在しません")
 	;
 	
