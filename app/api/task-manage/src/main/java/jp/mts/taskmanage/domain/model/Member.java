@@ -1,7 +1,9 @@
 package jp.mts.taskmanage.domain.model;
 
+import jp.mts.base.domain.model.DomainObject;
 
-public class Member {
+
+public class Member extends DomainObject {
 	private MemberId memberId;
 	
 	public Member(MemberId memberId) {
@@ -16,6 +18,7 @@ public class Member {
 	public Group createGroup(
 			GroupId groupId, String groupName, String description){
 		Group group = new Group(groupId, memberId, groupName, description);
+		domainEventPublisher.publish(new GroupCreated(groupId, memberId));
 		return group;
 	}
 	

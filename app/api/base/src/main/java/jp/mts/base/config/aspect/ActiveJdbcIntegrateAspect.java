@@ -1,4 +1,4 @@
-package jp.mts.base.aspect;
+package jp.mts.base.config.aspect;
 
 import javax.sql.DataSource;
 
@@ -16,8 +16,8 @@ public class ActiveJdbcIntegrateAspect {
 	@Autowired
 	private DataSource dataSource;
 
-	@Around("jp.mts.base.aspect.AppArchitecture.repository() || " + 
-			"jp.mts.base.aspect.AppArchitecture.eventStore()")
+	@Around("jp.mts.base.config.aspect.AppArchitecture.repository() || " + 
+			"jp.mts.base.config.aspect.AppArchitecture.eventStore()")
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
 		DB db = new DB("default");
 		try {

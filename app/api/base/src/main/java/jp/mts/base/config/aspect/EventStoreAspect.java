@@ -1,4 +1,4 @@
-package jp.mts.base.aspect;
+package jp.mts.base.config.aspect;
 
 import jp.mts.base.domain.model.DomainEvent;
 import jp.mts.base.domain.model.DomainEventPublisher;
@@ -22,7 +22,7 @@ public class EventStoreAspect {
 	@Autowired
 	private StoredEventSerializer storedEventSerializer;
 	
-	@Around("jp.mts.base.aspect.AppArchitecture.appService()")
+	@Around("jp.mts.base.config.aspect.AppArchitecture.appService()")
 	public Object subscribeEvent(ProceedingJoinPoint pjp) throws Throwable {
 		domainEventPublisher.register(DomainEvent.class, e -> {
 			eventStore.add(storedEventSerializer.serialize(e));

@@ -15,3 +15,9 @@ create table groups_members (
 
   constraint uc_groups_members unique (group_id, member_id)
 );
+
+create table events (
+  type varchar(100),
+  occurred timestamp,
+  body bytea
+);

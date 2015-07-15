@@ -7,7 +7,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages={"jp.mts.base.aspect", "jp.mts.taskmanage"})
+@ComponentScan(
+	basePackages={
+		"jp.mts.base.config", 
+		"jp.mts.taskmanage"
+	})
 public class RestApiServer {
 
 	public static void main(String[] args) {

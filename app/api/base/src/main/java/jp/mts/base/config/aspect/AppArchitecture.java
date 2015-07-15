@@ -1,4 +1,4 @@
-package jp.mts.base.aspect;
+package jp.mts.base.config.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
