@@ -12,7 +12,8 @@ public class AppArchitecture {
 	@Pointcut("execution(* jp.mts..domain.model..*Repository.*(..))")
 	public void repository() {}
 	
-	@Pointcut("execution(* jp.mts.libs.event.eventstore.EventStore.*(..))")
+	@Pointcut("execution(* jp.mts.libs.event.eventstore.EventStore.*(..)) || "
+			+ "execution(* jp.mts.libs.event.EventProcessRecord.*(..))")
 	public void eventStore() {}
 	
 }

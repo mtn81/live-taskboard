@@ -81,6 +81,7 @@ subprojects {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     compile "org.springframework.boot:spring-boot-starter-aop"
+    compile("org.springframework.boot:spring-boot-starter-amqp")
     testCompile "org.springframework.boot:spring-boot-starter-test"
 
   	compile "com.h2database:h2:1.4.187"

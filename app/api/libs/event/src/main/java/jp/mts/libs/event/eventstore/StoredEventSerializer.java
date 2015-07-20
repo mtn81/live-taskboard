@@ -40,4 +40,11 @@ public class StoredEventSerializer {
 			throw new RuntimeException(e);
 		}
 	}
+	public EventBody deserializeBody(byte[] eventBody) {
+		try {
+			return new EventBody(objectMapper.readValue(eventBody, HashMap.class));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

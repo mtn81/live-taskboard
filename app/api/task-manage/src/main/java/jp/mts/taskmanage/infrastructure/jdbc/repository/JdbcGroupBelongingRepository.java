@@ -30,5 +30,19 @@ public class JdbcGroupBelongingRepository implements GroupBelongingRepository {
 				new MemberId(model.getString("member_id")));
 
 	}
+
+	@Override
+	public void save(GroupBelonging groupBelonging) {
+		
+		GroupMemberModel model = GroupMemberModel.findFirst("group_id=? and member_id=?", 
+				groupBelonging.groupId().value(), groupBelonging.memberId().value());
+		if (model == null) {
+			model = new GroupMemberModel()
+				.set("group_id", groupBelonging.groupId().value())
+				.set("member_id", groupBelonging.memberId().value());
+		}
+		
+		model.saveIt();
+	}
 	
 }

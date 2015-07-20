@@ -8,11 +8,13 @@ import java.util.List;
 
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
+import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
+import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberFixture;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
@@ -80,5 +82,25 @@ public class GroupAppServiceTest {
 		assertThat(groups.size(), is(2));
 		assertThat(groups.get(0).groupId().value(), is("g01"));
 		assertThat(groups.get(1).groupId().value(), is("g02"));
+	}
+	
+	@Test
+	public void test_participate_admin() {
+		
+		GroupId groupId = new GroupId("g01");
+		Group group = new GroupFixture(groupId.value()).get();
+		MemberId memberId = new MemberId("m01");
+		Member member = new MemberFixture(memberId.value()).get();
+		GroupBelonging groupBelonging = new GroupBelongingFixture("g01", "m01").get();
+		
+		new Expectations() {{
+			groupRepository.findById(groupId);
+				result = group;
+			memberRepository.findById(memberId);
+				result = member;
+			groupBelongingRepository.save(groupBelonging);
+		}};
+		
+		target.entryMember(groupId, memberId);
 	}
 }

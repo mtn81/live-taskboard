@@ -4,5 +4,7 @@ import java.util.List;
 
 public interface GroupBelongingRepository {
 	
-	List<GroupBelonging> findByMember(MemberId memberId);	
+	List<GroupBelonging> findByMember(MemberId memberId);
+
+	void save(GroupBelonging groupBelonging);	
 }

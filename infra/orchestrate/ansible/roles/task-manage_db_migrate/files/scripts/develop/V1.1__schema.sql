@@ -21,3 +21,8 @@ create table events (
   occurred timestamp,
   body bytea
 );
+
+create table event_processes (
+  type varchar(100) unique,
+  last_event_id integer
+);

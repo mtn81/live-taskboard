@@ -13,6 +13,5 @@ public class Dates {
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}
-		
 	}
 }

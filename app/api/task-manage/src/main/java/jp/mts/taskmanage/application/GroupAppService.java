@@ -53,4 +53,12 @@ public class GroupAppService {
 				.collect(Collectors.toList());
 	}
 
+	public void entryMember(GroupId groupId, MemberId memberId) {
+		Group group = groupRepository.findById(groupId);
+		Member member = memberRepository.findById(memberId);
+		
+		GroupBelonging entry = member.entryTo(group);
+		groupBelongingRepository.save(entry);
+	}
+
 }
