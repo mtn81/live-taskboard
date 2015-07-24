@@ -11,7 +11,7 @@ export class App {
     this.router = router;
     this.router.configure(config => {
       config.title = 'live-taskboard';
-      //config.addPipelineStep('authorize', AuthorizeStep);
+      config.addPipelineStep('authorize', AuthorizeStep);
       config.map([
         { route: ['','login'], moduleId: './login', nav: false, title: 'ログイン' },
         { route: ['taskboard'], moduleId: './taskboard', nav: false, title: 'タスクボード', auth: true}

@@ -85,18 +85,18 @@ public class GroupAppServiceTest {
 	}
 	
 	@Test
-	public void test_participate_admin() {
+	public void test_member_entry() {
 		
-		GroupId groupId = new GroupId("g01");
-		Group group = new GroupFixture(groupId.value()).get();
-		MemberId memberId = new MemberId("m01");
-		Member member = new MemberFixture(memberId.value()).get();
-		GroupBelonging groupBelonging = new GroupBelongingFixture("g01", "m01").get();
+		String groupId = "g01";
+		Group group = new GroupFixture(groupId).get();
+		String memberId = "m01";
+		Member member = new MemberFixture(memberId).get();
+		GroupBelonging groupBelonging = new GroupBelongingFixture(groupId, memberId).get();
 		
 		new Expectations() {{
-			groupRepository.findById(groupId);
+			groupRepository.findById(new GroupId(groupId));
 				result = group;
-			memberRepository.findById(memberId);
+			memberRepository.findById(new MemberId(memberId));
 				result = member;
 			groupBelongingRepository.save(groupBelonging);
 		}};

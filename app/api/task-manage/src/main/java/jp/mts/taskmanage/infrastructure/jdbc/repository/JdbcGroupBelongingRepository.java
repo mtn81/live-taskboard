@@ -44,5 +44,12 @@ public class JdbcGroupBelongingRepository implements GroupBelongingRepository {
 		
 		model.saveIt();
 	}
+
+
+	@Override
+	public GroupBelonging findById(MemberId memberId, GroupId groupId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

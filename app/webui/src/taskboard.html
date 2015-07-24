@@ -9,7 +9,18 @@
       <div class="col-md-2">
         <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
         <div class="list-group">
-          <a class="list-group-item" repeat.for="group of groups">${group.groupName}</a>
+          <a class="list-group-item" repeat.for="group of registeringGroups">${group.groupName} (作成中) </a>
+          <span repeat.for="group of groups">
+            <a class="list-group-item">
+              ${group.groupName}
+              <span if.bind="group.removing">(削除中)</span>
+              <button if.bind="!group.removing" type="button" class="btn btn-default" aria-label="Left Align" 
+                click.trigger="$parent.removeGroup(group)">
+                <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
+              </button>
+            </a>
+          </span>
+
         </div>
       </div>
       <div class="taskbord col-md-10">

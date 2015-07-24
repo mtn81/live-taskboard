@@ -8,6 +8,7 @@ import {GroupService} from './group/group-service';
 export class Taskboard {
 
   groups = [];
+  registeringGroups = [];
 
   constructor(router, authContext, eventAggregator, groupService){
     this.router = router;
@@ -29,6 +30,10 @@ export class Taskboard {
     $(this.groupRegisterModal).modal('show');
   }
 
+  removeGroup(group){
+    this.groupService.remove(group);
+  }
+
   fire(eventId){
     this.eventAggregator.subscribe(eventId + '.success', payload => {
       $(this.groupRegisterModal).modal('hide');
@@ -39,6 +44,7 @@ export class Taskboard {
   //life cycle methods
   activate(){
     this.groups = this.groupService.groups();
+    this.registeringGroups = this.groupService.registeringGroups();
   }
 
 }

@@ -23,6 +23,9 @@ public class GroupSave {
 		if(group == null) throw new IllegalStateException();
 		return group.groupId().value();
 	}
+	public String getGroupName() {
+		return group.name();
+	}
 
 	//exec
 	public void create(String memberId, GroupAppService groupAppService){

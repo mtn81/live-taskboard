@@ -1,5 +1,6 @@
 package jp.mts.taskmanage.domain.model;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import jp.mts.base.domain.model.DomainObject;
 
 
@@ -24,6 +25,10 @@ public class Member extends DomainObject {
 	
 	public GroupBelonging entryTo(Group group) {
 		return new GroupBelonging(group.groupId(), memberId);
+	}
+
+	public boolean isOwnerFor(Group group) {
+		return this.memberId.equals(group.ownerMemberId());
 	}
 	
 	@Override
@@ -51,7 +56,6 @@ public class Member extends DomainObject {
 			return false;
 		return true;
 	}
-	
-	
+
 	
 }

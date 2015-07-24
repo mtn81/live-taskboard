@@ -28,16 +28,14 @@ public class GroupCreatedEventListenerTest {
 	@Test
 	public void test() {
 		
-		final GroupId groupId = new GroupId("g01");
-		final MemberId memberId = new MemberId("m01");
-		
 		EventBody eventBody = new EventBody(new Maps()
 			.e("groupId", Maps.map("value", "g01"))
 			.e("creator", Maps.map("value", "m01"))
 			.get());
 		
 		new Expectations() {{
-			groupAppService.entryMember(groupId, memberId);
+			groupAppService.entryMember("g01", "m01");
+			groupAppService.changeGroupAvailable("g01");
 		}};
 		
 		target.doProccess(1, Dates.dateTime("2015/07/20 12:00:00.000"), eventBody);

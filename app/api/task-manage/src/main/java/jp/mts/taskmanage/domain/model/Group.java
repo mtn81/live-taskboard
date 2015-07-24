@@ -7,6 +7,7 @@ public class Group {
 	private MemberId ownerMemberId;
 	private String name;
 	private String description;
+	private State state;
 
 	public Group(GroupId groupId, MemberId ownerMemberId, String name, String description) {
 		super();
@@ -14,6 +15,7 @@ public class Group {
 		this.ownerMemberId = ownerMemberId;
 		setName(name);
 		setDescription(description);
+		setState(State.CREATING);
 	}
 
 	public GroupId groupId() {
@@ -32,14 +34,22 @@ public class Group {
 		setName(name);
 		setDescription(description);
 	}
+	public State state() {
+		return state;
+	}
+	public void changeToAvailable() {
+		setState(State.AVAILABLE);
+	}
 	
 	void setName(String name) {
 		if(name == null) throw new IllegalArgumentException();
 		this.name = name;
 	}
-
 	void setDescription(String description) {
 		this.description = description;
+	}
+	void setState(State state) {
+		this.state = state;
 	}
 
 	@Override
@@ -66,5 +76,10 @@ public class Group {
 			return false;
 		return true;
 	}
-	
+
+	public enum State {
+		CREATING,
+		AVAILABLE,
+		;
+	}
 }

@@ -1,19 +1,24 @@
 export class AuthContext {
-  auth = null;
+
+  constructor() {
+    this.storage = localStorage;
+  }
 
   store(auth){
-    this.auth = auth;
+    this.storage.setItem('auth', JSON.stringify(auth));
   }
 
   isAuthenticated(){
-    return !!this.auth;
+    return !!this.getAuth();
   }
-  
+
   getAuth(){
-    return this.auth;
+    var auth = this.storage.getItem('auth');
+    if (!auth) return auth;
+    return JSON.parse(auth);
   }
-  
+
   remove(){
-    this.auth = null;
+    this.storage.removeItem('auth');
   }
 }

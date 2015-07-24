@@ -1,5 +1,10 @@
 package jp.mts.taskmanage.rest;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.http.HttpServletResponse;
+
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
@@ -32,5 +37,18 @@ public class MemberGroupApi {
 		groupList.loadBelongingGroups(memberId, groupAppService);
 		return RestResponse.of(groupList);
 	}
-	
+
+	@RequestMapping(value="/groups/{groupId}/status", params="type=belonging", method=RequestMethod.GET)
+	public void notifyGroupRegistered(
+			@PathVariable String memberId,
+			@PathVariable String groupId,
+			HttpServletResponse response) throws IOException, InterruptedException {
+		
+		try(PrintWriter writer = response.getWriter()){
+			response.setContentType("text/event-stream");
+			response.setCharacterEncoding("UTF-8");
+			writer.write("data: " + "" + "\n\n");
+		}
+		
+	}
 }
