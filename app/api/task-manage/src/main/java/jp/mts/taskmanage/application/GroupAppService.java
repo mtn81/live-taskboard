@@ -2,8 +2,10 @@ package jp.mts.taskmanage.application;
 
 import static jp.mts.taskmanage.application.ErrorType.GROUP_NOT_AVAILABLE;
 import static jp.mts.taskmanage.application.ErrorType.GROUP_NOT_EXIST;
+import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,10 +48,23 @@ public class GroupAppService {
 		return group;
 	}
 
-	public List<Group> listBelonging(String memberId) {
+	public void remove(String memberId, String groupId) {
+		GroupBelonging groupBelonging 
+			= groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
+		if (!groupBelonging.isAdmin()) {
+			throw new ApplicationException(GROUP_REMOVE_DISABLED);
+		}
+		
+		Group targetGroup = groupRepository.findById(new GroupId(groupId));
+		groupRepository.remove(targetGroup);
+		
+	}
+	
+	public List<GroupBelongingPair> listBelonging(String memberId) {
 		List<GroupBelonging> groupBelongings 
 			= groupBelongingRepository.findByMember(new MemberId(memberId));
-		return groupRepository.findByIds(toGroupIds(groupBelongings));
+		List<Group> groups = groupRepository.findByIds(toGroupIds(groupBelongings));
+		return GroupBelongingPair.pairs(groups, groupBelongings);
 	}
 	
 	private List<GroupId> toGroupIds(List<GroupBelonging> groupBelongings){
@@ -58,11 +73,14 @@ public class GroupAppService {
 				.collect(Collectors.toList());
 	}
 
-	public void entryMember(String groupId, String memberId) {
+	public void entryAdministrator(String groupId, String memberId) {
 		Group group = groupRepository.findById(new GroupId(groupId));
+		if (group == null) return;
+
 		Member member = memberRepository.findById(new MemberId(memberId));
+		if (member == null) return;
 		
-		GroupBelonging entry = member.entryTo(group);
+		GroupBelonging entry = member.entryAsAdministratorTo(group);
 		groupBelongingRepository.save(entry);
 	}
 
@@ -85,8 +103,40 @@ public class GroupAppService {
 
 	public void changeGroupAvailable(String groupId) {
 		Group group = groupRepository.findById(new GroupId(groupId));
+		if (group == null) return;
+
 		group.changeToAvailable();
 		groupRepository.save(group);
+	}
+	
+	public static class GroupBelongingPair {
+		private Group group;
+		private GroupBelonging groupBelonging;
+
+		public GroupBelongingPair(Group group, GroupBelonging groupBelonging) {
+			this.group = group;
+			this.groupBelonging = groupBelonging;
+		}
+
+		public static List<GroupBelongingPair> pairs(
+				List<Group> groups,
+				List<GroupBelonging> groupBelongings) {
+			List<GroupBelongingPair> pairs = new ArrayList<>();
+			groups.forEach(g -> {
+				groupBelongings.forEach(gb -> {
+					if(g.groupId().equals(gb.groupId())) 
+						pairs.add(new GroupBelongingPair(g, gb));
+				});
+			});
+			return pairs;
+		}
+
+		public Group getGroup() {
+			return group;
+		}
+		public GroupBelonging getGroupBelonging() {
+			return groupBelonging;
+		}
 	}
 
 }

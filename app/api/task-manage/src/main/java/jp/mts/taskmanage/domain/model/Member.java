@@ -23,8 +23,8 @@ public class Member extends DomainObject {
 		return group;
 	}
 	
-	public GroupBelonging entryTo(Group group) {
-		return new GroupBelonging(group.groupId(), memberId);
+	public GroupBelonging entryAsAdministratorTo(Group group) {
+		return new GroupBelonging(group.groupId(), memberId, true);
 	}
 
 	public boolean isOwnerFor(Group group) {

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
+import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,19 @@ public class MemberGroupApi {
 
 	@RequestMapping(value="/groups/", method=RequestMethod.POST)
 	public RestResponse<GroupSave> createGroupOnMember(
-			@PathVariable String memberId, @RequestBody GroupSave group) {
-		group.create(memberId, groupAppService);
-		return RestResponse.of(group);
+			@PathVariable String memberId, 
+			@RequestBody GroupSave groupSave) {
+		groupSave.create(memberId, groupAppService);
+		return RestResponse.of(groupSave);
+	}
+	@RequestMapping(value="/groups/{groupId}", method=RequestMethod.DELETE)
+	public RestResponse<GroupRemove> removeGroupOnMember(
+			@PathVariable String memberId, 
+			@PathVariable String groupId) {
+		
+		GroupRemove groupRemove = new GroupRemove();
+		groupRemove.remove(memberId, groupId, groupAppService);
+		return RestResponse.of(groupRemove);
 	}
 	
 	@RequestMapping(value="/groups/", params="type=belonging", method=RequestMethod.GET)

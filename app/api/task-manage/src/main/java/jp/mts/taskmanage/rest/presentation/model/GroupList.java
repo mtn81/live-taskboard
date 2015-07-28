@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.application.GroupAppService;
+import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.domain.model.Group;
 
 public class GroupList {
 	
 	//output
-	private List<Group> groups;
+	private List<GroupBelongingPair> groups;
 
 	public List<GroupView> getGroups(){
 		List<GroupView> groupViews = groups.stream().map(
@@ -18,17 +19,20 @@ public class GroupList {
 	}
 
 	public static class GroupView {
-		private Group group;
+		private GroupBelongingPair group;
 		
-		public GroupView(Group group) {
+		public GroupView(GroupBelongingPair group) {
 			this.group = group;
 		}
 
 		public String getGroupId() {
-			return group.groupId().value();
+			return group.getGroup().groupId().value();
 		}
 		public String getGroupName() {
-			return group.name();
+			return group.getGroup().name();
+		}
+		public boolean isAdmin() {
+			return group.getGroupBelonging().isAdmin();
 		}
 	}
 

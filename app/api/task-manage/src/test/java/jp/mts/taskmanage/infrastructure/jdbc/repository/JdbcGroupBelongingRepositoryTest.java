@@ -17,7 +17,7 @@ public class JdbcGroupBelongingRepositoryTest extends JdbcTestBase {
 	JdbcGroupBelongingRepository target = new JdbcGroupBelongingRepository();
 	
 	@Test
-	public void test() {
+	public void test_persistence() {
 		GroupBelonging groupBelonging = new GroupBelongingFixture("g01", "m01").get();
 
 		target.save(groupBelonging);

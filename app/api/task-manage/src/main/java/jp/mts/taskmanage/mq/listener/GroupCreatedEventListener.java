@@ -17,7 +17,7 @@ public class GroupCreatedEventListener extends EventListener {
 	
 	@Override
 	protected void doProccess(long eventId, Date occurred, EventBody eventBody) {
-		groupAppService.entryMember(
+		groupAppService.entryAdministrator(
 				eventBody.asString("groupId.value"), 
 				eventBody.asString("creator.value"));
 		groupAppService.changeGroupAvailable(

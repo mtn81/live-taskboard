@@ -1,15 +1,18 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.taskmanage.domain.model.Group;
+import jp.mts.taskmanage.domain.model.GroupBelonging;
+import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.infrastructure.jdbc.repository.JdbcGroupRepository;
+import jp.mts.taskmanage.domain.model.MemberId;
 
 import org.junit.Test;
 
@@ -18,6 +21,7 @@ import com.google.common.collect.Lists;
 public class JdbcGroupRepositoryTest extends JdbcTestBase {
 	
 	JdbcGroupRepository groupRepository = new JdbcGroupRepository();
+	JdbcGroupBelongingRepository groupBelongingRepository = new JdbcGroupBelongingRepository();
 	
 	@Test
 	public void test_UUID表示() {
@@ -54,5 +58,22 @@ public class JdbcGroupRepositoryTest extends JdbcTestBase {
 		assertThat(found.size(), is(2));
 		assertThat(found.get(0), is(group1));
 		assertThat(found.get(1), is(group2));
+	}
+	
+	@Test
+	public void test_remove() {
+		
+		Group group = new GroupFixture("g01").get();
+		groupRepository.save(group);
+		GroupBelonging groupBelonging = new GroupBelongingFixture("g01", "m01").get();
+		groupBelongingRepository.save(groupBelonging);
+		
+		groupRepository.remove(group);
+		
+		Group foundGroup = groupRepository.findById(new GroupId("g01"));
+		assertThat(foundGroup, is(nullValue()));
+		
+		GroupBelonging foundGroupBelonging = groupBelongingRepository.findById(new MemberId("m01"), new GroupId("g01"));
+		assertThat(foundGroupBelonging, is(nullValue()));
 	}
 }

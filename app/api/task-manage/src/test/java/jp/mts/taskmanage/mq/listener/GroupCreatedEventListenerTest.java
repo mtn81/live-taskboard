@@ -34,7 +34,7 @@ public class GroupCreatedEventListenerTest {
 			.get());
 		
 		new Expectations() {{
-			groupAppService.entryMember("g01", "m01");
+			groupAppService.entryAdministrator("g01", "m01");
 			groupAppService.changeGroupAvailable("g01");
 		}};
 		

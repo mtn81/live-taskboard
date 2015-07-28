@@ -4,11 +4,15 @@ public class GroupBelonging {
 
 	private GroupId groupId;
 	private MemberId memberId;
+	private boolean isAdmin;
 
-	public GroupBelonging(GroupId groupId, MemberId memberId) {
-		super();
+	public GroupBelonging(
+			GroupId groupId, 
+			MemberId memberId,
+			boolean isAdmin) {
 		this.groupId = groupId;
 		this.memberId = memberId;
+		this.isAdmin = isAdmin;
 	}
 	
 	public GroupId groupId(){
@@ -17,7 +21,15 @@ public class GroupBelonging {
 	public MemberId memberId(){
 		return memberId;
 	}
+	public boolean isAdmin() {
+		return isAdmin;
+	}
 
+	void setAdmin(boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -49,7 +61,6 @@ public class GroupBelonging {
 			return false;
 		return true;
 	}
-	
-	
+
 	
 }

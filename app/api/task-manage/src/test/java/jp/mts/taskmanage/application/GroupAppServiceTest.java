@@ -1,12 +1,15 @@
 package jp.mts.taskmanage.application;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Map;
 
 import jp.mts.base.application.ApplicationException;
+import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
@@ -49,6 +52,46 @@ public class GroupAppServiceTest {
 		assertThat(group.name(), is("group01"));
 		assertThat(group.description(), is("this is a test group"));
 	}
+	
+	@Test
+	public void test_group_can_removed_with_admin_user() {
+		
+		String memberId = "m01";
+		String groupId = "g01";
+		
+		Group removeTarget = new GroupFixture(groupId, memberId).get();
+		GroupBelonging adminGroupBelonging = new GroupBelongingFixture().setAdmin(true).get();
+		
+		new Expectations() {{
+			groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
+				result = adminGroupBelonging;
+			groupRepository.findById(new GroupId(groupId));
+				result = removeTarget;
+			groupRepository.remove(removeTarget);
+		}};
+
+		target.remove(memberId, groupId);
+	}
+	@Test
+	public void test_group_cant_be_removed_with_normal_user() {
+		
+		String memberId = "m01";
+		String groupId = "g01";
+		
+		GroupBelonging adminGroupBelonging = new GroupBelongingFixture().setAdmin(false).get();
+		
+		new Expectations() {{
+			groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
+				result = adminGroupBelonging;
+		}};
+		
+		try{
+			target.remove(memberId, groupId);
+		}catch(ApplicationException e){
+			assertThat(e.hasErrorOf(GROUP_REMOVE_DISABLED), is(true));
+		}
+	}
+	
 	@Test
 	public void test_member_absent_error_on_group_creation() {
 		new Expectations() {{
@@ -69,19 +112,19 @@ public class GroupAppServiceTest {
 		new Expectations() {{
 			groupBelongingRepository.findByMember(new MemberId("m01"));
 				result = newArrayList(
-						new GroupBelongingFixture("g01", "m01").get(),
-						new GroupBelongingFixture("g02", "m01").get());
+						new GroupBelongingFixture("g01", "m01").setAdmin(true).get(),
+						new GroupBelongingFixture("g02", "m01").setAdmin(false).get());
 
 			groupRepository.findByIds(newArrayList(new GroupId("g01"), new GroupId("g02")));
 				result = newArrayList(
 						new GroupFixture("g01").get(), 
 						new GroupFixture("g02").get());
 		}};
-		List<Group> groups = target.listBelonging("m01");
+		List<GroupBelongingPair> groups = target.listBelonging("m01");
 		
 		assertThat(groups.size(), is(2));
-		assertThat(groups.get(0).groupId().value(), is("g01"));
-		assertThat(groups.get(1).groupId().value(), is("g02"));
+		assertThat(groups.get(0).getGroup().groupId().value(), is("g01"));
+		assertThat(groups.get(1).getGroup().groupId().value(), is("g02"));
 	}
 	
 	@Test
@@ -101,6 +144,6 @@ public class GroupAppServiceTest {
 			groupBelongingRepository.save(groupBelonging);
 		}};
 		
-		target.entryMember(groupId, memberId);
+		target.entryAdministrator(groupId, memberId);
 	}
 }

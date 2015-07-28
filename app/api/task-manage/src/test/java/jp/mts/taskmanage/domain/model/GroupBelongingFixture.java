@@ -9,7 +9,11 @@ public class GroupBelongingFixture {
 	}
 	public GroupBelongingFixture(String groupId, String memberId){
 		groupBelonging = new GroupBelonging(
-				new GroupId(groupId), new MemberId(memberId));
+				new GroupId(groupId), new MemberId(memberId), false);
+	}
+	public GroupBelongingFixture setAdmin(boolean isAdmin){
+		groupBelonging.setAdmin(isAdmin);
+		return this;
 	}
 	
 	public GroupBelonging get(){

@@ -9,8 +9,10 @@ import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 
+import org.javalite.activejdbc.Model;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;
@@ -44,6 +46,7 @@ public class JdbcGroupRepository implements GroupRepository {
 	}
 	
 	private Group toDomain(GroupModel groupModel){
+		if(groupModel == null) return null;
 		Group group = new Group(
 				new GroupId(groupModel.getString("group_id")), 
 				new MemberId(groupModel.getString("owner_member_id")),
@@ -66,5 +69,15 @@ public class JdbcGroupRepository implements GroupRepository {
 				.stream()
 					.map(groupModel -> toDomain((GroupModel)groupModel))
 					.collect(Collectors.toList());
+	}
+
+	@Override
+	public void remove(Group group) {
+		
+		GroupMemberModel
+			.delete("group_id=?", group.groupId().value());
+		
+		GroupModel model = GroupModel.findFirst("group_id=?", group.groupId().value());
+		model.delete();
 	}
 }

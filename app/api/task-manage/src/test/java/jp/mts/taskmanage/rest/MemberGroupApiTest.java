@@ -2,6 +2,7 @@ package jp.mts.taskmanage.rest;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
+import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
 import mockit.Deencapsulation;
 import mockit.Expectations;
@@ -61,5 +63,20 @@ public class MemberGroupApiTest {
 		assertThat(groups.size(), is(2));
 		assertThat(groups.get(0).getGroupId(), is("g01"));
 		assertThat(groups.get(1).getGroupId(), is("g02"));
+	}
+	
+	@Test
+	public void test_remove_group() {
+		String memberId = "m01";
+		String groupId = "g01";
+	
+		new Expectations() {{
+			groupAppService.remove(memberId, groupId);
+		}};
+
+		RestResponse<GroupRemove> response = target.removeGroupOnMember(memberId, groupId);
+		
+		GroupRemove groupRemove = response.getData();
+		assertThat(groupRemove, is(notNullValue()));
 	}
 }
