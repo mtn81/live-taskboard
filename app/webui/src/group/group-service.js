@@ -49,21 +49,22 @@ export class GroupService {
       });
   }
 
-  groups(){
+  groups(task){
 
-    this.http
+    return this.http
       .get("/api/task-manage/members/" + this.memberId() + '/groups/?type=belonging')
       .then(response => {
         let foundGroups = response.content.data.groups;
         _memberGroups.length = 0;
         $.merge(_memberGroups, foundGroups);
         _removeRegisteringGroup(foundGroups);
+        if(task) task(_memberGroups);
       })
       .catch(response => {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
 
-    return _memberGroups;
+    //return _memberGroups;
   }
 
   registeringGroups(){

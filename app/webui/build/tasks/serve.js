@@ -8,6 +8,8 @@ var aa_proxy = url.parse('http://10.0.2.2:18080/auth-access/api');
 aa_proxy.route = '/api/auth-access';
 var tm_proxy = url.parse('http://10.0.2.2:28080/task-manage/api');
 tm_proxy.route = '/api/task-manage';
+var ws_proxy = url.parse('http://10.0.2.2:38080/widget-store/api');
+ws_proxy.route = '/api/widget-store';
 
 // this task utilizes the browsersync plugin
 // to create a dev server instance
@@ -21,6 +23,7 @@ gulp.task('serve', ['build'], function(done) {
       middleware: [
         proxy(aa_proxy),
         proxy(tm_proxy),
+        proxy(ws_proxy),
         function (req, res, next) {
           res.setHeader('Access-Control-Allow-Origin', '*');
           next();

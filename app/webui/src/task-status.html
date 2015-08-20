@@ -1,0 +1,21 @@
+<template>
+
+  <div ref="taskStatusPanel" class="taskstate panel panel-default" style="display:inline-block">
+    <div class="panel-heading">
+      <h3 class="panel-title">${status}</h3>
+    </div>
+    <div class="panel-body">
+      <div repeat.for="task of tasks" class="task panel panel-default">
+        <div class="panel-body">
+          <p><strong>${task.taskName}</strong></p>
+          <hr>
+          <ul>
+            <li>${task.assigned}</li>
+            <li>${task.deadline}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>

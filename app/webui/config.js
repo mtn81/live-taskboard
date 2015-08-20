@@ -23,15 +23,17 @@ System.config({
     "aurelia-framework": "github:aurelia/framework@0.11.0",
     "aurelia-http-client": "github:aurelia/http-client@0.8.0",
     "aurelia-router": "github:aurelia/router@0.8.0",
+    "aurelia-task-queue": "github:aurelia/task-queue@0.4.0",
     "babel": "npm:babel-core@5.1.13",
     "babel-runtime": "npm:babel-runtime@5.1.13",
     "bootstrap": "github:twbs/bootstrap@3.3.4",
+    "components/jqueryui": "github:components/jqueryui@1.11.4",
     "core-js": "npm:core-js@0.9.5",
     "css": "github:systemjs/plugin-css@0.1.10",
     "font-awesome": "npm:font-awesome@4.3.0",
+    "stomp-websocket": "github:jmesnil/stomp-websocket@2.3.4",
     "traceur": "github:jmcriffey/bower-traceur@0.0.88",
     "traceur-runtime": "github:jmcriffey/bower-traceur-runtime@0.0.88",
-    "stomp-websocket": "github:jmesnil/stomp-websocket@2.3.4",
     "github:aurelia/animator-css@0.2.0": {
       "aurelia-templating": "github:aurelia/templating@0.11.0"
     },
@@ -133,6 +135,9 @@ System.config({
       "aurelia-task-queue": "github:aurelia/task-queue@0.4.0",
       "core-js": "npm:core-js@0.9.5"
     },
+    "github:components/jqueryui@1.11.4": {
+      "jquery": "github:components/jquery@2.1.4"
+    },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -177,7 +182,7 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
     "github:twbs/bootstrap@3.3.4": {
-      "jquery": "github:components/jquery@2.1.3"
+      "jquery": "github:components/jquery@2.1.4"
     },
     "npm:amdefine@0.1.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -277,4 +282,3 @@ System.config({
     }
   }
 });
-

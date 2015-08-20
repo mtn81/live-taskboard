@@ -4,5 +4,8 @@ localhost
 [task-manage_dbservers]
 localhost
 
+[widget-store_dbservers]
+localhost
+
 [all:vars]
 stage=base_image

@@ -3,3 +3,4 @@
 # - include: devmachine.yml
 - include: auth-access_dbservers.yml
 - include: task-manage_dbservers.yml
+- include: widget-store_dbservers.yml

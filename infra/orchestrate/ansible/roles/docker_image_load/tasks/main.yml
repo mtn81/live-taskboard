@@ -18,6 +18,7 @@
   with_items:
     - mts/auth-access_db:v1
     - mts/task-manage_db:v1
+    - mts/widget-store_db:v1
 
 - name: run aadb container
   docker:
@@ -37,12 +38,22 @@
   sudo: yes
   with_items: task_manage_dbservers
 
+- name: run wsdb container
+  docker:
+    name: "{{ item }}"
+    state: started
+    image: "mts/widget-store_db:v1"
+    ports: "{{ hostvars[item]['forwarded_port'] }}:5432"
+  sudo: yes
+  with_items: widget_store_dbservers
+
 - name: assign ip address to all containers
   shell: pipework br1 {{ item }} {{ hostvars[item]['ansible_ssh_host'] }}/24
   sudo: yes
-  with_flattened: 
+  with_flattened:
     - auth_access_dbservers
     - task_manage_dbservers
+    - widget_store_dbservers
 
 - name: check containers bridge created
   shell: ip addr show br1 | grep "{{ bridge_address }}"

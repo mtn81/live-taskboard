@@ -1,22 +1,15 @@
 package jp.mts.taskmanage.mq.listener;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.*;
 import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.eventstore.StoredEventSerializer;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.libs.unittest.Maps;
 import jp.mts.taskmanage.application.GroupAppService;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.MemberId;
 import mockit.Expectations;
 import mockit.Injectable;
-import mockit.Mocked;
 import mockit.Tested;
 
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 
 public class GroupCreatedEventListenerTest {

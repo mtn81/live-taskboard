@@ -13,7 +13,7 @@ public class DbConnectTest {
 	public void test() throws ClassNotFoundException, SQLException{
 		Class.forName("org.postgresql.Driver");
 		Connection con = DriverManager.getConnection(
-				"jdbc:postgresql://192.168.77.11:5432/auth-access", 
+				"jdbc:postgresql://192.168.77.11:15432/auth-access", 
 				"app", "pass");
 		ResultSet rs = con.createStatement().executeQuery("select * from users");
 		rs.next();

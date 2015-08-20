@@ -5,9 +5,9 @@ import 'bootstrap';
 import 'bootstrap/css/bootstrap.css!';
 import {AuthContext} from 'auth/auth-context';
 
-@inject(Router, HttpClient)
+@inject(Router, HttpClient, AuthContext)
 export class App {
-  constructor(router, http) {
+  constructor(router, http, authContext) {
     this.router = router;
     this.router.configure(config => {
       config.title = 'live-taskboard';
@@ -17,11 +17,23 @@ export class App {
         { route: ['taskboard'], moduleId: './taskboard', nav: false, title: 'タスクボード', auth: true}
       ]);
     });
-    
+
     http.configure(builder => {
       builder.withHeader("Content-Type", "application/json");
     });
+
+    this.authContext = authContext;
   }
+
+  get auth(){
+    return this.authContext.getAuth();
+  }
+
+  logout(){
+    this.authContext.remove();
+    this.router.navigate('login');
+  }
+
 }
 
 @inject(AuthContext)

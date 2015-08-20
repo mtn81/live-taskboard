@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @EnableRabbit
 public class MqConfig {
 
+	/*
     @Bean //Listenerの雛形になるファクトリ
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
@@ -55,7 +56,7 @@ public class MqConfig {
 
 		return rabbitAdmin;
 	}
-
+	*/
 //	@Bean
 //	Queue queue() {
 //		return new Queue("test-queue", true);

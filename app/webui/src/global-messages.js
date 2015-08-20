@@ -8,6 +8,7 @@ export class GlobalMessages {
   errors = [];
 
   constructor(eventAggregator){
+    
     eventAggregator.subscribe(GlobalError, event => {
       this.errors.length = 0;
       if (event.errors) jQuery.merge(this.errors, event.errors);

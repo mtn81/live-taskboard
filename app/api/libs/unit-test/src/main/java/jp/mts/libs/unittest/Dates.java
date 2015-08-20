@@ -14,4 +14,12 @@ public class Dates {
 			throw new RuntimeException(e);
 		}
 	}
+	public static Date date(String value){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		try {
+			return format.parse(value);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }

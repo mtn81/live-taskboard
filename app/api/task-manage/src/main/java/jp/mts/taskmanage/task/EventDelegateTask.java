@@ -17,7 +17,7 @@ public class EventDelegateTask {
 	@Autowired
 	private EventAppService eventAppService;	
 	
-	@Scheduled(fixedDelay=30000)
+	//@Scheduled(fixedDelay=30000)
 	public void delegateEvent() {
 		logger.debug("start delegate event");
 

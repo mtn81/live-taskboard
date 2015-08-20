@@ -27,3 +27,12 @@ create table event_processes (
   type varchar(100) unique,
   last_event_id integer
 );
+
+create table tasks (
+  task_id varchar(100) unique not null,
+  group_id varchar(100) not null,
+  status varchar(10) not null,
+  name varchar(100) not null,
+  deadline date,
+  assigned varchar(100)
+);

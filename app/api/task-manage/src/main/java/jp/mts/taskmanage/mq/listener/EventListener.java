@@ -20,7 +20,7 @@ public abstract class EventListener {
 	@Autowired
 	private StoredEventSerializer storedEventSerializer;
 	
-	@RabbitListener(queues="task-manage")
+	//@RabbitListener(queues="task-manage")
 	public void proccess(Message message) {
 		Map<String, Object> headers = message.getMessageProperties().getHeaders();
 		long eventId = (Long)headers.get("eventId");

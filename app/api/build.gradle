@@ -148,3 +148,9 @@ project(':task-manage') {
     testCompile project(':libs:unit-test'), project(':ut-base')
   }
 }
+project(':widget-store') {
+  dependencies {
+    compile project(':libs:event'), project(':base')
+    testCompile project(':libs:unit-test'), project(':ut-base')
+  }
+}
