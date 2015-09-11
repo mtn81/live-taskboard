@@ -4,10 +4,17 @@ public class MemberFixture {
 	private Member member;
 	
 	public MemberFixture(){
-		member = new Member(new MemberId("m01"));
+		this("m01", "taro");
 	}
 	public MemberFixture(String memberId){
-		member = new Member(new MemberId(memberId));
+		this(memberId, "taro");
+	}
+	public MemberFixture(String memberId, String name){
+		member = new Member(new MemberId(memberId), name);
+	}
+	public MemberFixture setName(String name) {
+		member.setName(name);
+		return this;
 	}
 	
 	public Member get(){

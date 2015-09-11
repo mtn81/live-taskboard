@@ -1,19 +1,22 @@
 package jp.mts.taskmanage.domain.model;
 
-import static org.hamcrest.CoreMatchers.nullValue;
 import jp.mts.base.domain.model.DomainObject;
 
 
 public class Member extends DomainObject {
 	private MemberId memberId;
+	private String name;
 	
-	public Member(MemberId memberId) {
-		super();
+	public Member(MemberId memberId, String name) {
 		this.memberId = memberId;
+		this.name = name;
 	}
 	
 	public MemberId memberId(){
 		return memberId;
+	}
+	public String name() {
+		return name;
 	}
 	
 	public Group createGroup(
@@ -29,6 +32,10 @@ public class Member extends DomainObject {
 
 	public boolean isOwnerFor(Group group) {
 		return this.memberId.equals(group.ownerMemberId());
+	}
+	
+	void setName(String name) {
+		this.name = name;
 	}
 	
 	@Override

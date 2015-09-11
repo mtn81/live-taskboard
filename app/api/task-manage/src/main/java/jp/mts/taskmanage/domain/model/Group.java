@@ -1,5 +1,7 @@
 package jp.mts.taskmanage.domain.model;
 
+import java.util.Date;
+
 
 public class Group {
 	
@@ -39,6 +41,20 @@ public class Group {
 	}
 	public void changeToAvailable() {
 		setState(State.AVAILABLE);
+	}
+	public Task createTask(
+			TaskId taskId, 
+			String taskName, 
+			Member assignedMember,
+			Date deadline) {
+
+		Task task = new Task(
+				groupId, 
+				taskId,
+				taskName, 
+				assignedMember.memberId(), 
+				deadline);
+		return task;
 	}
 	
 	void setName(String name) {
@@ -82,4 +98,5 @@ public class Group {
 		AVAILABLE,
 		;
 	}
+
 }

@@ -4,7 +4,6 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
-import {GroupWidgetStore} from './group-widget-store';
 
 var _widgets = [];
 
@@ -16,20 +15,15 @@ export class WidgetService {
     this.eventAggregator = eventAggregator;
   }
 
-  getStore(groupId) {
-    return new GroupWidgetStore(groupId, this, this.eventAggregator);
-  }
-
-  loadAll(groupId) {
+  loadAll(groupId, callback) {
     this.http
       .get('/api/widget-store/categories/' + groupId + '/widgets/')
       .then(response => {
         let foundWidgets = response.content.data.widgets;
         _widgets.length = 0;
         $.merge(_widgets, foundWidgets);
-        this.eventAggregator.publish(new WidgetLoadSuccess());
-      })
-      ;
+        callback();
+      });
 
     return _widgets;
   }
@@ -46,4 +40,3 @@ export class WidgetService {
   }
 }
 
-export class WidgetLoadSuccess {}

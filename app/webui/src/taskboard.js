@@ -3,28 +3,34 @@ import {Router} from 'aurelia-router';
 import {AuthContext} from './auth/auth-context';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GroupService} from './group/group-service';
-import {WidgetService} from './widget/widget-service';
+import {WidgetManager} from './widget/widget-manager';
 import {TaskService} from './task/task-service';
 import {TaskStatusAttached} from './task-status';
+import {TaskRegisterAttached} from './task-register';
 import 'components/jqueryui';
 
-@inject(Router, AuthContext, EventAggregator, GroupService, WidgetService, TaskService)
+@inject(Router, AuthContext, EventAggregator, GroupService, WidgetManager, TaskService)
 export class Taskboard {
 
   groups = [];
   registeringGroups = [];
 
-  constructor(router, authContext, eventAggregator, groupService, widgetService, taskService){
+  constructor(router, authContext, eventAggregator, groupService, widgetManager, taskService){
     this.router = router;
     this.authContext = authContext;
     this.eventAggregator = eventAggregator;
     this.groupService = groupService;
-    this.widgetService = widgetService;
+    this.widgetManager = widgetManager;
     this.taskService = taskService;
+    this.attachStatus = new AttachStatus(this);
   }
 
   showGroupRegister(){
     $(this.groupRegisterModal).modal('show');
+  }
+
+  showTaskRegister(){
+    $(this.taskRegisterModal).modal('show');
   }
 
   removeGroup(group){
@@ -32,14 +38,23 @@ export class Taskboard {
   }
 
   selectGroup(group){
-    this.group = group;
-    this.widgets = this.widgetService.getStore(this.group.groupId);
+    if(group){
+      this.group = group;
+    } else {
+      if(this.groups.length === 0) return;
+      this.group = this.groups[0];
+    }
+
+    this.widgetManager.load(this.group.groupId, () => {
+      this.eventAggregator.publish('widget.reloaded');
+    });
     this.tasks = this.taskService.load(this.group.groupId);
+    this.eventAggregator.publish('group.selected', this.group);
   }
 
-  fire(eventId){
+  fire(eventId, hideTarget){
     this.eventAggregator.subscribe(eventId + '.success', payload => {
-      $(this.groupRegisterModal).modal('hide');
+      $(hideTarget).modal('hide');
     });
     this.eventAggregator.publish(eventId);
   }
@@ -49,17 +64,24 @@ export class Taskboard {
   }
 
   activate() {
+    this.eventAggregator.subscribe(TaskStatusAttached, e => {
+      this.attachStatus.attachTaskStatus(e.status);
+    });
+    this.eventAggregator.subscribe(TaskRegisterAttached, e => {
+      this.attachStatus.attachTaskRegister();
+    });
+    this.eventAggregator.subscribe('task-register.register.success', message => {
+      this.tasks = this.taskService.load(this.group.groupId);
+    });
+    this.eventAggregator.subscribe('task-status.remove.success', message => {
+      this.tasks = this.taskService.load(this.group.groupId);
+    });
+
+    let promiseHolder = {};
+    this.groups = this.groupService.groups(promiseHolder);
     this.registeringGroups = this.groupService.registeringGroups();
 
-    // カスタムエレメントの準備ができるまで待機
-    this.eventAggregator.subscribe(TaskStatusAttached, payload => {
-      if(this.groups.length > 0)
-        this.selectGroup(this.groups[0]);
-    });
-
-    return this.groupService.groups(groups => {
-      this.groups = groups;
-    });
+    return promiseHolder.promise;
   }
 
   toggleMenu(menu){
@@ -70,3 +92,33 @@ export class Taskboard {
 
 }
 
+class AttachStatus {
+
+  taskboard = null;
+  todoAttached = false;
+  doingAttached = false;
+  doneAttached = false;
+  registerAttached = false;
+
+  constructor(taskboard) {
+    this.taskboard = taskboard;
+  }
+
+  attachTaskStatus(status) {
+    if(status == 'TODO') this.todoAttached = true;
+    if(status == 'DOING') this.doingAttached = true;
+    if(status == 'DONE') this.doneAttached = true;
+    this._initTaskboard();
+  }
+  attachTaskRegister() {
+    this.registerAttached = true;
+    this._initTaskboard();
+  }
+
+  _initTaskboard() {
+    if(this.todoAttached && this.doingAttached && this.doneAttached && this.registerAttached){
+      this.taskboard.selectGroup();
+    }
+  }
+
+}

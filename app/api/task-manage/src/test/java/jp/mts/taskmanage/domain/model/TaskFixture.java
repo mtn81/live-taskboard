@@ -13,7 +13,7 @@ public class TaskFixture {
 		this("g01", taskId);
 	}
 	public TaskFixture(String groupId, String taskId) {
-		task = new Task(new GroupId(groupId), new TaskId(taskId), "task01");
+		task = new Task(new GroupId(groupId), new TaskId(taskId), "task01", new MemberId("m01"), new Date());
 	}
 
 	public Task get() {

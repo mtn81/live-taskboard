@@ -15,7 +15,7 @@ public class GroupRemove {
 			String groupId, 
 			GroupAppService groupAppService){
 		
-		groupAppService.remove(memberId, groupId);
+		groupAppService.removeGroup(memberId, groupId);
 		this.groupId = groupId;
 	}
 }

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/members/{memberId}")
-public class MemberGroupApi {
+public class GroupApi {
 	
 	@Autowired
 	private GroupAppService groupAppService;

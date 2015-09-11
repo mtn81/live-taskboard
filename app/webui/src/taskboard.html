@@ -3,6 +3,7 @@
 <template>
 
   <require from="./task-status"></require>
+  <require from="./task-register"></require>
   
   <div class="menu">
     <button type="button" class="btn btn-default" aria-label="Left Align" 
@@ -37,16 +38,17 @@
 
       <div class="row">
         <div class="col-md-4" >
-          <task-status ref.view-model="todoTasks" status="TODO"
-            widgets.bind="widgets" tasks.bind="tasks.todo"></task-status>
+          <task-status status="TODO" tasks.bind="tasks.todo">
+            <botton type="botton" class="btn btn-default" click.delegate="showTaskRegister()">
+              <span class="glyphicon glyphicon-plus-sign"></span>
+            </botton>
+          </task-status>
         </div>
         <div class="col-md-4">
-          <task-status ref.view-model="doingTasks" status="DOING"
-            widgets.bind="widgets" tasks.bind="tasks.doing"></task-status>
+          <task-status status="DOING" tasks.bind="tasks.doing"></task-status>
         </div>
         <div class="col-md-4">
-          <task-status ref.view-model="doneTasks" status="DONE"
-            widgets.bind="widgets" tasks.bind="tasks.done"></task-status>
+          <task-status status="DONE" tasks.bind="tasks.done"></task-status>
         </div>
     </div>
   </main>
@@ -65,7 +67,30 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" click.delegate="fire('group-register.register')">登録</button>
+        <button type="button" class="btn btn-primary"
+          click.delegate="fire('group-register.register', groupRegisterModal)">登録</button>
+      </div>
+  </div>
+  </div>
+  </div>
+
+
+  <div class="modal fade" ref="taskRegisterModal">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">タスク登録</h4>
+      </div>
+      <div class="modal-body">
+        <compose view-model="task-register"></compose>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"
+          click.delegate="fire('task-register.register', taskRegisterModal)">登録</button>
       </div>
   </div>
   </div>

@@ -35,7 +35,7 @@ public class GroupAppService {
 	@Autowired
 	private GroupBelongingRepository groupBelongingRepository;
 
-	public Group register(String memberId, String name, String description) {
+	public Group registerGroup(String memberId, String name, String description) {
 		Member member = memberRepository.findById(new MemberId(memberId));
 		if (member == null) {
 			throw new ApplicationException(MEMBER_NOT_EXIST);
@@ -48,7 +48,7 @@ public class GroupAppService {
 		return group;
 	}
 
-	public void remove(String memberId, String groupId) {
+	public void removeGroup(String memberId, String groupId) {
 		GroupBelonging groupBelonging 
 			= groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
 		if (!groupBelonging.isAdmin()) {
@@ -60,7 +60,7 @@ public class GroupAppService {
 		
 	}
 	
-	public List<GroupBelongingPair> listBelonging(String memberId) {
+	public List<GroupBelongingPair> listGroupBelongingFor(String memberId) {
 		List<GroupBelonging> groupBelongings 
 			= groupBelongingRepository.findByMember(new MemberId(memberId));
 		List<Group> groups = groupRepository.findByIds(toGroupIds(groupBelongings));
@@ -73,7 +73,7 @@ public class GroupAppService {
 				.collect(Collectors.toList());
 	}
 
-	public void entryAdministrator(String groupId, String memberId) {
+	public void entryGroupAsAdministrator(String groupId, String memberId) {
 		Group group = groupRepository.findById(new GroupId(groupId));
 		if (group == null) return;
 
@@ -101,7 +101,7 @@ public class GroupAppService {
 		
 	}
 
-	public void changeGroupAvailable(String groupId) {
+	public void changeGroupToAvailable(String groupId) {
 		Group group = groupRepository.findById(new GroupId(groupId));
 		if (group == null) return;
 

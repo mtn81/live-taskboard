@@ -22,21 +22,21 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
-public class MemberGroupApiTest {
+public class GroupApiTest {
 
-	MemberGroupApi target;
+	GroupApi target;
 	@Mocked GroupAppService groupAppService;
 	
 	@Before
 	public void setup(){
-		target = new MemberGroupApi();
+		target = new GroupApi();
 		Deencapsulation.setField(target, groupAppService);
 	}
 
 	@Test
 	public void test_register() {
 		new Expectations() {{
-			groupAppService.register("member01", "group01", "this is a test group");
+			groupAppService.registerGroup("member01", "group01", "this is a test group");
 				result = new GroupFixture().get();
 		}};
 		
@@ -51,7 +51,7 @@ public class MemberGroupApiTest {
 	@Test
 	public void test_list_belonging_groups() {
 		new Expectations() {{
-			groupAppService.listBelonging("m01");
+			groupAppService.listGroupBelongingFor("m01");
 				result = newArrayList(
 						new GroupFixture("g01").get(), 
 						new GroupFixture("g02").get());
@@ -71,7 +71,7 @@ public class MemberGroupApiTest {
 		String groupId = "g01";
 	
 		new Expectations() {{
-			groupAppService.remove(memberId, groupId);
+			groupAppService.removeGroup(memberId, groupId);
 		}};
 
 		RestResponse<GroupRemove> response = target.removeGroupOnMember(memberId, groupId);

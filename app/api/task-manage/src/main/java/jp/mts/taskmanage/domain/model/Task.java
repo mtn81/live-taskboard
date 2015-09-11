@@ -13,11 +13,18 @@ public class Task {
 	
 	Task(){}
 	
-	public Task(GroupId groupId, TaskId taskId, String name) {
+	public Task(
+			GroupId groupId, 
+			TaskId taskId, 
+			String name, 
+			MemberId assignedMemberId, 
+			Date deadline) {
 		this.groupId = groupId;
 		this.taskId = taskId;
 		this.taskStatus = TaskStatus.TODO; 
 		this.name = name;
+		this.assignedMemberId = assignedMemberId;
+		this.deadline = deadline;
 	}
 
 	public GroupId groupId(){

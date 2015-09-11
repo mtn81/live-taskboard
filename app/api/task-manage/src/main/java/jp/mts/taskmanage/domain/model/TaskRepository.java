@@ -6,4 +6,7 @@ public interface TaskRepository {
 
 	List<Task> findByGroupId(GroupId groupId);
 	void save(Task task);
+	TaskId newTaskId(GroupId groupId);
+	Task findById(GroupId groupId, TaskId taskId);
+	void remove(Task task);
 }

@@ -27,8 +27,8 @@ public class GroupCreatedEventListenerTest {
 			.get());
 		
 		new Expectations() {{
-			groupAppService.entryAdministrator("g01", "m01");
-			groupAppService.changeGroupAvailable("g01");
+			groupAppService.entryGroupAsAdministrator("g01", "m01");
+			groupAppService.changeGroupToAvailable("g01");
 		}};
 		
 		target.doProccess(1, Dates.dateTime("2015/07/20 12:00:00.000"), eventBody);

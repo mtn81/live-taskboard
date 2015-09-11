@@ -20,7 +20,7 @@ export class TaskService {
   load(groupId) {
 
     this.http
-      .get("/api/task-manage/groups/" + groupId + '/tasks/')
+      .get('/api/task-manage/groups/' + groupId + '/tasks/')
       .then(response => {
         let foundTasks = response.content.data;
         $.each(_tasks, (status, tasksInStatus) => {
@@ -34,4 +34,29 @@ export class TaskService {
 
     return _tasks;
   }
+
+  register(groupId, task) {
+    this.http
+      .post('/api/task-manage/groups/' + groupId + '/tasks/', task)
+      .then(response => {
+        this.eventAggregator.publish(new TaskRegistered());
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new GlobalError(response.content.errors));
+      });
+  }
+
+  remove(groupId, taskId) {
+    this.http
+      .delete('/api/task-manage/groups/' + groupId + '/tasks/' + taskId)
+      .then(response => {
+        this.eventAggregator.publish(new TaskRemoved());
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new GlobalError(response.content.errors));
+      });
+  }
 }
+
+export class TaskRegistered {}
+export class TaskRemoved {}

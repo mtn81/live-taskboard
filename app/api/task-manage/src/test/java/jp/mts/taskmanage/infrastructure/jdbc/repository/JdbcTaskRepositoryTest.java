@@ -1,7 +1,9 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
@@ -54,4 +56,30 @@ public class JdbcTaskRepositoryTest extends JdbcTestBase {
 		assertThat(task2.assignedMemberId(), is(new MemberId("m02")));
 	}
 
+	@Test
+	public void test_newTaskId() {
+		GroupId groupId = new GroupId("g01");
+
+		TaskId newTaskId = target.newTaskId(groupId);
+		assertThat(newTaskId.value(), is("TASK-1"));
+
+		newTaskId = target.newTaskId(groupId);
+		assertThat(newTaskId.value(), is("TASK-2"));
+	}
+	
+	@Test
+	public void test_removeTask() {
+		
+		GroupId groupId = new GroupId("g01");
+		TaskId taskId = new TaskId("t01");
+		target.save(new TaskFixture("g01", "t01").get());
+		
+		Task task = target.findById(groupId, taskId);
+		assertThat(task, is(notNullValue()));
+
+		target.remove(task);
+
+		task = target.findById(groupId, taskId);
+		assertThat(task, is(nullValue()));
+	}
 }

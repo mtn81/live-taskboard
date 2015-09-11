@@ -18,7 +18,7 @@ main {
 
 .task {
   width: 100px;
-  font-size: 70%;
+  font-size: 85%;
   padding: 0;
   margin: 0;
 }
@@ -32,4 +32,7 @@ main {
 
 #group-menu .list-group {
   margin-top: 10px;
+}
+.taskstate .panel-heading h3 {
+  float: left;
 }

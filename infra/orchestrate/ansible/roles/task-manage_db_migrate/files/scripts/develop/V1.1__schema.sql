@@ -7,7 +7,8 @@ create table groups (
 );
 
 create table members (
-  member_id varchar(10) unique not null
+  member_id varchar(10) unique not null,
+  name varchar(100) not null
 );
 
 create table groups_members (
@@ -36,3 +37,9 @@ create table tasks (
   deadline date,
   assigned varchar(100)
 );
+
+create table task_id_gen (
+  group_id varchar(100) unique not null,
+  task_id_num integer
+);
+

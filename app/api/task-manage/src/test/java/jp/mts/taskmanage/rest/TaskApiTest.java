@@ -1,11 +1,15 @@
 package jp.mts.taskmanage.rest;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.TaskFixture;
 import jp.mts.taskmanage.domain.model.TaskStatus;
 import jp.mts.taskmanage.rest.presentation.model.TaskList;
+import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
+import jp.mts.taskmanage.rest.presentation.model.TaskSave;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
@@ -13,7 +17,7 @@ import mockit.Tested;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.sun.prism.impl.Disposer.Target;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class TaskApiTest {
 
@@ -21,7 +25,7 @@ public class TaskApiTest {
 	@Injectable TaskAppService taskAppService;
 	
 	@Test
-	public void test() {
+	public void test_loadTasksByGroup() {
 		
 		new Expectations() {{
 			taskAppService.findTasksByGroup("g01");
@@ -50,6 +54,40 @@ public class TaskApiTest {
 		assertThat(tasks.getDone().get(1).getTaskId(), is("t05"));
 		assertThat(tasks.getDone().get(2).getTaskId(), is("t06"));
 		
+	}
+	
+	@Test
+	public void test_registerTask() {
+		
+		String groupId = "g01";
+		TaskSave taskSave = new TaskSave();
+		taskSave.setTaskName("task-A");
+		taskSave.setAssigned("m01");
+		taskSave.setDeadline(Dates.date("2015/09/01"));
+		
+		new Expectations() {{
+			taskAppService.registerTask(
+					groupId, "task-A", "m01", Dates.date("2015/09/01"));
+				result = new TaskFixture("t01").get();
+		}};
+		
+		RestResponse<TaskSave> response = target.registerTask(groupId, taskSave);
+		
+		assertThat(response.getData().getTaskId(), is("t01"));
+		
+	}
+	
+	@Test
+	public void test_removeTask() {
+		
+		new Expectations() {{
+			taskAppService.removeTask("g01", "t01");
+				result = new TaskFixture("t01").get();
+		}};
+
+		RestResponse<TaskRemove> response = target.removeTask("g01", "t01");
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getData().getTaskId(), is("t01"));
 	}
 
 }

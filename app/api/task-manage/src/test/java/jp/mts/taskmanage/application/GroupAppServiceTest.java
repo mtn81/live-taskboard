@@ -45,7 +45,7 @@ public class GroupAppServiceTest {
 			groupRepository.save((Group)any);
 		}};
 
-		Group group = target.register("m01", "group01", "this is a test group");
+		Group group = target.registerGroup("m01", "group01", "this is a test group");
 		
 		assertThat(group.groupId().value(), is("g01"));
 		assertThat(group.ownerMemberId().value(), is("m01"));
@@ -70,7 +70,7 @@ public class GroupAppServiceTest {
 			groupRepository.remove(removeTarget);
 		}};
 
-		target.remove(memberId, groupId);
+		target.removeGroup(memberId, groupId);
 	}
 	@Test
 	public void test_group_cant_be_removed_with_normal_user() {
@@ -86,7 +86,7 @@ public class GroupAppServiceTest {
 		}};
 		
 		try{
-			target.remove(memberId, groupId);
+			target.removeGroup(memberId, groupId);
 		}catch(ApplicationException e){
 			assertThat(e.hasErrorOf(GROUP_REMOVE_DISABLED), is(true));
 		}
@@ -100,7 +100,7 @@ public class GroupAppServiceTest {
 		}};
 
 		try{
-			target.register("m01", "group01", "this is a test group");
+			target.registerGroup("m01", "group01", "this is a test group");
 		}catch(ApplicationException e){
 			assertThat(e.hasErrorOf(ErrorType.MEMBER_NOT_EXIST), is(true));
 		}
@@ -120,7 +120,7 @@ public class GroupAppServiceTest {
 						new GroupFixture("g01").get(), 
 						new GroupFixture("g02").get());
 		}};
-		List<GroupBelongingPair> groups = target.listBelonging("m01");
+		List<GroupBelongingPair> groups = target.listGroupBelongingFor("m01");
 		
 		assertThat(groups.size(), is(2));
 		assertThat(groups.get(0).getGroup().groupId().value(), is("g01"));
@@ -144,6 +144,6 @@ public class GroupAppServiceTest {
 			groupBelongingRepository.save(groupBelonging);
 		}};
 		
-		target.entryAdministrator(groupId, memberId);
+		target.entryGroupAsAdministrator(groupId, memberId);
 	}
 }

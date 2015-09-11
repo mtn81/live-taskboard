@@ -2,12 +2,21 @@
 
   <div ref="taskStatusPanel" class="taskstate panel panel-default" style="display:inline-block">
     <div class="panel-heading">
-      <h3 class="panel-title">${status}</h3>
+      <h3 class="panel-title">
+        ${status}
+      </h3>
+      <p class="text-right">
+        <content select="botton"></content>
+      </p>
     </div>
     <div class="panel-body">
       <div repeat.for="task of tasks" class="task panel panel-default">
         <div class="panel-body">
-          <p><strong>${task.taskName}</strong></p>
+          <p>
+            <strong>${task.taskName}</strong>
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" 
+              click.delegate="$parent.removeTask(task)"></span>
+          </p>
           <hr>
           <ul>
             <li>${task.assigned}</li>
@@ -18,4 +27,5 @@
     </div>
   </div>
 
+  
 </template>

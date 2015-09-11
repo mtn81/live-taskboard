@@ -37,6 +37,6 @@ public class GroupList {
 	}
 
 	public void loadBelongingGroups(String memberId, GroupAppService groupAppService) {
-		this.groups = groupAppService.listBelonging(memberId);
+		this.groups = groupAppService.listGroupBelongingFor(memberId);
 	}
 }
