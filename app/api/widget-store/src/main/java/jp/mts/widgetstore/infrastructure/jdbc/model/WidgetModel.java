@@ -4,4 +4,4 @@ import org.javalite.activejdbc.Model;
 import org.javalite.activejdbc.annotations.Table;
 
 @Table("widgets")
-public class WidgetModel extends Model{ }
+public class WidgetModel extends Model{}

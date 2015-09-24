@@ -10,6 +10,10 @@ export class WidgetManager {
     this.widgetService = widgetService;
   }
 
+  isLoaded() {
+    return !!this.groupId;
+  }
+
   load(groupId, callback) {
     this.widgets = this.widgetService.loadAll(groupId, callback);
     this.groupId = groupId;
@@ -19,7 +23,7 @@ export class WidgetManager {
     let me = this;
     let widget = this._get(widgetId);
 
-    element
+    $(element)
       .css({
         position: 'relative',
         top: widget.top,
@@ -28,13 +32,13 @@ export class WidgetManager {
       .width(widget.width)
       .height(widget.height);
 
-    element
+    $(element)
       .draggable({
         stop: (event, ui) => {
           widget.top = ui.position.top;
           widget.left = ui.position.left;
-          widget.width = element.width();
-          widget.height = element.height();
+          widget.width = $(element).width();
+          widget.height = $(element).height();
           me.widgetService.save(widget);
         }
       })

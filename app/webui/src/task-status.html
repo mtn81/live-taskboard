@@ -1,6 +1,8 @@
 <template>
 
-  <div ref="taskStatusPanel" class="taskstate panel panel-default" style="display:inline-block">
+  <require from="./widget"></require>
+
+  <div class="taskstate panel panel-default" style="display:inline-block" widget.bind="'taskstatus-' + status">
     <div class="panel-heading">
       <h3 class="panel-title">
         ${status}
@@ -10,22 +12,29 @@
       </p>
     </div>
     <div class="panel-body">
-      <div repeat.for="task of tasks" class="task panel panel-default">
+      <div repeat.for="task of tasks" class="task panel panel-default" widget.bind="task.taskId">
         <div class="panel-body">
           <p>
             <strong>${task.taskName}</strong>
-            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" 
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
               click.delegate="$parent.removeTask(task)"></span>
           </p>
           <hr>
           <ul>
-            <li>${task.assigned}</li>
-            <li>${task.deadline}</li>
+            <li>
+              <select class="form-control"
+                value.bind="task.assigned" change.delegate="$parent.modifyTask(task)">
+                <option repeat.for="member of $parent.members" value.bind="member.memberId">${member.name}</option>
+              </select>
+            </li>
+            <li>
+              <input type="date" id="deadline" class="form-control"
+                  value.bind="task.deadline" change.delegate="$parent.modifyTask(task)">
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  
 </template>

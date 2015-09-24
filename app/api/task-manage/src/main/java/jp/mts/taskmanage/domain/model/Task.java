@@ -46,6 +46,16 @@ public class Task {
 		return assignedMemberId;
 	}
 	
+	public void changeSummary(
+			String taskName, 
+			Member assignedMember, 
+			Date deadline) {
+		
+		setName(taskName);
+		setAssignedMemberId(assignedMember.memberId());
+		setDeadline(deadline);
+	}
+	
 	void setStatus(TaskStatus status) {
 		this.taskStatus = status;
 	}
@@ -83,4 +93,5 @@ public class Task {
 			return false;
 		return true;
 	}
+
 }

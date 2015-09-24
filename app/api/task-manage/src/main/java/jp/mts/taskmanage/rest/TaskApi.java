@@ -37,6 +37,17 @@ public class TaskApi {
 		return RestResponse.of(taskSave);
 	}
 	
+	@RequestMapping(value="/groups/{groupId}/tasks/{taskId}", method=RequestMethod.PUT)
+	public RestResponse<TaskSave> modifyTask(
+			@PathVariable String groupId, 
+			@PathVariable String taskId, 
+			@RequestBody TaskSave taskSave) {
+		
+		taskSave.update(groupId, taskId, taskAppService);
+		
+		return RestResponse.of(taskSave);
+	}
+	
 	@RequestMapping(value="/groups/{groupId}/tasks/{taskId}", method=RequestMethod.DELETE)
 	public RestResponse<TaskRemove> removeTask(
 			@PathVariable("groupId") String groupId,

@@ -48,7 +48,9 @@ export class Taskboard {
     this.widgetManager.load(this.group.groupId, () => {
       this.eventAggregator.publish('widget.reloaded');
     });
-    this.tasks = this.taskService.load(this.group.groupId);
+    this.taskService.load(this.group.groupId, (tasks) => {
+      this.eventAggregator.publish('tasks.reloaded', tasks);
+    });
     this.eventAggregator.publish('group.selected', this.group);
   }
 
@@ -71,10 +73,19 @@ export class Taskboard {
       this.attachStatus.attachTaskRegister();
     });
     this.eventAggregator.subscribe('task-register.register.success', message => {
-      this.tasks = this.taskService.load(this.group.groupId);
+      this.taskService.load(this.group.groupId, (tasks) => {
+        this.eventAggregator.publish('tasks.reloaded', tasks);
+      });
     });
     this.eventAggregator.subscribe('task-status.remove.success', message => {
-      this.tasks = this.taskService.load(this.group.groupId);
+      this.taskService.load(this.group.groupId, (tasks) => {
+        this.eventAggregator.publish('tasks.reloaded', tasks);
+      });
+    });
+    this.eventAggregator.subscribe('task-status.modify.success', message => {
+      this.taskService.load(this.group.groupId, (tasks) => {
+        this.eventAggregator.publish('tasks.reloaded', tasks);
+      });
     });
 
     let promiseHolder = {};
@@ -105,9 +116,9 @@ class AttachStatus {
   }
 
   attachTaskStatus(status) {
-    if(status == 'TODO') this.todoAttached = true;
-    if(status == 'DOING') this.doingAttached = true;
-    if(status == 'DONE') this.doneAttached = true;
+    if(status == 'todo') this.todoAttached = true;
+    if(status == 'doing') this.doingAttached = true;
+    if(status == 'done') this.doneAttached = true;
     this._initTaskboard();
   }
   attachTaskRegister() {

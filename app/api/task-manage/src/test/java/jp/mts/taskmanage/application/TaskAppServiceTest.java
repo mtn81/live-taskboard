@@ -101,5 +101,36 @@ public class TaskAppServiceTest {
 		
 		taskAppService.removeTask(groupId.value(), taskId.value());
 	}
+	
+	@Test
+	public void test_modifyTask() {
+		
+		MemberId memberId = new MemberId("m01");
+		GroupId groupId = new GroupId("g01");
+		TaskId taskId = new TaskId("t01");
+		String taskName = "task-a";
+		Date deadline = Dates.date("2015/09/01");
+		
+		new NonStrictExpectations() {{
+			memberRepository.findById(memberId);
+				result = new MemberFixture(memberId.value()).get(); times=1;
+		}};
+		new Expectations() {{
+			taskRepository.findById(groupId, taskId);
+				result = new TaskFixture(groupId.value(), taskId.value()).get();
+			taskRepository.save((Task)any);
+		}};
+		
+		Task modifiedTask = taskAppService.modifyTask(
+				groupId.value(), taskId.value(), taskName, memberId.value(), deadline);
+		
+		assertThat(modifiedTask, is(notNullValue()));
+		assertThat(modifiedTask.taskId(), is(taskId));
+		assertThat(modifiedTask.groupId(), is(groupId));
+		assertThat(modifiedTask.name(), is(taskName));
+		assertThat(modifiedTask.assignedMemberId(), is(memberId));
+		assertThat(modifiedTask.deadline(), is(deadline));
+		
+	}
 
 }

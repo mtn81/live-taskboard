@@ -30,9 +30,20 @@ public class TaskSave {
 	}
 	
 	// proccess
-	public void create(String groupId, TaskAppService taskAppService) {
+	public void create(
+			String groupId, 
+			TaskAppService taskAppService) {
+
 		task = taskAppService.registerTask(
 				groupId, taskName, assigned, deadline);
+	}
+	public void update(
+			String groupId, 
+			String taskId,
+			TaskAppService taskAppService) {
+		
+		task = taskAppService.modifyTask(
+				groupId, taskId, taskName, assigned, deadline);
 	}
 
 }

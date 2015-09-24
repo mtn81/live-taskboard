@@ -2,22 +2,25 @@ import {customElement, inject, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import bootbox from 'bootbox';
 import {WidgetManager} from './widget/widget-manager';
-import {TaskService, TaskRemoved} from './task/task-service';
+import {TaskService, TaskRemoved, TaskModified} from './task/task-service';
+import {MemberService} from './member/member-service';
 import 'components/jqueryui';
 import 'components/jqueryui/themes/base/jquery-ui.css!';
 
 
 @customElement('task-status')
-@inject(EventAggregator, WidgetManager, TaskService)
+@inject(EventAggregator, WidgetManager, TaskService, MemberService)
 export class TaskStatus {
   @bindable status = '';
-  @bindable tasks = null;
+  tasks = [];
+  members = [];
   _subscription = [];
 
-  constructor(eventAggregator, widgetManager, taskService) {
+  constructor(eventAggregator, widgetManager, taskService, memberService) {
     this.eventAggregator = eventAggregator;
     this.widgetManager = widgetManager;
     this.taskService = taskService;
+    this.memberService = memberService;
   }
 
   removeTask(task) {
@@ -27,27 +30,39 @@ export class TaskStatus {
       }
     });
   }
-  
+
+  modifyTask(task) {
+    this.taskService.modify(this.group.groupId, task);
+  }
+
   bind(bindingContext) {
     //this.taskboardContext = bindingContext.taskboardContext;
   }
 
   attached() {
-    let targetElement = $(this.taskStatusPanel);
+    var me = this;
 
     this._subscription.push(
-      this.eventAggregator.subscribe('widget.reloaded', () => {
-        this.widgetManager.entry(this._widgetKey(this.status), targetElement);
+      this.eventAggregator.subscribe('tasks.reloaded', (tasks) => {
+        this.tasks.length = 0;
+        $.merge(this.tasks, tasks[this.status]);
       })
     );
+
     this._subscription.push(
       this.eventAggregator.subscribe('group.selected', group => {
         this.group = group;
+        this.members = this.memberService.loadByGroup(group.groupId);
       })
     );
     this._subscription.push(
       this.eventAggregator.subscribe(TaskRemoved, () => {
         this.eventAggregator.publish('task-status.remove.success');
+      })
+    );
+    this._subscription.push(
+      this.eventAggregator.subscribe(TaskModified, () => {
+        this.eventAggregator.publish('task-status.modify.success');
       })
     );
 
@@ -60,9 +75,10 @@ export class TaskStatus {
     }
   }
 
-  _widgetKey(status) {
+  _widgetKeyOfStatus(status) {
     return 'taskstatus-' + status;
   }
+
 }
 
 export class TaskStatusAttached {

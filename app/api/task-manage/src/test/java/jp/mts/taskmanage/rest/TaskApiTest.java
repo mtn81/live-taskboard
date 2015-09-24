@@ -3,6 +3,9 @@ package jp.mts.taskmanage.rest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.Date;
+
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.TaskFixture;
@@ -17,7 +20,6 @@ import mockit.Tested;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class TaskApiTest {
 
@@ -60,10 +62,6 @@ public class TaskApiTest {
 	public void test_registerTask() {
 		
 		String groupId = "g01";
-		TaskSave taskSave = new TaskSave();
-		taskSave.setTaskName("task-A");
-		taskSave.setAssigned("m01");
-		taskSave.setDeadline(Dates.date("2015/09/01"));
 		
 		new Expectations() {{
 			taskAppService.registerTask(
@@ -71,11 +69,12 @@ public class TaskApiTest {
 				result = new TaskFixture("t01").get();
 		}};
 		
+		TaskSave taskSave = newTaskSave("task-A", "m01", Dates.date("2015/09/01"));
 		RestResponse<TaskSave> response = target.registerTask(groupId, taskSave);
 		
 		assertThat(response.getData().getTaskId(), is("t01"));
-		
 	}
+
 	
 	@Test
 	public void test_removeTask() {
@@ -88,6 +87,29 @@ public class TaskApiTest {
 		RestResponse<TaskRemove> response = target.removeTask("g01", "t01");
 		assertThat(response, is(notNullValue()));
 		assertThat(response.getData().getTaskId(), is("t01"));
+	}
+	
+	@Test
+	public void test_modifyTask() {
+		
+		new Expectations() {{
+			taskAppService.modifyTask(
+					"g01", "t01", "task-A", "m01", Dates.date("2015/09/01"));
+				result = new TaskFixture("t01").get();
+		}};
+		
+		TaskSave taskSave = newTaskSave("task-A", "m01", Dates.date("2015/09/01"));
+		RestResponse<TaskSave> response = target.modifyTask("g01", "t01", taskSave);
+		
+		assertThat(response.getData().getTaskId(), is("t01"));
+	}
+
+	private TaskSave newTaskSave(String taskName, String assigned, Date deadline) {
+		TaskSave taskSave = new TaskSave();
+		taskSave.setTaskName(taskName);
+		taskSave.setAssigned(assigned);
+		taskSave.setDeadline(deadline);
+		return taskSave;
 	}
 
 }

@@ -9,6 +9,8 @@ var _tasks = {
   done: []
 };
 
+var _loading = false;
+
 @inject(HttpClient, EventAggregator)
 export class TaskService {
 
@@ -17,7 +19,11 @@ export class TaskService {
     this.eventAggregator = eventAggregator;
   }
 
-  load(groupId) {
+  load(groupId, callback) {
+
+    if(_loading) return _tasks;
+
+    _loading = true;
 
     this.http
       .get('/api/task-manage/groups/' + groupId + '/tasks/')
@@ -27,8 +33,11 @@ export class TaskService {
           tasksInStatus.length = 0;
           $.merge(tasksInStatus, foundTasks[status]);
         });
+        _loading = false;
+        if(callback) callback(_tasks);
       })
       .catch(response => {
+        _loading = false;
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
 
@@ -40,6 +49,17 @@ export class TaskService {
       .post('/api/task-manage/groups/' + groupId + '/tasks/', task)
       .then(response => {
         this.eventAggregator.publish(new TaskRegistered());
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new GlobalError(response.content.errors));
+      });
+  }
+  
+  modify(groupId, task) {
+    this.http
+      .put('/api/task-manage/groups/' + groupId + '/tasks/' + task.taskId, task)
+      .then(response => {
+        this.eventAggregator.publish(new TaskModified());
       })
       .catch(response => {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
@@ -59,4 +79,5 @@ export class TaskService {
 }
 
 export class TaskRegistered {}
+export class TaskModified {}
 export class TaskRemoved {}

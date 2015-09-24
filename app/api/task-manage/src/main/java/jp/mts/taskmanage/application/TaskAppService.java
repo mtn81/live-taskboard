@@ -1,5 +1,7 @@
 package jp.mts.taskmanage.application;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +55,27 @@ public class TaskAppService {
 		
 		taskRepository.remove(task);
 		
+		return task;
+	}
+
+	public Task modifyTask(
+			String aGroupId, 
+			String aTaskId, 
+			String taskName,
+			String assigned, 
+			Date deadline) {
+		
+		GroupId groupId = new GroupId(aGroupId);
+		TaskId taskId = new TaskId(aTaskId);
+
+		Task task = taskRepository.findById(groupId, taskId);
+		task.changeSummary(
+				taskName, 
+				memberRepository.findById(new MemberId(assigned)), 
+				deadline);
+		
+		taskRepository.save(task);
+
 		return task;
 	}
 
