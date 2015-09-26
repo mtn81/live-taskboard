@@ -146,9 +146,17 @@ section.au-enter-active {
     transform: translate3d(0, -4px, 0)
   }
 }
-
-
-
 .page-header {
-  height: 40px;
+  margin-top: 10px!important;
+}
+.page-header .title {
+  float: left;
+}
+.page-header .menu {
+  float: left;
+}
+.page-header .login-user-msg {
+  float: right;
+  margin-top: 10px;
+  margin-right: 10px;
 }

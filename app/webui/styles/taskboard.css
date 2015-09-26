@@ -3,13 +3,6 @@ main {
   position: relative;
 }
 
-#group-menu {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  background-color: red;
-}
 
 .taskstate {
   width: 200px;

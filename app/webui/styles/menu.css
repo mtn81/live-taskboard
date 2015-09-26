@@ -1,0 +1,12 @@
+.menu-content {
+  margin-top: 50px;
+  z-index: 999;
+  width: 500px
+}
+
+#group-menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: red;
+}

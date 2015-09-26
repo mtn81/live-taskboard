@@ -1,11 +1,15 @@
 <template>
 
+  <require from="./menu"></require>
+
   <header class="page-header">
-    <h1>Live Taskboard</h1>
+    <h1 class="title">Live Taskboard</h1>
+    <menu class="menu"></menu>
     <p class="login-user-msg text-right">
-      こんにちは。<span class="login-user">${auth.userName}</span> さん。
+      こんにちは。<span class="login-user">${auth.userName}</span> さん。<br>
       <button id="logout" class="btn btn-default" click.delegate="logout()">ログアウト</button>
     </p>
+    <p class="clearfix"></p>
   </header>
 
   <div class="page-host">
