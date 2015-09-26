@@ -14,6 +14,7 @@ import jp.mts.taskmanage.domain.model.MemberRepository;
 import jp.mts.taskmanage.domain.model.Task;
 import jp.mts.taskmanage.domain.model.TaskId;
 import jp.mts.taskmanage.domain.model.TaskRepository;
+import jp.mts.taskmanage.domain.model.TaskStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,8 @@ public class TaskAppService {
 			String aTaskId, 
 			String taskName,
 			String assigned, 
-			Date deadline) {
+			Date deadline,
+			TaskStatus status) {
 		
 		GroupId groupId = new GroupId(aGroupId);
 		TaskId taskId = new TaskId(aTaskId);
@@ -72,7 +74,8 @@ public class TaskAppService {
 		task.changeSummary(
 				taskName, 
 				memberRepository.findById(new MemberId(assigned)), 
-				deadline);
+				deadline,
+				status);
 		
 		taskRepository.save(task);
 

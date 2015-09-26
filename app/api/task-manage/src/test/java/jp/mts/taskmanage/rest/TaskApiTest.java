@@ -94,7 +94,7 @@ public class TaskApiTest {
 		
 		new Expectations() {{
 			taskAppService.modifyTask(
-					"g01", "t01", "task-A", "m01", Dates.date("2015/09/01"));
+					"g01", "t01", "task-A", "m01", Dates.date("2015/09/01"), TaskStatus.TODO);
 				result = new TaskFixture("t01").get();
 		}};
 		
@@ -104,11 +104,13 @@ public class TaskApiTest {
 		assertThat(response.getData().getTaskId(), is("t01"));
 	}
 
-	private TaskSave newTaskSave(String taskName, String assigned, Date deadline) {
+	private TaskSave newTaskSave(
+			String taskName, String assigned, Date deadline) {
 		TaskSave taskSave = new TaskSave();
 		taskSave.setTaskName(taskName);
 		taskSave.setAssigned(assigned);
 		taskSave.setDeadline(deadline);
+		taskSave.setStatus("todo");
 		return taskSave;
 	}
 

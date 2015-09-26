@@ -48,9 +48,8 @@ export class Taskboard {
     this.widgetManager.load(this.group.groupId, () => {
       this.eventAggregator.publish('widget.reloaded');
     });
-    this.taskService.load(this.group.groupId, (tasks) => {
-      this.eventAggregator.publish('tasks.reloaded', tasks);
-    });
+    this._loadTasks();
+
     this.eventAggregator.publish('group.selected', this.group);
   }
 
@@ -73,19 +72,13 @@ export class Taskboard {
       this.attachStatus.attachTaskRegister();
     });
     this.eventAggregator.subscribe('task-register.register.success', message => {
-      this.taskService.load(this.group.groupId, (tasks) => {
-        this.eventAggregator.publish('tasks.reloaded', tasks);
-      });
+      this._loadTasks();
     });
     this.eventAggregator.subscribe('task-status.remove.success', message => {
-      this.taskService.load(this.group.groupId, (tasks) => {
-        this.eventAggregator.publish('tasks.reloaded', tasks);
-      });
+      this._loadTasks();
     });
     this.eventAggregator.subscribe('task-status.modify.success', message => {
-      this.taskService.load(this.group.groupId, (tasks) => {
-        this.eventAggregator.publish('tasks.reloaded', tasks);
-      });
+      this._loadTasks();
     });
 
     let promiseHolder = {};
@@ -93,6 +86,12 @@ export class Taskboard {
     this.registeringGroups = this.groupService.registeringGroups();
 
     return promiseHolder.promise;
+  }
+
+  _loadTasks() {
+    this.taskService.load(this.group.groupId, (tasks) => {
+      this.eventAggregator.publish('tasks.reloaded', tasks);
+    });
   }
 
   toggleMenu(menu){

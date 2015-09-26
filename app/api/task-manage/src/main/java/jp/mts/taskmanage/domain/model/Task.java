@@ -49,11 +49,13 @@ public class Task {
 	public void changeSummary(
 			String taskName, 
 			Member assignedMember, 
-			Date deadline) {
+			Date deadline,
+			TaskStatus status) {
 		
 		setName(taskName);
 		setAssignedMemberId(assignedMember.memberId());
 		setDeadline(deadline);
+		setStatus(status);
 	}
 	
 	void setStatus(TaskStatus status) {

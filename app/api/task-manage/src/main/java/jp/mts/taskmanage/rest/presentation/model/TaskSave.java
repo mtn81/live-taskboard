@@ -4,6 +4,7 @@ import java.util.Date;
 
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.Task;
+import jp.mts.taskmanage.domain.model.TaskStatus;
 
 public class TaskSave {
 
@@ -11,6 +12,7 @@ public class TaskSave {
 	private String taskName;
 	private String assigned;
 	private Date deadline;
+	private String status;
 
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
@@ -20,6 +22,9 @@ public class TaskSave {
 	}
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	// output
@@ -43,7 +48,7 @@ public class TaskSave {
 			TaskAppService taskAppService) {
 		
 		task = taskAppService.modifyTask(
-				groupId, taskId, taskName, assigned, deadline);
+				groupId, taskId, taskName, assigned, deadline, TaskStatus.valueOf(status.toUpperCase()));
 	}
 
 }

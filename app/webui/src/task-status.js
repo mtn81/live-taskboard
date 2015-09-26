@@ -21,6 +21,7 @@ export class TaskStatus {
     this.widgetManager = widgetManager;
     this.taskService = taskService;
     this.memberService = memberService;
+    this.vm = this;
   }
 
   removeTask(task) {
@@ -33,6 +34,10 @@ export class TaskStatus {
 
   modifyTask(task) {
     this.taskService.modify(this.group.groupId, task);
+  }
+
+  changeStatus(taskId) {
+    this.taskService.changeStatus(this.group.groupId, taskId, this.status);
   }
 
   bind(bindingContext) {
@@ -73,10 +78,6 @@ export class TaskStatus {
     for(var i=0; i < this._subscription.length; i++){
       this._subscription[i]();
     }
-  }
-
-  _widgetKeyOfStatus(status) {
-    return 'taskstatus-' + status;
   }
 
 }

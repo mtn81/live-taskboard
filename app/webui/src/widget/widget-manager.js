@@ -19,13 +19,36 @@ export class WidgetManager {
     this.groupId = groupId;
   }
 
-  entry(widgetId, element) {
+  droppable(acceptSelector, element, callback) {
+    let me = this;
+    let droppableElement = $(element);
+    droppableElement.droppable({
+      accept: acceptSelector,
+      drop: function(event, ui) {
+        let draggableElement = ui.draggable[0];
+        let widget = draggableElement.widget;
+        if(widget){
+          console.log(droppableElement.offset(), ui.offset);
+          widget.top = ui.offset.top - droppableElement.offset().top;
+          widget.left = ui.offset.left - droppableElement.offset().left;
+          widget.width = $(draggableElement).width();
+          widget.height = $(draggableElement).height();
+          me.widgetService.save(widget);
+          if(callback) callback(widget);
+        }
+      }
+    });
+  }
+
+  entry(widgetId, element, freeOnDrag) {
     let me = this;
     let widget = this._get(widgetId);
 
+    element.widget = widget;
+
     $(element)
       .css({
-        position: 'relative',
+        position: 'absolute',
         top: widget.top,
         left: widget.left
       })
@@ -34,12 +57,15 @@ export class WidgetManager {
 
     $(element)
       .draggable({
+        revert: freeOnDrag ? false : 'invalid',
         stop: (event, ui) => {
-          widget.top = ui.position.top;
-          widget.left = ui.position.left;
-          widget.width = $(element).width();
-          widget.height = $(element).height();
-          me.widgetService.save(widget);
+          if (freeOnDrag) {
+            widget.top = ui.position.top;
+            widget.left = ui.position.left;
+            widget.width = $(element).width();
+            widget.height = $(element).height();
+            me.widgetService.save(widget);
+          }
         }
       })
       .resizable({

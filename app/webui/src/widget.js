@@ -1,4 +1,4 @@
-import {inject, customAttribute} from 'aurelia-framework';
+import {inject, customAttribute, bindable} from 'aurelia-framework';
 import {WidgetManager} from './widget/widget-manager';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
@@ -6,7 +6,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 @inject(Element, WidgetManager, EventAggregator)
 export class Widget {
   _subscriptions = [];
-  
+
   constructor(element, widgetManager, eventAggregator) {
     this.element = element;
     this.widgetManager = widgetManager;
@@ -18,11 +18,11 @@ export class Widget {
       this._subscriptions.forEach((s) => s());
 
       if (this.widgetManager.isLoaded()) {
-        this.widgetManager.entry(newValue, this.element);
+        this.widgetManager.entry(newValue.widgetId, this.element, newValue.freeOnDrag);
       } else {
         this._subscriptions.push(
           this.eventAggregator.subscribe('widget.reloaded', () => {
-            this.widgetManager.entry(newValue, this.element);
+            this.widgetManager.entry(newValue.widgetId, this.element, newValue.freeOnDrag);
           })
         );
       }

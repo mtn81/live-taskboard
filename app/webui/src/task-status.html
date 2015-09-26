@@ -1,8 +1,12 @@
 <template>
 
   <require from="./widget"></require>
+  <require from="./droppable"></require>
 
-  <div class="taskstate panel panel-default" style="display:inline-block" widget.bind="'taskstatus-' + status">
+  <div class="taskstate panel panel-default" style="display:inline-block"
+    widget.bind="{ widgetId: 'taskstatus-' + status, freeOnDrag: true}"
+    droppable.bind="{ acceptableSelector: '.task', callback: changeStatus.bind(vm) }"
+    style="z-index:1">
     <div class="panel-heading">
       <h3 class="panel-title">
         ${status}
@@ -12,7 +16,9 @@
       </p>
     </div>
     <div class="panel-body">
-      <div repeat.for="task of tasks" class="task panel panel-default" widget.bind="task.taskId">
+      <div repeat.for="task of tasks" class="task panel panel-default"
+        widget.bind="{ widgetId: task.taskId, freeOnDrag: false}"
+        style="z-index: 100">
         <div class="panel-body">
           <p>
             <strong>${task.taskName}</strong>

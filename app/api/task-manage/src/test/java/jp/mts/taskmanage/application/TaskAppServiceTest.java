@@ -19,6 +19,7 @@ import jp.mts.taskmanage.domain.model.Task;
 import jp.mts.taskmanage.domain.model.TaskFixture;
 import jp.mts.taskmanage.domain.model.TaskId;
 import jp.mts.taskmanage.domain.model.TaskRepository;
+import jp.mts.taskmanage.domain.model.TaskStatus;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.NonStrictExpectations;
@@ -110,6 +111,7 @@ public class TaskAppServiceTest {
 		TaskId taskId = new TaskId("t01");
 		String taskName = "task-a";
 		Date deadline = Dates.date("2015/09/01");
+		TaskStatus status = TaskStatus.DOING;
 		
 		new NonStrictExpectations() {{
 			memberRepository.findById(memberId);
@@ -122,7 +124,7 @@ public class TaskAppServiceTest {
 		}};
 		
 		Task modifiedTask = taskAppService.modifyTask(
-				groupId.value(), taskId.value(), taskName, memberId.value(), deadline);
+				groupId.value(), taskId.value(), taskName, memberId.value(), deadline, status);
 		
 		assertThat(modifiedTask, is(notNullValue()));
 		assertThat(modifiedTask.taskId(), is(taskId));
@@ -130,6 +132,7 @@ public class TaskAppServiceTest {
 		assertThat(modifiedTask.name(), is(taskName));
 		assertThat(modifiedTask.assignedMemberId(), is(memberId));
 		assertThat(modifiedTask.deadline(), is(deadline));
+		assertThat(modifiedTask.status(), is(status));
 		
 	}
 

@@ -11,6 +11,22 @@ var _tasks = {
 
 var _loading = false;
 
+var _allTasks = function(){
+  var tasks = [];
+  $.each(_tasks, (status, tasksInStatus) => {
+    $.merge(tasks, tasksInStatus);
+  });
+  return tasks;
+};
+
+var _taskOf = function(taskId){
+  var result;
+  _allTasks().forEach(t => {
+    if(t.taskId === taskId) result = t;
+  })
+  return result;
+};
+
 @inject(HttpClient, EventAggregator)
 export class TaskService {
 
@@ -54,7 +70,7 @@ export class TaskService {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
   }
-  
+
   modify(groupId, task) {
     this.http
       .put('/api/task-manage/groups/' + groupId + '/tasks/' + task.taskId, task)
@@ -75,6 +91,14 @@ export class TaskService {
       .catch(response => {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
+  }
+
+  changeStatus(groupId, taskId, status){
+    var task = _taskOf(taskId);
+    if(!task || task.status === status) return;
+
+    task.status = status;
+    this.modify(groupId, task);
   }
 }
 

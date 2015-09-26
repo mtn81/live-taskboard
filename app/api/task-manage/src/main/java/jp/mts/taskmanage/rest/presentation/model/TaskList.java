@@ -1,7 +1,6 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
 import static java.util.stream.Collectors.toList;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +53,9 @@ public class TaskList {
 		}
 		public String getAssigned() {
 			return task.assignedMemberId().value();
+		}
+		public String getStatus() {
+			return task.status().name().toLowerCase();
 		}
 	}
 
