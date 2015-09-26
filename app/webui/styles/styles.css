@@ -147,7 +147,10 @@ section.au-enter-active {
   }
 }
 .page-header {
+  margin-left: 10px!important;
   margin-top: 10px!important;
+  margin-bottom: 0px!important;
+  padding: 0!important;
 }
 .page-header .title {
   float: left;
@@ -159,4 +162,8 @@ section.au-enter-active {
   float: right;
   margin-top: 10px;
   margin-right: 10px;
+}
+.clearfix {
+  margin: 0;
+  padding: 0;
 }

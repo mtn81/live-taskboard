@@ -3,12 +3,12 @@
 <template>
 
   <div class="menu btn-group btn-group-lg">
-    <button type="button" class="btn btn-default" aria-label="Left Align"
+    <button type="button" class="btn btn-default" 
       ref="groupMenu" data-toggle="collapse" data-target="#group-menu" click.delegate="toggleMenu(groupMenu)">
-      グループ
-      <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+      グループ<br><small>[${group.groupName}]</small>
     </button>
-  <div>
+    <button type="button" class="btn btn-default">メンバー</button>
+  </div>
 
   <div id="group-menu" class="panel collapse menu-content">
     <div class="panel-body">
