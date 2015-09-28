@@ -18,6 +18,7 @@ export class Login {
     var auth = this.authService.authenticate(this.loginId, this.password);
     this.eventAggregator.subscribe(AuthSuccessed, message => {
       this.authContext.store(auth);
+      this.eventAggregator.publish('init.menu');
       this.router.navigate('taskboard');
     });
   }

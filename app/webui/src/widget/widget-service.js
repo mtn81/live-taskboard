@@ -9,6 +9,8 @@ var _widgets = [];
 
 @inject(HttpClient, EventAggregator)
 export class WidgetService {
+  
+  _loading = false;
 
   constructor(http, eventAggregator) {
     this.http = http;
@@ -16,6 +18,10 @@ export class WidgetService {
   }
 
   loadAll(groupId, callback) {
+
+    if(this._loading) return _widgets;
+    this._loading = true;
+
     this.http
       .get('/api/widget-store/categories/' + groupId + '/widgets/')
       .then(response => {
@@ -23,6 +29,7 @@ export class WidgetService {
         _widgets.length = 0;
         $.merge(_widgets, foundWidgets);
         callback();
+        this._loading = false;
       });
 
     return _widgets;

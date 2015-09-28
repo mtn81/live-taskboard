@@ -28,6 +28,8 @@ export class GroupService {
   }
 
   register(group){
+    if(!this.authContext.isAuthenticated()) return;
+
     this.http
       .post("/api/task-manage/members/" + this.memberId() + "/groups/", group)
       .then(response => {
@@ -50,6 +52,7 @@ export class GroupService {
   }
 
   groups(promiseHolder) {
+    if(!this.authContext.isAuthenticated()) return [];
 
     let promise = this.http
       .get("/api/task-manage/members/" + this.memberId() + '/groups/?type=belonging')
@@ -73,8 +76,10 @@ export class GroupService {
   registeringGroups(){
     return _registeringGroups;
   }
-  
+
   remove(group){
+    if(!this.authContext.isAuthenticated()) return;
+
     group.removing = true;
 
     this.http

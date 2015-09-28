@@ -28,6 +28,10 @@ export class App {
   get auth(){
     return this.authContext.getAuth();
   }
+  
+  get isAuth() {
+    return this.authContext.isAuthenticated();
+  }
 
   logout(){
     this.authContext.remove();
