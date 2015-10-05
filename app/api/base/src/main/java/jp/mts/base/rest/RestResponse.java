@@ -3,6 +3,13 @@ package jp.mts.base.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.support.RequestContextUtils;
+
+import com.google.common.collect.Lists;
+
 import jp.mts.base.application.ErrorType;
 
 public class RestResponse<T> {
@@ -15,6 +22,10 @@ public class RestResponse<T> {
 	private RestResponse(T data){
 		this.data = data;
 	}
+	public static RestResponse<Void> empty() {
+		RestResponse<Void> response = new RestResponse<>(null);
+		return response;
+	}
 	public static <T> RestResponse<T> of(T data) {
 		RestResponse<T> response = new RestResponse<>(data);
 		return response;
@@ -24,9 +35,23 @@ public class RestResponse<T> {
 		response.addError(e);
 		return response;
 	}
+	public static <T> RestResponse<T> of(List<ApiError> e) {
+		RestResponse<T> response = new RestResponse<>();
+		response.addErrors(e);
+		return response;
+	}
+	public static <T> RestResponse<T> of(BindingResult bindingResult, HttpServletResponse response) {
+		if(bindingResult.hasErrors()){
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return of(ApiError.errors(bindingResult));
+	}
 	
 	public void addError(ApiError e){
 		errors.add(e);
+	}
+	public void addErrors(List<ApiError> e){
+		errors.addAll(e);
 	}
 	
 	public T getData(){
@@ -42,13 +67,29 @@ public class RestResponse<T> {
 	public static class ApiError {
 		private String errorCode;
 		private String message;
+		private String field;
 
+		public static List<ApiError> errors(BindingResult bindingResult) {
+			List<ApiError> errors = Lists.newArrayList();
+			bindingResult.getFieldErrors().forEach(fe -> {
+				errors.add(new ApiError("e999", fe.getDefaultMessage(), fe.getField()));
+			});
+			bindingResult.getGlobalErrors().forEach(ge -> {
+				errors.add(new ApiError("e999", ge.getDefaultMessage()));
+			});
+			return errors;
+		}
+		
 		public ApiError(ErrorType errorType) {
 			this(errorType.getErrorCode(), errorType.getMessage());
 		}
 		public ApiError(String errorCode, String message) {
+			this(errorCode, message, null);
+		}
+		public ApiError(String errorCode, String message, String field) {
 			this.errorCode = errorCode;
 			this.message = message;
+			this.field = field;
 		}
 
 		public String getErrorCode() {
@@ -56,6 +97,9 @@ public class RestResponse<T> {
 		}
 		public String getMessage() {
 			return message;
+		}
+		public String getField(){
+			return field;
 		}
 	}
 

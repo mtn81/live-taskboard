@@ -4,3 +4,8 @@ form#loginForm {
   margin-left: auto;
   margin-right: auto;
 }
+
+.register-link {
+  margin-top: 20px;
+  margin-right: 150px;
+}

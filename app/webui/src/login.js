@@ -22,4 +22,15 @@ export class Login {
       this.router.navigate('taskboard');
     });
   }
+
+  showUserRegister() {
+    $(this.userRegisterModal).modal('show');
+  }
+
+  fire(eventId, hideTarget){
+    this.eventAggregator.subscribe(eventId + '.success', payload => {
+      $(hideTarget).modal('hide');
+    });
+    this.eventAggregator.publish(eventId);
+  }
 }

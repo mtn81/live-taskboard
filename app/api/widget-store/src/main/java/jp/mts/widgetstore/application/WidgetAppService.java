@@ -13,12 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class WidgetAppService {
 	
 	@Autowired
 	private WidgetRepository widgetRepository;
 
-	@Transactional
 	public void save(WidgetId widgetId, Position position, Size size) {
 		
 		widgetRepository.save(

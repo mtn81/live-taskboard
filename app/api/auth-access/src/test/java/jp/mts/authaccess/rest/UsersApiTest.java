@@ -2,18 +2,25 @@ package jp.mts.authaccess.rest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+
+import javax.servlet.http.HttpServletResponse;
+
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.UserFixture;
+import jp.mts.authaccess.rest.presentation.model.UserSave;
 import jp.mts.base.rest.RestResponse;
 import mockit.Deencapsulation;
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
+import org.springframework.validation.BindingResult;
 
 public class UsersApiTest {
 	
 	@Mocked UserAppService userService;
+	@Mocked BindingResult bindingResult;
+	@Mocked HttpServletResponse httpServletResponse;
 
 	@Test
 	public void test_register_successful() {
@@ -25,14 +32,14 @@ public class UsersApiTest {
 				result = new UserFixture().get();
 		}};
 		
-		UserRegisterRequest request = new UserRegisterRequest();
-		request.userId = "u01";
-		request.email = "taro@hoge.jp";
-		request.name = "タスク太郎";
-		request.password = "pass";
-		request.confirmPassword= "pass";
+		UserSave request = new UserSave();
+		request.setUserId("u01");
+		request.setEmail("taro@hoge.jp");
+		request.setName("タスク太郎");
+		request.setPassword("pass");
+		request.setConfirmPassword("pass");
 
-		RestResponse<UserRegisterView> response = target.register(request);
-		assertThat(response.getData().getId(), is("u01"));
+		RestResponse<UserSave> response = target.register(request, bindingResult, httpServletResponse);
+		assertThat(response.getData().getUserId(), is("u01"));
 	}
 }

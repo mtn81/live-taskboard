@@ -1,7 +1,5 @@
 package jp.mts.taskmanage.application;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +16,10 @@ import jp.mts.taskmanage.domain.model.TaskStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class TaskAppService {
 	
 	@Autowired

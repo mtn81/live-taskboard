@@ -1,11 +1,16 @@
 package jp.mts.authaccess.rest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import jp.mts.authaccess.application.UserAppService;
-import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.rest.presentation.model.UserSave;
 import jp.mts.base.rest.RestResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,15 +23,27 @@ public class UsersApi {
 	private UserAppService userAppService;
 	
 	@RequestMapping(value="/", method=POST)
-	public RestResponse<UserRegisterView> register(
-			@RequestBody UserRegisterRequest request){
-
-		User registeredUser = userAppService.register(
-				request.userId,
-				request.email, 
-				request.name, 
-				request.password);
-
-		return RestResponse.of(new UserRegisterView(registeredUser));
+	public RestResponse<UserSave> register(
+			@RequestBody @Valid UserSave userSave,
+			BindingResult result,
+			HttpServletResponse response){
+		if(result.hasErrors()){
+			return RestResponse.of(result, response);
+		}
+		userSave.create(userAppService);
+		return RestResponse.of(userSave);
+	}
+	
+	@RequestMapping(value="/?validate", method=POST)
+	public RestResponse<Void> validateForRegister(
+			@RequestBody @Valid UserSave userSave,
+			BindingResult result,
+			HttpServletResponse response){
+		
+		if(result.hasErrors()){
+			return RestResponse.of(result, response);
+		}
+		userSave.validateForRegister(userAppService);
+		return RestResponse.empty();
 	}
 }

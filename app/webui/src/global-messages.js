@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {inject, customElement, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from 'global-error';
@@ -5,13 +6,21 @@ import {GlobalError} from 'global-error';
 @customElement('global-messages')
 @inject(EventAggregator)
 export class GlobalMessages {
+  @bindable event = null;
   errors = [];
 
   constructor(eventAggregator){
-    
-    eventAggregator.subscribe(GlobalError, event => {
+    this.eventAggregator = eventAggregator;
+  }
+
+  attached() {
+    let target = !this.event ? GlobalError : this.event;
+    this.eventAggregator.subscribe(target, event => {
+      const globalErrors = event.globalErrors;
+      if (_.isEmpty(globalErrors)) return;
+
       this.errors.length = 0;
-      if (event.errors) jQuery.merge(this.errors, event.errors);
+      jQuery.merge(this.errors, globalErrors);
 
       if(!this.showing){
         this.showing = true;

@@ -35,8 +35,11 @@ public class AuthenticateService {
 	
 	public User createUser(String id, String password, String email, String name){
 		UserId userId = new UserId(id);
-		User newUser =  new User(userId, email, 
-				passwordEncriptionService.encrypt(userId, password), name);
+		User newUser = new User(
+				userId, 
+				email, 
+				passwordEncriptionService.encrypt(userId, password), 
+				name);
 		return newUser;
 	}
 	
