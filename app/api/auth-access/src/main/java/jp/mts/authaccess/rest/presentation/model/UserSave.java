@@ -10,9 +10,13 @@ public class UserSave {
 	//input
 	@NotBlank
 	private String userId;
+	@NotBlank
 	private String email;
-	private String name;
+	@NotBlank
+	private String userName;
+	@NotBlank
 	private String password;
+	@NotBlank
 	private String confirmPassword;
 
 	public void setUserId(String userId) {
@@ -21,8 +25,8 @@ public class UserSave {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String name) {
+		this.userName = name;
 	}
 	public void setPassword(String password) {
 		this.password = password;
@@ -44,7 +48,7 @@ public class UserSave {
 		user = userAppService.register(
 				userId,
 				email, 
-				name, 
+				userName, 
 				password);
 	}
 

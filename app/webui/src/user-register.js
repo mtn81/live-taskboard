@@ -1,6 +1,6 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
-import {UserService, UserRegistered} from './user/user-service';
+import {UserService, UserRegistered, UserRegisterValidationError} from './user/user-service';
 
 @inject(EventAggregator, UserService)
 export class UserRegister {
@@ -24,6 +24,18 @@ export class UserRegister {
     this.userService.register(user);
   }
 
+  validate(){
+    const user = {
+      userId: this.userId,
+      userName: this.userName,
+      email: this.email,
+      password: this.password,
+      confirmPassword: this.confirmPassword
+    };
+
+    this.userService.validate(user);
+  }
+
   attached(){
     this._subscription.push(
       this.eventAggregator.subscribe('user-register.register', payload => {
@@ -37,9 +49,16 @@ export class UserRegister {
     );
     this._subscription.push(
       this.eventAggregator.subscribe('validate.user.register', () => {
-        console.log('validate !');
+        this.validate();
       })
     );
+    this._subscription.push(
+      this.eventAggregator.subscribe(UserRegisterValidationError, e => {
+        this.eventAggregator.publish('validate.user.register.error', e.error);
+      })
+    );
+
+    this.validate();
   }
   detached(){
     for(var i=0; i < this._subscription.length; i++){

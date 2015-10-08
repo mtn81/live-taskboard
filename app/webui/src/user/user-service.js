@@ -22,5 +22,21 @@ export class UserService {
         this.eventAggregator.publish('user.register.failed', new GlobalError(response.content.errors));
       });
   }
+
+  validate(user) {
+
+    this.http
+      .post('/api/auth-access/users/?validate', user)
+      .then(response => {
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new UserRegisterValidationError(new GlobalError(response.content.errors)));
+      });
+  }
 }
 export class UserRegistered {}
+export class UserRegisterValidationError {
+  constructor(error){
+    this.error = error;
+  }
+}

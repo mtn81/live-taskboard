@@ -13,14 +13,16 @@ export class GlobalMessages {
     this.eventAggregator = eventAggregator;
   }
 
-  attached() {
-    let target = !this.event ? GlobalError : this.event;
-    this.eventAggregator.subscribe(target, event => {
-      const globalErrors = event.globalErrors;
-      if (_.isEmpty(globalErrors)) return;
+  eventChanged(newValue) {
+    if(!newValue) return;
+
+    let target = !newValue.event ? { event: GlobalError, excludeField: false } : newValue;
+    this.eventAggregator.subscribe(target.event, event => {
+      const targetErrors = !!target.excludeField ? event.globalErrors : event.errors;
+      if (_.isEmpty(targetErrors)) return;
 
       this.errors.length = 0;
-      jQuery.merge(this.errors, globalErrors);
+      jQuery.merge(this.errors, targetErrors);
 
       if(!this.showing){
         this.showing = true;

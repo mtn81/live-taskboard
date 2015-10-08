@@ -35,7 +35,7 @@ public class UsersApiTest {
 		UserSave request = new UserSave();
 		request.setUserId("u01");
 		request.setEmail("taro@hoge.jp");
-		request.setName("タスク太郎");
+		request.setUserName("タスク太郎");
 		request.setPassword("pass");
 		request.setConfirmPassword("pass");
 
