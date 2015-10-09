@@ -3,6 +3,7 @@ import _ from 'underscore';
 import {inject, customAttribute} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
+
 @customAttribute('formvalid')
 @inject(Element, EventAggregator)
 export class FormValidate {
@@ -16,16 +17,8 @@ export class FormValidate {
     const form = $(this.element);
     if(newValue){
       const $formInputs = form.find('input');
-      $formInputs.change(e => {
-        form.find('.glyphicon-warning-sign').remove();
-        form.find('.form-group')
-            .removeClass('has-error')
-            .removeClass('has-feedback');
-        $formInputs.each(i => {
-          let $input = $formInputs.eq(i);
-          $input.tooltip('destroy');
-        });
 
+      $formInputs.change(e => {
         this.eventAggregator.publish(newValue);
       });
 
@@ -43,20 +36,28 @@ export class FormValidate {
           });
         });
 
-        _.each($inputs, ($input, field) => {
-          $input
-            .parent('.form-group')
-            .addClass('has-error')
-            .addClass('has-feedback');
-          $input
-            .after('<span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>')
-            .attr('data-html', true)
-            .attr('data-container', 'body')
-            .attr('data-trigger', 'focus')
-            .attr('data-title', '<ul style="position:relative;left:-10px;margin-bottom:0px;">' + messages[field] + '</ul>')
-            .attr('data-placement', 'top');
-          $input
-            .tooltip('show');
+        $formInputs.each(i => {
+          let $input = $formInputs.eq(i);
+          let field = $input.attr('value.bind');
+          if($inputs[field]){
+            $input.parent('.form-group')
+              .addClass('has-error')
+              .addClass('has-feedback');
+            $input
+              .after('<span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>');
+
+            $input.tooltip({
+              html: true,
+              trigger: 'focus',
+              title: '<ul>' + messages[field] + '</ul>'
+            });
+          } else {
+            $input.parent('.form-group')
+              .removeClass('has-error')
+              .removeClass('has-feedback')
+              .find('span.glyphicon-warning-sign').remove();
+            $input.tooltip('destroy');
+          }
         });
 
       });
