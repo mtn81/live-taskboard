@@ -19,6 +19,15 @@ export class FormValidate {
       const $formInputs = form.find('input');
 
       $formInputs.change(e => {
+        $formInputs.each(i => {
+          let $input = $formInputs.eq(i);
+          $input.parent('.form-group')
+            .removeClass('has-error')
+            .removeClass('has-feedback')
+            .find('span.glyphicon-warning-sign').remove();
+          $input.tooltip('destroy');
+        });
+
         this.eventAggregator.publish(newValue);
       });
 
@@ -55,12 +64,6 @@ export class FormValidate {
                 title: '<ul>' + messages[field] + '</ul>'
               });
             }
-          } else {
-            $input.parent('.form-group')
-              .removeClass('has-error')
-              .removeClass('has-feedback')
-              .find('span.glyphicon-warning-sign').remove();
-            $input.tooltip('destroy');
           }
         });
 
