@@ -25,7 +25,9 @@ export class FormValidate {
             .removeClass('has-error')
             .removeClass('has-feedback')
             .find('span.glyphicon-warning-sign').remove();
-          $input.tooltip('destroy');
+          if ($input.data('bs.tooltip')) {
+            $input.data('bs.tooltip').options.title = '';
+          }
         });
 
         this.eventAggregator.publish(newValue);

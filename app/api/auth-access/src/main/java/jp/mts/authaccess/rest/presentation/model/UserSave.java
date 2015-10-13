@@ -1,12 +1,13 @@
 package jp.mts.authaccess.rest.presentation.model;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.rest.presentation.model.validator.Confirm;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
+@Confirm(field="password", confirmField="confirmPassword")
 public class UserSave {
 
 	//input
