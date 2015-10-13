@@ -6,7 +6,7 @@
 <global-messages event.bind="{ event: 'user.register.failed' }"></global-messages>
 <global-messages event.bind="{ event: 'validate.user.register.error', excludeField: true }"></global-messages>
 
-<form id="userRegisterForm" formvalid="validate.user.register">
+<form id="userRegisterForm" formvalid="validate.user.register" ref="userRegisterForm">
   <div class="form-group">
     <label class="control-label" for="userRegisterForm_userId">ユーザID</label>
     <input type="text" id="userRegisterForm_userId" class="form-control" value.bind="userId">

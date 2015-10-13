@@ -28,6 +28,7 @@ export class UserService {
     this.http
       .post('/api/auth-access/users/?validate', user)
       .then(response => {
+        this.eventAggregator.publish(new UserRegisterValidationSuccess());
       })
       .catch(response => {
         this.eventAggregator.publish(new UserRegisterValidationError(new GlobalError(response.content.errors)));
@@ -40,3 +41,4 @@ export class UserRegisterValidationError {
     this.error = error;
   }
 }
+export class UserRegisterValidationSuccess {}
