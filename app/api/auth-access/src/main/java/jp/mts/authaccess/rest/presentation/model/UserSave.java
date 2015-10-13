@@ -1,5 +1,7 @@
 package jp.mts.authaccess.rest.presentation.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import jp.mts.authaccess.application.UserAppService;
@@ -11,6 +13,8 @@ public class UserSave {
 	@NotBlank
 	private String userId;
 	@NotBlank
+	@Length(max=10)
+	@Email
 	private String email;
 	@NotBlank
 	private String userName;

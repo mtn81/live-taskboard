@@ -46,11 +46,15 @@ export class FormValidate {
             $input
               .after('<span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>');
 
-            $input.tooltip({
-              html: true,
-              trigger: 'focus',
-              title: '<ul>' + messages[field] + '</ul>'
-            });
+            if ($input.data('bs.tooltip')) {
+              $input.data('bs.tooltip').options.title = '<ul>' + messages[field] + '</ul>';
+            } else {
+              $input.tooltip({
+                html: true,
+                trigger: 'focus',
+                title: '<ul>' + messages[field] + '</ul>'
+              });
+            }
           } else {
             $input.parent('.form-group')
               .removeClass('has-error')
