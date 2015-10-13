@@ -12,14 +12,17 @@ public class UserSave {
 	//input
 	@NotBlank
 	private String userId;
+
 	@NotBlank
-	@Length(max=10)
 	@Email
 	private String email;
+
 	@NotBlank
 	private String userName;
+
 	@NotBlank
 	private String password;
+
 	@NotBlank
 	private String confirmPassword;
 

@@ -33,7 +33,12 @@ public class AuthenticateService {
 		return auth;
 	}
 	
-	public User createUser(String id, String password, String email, String name){
+	public User createUser(
+			String id, 
+			String email, 
+			String name,
+			String password){
+
 		UserId userId = new UserId(id);
 		User newUser = new User(
 				userId, 

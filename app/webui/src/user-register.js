@@ -15,7 +15,7 @@ export class UserRegister {
   register(){
     const user = {
       userId: this.userId,
-      name: this.userName,
+      userName: this.userName,
       email: this.email,
       password: this.password,
       confirmPassword: this.confirmPassword

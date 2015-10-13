@@ -34,7 +34,7 @@ public class UsersApi {
 		return RestResponse.of(userSave);
 	}
 	
-	@RequestMapping(value="/?validate", method=POST)
+	@RequestMapping(value="/", method=POST, params="validate")
 	public RestResponse<Void> validateForRegister(
 			@RequestBody @Valid UserSave userSave,
 			BindingResult result,
