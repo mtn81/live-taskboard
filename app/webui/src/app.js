@@ -19,8 +19,9 @@ export class App {
       config.title = 'live-taskboard';
       config.addPipelineStep('authorize', AuthorizeStep);
       config.map([
-        { route: ['','login'], moduleId: './login', nav: false, title: 'ログイン' },
-        { route: ['taskboard'], moduleId: './taskboard', nav: false, title: 'タスクボード', auth: true}
+        { route: ['','login'],   moduleId: './login',      nav: false, title: 'ログイン' },
+        { route: 'activate/:id', moduleId: './activation', nav: false, title: 'ログイン' },
+        { route: 'taskboard',    moduleId: './taskboard',  nav: false, title: 'タスクボード', auth: true}
       ]);
     });
 

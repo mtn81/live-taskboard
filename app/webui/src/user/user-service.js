@@ -34,6 +34,17 @@ export class UserService {
         this.eventAggregator.publish(new UserRegisterValidationError(new GlobalError(response.content.errors)));
       });
   }
+
+  activate(activateId) {
+    this.http
+      .post('/api/auth-access/activate_user/', { activateId: activateId })
+      .then(response => {
+        this.eventAggregator.publish(new UserActivated());
+      })
+      .catch(response => {
+        this.eventAggregator.publish(new GlobalError(response.content.errors));
+      });
+  }
 }
 export class UserRegistered {}
 export class UserRegisterValidationError {
@@ -42,3 +53,4 @@ export class UserRegisterValidationError {
   }
 }
 export class UserRegisterValidationSuccess {}
+export class UserActivated {}
