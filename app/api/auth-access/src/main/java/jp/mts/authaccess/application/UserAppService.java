@@ -38,4 +38,9 @@ public class UserAppService {
 			throw new ApplicationException(ErrorType.USER_ID_ALREADY_EXISTS);
 	}
 
+	public User activateUser(String activationId) {
+		return null;
+		
+	}
+
 }
