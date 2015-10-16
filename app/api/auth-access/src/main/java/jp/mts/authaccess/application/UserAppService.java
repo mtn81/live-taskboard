@@ -46,6 +46,8 @@ public class UserAppService {
 		UserActivation userActivation = userActivationRepository.findById(new UserActivationId(activationId));
 		if(userActivation == null) 
 			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
+		if(userActivation.isExpired())
+			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
 
 		User user = userRepository.findById(userActivation.userId());
 		user.activate();

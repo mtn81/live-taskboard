@@ -6,6 +6,9 @@ public class UserActivationFixture {
 
 	private UserActivation userActivation;
 	
+	public UserActivationFixture() {
+		this("activate01");
+	}
 	public UserActivationFixture(String activationId) {
 		userActivation = new UserActivation(
 				new UserActivationId(activationId),

@@ -1,7 +1,6 @@
 package jp.mts.authaccess.application;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
@@ -13,9 +12,12 @@ import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.authaccess.domain.model.UserStatus;
 import jp.mts.base.application.ApplicationException;
+import jp.mts.base.domain.model.DomainCalendar;
+import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 
 import org.junit.Test;
@@ -34,6 +36,8 @@ public class UserAppServiceTest {
 		new Expectations() {{
 			authenticateService.createUser("u01", "taro@hoge.jp", "タスク太郎", "pass");
 				result = user;
+			userRepository.findById(new UserId("u01"));
+				result = null;
 			userRepository.save(user);
 		}};
 		
@@ -43,7 +47,8 @@ public class UserAppServiceTest {
 	}
 
 	@Test
-	public void test_activateUser_success() {
+	public void test_activateUser_success(
+			@Mocked DomainCalendar domainCalendar) {
 		String userId = "u01";
 		String activationId = "activate01";
 		User user = new UserFixture(userId).get();
@@ -54,12 +59,16 @@ public class UserAppServiceTest {
 								.setUserId(userId)
 								.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
 								.get();
+				
+			domainCalendar.systemDate();
+				result = Dates.dateShortTime("2015/10/01 12:00");
 			
 			userRepository.findById(new UserId(userId));
 				result = user;
 				
 			userRepository.save(user);
 		}};
+		DomainObject.setDomainCalendar(domainCalendar);
 		
 		User activatedUser = target.activateUser(activationId);
 		assertThat(activatedUser.status(), is(UserStatus.ACTIVE));
@@ -81,7 +90,24 @@ public class UserAppServiceTest {
 	}
 		
 	@Test
-	public void test_activateUser__activation_expired() {
-		//日付をテストでコントロール仕組みが必要
+	public void test_activateUser__activation_expired(
+			@Mocked DomainCalendar domainCalendar) {
+		String activationId = "activate01";
+		
+		new Expectations() {{
+			userActivationRepository.findById(new UserActivationId(activationId));
+				result = new UserActivationFixture()
+								.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
+								.get();
+			domainCalendar.systemDate();
+				result = Dates.dateShortTime("2015/10/01 12:01");
+		}};
+		DomainObject.setDomainCalendar(domainCalendar);
+
+		try {
+			target.activateUser(activationId);
+		} catch (ApplicationException e) {
+			assertThat(e.hasErrorOf(ErrorType.ACTIVATION_NOT_FOUND), is(true));
+		}
 	}
 }
