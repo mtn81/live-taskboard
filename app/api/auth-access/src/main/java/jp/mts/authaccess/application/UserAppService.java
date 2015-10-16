@@ -2,6 +2,9 @@ package jp.mts.authaccess.application;
 
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserActivation;
+import jp.mts.authaccess.domain.model.UserActivationId;
+import jp.mts.authaccess.domain.model.UserActivationRepository;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.base.application.ApplicationException;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAppService {
 	
 	@Autowired UserRepository userRepository;
+	@Autowired UserActivationRepository userActivationRepository;
 	@Autowired AuthenticateService authenticateService;
 
 	public User register(
@@ -39,8 +43,15 @@ public class UserAppService {
 	}
 
 	public User activateUser(String activationId) {
-		return null;
+		UserActivation userActivation = userActivationRepository.findById(new UserActivationId(activationId));
+		if(userActivation == null) 
+			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
+
+		User user = userRepository.findById(userActivation.userId());
+		user.activate();
 		
+		userRepository.save(user);
+		return user;
 	}
 
 }

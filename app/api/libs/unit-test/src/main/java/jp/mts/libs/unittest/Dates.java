@@ -6,6 +6,14 @@ import java.util.Date;
 
 public class Dates {
 	
+	public static Date dateShortTime(String value){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+		try {
+			return format.parse(value);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	public static Date dateTime(String value){
 		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
 		try {

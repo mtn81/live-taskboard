@@ -2,6 +2,7 @@ package jp.mts.authaccess.application;
 
 public enum ErrorType implements jp.mts.base.application.ErrorType {
 	AUTH_FAILED("e001", "認証に失敗しました。IDまたはパスワードが間違っています。"),
+	ACTIVATION_NOT_FOUND("e002", "有効化できません"),
 	USER_ID_ALREADY_EXISTS("e002", "指定されたユーザIDは利用できません。"),
 	;
 	

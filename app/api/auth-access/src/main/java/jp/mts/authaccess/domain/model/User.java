@@ -1,11 +1,14 @@
 package jp.mts.authaccess.domain.model;
 
+import ch.qos.logback.core.status.Status;
+
 public class User {
 	
 	private UserId id;
 	private String email;
 	private String encryptedPassword;
 	private String name;
+	private UserStatus status;
 	
 	public User(UserId id, 
 				String email, 
@@ -15,8 +18,13 @@ public class User {
 		this.email = email;
 		this.encryptedPassword = encryptedPassword;
 		this.name = name;
+		this.status = UserStatus.NEW;
 	}
 
+	public void activate() {
+		this.status = UserStatus.ACTIVE;
+	}
+	
 	public UserId id() {
 		return this.id;
 	}
@@ -28,6 +36,9 @@ public class User {
 	}
 	public String encryptedPassword() {
 		return encryptedPassword;
+	}
+	public UserStatus status() {
+		return status;
 	}
 
 	@Override
