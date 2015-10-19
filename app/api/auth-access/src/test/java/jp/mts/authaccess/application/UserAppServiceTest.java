@@ -4,9 +4,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserActivationFixture;
+import jp.mts.authaccess.domain.model.UserActivationPromiseFixture;
 import jp.mts.authaccess.domain.model.UserActivationId;
-import jp.mts.authaccess.domain.model.UserActivationRepository;
+import jp.mts.authaccess.domain.model.UserActivationPromiseRepository;
 import jp.mts.authaccess.domain.model.UserFixture;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
@@ -26,7 +26,7 @@ public class UserAppServiceTest {
 
 	@Tested UserAppService target = new UserAppService();
 	@Injectable UserRepository userRepository;
-	@Injectable UserActivationRepository userActivationRepository;
+	@Injectable UserActivationPromiseRepository userActivationRepository;
 	@Injectable AuthenticateService authenticateService;
 
 	@Test
@@ -55,7 +55,7 @@ public class UserAppServiceTest {
 		
 		new Expectations() {{
 			userActivationRepository.findById(new UserActivationId(activationId));
-				result = new UserActivationFixture(activationId)
+				result = new UserActivationPromiseFixture(activationId)
 								.setUserId(userId)
 								.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
 								.get();
@@ -96,7 +96,7 @@ public class UserAppServiceTest {
 		
 		new Expectations() {{
 			userActivationRepository.findById(new UserActivationId(activationId));
-				result = new UserActivationFixture()
+				result = new UserActivationPromiseFixture()
 								.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
 								.get();
 			domainCalendar.systemDate();

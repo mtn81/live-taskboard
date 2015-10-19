@@ -1,8 +1,11 @@
 package jp.mts.authaccess.domain.model;
 
-import ch.qos.logback.core.status.Status;
+import jp.mts.base.domain.model.DomainObject;
 
-public class User {
+import org.apache.commons.lang3.time.DateUtils;
+
+
+public class User extends DomainObject{
 	
 	private UserId id;
 	private String email;
@@ -19,6 +22,15 @@ public class User {
 		this.encryptedPassword = encryptedPassword;
 		this.name = name;
 		this.status = UserStatus.NEW;
+	}
+	
+	public UserActivationPromise promiseActivate(
+			UserActivationId activationId) {
+
+		return new UserActivationPromise(
+				activationId, 
+				id,
+				DateUtils.addHours(calendar.systemDate(), 1));
 	}
 
 	public void activate() {
@@ -64,6 +76,10 @@ public class User {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	void setStatus(UserStatus status) {
+		this.status = status;
 	}
 	
 	
