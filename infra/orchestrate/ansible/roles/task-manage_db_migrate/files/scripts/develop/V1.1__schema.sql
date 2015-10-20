@@ -1,3 +1,14 @@
+create table events (
+  type varchar(100),
+  occurred timestamp,
+  body bytea
+);
+
+create table event_processes (
+  type varchar(100) unique,
+  last_event_id integer
+);
+
 create table groups (
   group_id varchar(100) unique not null,
   owner_member_id varchar(100) not null,
@@ -18,16 +29,6 @@ create table groups_members (
   constraint uc_groups_members unique (group_id, member_id)
 );
 
-create table events (
-  type varchar(100),
-  occurred timestamp,
-  body bytea
-);
-
-create table event_processes (
-  type varchar(100) unique,
-  last_event_id integer
-);
 
 create table tasks (
   task_id varchar(100) unique not null,
