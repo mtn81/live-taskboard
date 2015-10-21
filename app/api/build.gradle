@@ -83,12 +83,14 @@ subprojects {
     compile "org.springframework.boot:spring-boot-starter-aop"
     compile("org.springframework.boot:spring-boot-starter-amqp")
     compile("org.springframework.boot:spring-boot-starter-websocket")
+    compile("org.springframework.boot:spring-boot-starter-mail")
     testCompile "org.springframework.boot:spring-boot-starter-test"
 
     compile "org.apache.commons:commons-lang3:3.4"
   	compile "com.h2database:h2:1.4.187"
   	compile "org.javalite:activejdbc:1.4.10"
   	compile 'org.postgresql:postgresql:9.3-1102-jdbc4'
+    compile 'javax.mail:javax.mail-api:1.5.4'
 
     compile "org.msgpack:msgpack-core:0.7.0-p9"
     compile "org.msgpack:jackson-dataformat-msgpack:0.7.0-p5"

@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 public class EventDelegateTask {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -18,7 +17,8 @@ public class EventDelegateTask {
 		this.eventService = eventService;
 	}
 
-	@Scheduled(fixedDelay=3000)
+	@Transactional
+	@Scheduled(fixedDelay=10000)
 	public void delegateEvent() {
 		logger.debug("start delegate event");
 		eventService.delegateEvent();
