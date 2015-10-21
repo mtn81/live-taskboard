@@ -1,4 +1,4 @@
-package jp.mts.taskmanage.mq.listener;
+package jp.mts.libs.event.mq;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface EventListenerConfig {
+public @interface EventMqListenerConfig {
 	
 	String[] targetEventTypes() default {};
 }

@@ -2,8 +2,8 @@ package jp.mts.authaccess.infrastructure.jdbc.repository;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import jp.mts.authaccess.domain.model.UserActivationPromise;
-import jp.mts.authaccess.domain.model.UserActivationPromiseFixture;
+import jp.mts.authaccess.domain.model.UserActivation;
+import jp.mts.authaccess.domain.model.UserActivationFixture;
 import jp.mts.base.unittest.JdbcTestBase;
 
 import org.junit.Test;
@@ -15,10 +15,10 @@ public class JdbcUserActivationRepositoryTest extends JdbcTestBase{
 	@Test
 	public void test_persistence() {
 		
-		UserActivationPromise userActivation = new UserActivationPromiseFixture().get();
+		UserActivation userActivation = new UserActivationFixture().get();
 		target.save(userActivation);
 		
-		UserActivationPromise found = target.findById(userActivation.id());
+		UserActivation found = target.findById(userActivation.id());
 		
 		assertThat(found, is(userActivation));
 		assertThat(found.id(), is(userActivation.id()));

@@ -24,17 +24,20 @@ public class User extends DomainObject{
 		this.status = UserStatus.NEW;
 	}
 	
-	public UserActivationPromise promiseActivate(
+	public UserActivation promiseActivate(
 			UserActivationId activationId) {
 
-		return new UserActivationPromise(
+		return new UserActivation(
 				activationId, 
 				id,
 				DateUtils.addHours(calendar.systemDate(), 1));
 	}
 
-	public void activate() {
+	public boolean activate(UserActivation userActivation) {
+		if(userActivation.isExpired()) return false;
+		
 		this.status = UserStatus.ACTIVE;
+		return true;
 	}
 	
 	public UserId id() {

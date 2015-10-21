@@ -1,28 +1,27 @@
-package jp.mts.taskmanage.task;
+package jp.mts.base.task;
 
-import jp.mts.taskmanage.application.EventAppService;
+import jp.mts.libs.event.EventService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-
-@Component
+@Transactional
 public class EventDelegateTask {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private EventAppService eventAppService;	
+	private EventService eventService;	
 	
-	//@Scheduled(fixedDelay=30000)
+	public EventDelegateTask(EventService eventService) {
+		this.eventService = eventService;
+	}
+
+	@Scheduled(fixedDelay=3000)
 	public void delegateEvent() {
 		logger.debug("start delegate event");
-
-		eventAppService.delegateEvent();
-
+		eventService.delegateEvent();
 		logger.debug("end delegate event");
 	}
 }

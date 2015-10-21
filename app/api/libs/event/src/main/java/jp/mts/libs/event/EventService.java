@@ -1,9 +1,8 @@
-package jp.mts.taskmanage.application;
+package jp.mts.libs.event;
 
 import java.util.List;
 import java.util.UUID;
 
-import jp.mts.libs.event.EventProcessRecord;
 import jp.mts.libs.event.eventstore.EventStore;
 import jp.mts.libs.event.eventstore.StoredEvent;
 
@@ -14,23 +13,24 @@ import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional
-public class EventAppService {
+public class EventService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
-	@Autowired
 	private RabbitTemplate rabbitTemplate;
-	@Autowired
 	private EventStore eventStore;
-	@Autowired
 	private EventProcessRecord eventProcessRecord;
 	
+	public EventService(
+			RabbitTemplate rabbitTemplate,
+			EventStore eventStore, 
+			EventProcessRecord eventProcessRecord) {
+		this.rabbitTemplate = rabbitTemplate;
+		this.eventStore = eventStore;
+		this.eventProcessRecord = eventProcessRecord;
+	}
+
 	public void delegateEvent() {
 		
 		List<StoredEvent> targetEvents = eventStore.findEventsAfter(

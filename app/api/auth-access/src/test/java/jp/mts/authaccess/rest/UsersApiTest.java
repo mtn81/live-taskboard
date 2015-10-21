@@ -29,7 +29,7 @@ public class UsersApiTest {
 		Deencapsulation.setField(target, userService);
 		new Expectations() {{
 			userService.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
-				result = new UserFixture().get();
+				result = new UserFixture("u01").get();
 		}};
 		
 		UserSave request = new UserSave();

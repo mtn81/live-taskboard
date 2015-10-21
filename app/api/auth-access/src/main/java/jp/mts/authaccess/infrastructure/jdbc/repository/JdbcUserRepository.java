@@ -5,7 +5,6 @@ import jp.mts.authaccess.domain.model.UserBuilder;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.authaccess.domain.model.UserStatus;
-import jp.mts.authaccess.infrastructure.jdbc.model.UserActivationModel;
 import jp.mts.authaccess.infrastructure.jdbc.model.UserModel;
 
 import org.springframework.stereotype.Repository;
@@ -26,10 +25,6 @@ public class JdbcUserRepository implements UserRepository {
 			"password", aUser.encryptedPassword(),
 			"status",   aUser.status().name());
 		userModel.saveIt();
-		
-		if (aUser.status() == UserStatus.ACTIVE) {
-			UserActivationModel.delete("user_id = ?", aUser.id().value());
-		}
 	}
 
 	@Override

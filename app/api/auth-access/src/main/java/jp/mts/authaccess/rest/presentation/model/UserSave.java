@@ -2,6 +2,7 @@ package jp.mts.authaccess.rest.presentation.model;
 
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserActivation;
 import jp.mts.authaccess.rest.presentation.model.validator.Confirm;
 
 import org.hibernate.validator.constraints.Email;

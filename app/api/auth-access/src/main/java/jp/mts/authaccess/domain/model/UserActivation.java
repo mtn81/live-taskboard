@@ -6,13 +6,13 @@ import org.apache.commons.lang3.time.DateUtils;
 
 import jp.mts.base.domain.model.DomainObject;
 
-public class UserActivationPromise extends DomainObject {
+public class UserActivation extends DomainObject {
 	
 	private UserActivationId id;
 	private UserId userId;
 	private Date expireTime;
 	
-	public UserActivationPromise(
+	public UserActivation(
 			UserActivationId id, UserId userId, Date expireTime) {
 		this.id = id;
 		this.userId = userId;
@@ -57,7 +57,7 @@ public class UserActivationPromise extends DomainObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserActivationPromise other = (UserActivationPromise) obj;
+		UserActivation other = (UserActivation) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

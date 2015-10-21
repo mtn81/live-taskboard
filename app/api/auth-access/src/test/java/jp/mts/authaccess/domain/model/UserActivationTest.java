@@ -11,14 +11,14 @@ import mockit.Mocked;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserActivationPromiseTest {
+public class UserActivationTest {
 
-	UserActivationPromise target;
+	UserActivation target;
 	@Mocked DomainCalendar domainCalendar;
 	
 	@Before
 	public void setup() {
-		target = new UserActivationPromiseFixture()
+		target = new UserActivationFixture()
 			.setExpireTime(Dates.dateShortTime("2015/10/01 12:00")).get();
 
 		DomainObject.setDomainCalendar(domainCalendar);

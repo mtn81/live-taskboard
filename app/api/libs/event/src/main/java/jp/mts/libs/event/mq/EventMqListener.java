@@ -1,4 +1,4 @@
-package jp.mts.taskmanage.mq.listener;
+package jp.mts.libs.event.mq;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -10,18 +10,18 @@ import jp.mts.libs.event.eventstore.StoredEventSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class EventListener {
+public abstract class EventMqListener {
 
-	private static Logger logger = LoggerFactory.getLogger(EventListener.class);
+	private static Logger logger = LoggerFactory.getLogger(EventMqListener.class);
 	
 	@Autowired
 	private StoredEventSerializer storedEventSerializer;
 	
-	//@RabbitListener(queues="task-manage")
-	public void proccess(Message message) {
+	
+	protected void processTemplate(Message message, ProcessBody process) {
+		
 		Map<String, Object> headers = message.getMessageProperties().getHeaders();
 		long eventId = (Long)headers.get("eventId");
 		Date occurred = (Date)headers.get("occurred");
@@ -30,12 +30,19 @@ public abstract class EventListener {
 	
 		if (willProcessEvent(eventType)) {
 			logger.debug("event proccess: eventId={}, eventType={}", eventId, eventType);
-			doProccess(eventId, occurred, eventBody);
+			process.doProccess(eventId, occurred, eventBody);
 		}
 	}
 	
+	@FunctionalInterface
+	protected interface ProcessBody {
+		
+		abstract void doProccess(
+			long eventId, Date occurred, EventBody eventBody);
+	}
+	
 	protected boolean willProcessEvent(String eventType) {
-		EventListenerConfig config = this.getClass().getAnnotation(EventListenerConfig.class);
+		EventMqListenerConfig config = this.getClass().getAnnotation(EventMqListenerConfig.class);
 		if (config == null) {
 			throw new IllegalStateException();
 		}
@@ -44,6 +51,4 @@ public abstract class EventListener {
 		return Arrays.asList(config.targetEventTypes()).contains(eventType);
 	}
 	
-	protected abstract void doProccess(
-			long eventId, Date occurred, EventBody eventBody);
 }
