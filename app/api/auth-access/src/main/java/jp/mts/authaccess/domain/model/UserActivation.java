@@ -2,35 +2,25 @@ package jp.mts.authaccess.domain.model;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.time.DateUtils;
-
 import jp.mts.base.domain.model.DomainObject;
 
 public class UserActivation extends DomainObject {
 	
 	private UserActivationId id;
-	private UserId userId;
 	private Date expireTime;
 	
 	public UserActivation(
-			UserActivationId id, UserId userId, Date expireTime) {
+			UserActivationId id, Date expireTime) {
 		this.id = id;
-		this.userId = userId;
 		this.expireTime = expireTime;
 	}
+
 	
 	public UserActivationId id() {
 		return id;
 	}
-	public UserId userId() {
-		return userId;
-	}
 	public Date expireTime() {
 		return expireTime;
-	}
-
-	void setUserId(UserId userId) {
-		this.userId = userId;
 	}
 
 	void setExpireTime(Date expireTime) {

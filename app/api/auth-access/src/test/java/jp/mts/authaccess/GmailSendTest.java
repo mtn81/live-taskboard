@@ -1,12 +1,13 @@
 package jp.mts.authaccess;
 
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
@@ -18,6 +19,7 @@ public class GmailSendTest {
 	private JavaMailSender javaMailSender;
 
 	@Test
+	@Ignore
 	public void test() {
 		SpringApplication.run(GmailSendTest.class);
 	}

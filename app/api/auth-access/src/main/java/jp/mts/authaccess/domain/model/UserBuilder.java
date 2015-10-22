@@ -12,6 +12,10 @@ public class UserBuilder {
 		user.setStatus(status);
 		return this;
 	}
+	public UserBuilder setUserActivation(UserActivation activation) {
+		user.setUserActivation(activation);
+		return this;
+	}
 	
 	public User get() {
 		return user;

@@ -4,7 +4,6 @@ import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserActivation;
 import jp.mts.authaccess.domain.model.UserActivationId;
-import jp.mts.authaccess.domain.model.UserActivationRepository;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
 import jp.mts.base.application.ApplicationException;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserAppService {
 	
 	@Autowired UserRepository userRepository;
-	@Autowired UserActivationRepository userActivationRepository;
 	@Autowired AuthenticateService authenticateService;
 
 	public User register(
@@ -44,33 +42,16 @@ public class UserAppService {
 	}
 
 	public User activateUser(String activationId) {
-		UserActivation userActivation 
-			= userActivationRepository.findById(new UserActivationId(activationId));
-		if(userActivation == null) 
+		User user = userRepository.findByActivationId(new UserActivationId(activationId));
+		if(user == null) 
 			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
 
-		User user = userRepository.findById(userActivation.userId());
-
-		if (!user.activate(userActivation)) {
+		if (!user.activate()) {
 			throw new ApplicationException(ErrorType.ACTIVATION_EXPIRED);
 		}
 		
 		userRepository.save(user);
-		userActivationRepository.remove(userActivation);
 		return user;
-	}
-
-	public UserActivation prepareActivation(String userId) {
-		
-		User user = userRepository.findById(new UserId(userId));
-		if (user == null) throw new IllegalStateException();		
-
-		UserActivation userActivationPromise = user.promiseActivate(
-				userActivationRepository.newActivationId());
-		
-		userActivationRepository.save(userActivationPromise);
-		
-		return userActivationPromise;
 	}
 
 }

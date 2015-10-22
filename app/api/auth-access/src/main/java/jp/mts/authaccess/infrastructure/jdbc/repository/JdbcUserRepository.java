@@ -1,6 +1,8 @@
 package jp.mts.authaccess.infrastructure.jdbc.repository;
 
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserActivation;
+import jp.mts.authaccess.domain.model.UserActivationId;
 import jp.mts.authaccess.domain.model.UserBuilder;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
@@ -23,7 +25,10 @@ public class JdbcUserRepository implements UserRepository {
 			"email",    aUser.email(),
 			"name",     aUser.name(),
 			"password", aUser.encryptedPassword(),
-			"status",   aUser.status().name());
+			"status",   aUser.status().name(),
+			"activation_id", aUser.userActivation().id().value());
+		userModel.setDate(
+				"activation_expire", aUser.userActivation().expireTime());
 		userModel.saveIt();
 	}
 
@@ -49,7 +54,17 @@ public class JdbcUserRepository implements UserRepository {
 				userModel.getString("password"),
 				userModel.getString("name")))
 			.setStatus(UserStatus.ACTIVE)
+			.setUserActivation(
+				new UserActivation(
+					new UserActivationId(userModel.getString("activatiion_id")), 
+					userModel.getDate("activation_expire")))
 			.get();
+	}
+
+	@Override
+	public User findByActivationId(UserActivationId userActivationId) {
+		UserModel userModel = UserModel.findFirst("activation_id = ?", userActivationId.value());
+		return fromDbToDomain(userModel);
 	}
 	
 }

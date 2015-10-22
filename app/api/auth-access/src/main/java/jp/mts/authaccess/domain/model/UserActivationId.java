@@ -1,8 +1,14 @@
 package jp.mts.authaccess.domain.model;
 
+import java.util.UUID;
+
 public class UserActivationId {
 
 	private String value;
+	
+	public UserActivationId() {
+		this.value = UUID.randomUUID().toString();
+	}
 	
 	public UserActivationId(String value) {
 		this.value = value;

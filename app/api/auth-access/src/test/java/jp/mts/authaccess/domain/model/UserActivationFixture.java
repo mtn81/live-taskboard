@@ -12,13 +12,7 @@ public class UserActivationFixture {
 	public UserActivationFixture(String activationId) {
 		userActivation = new UserActivation(
 				new UserActivationId(activationId),
-				new UserId("u01"),
 				new Date());
-	}
-
-	public UserActivationFixture setUserId(String userId) {
-		userActivation.setUserId(new UserId(userId));
-		return this;
 	}
 
 	public UserActivationFixture setExpireTime(Date dateTime) {

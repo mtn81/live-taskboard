@@ -35,9 +35,9 @@ export class UserService {
       });
   }
 
-  activate(activateId) {
+  activate(activationId) {
     this.http
-      .post('/api/auth-access/activate_user/', { activateId: activateId })
+      .post('/api/auth-access/activate_user/', { activationId: activationId })
       .then(response => {
         this.eventAggregator.publish(new UserActivated());
       })

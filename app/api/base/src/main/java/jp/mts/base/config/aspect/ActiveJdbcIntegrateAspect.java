@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.javalite.activejdbc.DB;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,7 +22,7 @@ public class ActiveJdbcIntegrateAspect {
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
 		DB db = new DB("default");
 		try {
-			db.attach(dataSource.getConnection());
+			db.attach(DataSourceUtils.getConnection(dataSource));
 			return pjp.proceed();
 		} finally {
 			db.detach();

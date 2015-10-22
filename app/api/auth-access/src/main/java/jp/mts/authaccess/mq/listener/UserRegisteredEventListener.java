@@ -29,15 +29,12 @@ public class UserRegisteredEventListener extends EventMqListener {
 	public void proccess(Message message) {
 		processTemplate(message, (eventId, occurred, eventBody) -> {
 			
-			String userIdValue = eventBody.asString("userId.value");
+			String activationIdValue = eventBody.asString("activationId.value");
 			String email = eventBody.asString("email");
-			
-			UserActivation userActivationPromise 
-				= userAppService.prepareActivation(userIdValue);
 			
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(email);
-			mailMessage.setText("http://192.168.77.11:9000/#/activate/" + userActivationPromise.id().value());
+			mailMessage.setText("http://192.168.77.11:9000/#/activate/" + activationIdValue);
 			javaMailSender.send(mailMessage);
 			
 		});

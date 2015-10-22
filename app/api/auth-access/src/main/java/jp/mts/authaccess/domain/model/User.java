@@ -12,6 +12,7 @@ public class User extends DomainObject{
 	private String encryptedPassword;
 	private String name;
 	private UserStatus status;
+	private UserActivation userActivation;
 	
 	public User(UserId id, 
 				String email, 
@@ -22,18 +23,12 @@ public class User extends DomainObject{
 		this.encryptedPassword = encryptedPassword;
 		this.name = name;
 		this.status = UserStatus.NEW;
-	}
-	
-	public UserActivation promiseActivate(
-			UserActivationId activationId) {
-
-		return new UserActivation(
-				activationId, 
-				id,
+		this.userActivation = new UserActivation(
+				new UserActivationId(), 
 				DateUtils.addHours(calendar.systemDate(), 1));
 	}
-
-	public boolean activate(UserActivation userActivation) {
+	
+	public boolean activate() {
 		if(userActivation.isExpired()) return false;
 		
 		this.status = UserStatus.ACTIVE;
@@ -54,6 +49,9 @@ public class User extends DomainObject{
 	}
 	public UserStatus status() {
 		return status;
+	}
+	public UserActivation userActivation() {
+		return userActivation;
 	}
 
 	@Override
@@ -84,7 +82,9 @@ public class User extends DomainObject{
 	void setStatus(UserStatus status) {
 		this.status = status;
 	}
-	
+	void setUserActivation(UserActivation userActivation) {
+		this.userActivation = userActivation;
+	}
 	
 
 }

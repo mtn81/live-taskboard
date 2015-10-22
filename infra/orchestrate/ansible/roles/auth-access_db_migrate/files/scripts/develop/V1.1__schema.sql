@@ -15,7 +15,9 @@ create table users (
   email varchar(100),
   name varchar(100),
   password varchar(100),
-  status varchar(10)
+  status varchar(10),
+  activation_id varchar(100) not null,
+  activation_expire timestamp not null
 );
 
 create table auths (
@@ -23,9 +25,3 @@ create table auths (
   user_id varchar(100)
 );
 
-create table user_activations (
-  activation_id varchar(100) not null,
-  user_id varchar(100) not null,
-  expire timestamp not null,
-  constraint uc_user_activations unique (activation_id, user_id)
-);

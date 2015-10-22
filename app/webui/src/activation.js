@@ -15,11 +15,11 @@ export class Activation {
     this.eventAggregator.subscribe(UserActivated, e => {
       this.router.navigate('login');
     });
-    this.userService.activate(this.activateId);
+    this.userService.activate(this.activationId);
   }
 
   //aurelia life cycle callback
   activate(params) {
-    this.activateId = params.id;
+    this.activationId = params.id;
   }
 }

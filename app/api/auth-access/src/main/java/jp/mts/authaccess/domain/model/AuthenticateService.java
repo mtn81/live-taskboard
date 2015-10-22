@@ -46,7 +46,8 @@ public class AuthenticateService {
 				passwordEncriptionService.encrypt(userId, password), 
 				name);
 		
-		domainEventPublisher.publish(new UserRegistered(userId, email));
+		domainEventPublisher.publish(
+				new UserRegistered(userId, newUser.userActivation().id(), email));
 		
 		return newUser;
 	}
