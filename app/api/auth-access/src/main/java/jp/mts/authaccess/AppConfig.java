@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
 	
 	@Autowired 
-	private ApplicationContext applicationContext;
+	private UserRepository userRepository;
+	@Autowired 
+	private AuthRepository authRepository;
 	@Autowired
 	private DomainEventPublisher domainEventPublisher;
 	
@@ -28,8 +30,8 @@ public class AppConfig {
 	@Bean
 	public AuthenticateService authenticateService(){
 		return new AuthenticateService(
-				applicationContext.getBean(UserRepository.class), 
-				applicationContext.getBean(AuthRepository.class), 
+				userRepository,
+				authRepository,
 				passwordEncriptionService(),
 				domainEventPublisher);
 	}

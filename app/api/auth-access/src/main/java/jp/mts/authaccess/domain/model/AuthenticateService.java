@@ -24,6 +24,7 @@ public class AuthenticateService {
 		String encriptedPassword = passwordEncriptionService.encrypt(userId, password);
 		User user = userRepository.findByAuthCredential(userId, encriptedPassword);
 		if(user == null) return null;
+		if(user.status() != UserStatus.ACTIVE) return null;
 
 		AuthId authId = authRepository.newAuthId();
 		Auth auth = new Auth(authId, userId);
@@ -52,7 +53,4 @@ public class AuthenticateService {
 		return newUser;
 	}
 	
-	public void changePassword(User user, String password){
-	}
-
 }
