@@ -7,6 +7,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
@@ -19,8 +20,6 @@ import mockit.Mocked;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 public class GroupApiTest {
 

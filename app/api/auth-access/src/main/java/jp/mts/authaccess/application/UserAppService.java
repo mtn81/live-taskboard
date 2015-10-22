@@ -2,10 +2,10 @@ package jp.mts.authaccess.application;
 
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserActivation;
 import jp.mts.authaccess.domain.model.UserActivationId;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.authaccess.domain.model.UserRepository;
+import jp.mts.authaccess.domain.model.UserStatus;
 import jp.mts.base.application.ApplicationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,8 @@ public class UserAppService {
 	public User activateUser(String activationId) {
 		User user = userRepository.findByActivationId(new UserActivationId(activationId));
 		if(user == null) 
+			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
+		if(user.status() == UserStatus.ACTIVE)
 			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
 
 		if (!user.activate()) {

@@ -5,12 +5,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import jp.mts.base.application.ErrorType;
+
 import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.common.collect.Lists;
-
-import jp.mts.base.application.ErrorType;
 
 public class RestResponse<T> {
 	

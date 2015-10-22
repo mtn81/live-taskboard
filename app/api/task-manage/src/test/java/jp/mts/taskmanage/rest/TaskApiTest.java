@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 
+import jp.mts.base.rest.RestResponse;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.TaskFixture;

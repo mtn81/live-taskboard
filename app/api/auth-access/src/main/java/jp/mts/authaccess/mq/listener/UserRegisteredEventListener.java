@@ -29,7 +29,7 @@ public class UserRegisteredEventListener extends EventMqListener {
 	public void proccess(Message message) {
 		processTemplate(message, (eventId, occurred, eventBody) -> {
 			
-			String activationIdValue = eventBody.asString("userActivationId.value");
+			String activationIdValue = eventBody.asString("activationId.value");
 			String email = eventBody.asString("email");
 			
 			SimpleMailMessage mailMessage = new SimpleMailMessage();

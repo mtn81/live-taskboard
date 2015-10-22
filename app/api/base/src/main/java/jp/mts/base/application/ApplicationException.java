@@ -11,4 +11,7 @@ public class ApplicationException extends RuntimeException {
 	public boolean hasErrorOf(ErrorType errorType){
 		return this.errorType == errorType;
 	}
+	public ErrorType getErrorType() {
+		return errorType;
+	}
 }

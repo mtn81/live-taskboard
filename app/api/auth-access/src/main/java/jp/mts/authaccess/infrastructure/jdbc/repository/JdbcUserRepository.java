@@ -53,7 +53,7 @@ public class JdbcUserRepository implements UserRepository {
 				userModel.getString("email"), 
 				userModel.getString("password"),
 				userModel.getString("name")))
-			.setStatus(UserStatus.ACTIVE)
+			.setStatus(UserStatus.valueOf(userModel.getString("status")))
 			.setUserActivation(
 				new UserActivation(
 					new UserActivationId(userModel.getString("activation_id")), 
