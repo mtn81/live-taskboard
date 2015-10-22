@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(
 	basePackages={
 		"jp.mts.base.config", 
-		"jp.mts.base.rest", 
 		"jp.mts.authaccess"
 	})
 public class RestApiServer {
