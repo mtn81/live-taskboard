@@ -85,6 +85,13 @@ public class User extends DomainObject{
 	void setUserActivation(UserActivation userActivation) {
 		this.userActivation = userActivation;
 	}
-	
-
+	void setEmail(String email) {
+		this.email = email;
+	}
+	void setEncryptedPassword(String encryptedPassword) {
+		this.encryptedPassword = encryptedPassword;
+	}
+	void setName(String name) {
+		this.name = name;
+	}
 }

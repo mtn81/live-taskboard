@@ -1,5 +1,7 @@
 package jp.mts.authaccess.infrastructure.jdbc.repository;
 
+import java.util.Date;
+
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserActivation;
 import jp.mts.authaccess.domain.model.UserActivationId;
@@ -21,14 +23,14 @@ public class JdbcUserRepository implements UserRepository {
 			userModel = new UserModel();
 		}
 		userModel.set(
-			"user_id",  aUser.id().value(),
-			"email",    aUser.email(),
-			"name",     aUser.name(),
+			"user_id", aUser.id().value(),
+			"email", aUser.email(),
+			"name", aUser.name(),
 			"password", aUser.encryptedPassword(),
-			"status",   aUser.status().name(),
+			"status", aUser.status().name(),
 			"activation_id", aUser.userActivation().id().value());
 		userModel.setTimestamp(
-				"activation_expire", aUser.userActivation().expireTime());
+			"activation_expire", aUser.userActivation().expireTime());
 		userModel.saveIt();
 	}
 
@@ -41,6 +43,12 @@ public class JdbcUserRepository implements UserRepository {
 	@Override
 	public User findByAuthCredential(UserId userId, String encryptedPassword) {
 		UserModel userModel = UserModel.findFirst("user_id = ? and password = ?", userId.value(), encryptedPassword);
+		return fromDbToDomain(userModel);
+	}
+	
+	@Override
+	public User findByActivationId(UserActivationId userActivationId) {
+		UserModel userModel = UserModel.findFirst("activation_id = ?", userActivationId.value());
 		return fromDbToDomain(userModel);
 	}
 	
@@ -57,14 +65,8 @@ public class JdbcUserRepository implements UserRepository {
 			.setUserActivation(
 				new UserActivation(
 					new UserActivationId(userModel.getString("activation_id")), 
-					userModel.getTimestamp("activation_expire")))
+					new Date(userModel.getTimestamp("activation_expire").getTime())))
 			.get();
-	}
-
-	@Override
-	public User findByActivationId(UserActivationId userActivationId) {
-		UserModel userModel = UserModel.findFirst("activation_id = ?", userActivationId.value());
-		return fromDbToDomain(userModel);
 	}
 	
 }
