@@ -27,7 +27,7 @@ public class JdbcUserRepository implements UserRepository {
 			"password", aUser.encryptedPassword(),
 			"status",   aUser.status().name(),
 			"activation_id", aUser.userActivation().id().value());
-		userModel.setDate(
+		userModel.setTimestamp(
 				"activation_expire", aUser.userActivation().expireTime());
 		userModel.saveIt();
 	}
@@ -56,8 +56,8 @@ public class JdbcUserRepository implements UserRepository {
 			.setStatus(UserStatus.ACTIVE)
 			.setUserActivation(
 				new UserActivation(
-					new UserActivationId(userModel.getString("activatiion_id")), 
-					userModel.getDate("activation_expire")))
+					new UserActivationId(userModel.getString("activation_id")), 
+					userModel.getTimestamp("activation_expire")))
 			.get();
 	}
 

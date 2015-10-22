@@ -5,15 +5,15 @@ import jp.mts.base.domain.model.DomainEvent;
 public class UserRegistered extends DomainEvent {
 	
 	private UserId userId;
-	private UserActivationId userActivationId;
+	private UserActivationId activationId;
 	private String email;
 
 	public UserRegistered(
 			UserId userId, 
-			UserActivationId userActivationId,
+			UserActivationId activationId,
 			String email) {
 		this.userId = userId;
-		this.userActivationId = userActivationId;
+		this.activationId = activationId;
 		this.email = email;
 	}
 	
@@ -21,7 +21,7 @@ public class UserRegistered extends DomainEvent {
 		return userId;
 	}
 	public UserActivationId getActivationId() {
-		return userActivationId;
+		return activationId;
 	}
 	public String getEmail() {
 		return email;
