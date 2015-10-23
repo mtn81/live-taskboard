@@ -5,7 +5,7 @@
   <div class="menu btn-group btn-group-lg">
     <button type="button" class="btn btn-default" 
       ref="groupMenu" data-toggle="collapse" data-target="#group-menu" click.delegate="toggleMenu(groupMenu)">
-      グループ<br><small>[${group.groupName}]</small>
+      グループ<span show.bind="groups.length > 0"><br><small>[${group.groupName}]</small></span>
     </button>
     <button type="button" class="btn btn-default">メンバー</button>
   </div>

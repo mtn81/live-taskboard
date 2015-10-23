@@ -4,6 +4,7 @@ import java.util.List;
 
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.Member;
+import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,11 @@ public class MemberAppService {
 
 	public List<Member> findMembersInGroup(String groupId) {
 		return memberRepository.findByGroupId(new GroupId(groupId));
+	}
+	
+	public void registerMember(String memberId, String name) {
+		Member newMember = new Member(new MemberId(memberId), name);
+		memberRepository.save(newMember);
 	}
 
 }

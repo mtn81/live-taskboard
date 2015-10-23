@@ -48,7 +48,7 @@ public class AuthenticateService {
 				name);
 		
 		domainEventPublisher.publish(
-				new UserRegistered(userId, newUser.userActivation().id(), email));
+				new UserRegistered(userId, newUser.userActivation().id(), name, email));
 		
 		return newUser;
 	}

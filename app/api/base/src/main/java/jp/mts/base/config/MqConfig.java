@@ -1,19 +1,15 @@
 package jp.mts.base.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.retry.interceptor.RetryInterceptorBuilder;
+import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
 @Configuration
 @EnableRabbit
@@ -28,6 +24,7 @@ public class MqConfig {
         factory.setConnectionFactory(connectionFactory());
         factory.setConcurrentConsumers(3);
         factory.setMaxConcurrentConsumers(3);
+        factory.setAdviceChain(retryOperationsInterceptor());
         return factory;
     }
 	@Bean
@@ -43,21 +40,39 @@ public class MqConfig {
         template.setExchange(rabbitMqSettings.getExchange());
         return template;
     }	
+    @Bean
+    public RetryOperationsInterceptor retryOperationsInterceptor() {
+    	return RetryInterceptorBuilder.stateless()
+    			.maxAttempts(5)
+    			.backOffOptions(1000, 2, 10000)
+    			.build();
+    }
 	
     //TODO ミドルのセットアップとして行う
-	@Bean
-	AmqpAdmin amqpAdmin(){
-		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-
-		Queue queue = new Queue("auth-access", true);
-		FanoutExchange exchange = new FanoutExchange("auth-access", true, false);
-		Binding binding = BindingBuilder.bind(queue).to(exchange);
-
-		rabbitAdmin.declareQueue(queue);
-		rabbitAdmin.declareExchange(exchange);
-		rabbitAdmin.declareBinding(binding);
-
-		return rabbitAdmin;
-	}
+//	@Bean
+//	AmqpAdmin amqpAdmin(){
+//		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
+//
+//		rabbitAdmin.deleteExchange("auth-access");
+//		rabbitAdmin.deleteQueue("auth-access");
+//		rabbitAdmin.deleteExchange("task-manage");
+//		rabbitAdmin.deleteQueue("task-manage");
+//		
+//		Queue aa_queue = new Queue("auth-access", true);
+//		FanoutExchange aa_exchange = new FanoutExchange("auth-access", true, false);
+//		rabbitAdmin.declareQueue(aa_queue);
+//		rabbitAdmin.declareExchange(aa_exchange);
+//
+//		Queue tm_queue = new Queue("task-manage", true);
+//		FanoutExchange tm_exchange = new FanoutExchange("task-manage", true, false);
+//		rabbitAdmin.declareQueue(tm_queue);
+//		rabbitAdmin.declareExchange(tm_exchange);
+//
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(aa_queue).to(aa_exchange));
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(aa_exchange));
+//		//rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(tm_exchange));
+//		
+//		return rabbitAdmin;
+//	}
 
 }

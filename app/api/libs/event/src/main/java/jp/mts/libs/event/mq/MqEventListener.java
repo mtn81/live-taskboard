@@ -2,6 +2,7 @@ package jp.mts.libs.event.mq;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import jp.mts.libs.event.eventstore.EventBody;
@@ -12,15 +13,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class EventMqListener {
+public abstract class MqEventListener {
 
-	private static Logger logger = LoggerFactory.getLogger(EventMqListener.class);
+	private static Logger logger = LoggerFactory.getLogger(MqEventListener.class);
 	
 	@Autowired
 	private StoredEventSerializer storedEventSerializer;
 	
 	
-	protected void processTemplate(Message message, ProcessBody process) {
+	protected void processTemplate(
+			Message message, List<MqEventHandler> handlers) {
 		
 		Map<String, Object> headers = message.getMessageProperties().getHeaders();
 		long eventId = (Long)headers.get("eventId");
@@ -28,26 +30,16 @@ public abstract class EventMqListener {
 		String eventType = (String)headers.get("eventType");
 		EventBody eventBody = storedEventSerializer.deserializeBody(message.getBody());
 	
-		if (willProcessEvent(eventType)) {
-			logger.debug("event proccess: eventId={}, eventType={}", eventId, eventType);
-			process.doProccess(eventId, occurred, eventBody);
-		}
+		handlers.forEach(handler -> {
+			if(isEventTypeHandled(eventType, handler)){
+				logger.debug("event proccess: eventId={}, eventType={}", eventId, eventType);
+				handler.handleEvent(eventId, occurred, eventBody);
+			}
+		});
 	}
 	
-	@FunctionalInterface
-	protected interface ProcessBody {
-		
-		abstract void doProccess(
-			long eventId, Date occurred, EventBody eventBody);
-	}
-	
-	protected boolean willProcessEvent(String eventType) {
-		EventMqListenerConfig config = this.getClass().getAnnotation(EventMqListenerConfig.class);
-		if (config == null) {
-			throw new IllegalStateException();
-		}
-		logger.debug("event proccess check: incommingEvent={}, targetEventType={}", eventType, config.targetEventTypes());
-
+	private boolean isEventTypeHandled(String eventType, MqEventHandler handler) {
+		MqEventHandlerConfig config = handler.getClass().getAnnotation(MqEventHandlerConfig.class) ;
 		return Arrays.asList(config.targetEventTypes()).contains(eventType);
 	}
 	

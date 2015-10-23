@@ -6,14 +6,17 @@ public class UserRegistered extends DomainEvent {
 	
 	private UserId userId;
 	private UserActivationId activationId;
+	private String name;
 	private String email;
 
 	public UserRegistered(
 			UserId userId, 
 			UserActivationId activationId,
+			String name,
 			String email) {
 		this.userId = userId;
 		this.activationId = activationId;
+		this.name = name;
 		this.email = email;
 	}
 	
@@ -25,5 +28,8 @@ public class UserRegistered extends DomainEvent {
 	}
 	public String getEmail() {
 		return email;
+	}
+	public String getName() {
+		return name;
 	}
 }
