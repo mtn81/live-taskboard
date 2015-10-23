@@ -77,8 +77,6 @@ export class UserRegister {
         this.eventAggregator.publish('user-register.enable');
       })
     );
-
-    this.validate();
   }
   detached(){
     for(var i=0; i < this._subscription.length; i++){

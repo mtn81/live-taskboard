@@ -51,11 +51,14 @@ export class Menu {
     });
 
     this.eventAggregator.subscribe('init.menu', e => {
-      let promiseHolder = {};
-      this.groups = this.groupService.groups(promiseHolder);
+      this.groups = this.groupService.groups();
       this.registeringGroups = this.groupService.registeringGroups();
     });
 
+    if(this.authContext.isAuthenticated()){
+      this.groups = this.groupService.groups();
+      this.registeringGroups = this.groupService.registeringGroups();
+    }
   }
 
   toggleMenu(menu){

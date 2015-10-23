@@ -30,7 +30,9 @@ export class Login {
     this.eventAggregator.subscribe('user-register.disable', payload => {
       $(this.userRegisterModal).find('.btn-primary').attr('disabled', true);
     });
-    this.eventAggregator.publish('init.user.register');
+    $(this.userRegisterModal).on('shown.bs.modal', => {
+      this.eventAggregator.publish('init.user.register');
+    });
     $(this.userRegisterModal).modal('show');
   }
 

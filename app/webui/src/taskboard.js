@@ -62,6 +62,10 @@ export class Taskboard {
     });
   }
 
+  get isGroupSelected() {
+    return !!this.group;
+  }
+
   _loadTasks() {
     this.taskService.load(this.group.groupId, (tasks) => {
       this.eventAggregator.publish('tasks.reloaded', tasks);
