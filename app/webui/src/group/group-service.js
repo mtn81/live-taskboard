@@ -6,17 +6,8 @@ import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
 
 
-var _registeringGroups = [];
 var _memberGroups = [];
-var _removeRegisteringGroup = function(groups) {
-  $.each(groups, (i, group) => {
-    $.each(_registeringGroups, (i, registeringGroup) => {
-      if(group.groupId == registeringGroup.groupId) {
-        _registeringGroups.splice(i, 1);
-      }
-    });
-  });
-};
+var _watchingAvailableGroup = false;
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class GroupService {
@@ -33,22 +24,27 @@ export class GroupService {
     this.http
       .post("/api/task-manage/members/" + this.memberId() + "/groups/", group)
       .then(response => {
-        let newGroup = response.content.data;
-        this.eventAggregator.publish(new GroupRegistered());
-        _registeringGroups.push(newGroup);
-
-        let websocket = new WebSocket('ws://localhost:28080/task-manage/websocket/notify');
-        let stompClient = window.Stomp.over(websocket);
-        stompClient.connect({}, frame => {
-          stompClient.subscribe('/user/queue/group_available', response => {
-            this.groups();
-          });
-          stompClient.send('/api/groups/' + newGroup.groupId + '/watch_available');
-        });
+        this.groups();
+        this.eventAggregator.publish(new GroupRegistered(response.content.data));
       })
       .catch(response => {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
+  }
+
+  watchGroupAvailable(callback){
+    if(!this.authContext.isAuthenticated()) return;
+    if(_watchingAvailableGroup) return;
+
+    let websocket = new WebSocket('ws://localhost:28080/task-manage/websocket/notify');
+    let stompClient = window.Stomp.over(websocket);
+    stompClient.connect({}, frame => {
+      stompClient.subscribe('/topic/' + this.memberId() + '/group_available', response => {
+        if (callback) callback(JSON.parse(response.body));
+        this.groups();
+      });
+    });
+    _watchingAvailableGroup = true;
   }
 
   groups(promiseHolder) {
@@ -60,7 +56,6 @@ export class GroupService {
         let foundGroups = response.content.data.groups;
         _memberGroups.length = 0;
         $.merge(_memberGroups, foundGroups);
-        _removeRegisteringGroup(foundGroups);
       })
       .catch(response => {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
@@ -71,10 +66,6 @@ export class GroupService {
     }
 
     return _memberGroups;
-  }
-
-  registeringGroups(){
-    return _registeringGroups;
   }
 
   remove(group){

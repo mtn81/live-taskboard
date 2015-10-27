@@ -11,15 +11,12 @@ div.global-msgs {
 }
 </style>
 
-<div ref="messageContainer" class="global-msgs alert alert-danger alert-dismissible" >
+<div ref="messageContainer" class="global-msgs alert alert-info alert-dismissible" >
   <button click.delegate="close()" type="button" class="close" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
   <ul>
-    <li repeat.for="error of errors">
-      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-      ${error.message}
-    </li>
+    <li repeat.for="info of infos">${info.message}</li>
   </ul>
 </div>
 

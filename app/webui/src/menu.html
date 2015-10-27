@@ -14,9 +14,6 @@
     <div class="panel-body">
       <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
       <div class="list-group">
-        <a class="list-group-item disabled" repeat.for="group of registeringGroups">
-          ${group.groupName} (作成中)
-        </a>
         <a href="#" class="list-group-item group-enabled"
           repeat.for="group of groups" click.delegate="$parent.selectGroup(group)">
           ${group.groupName}

@@ -34,8 +34,7 @@ public class JdbcGroupRepository implements GroupRepository {
 			"group_id", group.groupId().value(),
 			"owner_member_id", group.ownerMemberId().value(),
 			"name", group.name(),
-			"description", group.description(),
-			"state", group.state().name())
+			"description", group.description())
 			.save();
 	}
 
@@ -53,7 +52,6 @@ public class JdbcGroupRepository implements GroupRepository {
 				groupModel.getString("name"), 
 				groupModel.getString("description"));
 		
-		GroupRepository.setState(group, Group.State.valueOf(groupModel.getString("state")));
 		return group;
 	}
 

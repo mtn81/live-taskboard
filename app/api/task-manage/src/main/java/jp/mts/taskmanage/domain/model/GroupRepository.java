@@ -11,7 +11,4 @@ public interface GroupRepository {
 	List<Group> findByIds(List<GroupId> groupIds);
 	void remove(Group group);
 	
-	static void setState(Group group, Group.State state){
-		group.setState(state);
-	}
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import jp.mts.base.application.ApplicationException;
+import jp.mts.base.domain.model.DomainEventPublisher;
+import jp.mts.base.domain.model.DomainObject;
 import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
@@ -23,9 +25,13 @@ import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import com.fasterxml.jackson.databind.Module.SetupContext;
 
 public class GroupAppServiceTest {
 
@@ -33,6 +39,12 @@ public class GroupAppServiceTest {
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
 	@Injectable GroupBelongingRepository groupBelongingRepository;
+	@Mocked DomainEventPublisher domainEventPublisher;
+	
+	@Before
+	public void setup() {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
+	}
 
 	@Test
 	public void test_group_creation() {

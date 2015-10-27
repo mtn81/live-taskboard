@@ -9,15 +9,15 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
 
-@Component
+//@Component
 public class AuthAccessEventListener extends MqEventListener {
 
 	@Autowired
 	private UserRegisteredEventHandler userRegisteredEventHandler;
 	
-	@RabbitListener(queues="auth-access")
+//	@RabbitListener(queues="auth-access")
 	public void proccess(Message message) {
-		processTemplate(message, Lists.newArrayList(
-				userRegisteredEventHandler));
+//		process(message, Lists.newArrayList(
+//				userRegisteredEventHandler));
 	}
 }

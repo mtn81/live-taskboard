@@ -9,6 +9,8 @@ import java.util.List;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
+import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
+import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
@@ -52,8 +54,8 @@ public class GroupApiTest {
 		new Expectations() {{
 			groupAppService.listGroupBelongingFor("m01");
 				result = newArrayList(
-						new GroupFixture("g01").get(), 
-						new GroupFixture("g02").get());
+						new GroupBelongingPair(new GroupFixture("g01").get(), new GroupBelongingFixture("g01", "m01").get()), 
+						new GroupBelongingPair(new GroupFixture("g02").get(), new GroupBelongingFixture("g02", "m01").get()));
 		}};
 
 		RestResponse<GroupList> response = target.listBelongingGroups("m01");

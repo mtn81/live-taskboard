@@ -13,8 +13,7 @@ create table groups (
   group_id varchar(100) unique not null,
   owner_member_id varchar(100) not null,
   name varchar(100) not null,
-  description varchar(100),
-  state varchar(10) not null
+  description varchar(100)
 );
 
 create table members (

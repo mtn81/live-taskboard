@@ -3,6 +3,7 @@ import {Router} from 'aurelia-router';
 import {AuthContext} from './auth/auth-context';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GroupService} from './group/group-service';
+import {GlobalInfo} from './global-info';
 import 'components/jqueryui';
 
 @customElement('menu')
@@ -10,7 +11,6 @@ import 'components/jqueryui';
 export class Menu {
 
   groups = [];
-  registeringGroups = [];
 
   constructor(router, authContext, eventAggregator, groupService){
     this.router = router;
@@ -51,14 +51,21 @@ export class Menu {
     });
 
     this.eventAggregator.subscribe('init.menu', e => {
-      this.groups = this.groupService.groups();
-      this.registeringGroups = this.groupService.registeringGroups();
+      this._initGroup();
     });
 
     if(this.authContext.isAuthenticated()){
-      this.groups = this.groupService.groups();
-      this.registeringGroups = this.groupService.registeringGroups();
+      this._initGroup();
     }
+  }
+
+  _initGroup() {
+    this.groups = this.groupService.groups();
+    this.groupService.watchGroupAvailable(e => {
+      this.eventAggregator.publish(new GlobalInfo([
+        { message: `グループ(${e.groupName})が利用可能になりました。` }
+      ]));
+    });
   }
 
   toggleMenu(menu){

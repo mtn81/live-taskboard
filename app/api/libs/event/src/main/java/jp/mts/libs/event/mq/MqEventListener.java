@@ -1,5 +1,6 @@
 package jp.mts.libs.event.mq;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -13,16 +14,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public abstract class MqEventListener {
+public class MqEventListener {
 
 	private static Logger logger = LoggerFactory.getLogger(MqEventListener.class);
 	
-	@Autowired
-	private StoredEventSerializer storedEventSerializer;
+	private StoredEventSerializer storedEventSerializer = new StoredEventSerializer();
 	
+	private List<MqEventHandler> handlers = new ArrayList<>();
 	
-	protected void processTemplate(
-			Message message, List<MqEventHandler> handlers) {
+	public MqEventListener(MqEventHandler... handlers) {
+		this.handlers = Arrays.asList(handlers);
+	}
+
+	public void process(Message message) {
 		
 		Map<String, Object> headers = message.getMessageProperties().getHeaders();
 		long eventId = (Long)headers.get("eventId");
@@ -36,6 +40,10 @@ public abstract class MqEventListener {
 				handler.handleEvent(eventId, occurred, eventBody);
 			}
 		});
+	}
+	
+	public void addHandlers(List<MqEventHandler> handlers) {
+		this.handlers.addAll(handlers);
 	}
 	
 	private boolean isEventTypeHandled(String eventType, MqEventHandler handler) {

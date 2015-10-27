@@ -13,4 +13,7 @@ public class GroupAvailableNotification {
 	public String getGroupId(){
 		return group.groupId().value();
 	}
+	public String getGroupName(){
+		return group.name();
+	}
 }

@@ -30,6 +30,7 @@ public class GroupSave {
 	//exec
 	public void create(String memberId, GroupAppService groupAppService){
 		this.group = groupAppService.registerGroup(memberId, name, description);
+		groupAppService.entryGroupAsAdministrator(this.group.groupId().value(), memberId);
 	}
 	
 }

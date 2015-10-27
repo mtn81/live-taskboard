@@ -9,7 +9,6 @@ public class Group {
 	private MemberId ownerMemberId;
 	private String name;
 	private String description;
-	private State state;
 
 	public Group(GroupId groupId, MemberId ownerMemberId, String name, String description) {
 		super();
@@ -17,7 +16,6 @@ public class Group {
 		this.ownerMemberId = ownerMemberId;
 		setName(name);
 		setDescription(description);
-		setState(State.CREATING);
 	}
 
 	public GroupId groupId() {
@@ -35,12 +33,6 @@ public class Group {
 	public void changeAttributes(String name, String description){
 		setName(name);
 		setDescription(description);
-	}
-	public State state() {
-		return state;
-	}
-	public void changeToAvailable() {
-		setState(State.AVAILABLE);
 	}
 	public Task createTask(
 			TaskId taskId, 
@@ -63,9 +55,6 @@ public class Group {
 	}
 	void setDescription(String description) {
 		this.description = description;
-	}
-	void setState(State state) {
-		this.state = state;
 	}
 
 	@Override
@@ -91,12 +80,6 @@ public class Group {
 		} else if (!groupId.equals(other.groupId))
 			return false;
 		return true;
-	}
-
-	public enum State {
-		CREATING,
-		AVAILABLE,
-		;
 	}
 
 }

@@ -1,7 +1,5 @@
 package jp.mts.taskmanage.application;
 
-import static jp.mts.taskmanage.application.ErrorType.GROUP_NOT_AVAILABLE;
-import static jp.mts.taskmanage.application.ErrorType.GROUP_NOT_EXIST;
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
 
@@ -11,7 +9,6 @@ import java.util.stream.Collectors;
 
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.Group.State;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -66,13 +63,13 @@ public class GroupAppService {
 		List<Group> groups = groupRepository.findByIds(toGroupIds(groupBelongings));
 		return GroupBelongingPair.pairs(groups, groupBelongings);
 	}
-	
-	private List<GroupId> toGroupIds(List<GroupBelonging> groupBelongings){
-		return groupBelongings.stream()
-				.map(gb -> gb.groupId())
-				.collect(Collectors.toList());
-	}
 
+	public Group findBelongingGroup(String groupId, String memberId) {
+		GroupBelonging groupBelonging = groupBelongingRepository.findById(
+				new MemberId(memberId), new GroupId(groupId));
+		return groupRepository.findById(groupBelonging.groupId());
+	}
+	
 	public void entryGroupAsAdministrator(String groupId, String memberId) {
 		Group group = groupRepository.findById(new GroupId(groupId));
 		if (group == null) return;
@@ -84,31 +81,6 @@ public class GroupAppService {
 		groupBelongingRepository.save(entry);
 	}
 
-	public Group detectRegisteredGroupAvailable(String groupId) {
-		
-		int tryCount = 0;
-		while(tryCount < 10){
-			Group group = groupRepository.findById(new GroupId(groupId));
-			if(group == null) throw new ApplicationException(GROUP_NOT_EXIST);
-			if(group.state() == State.AVAILABLE){
-				return group;
-			}
-			try { Thread.sleep(30000); } catch (InterruptedException e) { }
-			tryCount++;
-		}
-		
-		throw new ApplicationException(GROUP_NOT_AVAILABLE);
-		
-	}
-
-	public void changeGroupToAvailable(String groupId) {
-		Group group = groupRepository.findById(new GroupId(groupId));
-		if (group == null) return;
-
-		group.changeToAvailable();
-		groupRepository.save(group);
-	}
-	
 	public static class GroupBelongingPair {
 		private Group group;
 		private GroupBelonging groupBelonging;
@@ -138,5 +110,13 @@ public class GroupAppService {
 			return groupBelonging;
 		}
 	}
+
+	private List<GroupId> toGroupIds(List<GroupBelonging> groupBelongings){
+		return groupBelongings.stream()
+				.map(gb -> gb.groupId())
+				.collect(Collectors.toList());
+	}
+
+
 
 }

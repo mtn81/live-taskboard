@@ -27,6 +27,7 @@ public class Member extends DomainObject {
 	}
 	
 	public GroupBelonging entryAsAdministratorTo(Group group) {
+		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId));
 		return new GroupBelonging(group.groupId(), memberId, true);
 	}
 

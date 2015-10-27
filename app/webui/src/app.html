@@ -1,5 +1,6 @@
 <template>
 
+  <require from="./global-infos"></require>
   <require from="./global-messages"></require>
   <require from="./menu"></require>
 
@@ -13,11 +14,13 @@
     </p>
     </div>
     <p class="clearfix"></p>
+
   </header>
 
-  <global-messages event.bind="{}"></global-messages>
-
   <div class="page-host">
+    <global-infos></global-infos>
+    <global-messages event.bind="{}"></global-messages>
+
     <router-view></router-view>
   </div>
 </template>

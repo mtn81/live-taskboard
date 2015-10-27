@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @MqEventHandlerConfig(targetEventTypes="jp.mts.authaccess.domain.model.UserRegistered")
-public class MemberCreatedEventHandler implements MqEventHandler {
+public class CreateMemberEventHandler implements MqEventHandler {
 
 	@Autowired
 	private MemberAppService memberAppService;
