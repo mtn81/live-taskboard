@@ -3,9 +3,9 @@ import {inject, customElement, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from 'global-error';
 
-@customElement('global-messages')
+@customElement('global-errors')
 @inject(EventAggregator)
-export class GlobalMessages {
+export class GlobalErrors {
   @bindable event = null;
   errors = [];
 

@@ -1,7 +1,7 @@
 <template>
 
   <require from="./global-infos"></require>
-  <require from="./global-messages"></require>
+  <require from="./global-errors"></require>
   <require from="./menu"></require>
 
   <header class="page-header">
@@ -17,10 +17,13 @@
 
   </header>
 
-  <div class="page-host">
-    <global-infos></global-infos>
-    <global-messages event.bind="{}"></global-messages>
-
-    <router-view></router-view>
+  <div class="main-container">
+    <div class="global-message-container">
+      <global-infos></global-infos>
+      <global-errors event.bind="{}"></global-errors>
+    </div>
+    <div class="page-host">
+      <router-view></router-view>
+    </div>
   </div>
 </template>

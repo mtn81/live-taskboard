@@ -1,10 +1,10 @@
 <template>
 
-<require from="./global-messages"></require>
+<require from="./global-errors"></require>
 <require from="./form-validate"></require>
 
-<global-messages event.bind="{ event: 'user.register.failed' }"></global-messages>
-<global-messages event.bind="{ event: 'validate.user.register.error', excludeField: true }"></global-messages>
+<global-errors event.bind="{ event: 'user.register.failed' }"></global-errors>
+<global-errors event.bind="{ event: 'validate.user.register.error', excludeField: true }"></global-errors>
 
 <form id="userRegisterForm" formvalid="validate.user.register" ref="userRegisterForm">
   <div class="form-group">
