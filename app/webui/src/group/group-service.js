@@ -4,6 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
+import {HttpClientWrapper} from '../lib/http-client-wrapper';
 
 
 var _memberGroups = [];
@@ -13,23 +14,21 @@ var _watchingAvailableGroup = false;
 export class GroupService {
 
   constructor(http, eventAggregator, authContext) {
-    this.http = http;
+    this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
 
   register(group){
-    if(!this.authContext.isAuthenticated()) return;
 
-    this.http
-      .post("/api/task-manage/members/" + this.memberId() + "/groups/", group)
-      .then(response => {
-        this.groups();
-        this.eventAggregator.publish(new GroupRegistered(response.content.data));
-      })
-      .catch(response => {
-        this.eventAggregator.publish(new GlobalError(response.content.errors));
-      });
+    this.http.call(http => {
+      return http
+        .post(`/api/task-manage/members/${this.memberId()}/groups/`, group)
+        .then(response => {
+          this.groups();
+          this.eventAggregator.publish(new GroupRegistered(response.content.data));
+        })
+    }, true);
   }
 
   watchGroupAvailable(callback){
@@ -47,40 +46,29 @@ export class GroupService {
     _watchingAvailableGroup = true;
   }
 
-  groups(promiseHolder) {
-    if(!this.authContext.isAuthenticated()) return [];
-
-    let promise = this.http
-      .get("/api/task-manage/members/" + this.memberId() + '/groups/?type=belonging')
-      .then(response => {
-        let foundGroups = response.content.data.groups;
-        _memberGroups.length = 0;
-        $.merge(_memberGroups, foundGroups);
-      })
-      .catch(response => {
-        this.eventAggregator.publish(new GlobalError(response.content.errors));
-      });
-
-    if(promiseHolder) {
-      promiseHolder.promise = promise;
-    }
+  groups() {
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/members/${this.memberId()}/groups/?type=belonging`)
+        .then(response => {
+          let foundGroups = response.content.data.groups;
+          _memberGroups.length = 0;
+          $.merge(_memberGroups, foundGroups);
+        });
+    });
 
     return _memberGroups;
   }
 
   remove(group){
-    if(!this.authContext.isAuthenticated()) return;
-
-    group.removing = true;
-
-    this.http
-      .delete("/api/task-manage/members/" + this.memberId() + "/groups/" + group.groupId)
-      .then(response => {
-        this.groups();
-      })
-      .catch(response => {
-        this.eventAggregator.publish(new GlobalError(response.content.errors));
-      });
+    this.http.call(http => {
+      group.removing = true;
+      return http
+        .delete(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`)
+        .then(response => {
+          this.groups();
+        });
+    }, true);
   }
 
   memberId() {

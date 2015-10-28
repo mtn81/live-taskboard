@@ -13,23 +13,24 @@ export class HttpClientWrapper {
     return this;
   }
 
-  call(httpCall) {
-    if(this.loading) return;
+  call(httpCall, nosync) {
+    if(!nosync && this.loading) return;
     if(!!this.authContext && !this.authContext.isAuthenticated()) return;
 
     this.http.configure(builder => {
       builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuth().id);
     });
 
-    this.loading = true;
+    if(!nosync) this.loading = true;
 
-    httpCall(this.http)
+    httpCall(this.http, this)
       .then(response => {
-        this.loading = false;
+        if(!nosync) this.loading = false;
       })
       .catch(response => {
-        this._loading = false;
+        if(!nosync) this.loading = false;
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
   }
+
 }
