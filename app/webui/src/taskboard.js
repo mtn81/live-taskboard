@@ -23,6 +23,10 @@ export class Taskboard {
   }
 
   showTaskRegister(){
+    $(this.taskRegisterModal).on('shown.bs.modal', () => {
+      this.eventAggregator.publish('init.task.register', this.group);
+    });
+
     $(this.taskRegisterModal).modal('show');
   }
 

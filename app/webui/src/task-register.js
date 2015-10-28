@@ -44,7 +44,7 @@ export class TaskRegister {
     );
 
     this._subscription.push(
-      this.eventAggregator.subscribe('group.selected', group => {
+      this.eventAggregator.subscribe('init.task.register', group => {
         this.group = group;
         this.members = this.memberServcie.loadByGroup(group.groupId);
       })
