@@ -6,6 +6,9 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class AppArchitecture {
 	
+	@Pointcut("execution(* jp.mts..rest..*Api.*(..))")
+	public void restApi() {}
+
 	@Pointcut("execution(* jp.mts..application..*AppService.*(..))")
 	public void appService() {}
 
