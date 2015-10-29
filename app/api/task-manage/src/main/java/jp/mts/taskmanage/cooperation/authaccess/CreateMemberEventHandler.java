@@ -1,4 +1,4 @@
-package jp.mts.taskmanage.mq.listener;
+package jp.mts.taskmanage.cooperation.authaccess;
 
 import java.util.Date;
 
