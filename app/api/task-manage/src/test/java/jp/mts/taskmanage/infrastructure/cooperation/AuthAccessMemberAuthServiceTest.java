@@ -1,10 +1,10 @@
-package jp.mts.taskmanage.cooperation.authaccess;
+package jp.mts.taskmanage.infrastructure.cooperation;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class MemberAuthServiceTest {
+public class AuthAccessMemberAuthServiceTest {
 
 	@Test
 	public void test() {

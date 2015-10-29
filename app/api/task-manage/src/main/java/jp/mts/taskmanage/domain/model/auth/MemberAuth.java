@@ -1,4 +1,6 @@
-package jp.mts.taskmanage.domain.model;
+package jp.mts.taskmanage.domain.model.auth;
+
+import jp.mts.taskmanage.domain.model.MemberId;
 
 public class MemberAuth {
 
@@ -6,7 +8,6 @@ public class MemberAuth {
 	private boolean expired;
 
 	public MemberAuth(MemberId memberId, boolean expired) {
-		super();
 		this.memberId = memberId;
 		this.expired = expired;
 	}

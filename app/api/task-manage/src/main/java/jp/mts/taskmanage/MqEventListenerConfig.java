@@ -1,7 +1,7 @@
 package jp.mts.taskmanage;
 
 import jp.mts.libs.event.mq.MqEventListener;
-import jp.mts.taskmanage.cooperation.authaccess.CreateMemberEventHandler;
+import jp.mts.taskmanage.mq.listener.CreateMemberEventHandler;
 import jp.mts.taskmanage.websocket.GroupNotifyWebSocketController;
 
 import org.springframework.amqp.core.MessageListener;

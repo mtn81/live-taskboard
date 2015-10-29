@@ -2,8 +2,8 @@ package jp.mts.taskmanage.application;
 
 import java.util.Optional;
 
-import jp.mts.taskmanage.cooperation.authaccess.MemberAuthService;
-import jp.mts.taskmanage.domain.model.MemberAuth;
+import jp.mts.taskmanage.domain.model.auth.MemberAuth;
+import jp.mts.taskmanage.domain.model.auth.MemberAuthService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
