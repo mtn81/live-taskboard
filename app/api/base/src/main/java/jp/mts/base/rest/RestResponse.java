@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import jp.mts.base.application.ErrorType;
 
 import org.springframework.validation.BindingResult;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.google.common.collect.Lists;
 
@@ -29,21 +31,33 @@ public class RestResponse<T> {
 		RestResponse<T> response = new RestResponse<>(data);
 		return response;
 	}
+	public static <T> RestResponse<T> of(ApiError e, int statusCode) {
+		setResponseStatus(statusCode);
+		return of(e);
+	}
 	public static <T> RestResponse<T> of(ApiError e) {
 		RestResponse<T> response = new RestResponse<>();
 		response.addError(e);
 		return response;
+	}
+	public static <T> RestResponse<T> of(List<ApiError> e, int statusCode) {
+		setResponseStatus(statusCode);
+		return of(e);
 	}
 	public static <T> RestResponse<T> of(List<ApiError> e) {
 		RestResponse<T> response = new RestResponse<>();
 		response.addErrors(e);
 		return response;
 	}
-	public static <T> RestResponse<T> of(BindingResult bindingResult, HttpServletResponse response) {
+	public static <T> RestResponse<T> of(BindingResult bindingResult) {
 		if(bindingResult.hasErrors()){
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			setResponseStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		return of(ApiError.errors(bindingResult));
+	}
+	private static void setResponseStatus(int statusCode) {
+		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
+		requestAttributes.getResponse().setStatus(statusCode);
 	}
 	
 	public void addError(ApiError e){

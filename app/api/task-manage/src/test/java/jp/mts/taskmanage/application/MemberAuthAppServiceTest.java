@@ -23,7 +23,7 @@ public class MemberAuthAppServiceTest {
 	public void test_successWhenValidMemberAuthExists() {
 		new Expectations() {{
 			memberAuthService.establishAuth("a01");
-				result = Optional.of(new MemberAuth(new MemberId("a01"), false));
+				result = Optional.of(new MemberAuth(new MemberId("a01")));
 		}};
 		
 		boolean actual = target.validateAuth("a01");
@@ -41,9 +41,12 @@ public class MemberAuthAppServiceTest {
 	}
 	@Test
 	public void test_failedWhenMemberAuthExpired() {
-		new Expectations() {{
+		MemberAuth memberAuth = new MemberAuth(new MemberId("a01"));
+		new Expectations(memberAuth) {{
+			memberAuth.isExpired(); 
+				result = true;
 			memberAuthService.establishAuth("a01");
-				result = Optional.of(new MemberAuth(new MemberId("a01"), true));
+				result = Optional.of(memberAuth);
 		}};
 		
 		boolean actual = target.validateAuth("a01");

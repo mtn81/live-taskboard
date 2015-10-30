@@ -19,6 +19,6 @@ public class MemberAuthAppService {
 		if (!memberAuthResult.isPresent()) return false;
 		
 		MemberAuth memberAuth = memberAuthResult.get();
-		return !memberAuth.expired();
+		return !memberAuth.isExpired();
 	}
 }

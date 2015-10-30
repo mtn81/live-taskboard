@@ -2,9 +2,6 @@ package jp.mts.authaccess.rest;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import javax.servlet.http.HttpServletResponse;
-
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.domain.model.UserFixture;
 import jp.mts.authaccess.rest.presentation.model.UserSave;
@@ -20,7 +17,6 @@ public class UsersApiTest {
 	
 	@Mocked UserAppService userService;
 	@Mocked BindingResult bindingResult;
-	@Mocked HttpServletResponse httpServletResponse;
 
 	@Test
 	public void test_register_successful() {
@@ -39,7 +35,7 @@ public class UsersApiTest {
 		request.setPassword("pass");
 		request.setConfirmPassword("pass");
 
-		RestResponse<UserSave> response = target.register(request, bindingResult, httpServletResponse);
+		RestResponse<UserSave> response = target.register(request, bindingResult);
 		assertThat(response.getData().getUserId(), is("u01"));
 	}
 }

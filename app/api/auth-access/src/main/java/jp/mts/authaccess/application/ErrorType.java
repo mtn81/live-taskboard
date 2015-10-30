@@ -4,7 +4,8 @@ public enum ErrorType implements jp.mts.base.application.ErrorType {
 	AUTH_FAILED("e001", "認証に失敗しました。IDまたはパスワードが間違っています。"),
 	ACTIVATION_NOT_FOUND("e002", "有効化できません"),
 	ACTIVATION_EXPIRED("e003", "ユーザを有効にできる期間を過ぎています。再度ユーザを登録してください。"),
-	USER_ID_ALREADY_EXISTS("e002", "指定されたユーザIDは利用できません。"),
+	USER_ID_ALREADY_EXISTS("e004", "指定されたユーザIDは利用できません。"),
+	AUTH_NOT_FOUND("e005", "認証が必要です。"),
 	;
 	
 	private String errorCode;

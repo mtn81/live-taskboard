@@ -21,18 +21,15 @@ public class AppConfig {
 	private AuthRepository authRepository;
 	@Autowired
 	private DomainEventPublisher domainEventPublisher;
-	
-	@Bean
-	public PasswordEncriptionService passwordEncriptionService(){
-		return new Pbkdf2UserPasswrodEncriptionService();
-	}
+	@Autowired
+	private PasswordEncriptionService passwordEncriptionService;
 	
 	@Bean
 	public AuthenticateService authenticateService(){
 		return new AuthenticateService(
 				userRepository,
 				authRepository,
-				passwordEncriptionService(),
+				passwordEncriptionService,
 				domainEventPublisher);
 	}
 	

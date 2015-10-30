@@ -16,3 +16,6 @@ rabbitmq:
   username: guest
   password: guest
   exchange: task-manage 
+
+cooperation:
+  auth-access-url: http://localhost:18080/auth-access/api

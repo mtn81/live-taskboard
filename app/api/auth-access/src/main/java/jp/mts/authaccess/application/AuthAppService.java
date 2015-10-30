@@ -1,6 +1,8 @@
 package jp.mts.authaccess.application;
 
 import jp.mts.authaccess.domain.model.Auth;
+import jp.mts.authaccess.domain.model.AuthId;
+import jp.mts.authaccess.domain.model.AuthRepository;
 import jp.mts.authaccess.domain.model.AuthenticateService;
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserId;
@@ -19,25 +21,30 @@ public class AuthAppService {
 	private AuthenticateService authenticateService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private AuthRepository authRepository;
 
 	
-	public AuthResult authenticate(String aUserId, String password) {
+	public void authenticate(String aUserId, String password, AuthenticateCallback callback) {
 		UserId userId = new UserId(aUserId);
 		Auth auth = authenticateService.authenticate(userId, password);
 		if(auth == null) 
 			throw new ApplicationException(ErrorType.AUTH_FAILED);
 		
-		return new AuthResult(auth, userRepository.findById(userId));
+		callback.execute(auth, userRepository.findById(userId));
 	}
-	
-	
-	public static class AuthResult {
-		public Auth auth;
-		public User user;
-		
-		public AuthResult(Auth auth, User user) {
-			this.auth = auth;
-			this.user = user;
+
+	public Auth load(String authId) {
+		Auth auth = authRepository.findById(new AuthId(authId));
+		if (auth == null) {
+			throw new ApplicationException(ErrorType.AUTH_NOT_FOUND);
 		}
+		return auth;
 	}
+	
+	@FunctionalInterface
+	public interface AuthenticateCallback {
+		void execute(Auth auth, User user);
+	}
+
 }

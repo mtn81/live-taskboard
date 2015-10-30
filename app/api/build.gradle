@@ -91,6 +91,7 @@ subprojects {
   	compile "org.javalite:activejdbc:1.4.10"
   	compile 'org.postgresql:postgresql:9.3-1102-jdbc4'
     compile 'javax.mail:javax.mail-api:1.5.4'
+    compile 'com.mashape.unirest:unirest-java:1.4.7'
 
     compile "org.msgpack:msgpack-core:0.7.0-p9"
     compile "org.msgpack:jackson-dataformat-msgpack:0.7.0-p5"

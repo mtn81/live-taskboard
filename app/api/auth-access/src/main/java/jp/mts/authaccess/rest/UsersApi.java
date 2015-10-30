@@ -25,10 +25,9 @@ public class UsersApi {
 	@RequestMapping(value="/", method=POST)
 	public RestResponse<UserSave> register(
 			@RequestBody @Valid UserSave userSave,
-			BindingResult result,
-			HttpServletResponse response){
+			BindingResult result){
 		if(result.hasErrors()){
-			return RestResponse.of(result, response);
+			return RestResponse.of(result);
 		}
 		userSave.create(userAppService);
 		return RestResponse.of(userSave);
@@ -37,11 +36,10 @@ public class UsersApi {
 	@RequestMapping(value="/", method=POST, params="validate")
 	public RestResponse<Void> validateForRegister(
 			@RequestBody @Valid UserSave userSave,
-			BindingResult result,
-			HttpServletResponse response){
+			BindingResult result){
 		
 		if(result.hasErrors()){
-			return RestResponse.of(result, response);
+			return RestResponse.of(result);
 		}
 		userSave.validateForRegister(userAppService);
 		return RestResponse.empty();
