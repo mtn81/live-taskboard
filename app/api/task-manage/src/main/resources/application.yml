@@ -19,3 +19,6 @@ rabbitmq:
 
 cooperation:
   auth-access-url: http://localhost:18080/auth-access/api
+ 
+domain:
+  member-auth-expiration-minutes: 30

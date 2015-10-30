@@ -11,8 +11,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.mashape.unirest.http.JsonNode;
-
 @Service
 public class AuthAccessMemberAuthService implements MemberAuthService {
 
@@ -24,8 +22,9 @@ public class AuthAccessMemberAuthService implements MemberAuthService {
 	@Override
 	public Optional<MemberAuth> establishAuth(String authId) {
 		if (cache.containsKey(authId)) {
-			MemberAuth memberAuth = cache.get(authId).expireExtended();
-			return Optional.of(memberAuth);
+			MemberAuth memberAuth = cache.get(authId);
+			if(memberAuth.isExpired()) return Optional.of(memberAuth);
+			return Optional.of(memberAuth.expireExtended());
 		}
 
 		JSONObject response = authApi.loadAuth(authId);
