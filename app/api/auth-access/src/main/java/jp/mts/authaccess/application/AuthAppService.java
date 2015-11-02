@@ -41,10 +41,19 @@ public class AuthAppService {
 		}
 		return auth;
 	}
+
+	public void remove(String authId) {
+		Auth auth = authRepository.findById(new AuthId(authId));
+		if (auth == null) {
+			throw new ApplicationException(ErrorType.AUTH_NOT_FOUND);
+		}
+		authRepository.remove(auth);
+	}
 	
 	@FunctionalInterface
 	public interface AuthenticateCallback {
 		void execute(Auth auth, User user);
 	}
+
 
 }

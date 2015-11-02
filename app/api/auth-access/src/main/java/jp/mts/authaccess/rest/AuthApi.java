@@ -1,10 +1,13 @@
 package jp.mts.authaccess.rest;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import javax.servlet.http.HttpServletResponse;
 
 import jp.mts.authaccess.application.AuthAppService;
 import jp.mts.authaccess.application.ErrorType;
 import jp.mts.authaccess.rest.presentation.model.AuthLoad;
+import jp.mts.authaccess.rest.presentation.model.AuthRemove;
 import jp.mts.authaccess.rest.presentation.model.Authenticate;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.rest.RestResponse;
@@ -23,7 +26,6 @@ public class AuthApi {
 	
 	@Autowired
 	private AuthAppService authService;
-	
 
 	@RequestMapping(value="/{authId}", method = RequestMethod.GET)
 	public RestResponse<AuthLoad> loadAuth(
@@ -54,5 +56,19 @@ public class AuthApi {
 			}
 			throw e;
 		}
+	}
+	
+	@RequestMapping(value="/{authId}", method = RequestMethod.DELETE)
+	public RestResponse<AuthRemove> removeAuth(@PathVariable String authId) {
+		try {
+			AuthRemove authRemove = new AuthRemove();
+			authRemove.remove(authId, authService);
+			return RestResponse.of(authRemove);
+		} catch (ApplicationException e) {
+			if(e.hasErrorOf(ErrorType.AUTH_NOT_FOUND)) {
+				return RestResponse.of(new ApiError(ErrorType.AUTH_NOT_FOUND), HttpServletResponse.SC_NOT_FOUND);
+			}
+			throw e;
+		} 
 	}
 }

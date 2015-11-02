@@ -1,5 +1,7 @@
 package jp.mts.authaccess.infrastructure.jdbc.repository;
 
+import static org.hamcrest.CoreMatchers.nullValue;
+
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -32,9 +34,15 @@ public class JdbcAuthRepository implements AuthRepository {
 
 	public Auth findById(AuthId authId) {
 		AuthModel model = AuthModel.findFirst("auth_id = ?", authId.value());
+		if (model == null) return null; 
 		return new Auth(
 				new AuthId(model.getString("auth_id")),
 				new UserId(model.getString("user_id")));
+	}
+
+	@Override
+	public void remove(Auth auth) {
+		AuthModel.delete("auth_id=?", auth.id().value());
 	}
 
 }

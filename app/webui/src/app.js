@@ -10,10 +10,11 @@ import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 import {AuthContext} from 'auth/auth-context';
+import {AuthService} from 'auth/auth-service';
 
-@inject(Router, HttpClient, AuthContext)
+@inject(Router, HttpClient, AuthContext, AuthService)
 export class App {
-  constructor(router, http, authContext) {
+  constructor(router, http, authContext, authService) {
     this.router = router;
     this.router.configure(config => {
       config.title = 'live-taskboard';
@@ -30,6 +31,7 @@ export class App {
     });
 
     this.authContext = authContext;
+    this.authService = authService;
   }
 
   get auth(){
@@ -41,7 +43,7 @@ export class App {
   }
 
   logout(){
-    this.authContext.remove();
+    this.authService.logout();
     this.router.navigate('login');
   }
 
