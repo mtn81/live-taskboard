@@ -27,15 +27,29 @@ public class AuthApi {
 				.asJson();
 			
 			if (response.getStatus() != 200) {
-				logger.debug("auth access rest api error", response.getBody().toString());
+				logger.debug("auth access rest api (loadAuth) error", response.getBody().toString());
 				return null;
 			}
 			
 			return response.getBody().getObject();
 
 		} catch (UnirestException e) {
-			logger.warn("failed to call auth access rest api", e);
+			logger.warn("failed to call auth access rest api (loadAuth)", e);
 			return null;
+		}
+	}
+
+	public void removeAuth(String authId) {
+		try {
+			HttpResponse<JsonNode> response = Unirest.delete(baseUrl + "/auth/{authId}")
+				.routeParam("authId", authId)
+				.asJson();
+			
+			if (response.getStatus() != 200) {
+				logger.debug("auth access rest api (removeAuth) error", response.getBody().toString());
+			}
+		} catch (UnirestException e) {
+			logger.warn("failed to call auth access rest api (removeAuth)", e);
 		}
 	}
 

@@ -23,8 +23,14 @@ public class AuthAccessMemberAuthService implements MemberAuthService {
 	public Optional<MemberAuth> establishAuth(String authId) {
 		if (cache.containsKey(authId)) {
 			MemberAuth memberAuth = cache.get(authId);
-			if(memberAuth.isExpired()) return Optional.of(memberAuth);
-			return Optional.of(memberAuth.expireExtended());
+			if(memberAuth.isExpired()) {
+				authApi.removeAuth(authId);
+				return Optional.of(memberAuth);
+			}
+
+			MemberAuth expireExtendedAuth = memberAuth.expireExtended();
+			cache.put(authId, expireExtendedAuth);
+			return Optional.of(expireExtendedAuth);
 		}
 
 		JSONObject response = authApi.loadAuth(authId);

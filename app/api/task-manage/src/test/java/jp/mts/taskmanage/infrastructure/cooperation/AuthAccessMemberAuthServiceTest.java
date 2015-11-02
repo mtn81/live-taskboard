@@ -18,8 +18,6 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mashape.unirest.http.JsonNode;
-
 public class AuthAccessMemberAuthServiceTest {
 
 	AuthAccessMemberAuthService target;
@@ -56,7 +54,7 @@ public class AuthAccessMemberAuthServiceTest {
 		assertThat(actual.get().expireTime(), is(Dates.dateTime("2015/10/01 13:00:00.000")));
 	}
 	@Test
-	public void test_キャッシュの有効期限切れの時は有効期限がのびない() {
+	public void test_キャッシュの有効期限切れの時は有効期限がのびずにログアウトする() {
 		MemberAuth memberAuth = new MemberAuth(new MemberId("m01"));
 		
 		new Expectations() {{
@@ -74,6 +72,8 @@ public class AuthAccessMemberAuthServiceTest {
 		new Expectations() {{
 			domainCalendar.systemDate();
 				result = Dates.dateTime("2015/10/01 14:00:00.000");
+			authApi.removeAuth("a01");
+				times = 1;
 		}};
 		Optional<MemberAuth> cacheResult = target.establishAuth("a01");
 		assertThat(cacheResult.get().expireTime(), is(Dates.dateTime("2015/10/01 13:00:00.000")));
