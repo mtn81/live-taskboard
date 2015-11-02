@@ -19,7 +19,7 @@
       <div repeat.for="task of tasks" class="task panel panel-default"
         widget.bind="{ widgetId: task.taskId, freeOnDrag: false}"
         style="z-index: 100">
-        <div class="panel-body">
+        <div class.bind="'panel-body ' + $parent.deadlineCss(task.deadline)">
           <p>
             <strong>${task.taskName}</strong>
             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"

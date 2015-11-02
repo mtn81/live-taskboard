@@ -40,6 +40,21 @@ export class TaskStatus {
     this.taskService.changeStatus(this.group.groupId, taskId, this.status);
   }
 
+  deadlineCss(deadline) {
+    if (!deadline) return '';
+
+    const now = new Date();
+    const nowTime = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const deadlineTime = new Date(deadline).getTime();
+    if (nowTime > deadlineTime) {
+      return 'task-deadline-error';
+    }
+    if (deadlineTime - nowTime <= 3 * 24 * 60 * 60 * 1000) {
+      return 'task-deadline-warn';
+    }
+    return '';
+  }
+
   bind(bindingContext) {
     //this.taskboardContext = bindingContext.taskboardContext;
   }

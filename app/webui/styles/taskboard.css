@@ -29,3 +29,9 @@ main {
 .taskstate .panel-heading h3 {
   float: left;
 }
+.task-deadline-error {
+  background-color: #FF69B4;
+}
+.task-deadline-warn {
+  background-color: #FFD700;
+}
