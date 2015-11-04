@@ -175,7 +175,8 @@ section.au-enter-active {
   float: left;
 }
 .page-header .login-user-msg {
-  float: right;
+  position: absolute;
+  left: 80%;
   margin-top: 10px;
   margin-right: 10px;
 }

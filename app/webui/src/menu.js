@@ -36,6 +36,7 @@ export class Menu {
     }
 
     this.eventAggregator.publish('group.selected', this.group);
+    this.toggleMenu(this.groupMenuContent, 'hide');
   }
 
   fire(eventId, hideTarget){
@@ -68,10 +69,12 @@ export class Menu {
     });
   }
 
-  toggleMenu(menu){
-    var icon = $(menu).find("span.glyphicon");
-    icon.toggleClass('glyphicon-menu-left');
-    icon.toggleClass('glyphicon-menu-right');
+  toggleMenu(menuContent, collapse){
+    if (collapse == null) {
+      $(menuContent).collapse('toggle')
+    } else {
+      $(menuContent).collapse(collapse);
+    }
   }
 
 }

@@ -26,8 +26,18 @@ main {
 #group-menu .list-group {
   margin-top: 10px;
 }
-.taskstate .panel-heading h3 {
+.taskstatus .panel-heading {
+  height: 40px;
+}
+.taskstatus .panel-heading h3 {
   float: left;
+}
+.taskstatus .panel-actions {
+  position: relative;
+  top: -7px;
+  float: right;
+  margin: 0;
+  padding: 0;
 }
 .task-deadline-error {
   background-color: #FF69B4;

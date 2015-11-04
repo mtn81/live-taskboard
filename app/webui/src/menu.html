@@ -3,14 +3,14 @@
 <template>
 
   <div class="menu btn-group btn-group-lg">
-    <button type="button" class="btn btn-default" 
-      ref="groupMenu" data-toggle="collapse" data-target="#group-menu" click.delegate="toggleMenu(groupMenu)">
+    <button type="button" class="btn btn-default"
+      ref="groupMenu" click.delegate="toggleMenu(groupMenuContent)">
       グループ<span show.bind="groups.length > 0"><br><small>[${group.groupName}]</small></span>
     </button>
     <button type="button" class="btn btn-default">メンバー</button>
   </div>
 
-  <div id="group-menu" class="panel collapse menu-content">
+  <div id="group-menu" ref="groupMenuContent" class="panel collapse menu-content">
     <div class="panel-body">
       <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
       <div class="list-group">

@@ -45,7 +45,7 @@ export class TaskStatus {
 
     const now = new Date();
     const nowTime = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const deadlineTime = new Date(deadline).getTime();
+    const deadlineTime = new Date(`${deadline} 00:00:00`).getTime();
     if (nowTime > deadlineTime) {
       return 'task-deadline-error';
     }

@@ -5,6 +5,7 @@ import {WidgetService} from './widget-service';
 export class WidgetManager {
 
   widgets = [];
+  elements = { draggable:[], resizable:[] };
 
   constructor(widgetService) {
     this.widgetService = widgetService;
@@ -17,6 +18,11 @@ export class WidgetManager {
   load(groupId, callback) {
     this.widgets = this.widgetService.loadAll(groupId, callback);
     this.groupId = groupId;
+
+    this.elements.draggable.forEach(e => e.draggable('destroy'));
+    this.elements.draggable.length = 0;
+    this.elements.resizable.forEach(e => e.resizable('destroy'));
+    this.elements.resizable.length = 0;
   }
 
   droppable(acceptSelector, element, callback) {
@@ -38,6 +44,7 @@ export class WidgetManager {
         }
       }
     });
+
   }
 
   entry(widgetId, element, freeOnDrag) {
@@ -46,7 +53,8 @@ export class WidgetManager {
 
     element.widget = widget;
 
-    $(element)
+    let targetElement = $(element);
+    targetElement
       .css({
         position: 'absolute',
         top: widget.top,
@@ -55,7 +63,7 @@ export class WidgetManager {
       .width(widget.width)
       .height(widget.height);
 
-    $(element)
+    targetElement
       .draggable({
         revert: freeOnDrag ? false : 'invalid',
         stop: (event, ui) => {
@@ -77,6 +85,9 @@ export class WidgetManager {
           me.widgetService.save(widget);
         }
       });
+
+    this.elements.draggable.push(targetElement);
+    this.elements.resizable.push(targetElement);
   }
 
   _get(widgetId) {

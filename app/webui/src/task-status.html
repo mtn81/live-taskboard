@@ -3,7 +3,7 @@
   <require from="./widget"></require>
   <require from="./droppable"></require>
 
-  <div class="taskstate panel panel-default" style="display:inline-block"
+  <div class="taskstatus panel panel-default" style="display:inline-block"
     widget.bind="{ widgetId: 'taskstatus-' + status, freeOnDrag: true}"
     droppable.bind="{ acceptableSelector: '.task', callback: changeStatus.bind(vm) }"
     style="z-index:1">
@@ -11,7 +11,7 @@
       <h3 class="panel-title">
         ${status}
       </h3>
-      <p class="text-right">
+      <p class="panel-actions text-right">
         <content select="botton"></content>
       </p>
     </div>
