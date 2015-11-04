@@ -42,6 +42,7 @@ export class Menu {
   fire(eventId, hideTarget){
     this.eventAggregator.subscribe(eventId + '.success', payload => {
       $(hideTarget).modal('hide');
+      this.toggleMenu(this.groupMenuContent, 'hide');
     });
     this.eventAggregator.publish(eventId);
   }

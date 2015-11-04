@@ -30,12 +30,13 @@ create table groups_members (
 
 
 create table tasks (
-  task_id varchar(100) unique not null,
+  task_id varchar(100) not null,
   group_id varchar(100) not null,
   status varchar(10) not null,
   name varchar(100) not null,
   deadline date,
-  assigned varchar(100)
+  assigned varchar(100),
+  constraint uc_tasks unique (task_id, group_id)
 );
 
 create table task_id_gen (
