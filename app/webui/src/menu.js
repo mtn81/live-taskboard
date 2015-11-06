@@ -19,6 +19,15 @@ export class Menu {
     this.groupService = groupService;
   }
 
+  selectGroupMenu(){
+    this.closeAllMenu();
+    this.router.navigate('taskboard');
+    this.toggleMenu(this.groupMenuContent);
+  }
+  selectJoinMenu(){
+    this.closeAllMenu();
+    this.router.navigate('join');
+  }
   showGroupRegister(){
     $(this.groupRegisterModal).modal('show');
   }
@@ -28,48 +37,33 @@ export class Menu {
   }
 
   selectGroup(group){
-    if(group){
-      this.group = group;
-    } else {
-      if(this.groups.length === 0) return;
-      this.group = this.groups[0];
-    }
-
+    this.group = group;
     this.eventAggregator.publish('group.selected', this.group);
-    this.toggleMenu(this.groupMenuContent, 'hide');
+    this.closeAllMenu();
   }
 
   fire(eventId, hideTarget){
     this.eventAggregator.subscribe(eventId + '.success', payload => {
       $(hideTarget).modal('hide');
-      this.toggleMenu(this.groupMenuContent, 'hide');
+      this.closeAllMenu();
     });
     this.eventAggregator.publish(eventId);
   }
 
-  bind() {
-    this.eventAggregator.subscribe('select.default.group', e => {
-      this.selectGroup();
-    });
-
-    this.eventAggregator.subscribe('init.menu', e => {
-      this._initGroup();
-    });
-
+  attached() {
     if(this.authContext.isAuthenticated()){
-      this._initGroup();
+      this.groups = this.groupService.groups();
+      this.groupService.watchGroupAvailable(e => {
+        this.eventAggregator.publish(new GlobalInfo([
+          { message: `グループ(${e.groupName})が利用可能になりました。` }
+        ]));
+      });
     }
   }
 
-  _initGroup() {
-    this.groups = this.groupService.groups();
-    this.groupService.watchGroupAvailable(e => {
-      this.eventAggregator.publish(new GlobalInfo([
-        { message: `グループ(${e.groupName})が利用可能になりました。` }
-      ]));
-    });
+  closeAllMenu() {
+    $('.menu-content').collapse('hide');
   }
-
   toggleMenu(menuContent, collapse){
     if (collapse == null) {
       $(menuContent).collapse('toggle')

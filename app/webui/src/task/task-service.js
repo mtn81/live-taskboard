@@ -5,11 +5,7 @@ import {GlobalError} from '../global-error';
 import {HttpClientWrapper} from '../lib/http-client-wrapper';
 import {AuthContext} from '../auth/auth-context';
 
-var _tasks = {
-  todo: [],
-  doing: [],
-  done: []
-};
+var _tasks = {};
 
 var _allTasks = function(){
   var tasks = [];
@@ -35,22 +31,23 @@ export class TaskService {
     this.eventAggregator = eventAggregator;
   }
 
-  load(groupId, callback) {
+  load(groupId, status) {
+
+    _tasks[status] = _tasks[status] || [];
 
     this.http.call(http => {
       return http
         .get('/api/task-manage/groups/' + groupId + '/tasks/')
         .then(response => {
           let foundTasks = response.content.data;
-          $.each(_tasks, (status, tasksInStatus) => {
+          $.each(_tasks, (aStatus, tasksInStatus) => {
             tasksInStatus.length = 0;
-            $.merge(tasksInStatus, foundTasks[status]);
+            $.merge(tasksInStatus, foundTasks[aStatus]);
           });
-          if(callback) callback(_tasks);
         });
     });
 
-    return _tasks;
+    return _tasks[status];
   }
 
   register(groupId, task) {
@@ -60,7 +57,7 @@ export class TaskService {
         .then(response => {
           this.eventAggregator.publish(new TaskRegistered());
         });
-    });
+    }, true);
   }
 
   modify(groupId, task) {
@@ -70,7 +67,7 @@ export class TaskService {
         .then(response => {
           this.eventAggregator.publish(new TaskModified());
         });
-    });
+    }, true);
   }
 
   remove(groupId, taskId) {

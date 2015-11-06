@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {inject} from 'aurelia-framework';
 import {WidgetService} from './widget-service';
 
@@ -5,7 +6,7 @@ import {WidgetService} from './widget-service';
 export class WidgetManager {
 
   widgets = [];
-  elements = { draggable:[], resizable:[] };
+  elements = [];
 
   constructor(widgetService) {
     this.widgetService = widgetService;
@@ -19,10 +20,13 @@ export class WidgetManager {
     this.widgets = this.widgetService.loadAll(groupId, callback);
     this.groupId = groupId;
 
-    this.elements.draggable.forEach(e => e.draggable('destroy'));
-    this.elements.draggable.length = 0;
-    this.elements.resizable.forEach(e => e.resizable('destroy'));
-    this.elements.resizable.length = 0;
+    console.log(this.elements.length);
+    let e = this.elements.shift();
+    while(e){
+      e.draggable('destroy');
+      e.resizable('destroy');
+      e = this.elements.shift();
+    }
   }
 
   droppable(acceptSelector, element, callback) {
@@ -48,6 +52,7 @@ export class WidgetManager {
   }
 
   entry(widgetId, element, freeOnDrag) {
+
     let me = this;
     let widget = this._get(widgetId);
 
@@ -70,8 +75,8 @@ export class WidgetManager {
           if (freeOnDrag) {
             widget.top = ui.position.top;
             widget.left = ui.position.left;
-            widget.width = $(element).width();
-            widget.height = $(element).height();
+            widget.width = targetElement.width();
+            widget.height = targetElement.height();
             me.widgetService.save(widget);
           }
         }
@@ -86,8 +91,9 @@ export class WidgetManager {
         }
       });
 
-    this.elements.draggable.push(targetElement);
-    this.elements.resizable.push(targetElement);
+    if(!this._entried(element)) {
+      this.elements.push(targetElement);
+    }
   }
 
   _get(widgetId) {
@@ -99,5 +105,8 @@ export class WidgetManager {
     });
 
     return w || { widgetId: widgetId, categoryId: this.groupId };
+  }
+  _entried(element) {
+    return _.some(this.elements, e => e[0] === element);
   }
 }

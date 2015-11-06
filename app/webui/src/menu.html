@@ -2,12 +2,22 @@
 
 <template>
 
-  <div class="menu btn-group btn-group-lg">
+  <div class="menu btn-group">
     <button type="button" class="btn btn-default"
-      ref="groupMenu" click.delegate="toggleMenu(groupMenuContent)">
+      ref="groupMenu" click.delegate="selectGroupMenu(groupMenuContent)">
       グループ<span show.bind="groups.length > 0"><br><small>[${group.groupName}]</small></span>
     </button>
     <button type="button" class="btn btn-default">メンバー</button>
+  </div>
+  <div class="menu btn-group">
+    <button type="button" class="btn btn-default"
+      click.delegate="selectJoinMenu()">
+      グループ<br>参加
+    </button>
+    <button type="button" class="btn btn-default"
+      click.delegate="selectJoinMenu()">
+      グループ<br>参加承認
+    </button>
   </div>
 
   <div id="group-menu" ref="groupMenuContent" class="panel collapse menu-content">

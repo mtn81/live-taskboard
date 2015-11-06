@@ -1,5 +1,6 @@
 import {customElement, inject, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import bootbox from 'bootbox';
 import {WidgetManager} from './widget/widget-manager';
 import {TaskService, TaskRemoved, TaskModified} from './task/task-service';
@@ -14,10 +15,9 @@ export class TaskStatus {
   @bindable status = '';
   tasks = [];
   members = [];
-  _subscription = [];
 
   constructor(eventAggregator, widgetManager, taskService, memberService) {
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.widgetManager = widgetManager;
     this.taskService = taskService;
     this.memberService = memberService;
@@ -60,45 +60,20 @@ export class TaskStatus {
   }
 
   attached() {
-    var me = this;
 
-    this._subscription.push(
-      this.eventAggregator.subscribe('tasks.reloaded', (tasks) => {
-        this.tasks.length = 0;
-        $.merge(this.tasks, tasks[this.status]);
-      })
+    this.events.subscribe('group.selected', group => {
+      this.group = group;
+      this.members = this.memberService.loadByGroup(group.groupId);
+      this.tasks = this.taskService.load(this.group.groupId, this.status);
+    });
+    this.events.subscribe2(
+      ['task-register.register.success', TaskRemoved, TaskModified],
+      () => {
+        this.tasks = this.taskService.load(this.group.groupId, this.status);
+      }
     );
 
-    this._subscription.push(
-      this.eventAggregator.subscribe('group.selected', group => {
-        this.group = group;
-        this.members = this.memberService.loadByGroup(group.groupId);
-      })
-    );
-    this._subscription.push(
-      this.eventAggregator.subscribe(TaskRemoved, () => {
-        this.eventAggregator.publish('task-status.remove.success');
-      })
-    );
-    this._subscription.push(
-      this.eventAggregator.subscribe(TaskModified, () => {
-        this.eventAggregator.publish('task-status.modify.success');
-      })
-    );
-
-    this.eventAggregator.publish(new TaskStatusAttached(this.status));
-  }
-
-  detached(){
-    for(var i=0; i < this._subscription.length; i++){
-      this._subscription[i]();
-    }
   }
 
 }
 
-export class TaskStatusAttached {
-  constructor(status){
-    this.status = status;
-  }
-}

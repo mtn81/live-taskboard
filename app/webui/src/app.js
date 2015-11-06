@@ -22,7 +22,8 @@ export class App {
       config.map([
         { route: ['','login'],   moduleId: './login',      nav: false, title: 'ログイン' },
         { route: 'activate/:id', moduleId: './activation', nav: false, title: 'ログイン' },
-        { route: 'taskboard',    moduleId: './taskboard',  nav: false, title: 'タスクボード', auth: true}
+        { route: 'taskboard',    moduleId: './taskboard',  nav: false, title: 'タスクボード', auth: true},
+        { route: 'join',         moduleId: './join',       nav: false, title: 'グループ参加', auth: true}
       ]);
     });
 

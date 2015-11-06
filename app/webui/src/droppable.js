@@ -1,21 +1,36 @@
 import {inject, customAttribute} from 'aurelia-framework';
-import {WidgetManager} from './widget/widget-manager';
+import {WidgetService} from './widget/widget-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
 @customAttribute('droppable')
-@inject(Element, WidgetManager, EventAggregator)
+@inject(Element, WidgetService, EventAggregator)
 export class Droppable {
 
-  constructor(element, widgetManager, eventAggregator) {
+  constructor(element, widgetService, eventAggregator) {
     this.element = element;
-    this.widgetManager = widgetManager;
+    this.widgetService = widgetService;
     this.eventAggregator = eventAggregator;
   }
 
   valueChanged(newValue){
-    if (newValue) {
-      this.widgetManager.droppable(newValue.acceptableSelector, this.element, (widget) => {
-        newValue.callback(widget.widgetId);
+    this.value = newValue;
+    if (this.value) {
+
+      let droppableElement = $(this.element);
+      droppableElement.droppable({
+        accept: this.value.acceptSelector,
+        drop: (event, ui) => {
+          let draggableElement = ui.draggable[0];
+          let widget = draggableElement.widget;
+          if(widget){
+            widget.top = ui.offset.top - droppableElement.offset().top;
+            widget.left = ui.offset.left - droppableElement.offset().left;
+            widget.width = $(draggableElement).width();
+            widget.height = $(draggableElement).height();
+            this.widgetService.save(widget);
+            if(this.value.callback) this.value.callback(widget.widgetId);
+          }
+        }
       });
     }
   }

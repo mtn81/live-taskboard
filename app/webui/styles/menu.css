@@ -11,6 +11,9 @@
   background-color: red;
 }
 
+.menu {
+  margin-left: 10px;
+}
 .menu .btn-group .btn {
   height: 70px;
 }

@@ -19,6 +19,8 @@ export class WidgetService {
 
   loadAll(groupId, callback) {
 
+    console.log('widget service loading ?', this._loading);
+
     if(this._loading) return _widgets;
     this._loading = true;
 
@@ -28,7 +30,7 @@ export class WidgetService {
         let foundWidgets = response.content.data.widgets;
         _widgets.length = 0;
         $.merge(_widgets, foundWidgets);
-        callback();
+        callback(_widgets);
         this._loading = false;
       });
 

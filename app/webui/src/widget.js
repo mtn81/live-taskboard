@@ -1,31 +1,71 @@
 import {inject, customAttribute, bindable} from 'aurelia-framework';
-import {WidgetManager} from './widget/widget-manager';
+import {WidgetManager} from './widget-manager';
+import {WidgetService} from './widget/widget-service';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 
 @customAttribute('widget')
-@inject(Element, WidgetManager, EventAggregator)
+@inject(Element, WidgetManager, WidgetService, EventAggregator)
 export class Widget {
-  _subscriptions = [];
 
-  constructor(element, widgetManager, eventAggregator) {
+  constructor(element, widgetManager, widgetService, eventAggregator) {
     this.element = element;
     this.widgetManager = widgetManager;
-    this.eventAggregator = eventAggregator;
+    this.widgetService = widgetService;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
   }
 
   valueChanged(newValue){
-    if (newValue) {
-      this._subscriptions.forEach((s) => s());
+    this.value = newValue;
+    if (this.value) {
 
-      if (this.widgetManager.isLoaded()) {
-        this.widgetManager.entry(newValue.widgetId, this.element, newValue.freeOnDrag);
-      } else {
-        this._subscriptions.push(
-          this.eventAggregator.subscribe('widget.reloaded', () => {
-            this.widgetManager.entry(newValue.widgetId, this.element, newValue.freeOnDrag);
-          })
-        );
-      }
+      this.widgetManager.entry(this.value.widgetId, this.element,
+        (element) => {
+          let widget = element.widget;
+          let targetElement = $(element);
+          targetElement
+            .css({
+              position: 'absolute',
+              top: widget.top,
+              left: widget.left
+            })
+            .width(widget.width)
+            .height(widget.height);
+
+          if (targetElement.draggable('instance'))
+            targetElement.draggable('destroy');
+          if (targetElement.resizable('instance'))
+            targetElement.resizable('destroy');
+
+          targetElement
+            .draggable({
+              revert: this.value.freeOnDrag ? false : 'invalid',
+              stop: (event, ui) => {
+                if (this.value.freeOnDrag) {
+                  widget.top = ui.position.top;
+                  widget.left = ui.position.left;
+                  widget.width = targetElement.width();
+                  widget.height = targetElement.height();
+                  this.widgetService.save(widget);
+                }
+              }
+            })
+            .resizable({
+              stop: (event, ui) => {
+                widget.top = ui.position.top;
+                widget.left = ui.position.left;
+                widget.width = ui.size.width;
+                widget.height = ui.size.height;
+                this.widgetService.save(widget);
+              }
+            });
+        }
+      );
     }
   }
+
+  unbind() {
+    this.widgetManager.cancel(this.element);
+  }
+
 }
