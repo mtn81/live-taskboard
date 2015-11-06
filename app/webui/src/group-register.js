@@ -1,4 +1,5 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {inject} from 'aurelia-framework';
 import {GroupService, GroupRegistered} from './group/group-service';
 
@@ -7,12 +8,10 @@ export class GroupRegister {
 
   groupName = '';
   groupDescription = '';
-  subscription = [];
 
   constructor(eventAggregator, groupService){
     this.groupService = groupService;
-    this.eventAggregator = eventAggregator;
-
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
   }
 
   register(){
@@ -23,21 +22,12 @@ export class GroupRegister {
   }
 
   attached(){
-    this.subscription.push(
-      this.eventAggregator.subscribe('group-register.register', payload => {
-        this.register();
-      })
-    );
-    this.subscription.push(
-      this.eventAggregator.subscribe(GroupRegistered, message => {
-        this.eventAggregator.publish('group-register.register.success');
-      })
-    );
-  }
-  detached(){
-    for(var i=0; i < this.subscription.length; i++){
-      this.subscription[i]();
-    }
+    this.events.subscribe('group-register.register', payload => {
+      this.register();
+    });
+    this.events.subscribe(GroupRegistered, message => {
+      this.events.publish('group-register.register.success');
+    });
   }
 
 }

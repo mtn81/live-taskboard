@@ -2,6 +2,7 @@ import 'bootstrap';
 import _ from 'underscore';
 import {inject, customAttribute} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 
 
 @customAttribute('formvalid')
@@ -10,7 +11,7 @@ export class FormValidate {
 
   constructor(element, eventAggregator) {
     this.element = element;
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
   }
 
   valueChanged(newValue){
@@ -30,10 +31,10 @@ export class FormValidate {
           }
         });
 
-        this.eventAggregator.publish(newValue);
+        this.events.publish(newValue);
       });
 
-      this.eventAggregator.subscribe(newValue + '.error', error => {
+      this.events.subscribe(newValue + '.error', error => {
         const messages = {};
         const $inputs = {};
         error.fieldErrors.forEach(e => {

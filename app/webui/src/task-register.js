@@ -1,4 +1,5 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {inject} from 'aurelia-framework';
 import {TaskService, TaskRegistered} from './task/task-service';
 import {MemberService} from './member/member-service';
@@ -11,11 +12,9 @@ export class TaskRegister {
   assignedMember = null;
   deadline = null;
 
-  _subscription = [];
-
   constructor(eventAggregator, taskService, memberServcie){
     this.taskService = taskService;
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.memberServcie = memberServcie;
   }
 
@@ -32,33 +31,16 @@ export class TaskRegister {
   }
 
   attached(){
-    this._subscription.push(
-      this.eventAggregator.subscribe('task-register.register', payload => {
-        this.register();
-      })
-    );
-    this._subscription.push(
-      this.eventAggregator.subscribe(TaskRegistered, message => {
-        this.eventAggregator.publish('task-register.register.success');
-      })
-    );
-
-    this._subscription.push(
-      this.eventAggregator.subscribe('init.task.register', group => {
-        this.group = group;
-        this.members = this.memberServcie.loadByGroup(group.groupId);
-      })
-    );
-
-    //this.taskboardContext.attachTaskRegister(this);
-    this.eventAggregator.publish(new TaskRegisterAttached());
-  }
-  detached(){
-    for(var i=0; i < this._subscription.length; i++){
-      this._subscription[i]();
-    }
+    this.events.subscribe('task-register.register', payload => {
+      this.register();
+    });
+    this.events.subscribe(TaskRegistered, message => {
+      this.events.publish('task-register.register.success');
+    });
+    this.events.subscribe('init.task.register', group => {
+      this.group = group;
+      this.members = this.memberServcie.loadByGroup(group.groupId);
+    })
   }
 
 }
-
-export class TaskRegisterAttached {}

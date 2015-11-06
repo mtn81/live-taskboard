@@ -1,15 +1,13 @@
 import {inject, customAttribute} from 'aurelia-framework';
 import {WidgetService} from './widget/widget-service';
-import {EventAggregator} from 'aurelia-event-aggregator';
 
 @customAttribute('droppable')
-@inject(Element, WidgetService, EventAggregator)
+@inject(Element, WidgetService)
 export class Droppable {
 
-  constructor(element, widgetService, eventAggregator) {
+  constructor(element, widgetService) {
     this.element = element;
     this.widgetService = widgetService;
-    this.eventAggregator = eventAggregator;
   }
 
   valueChanged(newValue){

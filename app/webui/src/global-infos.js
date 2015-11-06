@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import {inject, customElement, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {GlobalInfo} from 'global-info';
 
 @customElement('global-infos')
@@ -9,9 +10,11 @@ export class GlobalInfos {
   infos = [];
 
   constructor(eventAggregator){
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
+  }
 
-    this.eventAggregator.subscribe(GlobalInfo, event => {
+  attached() {
+    this.events.subscribe(GlobalInfo, event => {
       const infos = event.infos;
       if (_.isEmpty(infos)) return;
 

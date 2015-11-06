@@ -1,6 +1,7 @@
 import _ from 'underscore';
 import {inject, customElement, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {GlobalError} from 'global-error';
 
 @customElement('global-errors')
@@ -10,14 +11,14 @@ export class GlobalErrors {
   errors = [];
 
   constructor(eventAggregator){
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
   }
 
   eventChanged(newValue) {
     if(!newValue) return;
 
     let target = !newValue.event ? { event: GlobalError, excludeField: false } : newValue;
-    this.eventAggregator.subscribe(target.event, event => {
+    this.events.subscribe(target.event, event => {
       const targetErrors = !!target.excludeField ? event.globalErrors : event.errors;
       if (_.isEmpty(targetErrors)) return;
 
