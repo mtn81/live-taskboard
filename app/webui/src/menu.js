@@ -22,6 +22,8 @@ export class Menu {
   selectGroupMenu(){
     this.closeAllMenu();
     this.router.navigate('taskboard');
+
+    this.groups = this.groupService.groups();
     this.toggleMenu(this.groupMenuContent);
   }
   selectJoinMenu(){
