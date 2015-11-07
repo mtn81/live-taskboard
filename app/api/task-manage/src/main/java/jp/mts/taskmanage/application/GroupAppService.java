@@ -80,6 +80,7 @@ public class GroupAppService {
 		GroupBelonging entry = member.entryAsAdministratorTo(group);
 		groupBelongingRepository.save(entry);
 	}
+	
 
 	public static class GroupBelongingPair {
 		private Group group;
@@ -110,12 +111,13 @@ public class GroupAppService {
 			return groupBelonging;
 		}
 	}
-
+	
 	private List<GroupId> toGroupIds(List<GroupBelonging> groupBelongings){
 		return groupBelongings.stream()
 				.map(gb -> gb.groupId())
 				.collect(Collectors.toList());
 	}
+
 
 
 

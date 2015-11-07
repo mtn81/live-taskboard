@@ -4,10 +4,14 @@
 
   <div class="menu btn-group">
     <button type="button" class="btn btn-default"
-      ref="groupMenu" click.delegate="selectGroupMenu(groupMenuContent)">
-      グループ<span show.bind="groups.length > 0"><br><small>[${group.groupName}]</small></span>
+      ref="groupMenu"
+      click.delegate="selectGroupMenu(groupMenuContent)"
+      blur.delegate="closeAllMenu()">
+      グループ<br>
+      <span show.bind="group == null"><small>[未選択]</small></span>
+      <span show.bind="group != null"><small>[${group.groupName}]</small></span>
     </button>
-    <button type="button" class="btn btn-default">メンバー</button>
+    <button type="button" class="btn btn-default" disabled="${group == null ? 'disabled' : ''}">メンバー</button>
   </div>
   <div class="menu btn-group">
     <button type="button" class="btn btn-default"

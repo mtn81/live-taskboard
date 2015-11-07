@@ -8,6 +8,7 @@ import {HttpClientWrapper} from '../lib/http-client-wrapper';
 
 
 var _memberGroups = [];
+var _searchedGroups = [];
 var _watchingAvailableGroup = false;
 
 @inject(HttpClient, EventAggregator, AuthContext)
@@ -69,6 +70,24 @@ export class GroupService {
           this.groups();
         });
     }, true);
+  }
+
+  searchByName(groupName) {
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/groups/search?groupName=${groupName}`)
+        .then(response => {
+          let foundGroups = response.content.data.groups;
+          _searchedGroups.length = 0;
+          $.merge(_searchedGroups, foundGroups);
+        });
+    });
+
+    return _searchedGroups;
+  }
+
+  applyJoin(group) {
+    group.applied = true;
   }
 
   memberId() {

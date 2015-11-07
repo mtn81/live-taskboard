@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import jp.mts.base.unittest.JdbcTestBase.TestConfig;
 
+import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.DB;
 import org.junit.Rule;
 import org.junit.rules.ExternalResource;
@@ -55,12 +56,12 @@ public abstract class JdbcTestBase {
 		@Override
 		protected void before() throws Throwable {
 			System.setProperty("activejdbc.log", "");
-			new DB("default").open(test.dataSource);
+			Base.open(test.dataSource);
 		}
 
 		@Override
 		protected void after() {
-			new DB("default").detach();
+			Base.detach();
 		}
 		
 	}

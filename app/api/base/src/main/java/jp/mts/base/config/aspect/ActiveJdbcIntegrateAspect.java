@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.javalite.activejdbc.DB;
+import org.javalite.activejdbc.Base;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Component;
@@ -18,14 +18,14 @@ public class ActiveJdbcIntegrateAspect {
 	private DataSource dataSource;
 
 	@Around("jp.mts.base.config.aspect.AppArchitecture.repository() || " + 
+			"jp.mts.base.config.aspect.AppArchitecture.query() || " +
 			"jp.mts.base.config.aspect.AppArchitecture.eventStore()")
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
-		DB db = new DB("default");
 		try {
-			db.attach(DataSourceUtils.getConnection(dataSource));
+			Base.attach(DataSourceUtils.getConnection(dataSource));
 			return pjp.proceed();
 		} finally {
-			db.detach();
+			Base.detach();
 		}
 	}
 

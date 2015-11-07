@@ -7,32 +7,37 @@ import javax.servlet.http.HttpServletResponse;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
+import jp.mts.taskmanage.application.query.GroupSearchQuery;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
+import jp.mts.taskmanage.rest.presentation.model.GroupSearch;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/members/{memberId}")
+@RequestMapping("/api")
 public class GroupApi {
 	
 	@Autowired
 	private GroupAppService groupAppService;
+	@Autowired
+	private GroupSearchQuery groupSearchQuery;
 
-	@RequestMapping(value="/groups/", method=RequestMethod.POST)
+	@RequestMapping(value="/members/{memberId}/groups/", method=RequestMethod.POST)
 	public RestResponse<GroupSave> createGroupOnMember(
 			@PathVariable String memberId, 
 			@RequestBody GroupSave groupSave) {
 		groupSave.create(memberId, groupAppService);
 		return RestResponse.of(groupSave);
 	}
-	@RequestMapping(value="/groups/{groupId}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/members/{memberId}/groups/{groupId}", method=RequestMethod.DELETE)
 	public RestResponse<GroupRemove> removeGroupOnMember(
 			@PathVariable String memberId, 
 			@PathVariable String groupId) {
@@ -42,15 +47,15 @@ public class GroupApi {
 		return RestResponse.of(groupRemove);
 	}
 	
-	@RequestMapping(value="/groups/", params="type=belonging", method=RequestMethod.GET)
+	@RequestMapping(value="/members/{memberId}/groups/", params="type=belonging", method=RequestMethod.GET)
 	public RestResponse<GroupList> listBelongingGroups(
 			@PathVariable String memberId) {
 		GroupList groupList = new GroupList();
 		groupList.loadBelongingGroups(memberId, groupAppService);
 		return RestResponse.of(groupList);
 	}
-
-	@RequestMapping(value="/groups/{groupId}/status", params="type=belonging", method=RequestMethod.GET)
+	
+	@RequestMapping(value="/members/{memberId}/groups/{groupId}/status", params="type=belonging", method=RequestMethod.GET)
 	public void notifyGroupRegistered(
 			@PathVariable String memberId,
 			@PathVariable String groupId,
@@ -63,4 +68,14 @@ public class GroupApi {
 		}
 		
 	}
+
+	@RequestMapping(value="/groups/search", method=RequestMethod.GET)
+	public RestResponse<GroupSearch> searchGroups(
+			@RequestParam("groupName") String groupName) {
+		
+		GroupSearch groupSearch = new GroupSearch();
+		groupSearch.searchByName(groupName, groupSearchQuery);
+		return RestResponse.of(groupSearch);
+	}
+	
 }

@@ -1,23 +1,26 @@
 import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
-import {AuthContext} from './auth/auth-context';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {WidgetManager} from './widget/widget-manager';
-import {TaskService} from './task/task-service';
-import {TaskStatusAttached} from './task-status';
-import {TaskRegisterAttached} from './task-register';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
+import {GroupService} from './group/group-service';
 import 'components/jqueryui';
 
-@inject(Router, AuthContext, EventAggregator, WidgetManager, TaskService)
+@inject(EventAggregator, GroupService)
 export class Join {
 
-
-  constructor(router, authContext, eventAggregator, widgetManager, taskService){
-    this.router = router;
-    this.authContext = authContext;
-    this.eventAggregator = eventAggregator;
-    this.widgetManager = widgetManager;
+  constructor(eventAggregator, groupService){
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
+    this.groupService = groupService;
   }
 
+  searchGroup() {
+    this.groupsSearched = this.groupService.searchByName(this.groupName);
+  }
+  applyJoin(group) {
+    this.groupService.applyJoin(group);
+  }
+  
+  activate() {
+  
+  }
 
 }

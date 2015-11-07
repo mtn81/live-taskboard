@@ -3,6 +3,7 @@ package jp.mts.taskmanage.application;
 import static com.google.common.collect.Lists.newArrayList;
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
+import jp.mts.taskmanage.application.query.GroupSearchQuery;
+import jp.mts.taskmanage.application.query.GroupSearchQuery.Result;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
@@ -32,6 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.Module.SetupContext;
+import com.google.common.collect.Lists;
 
 public class GroupAppServiceTest {
 
@@ -39,6 +43,7 @@ public class GroupAppServiceTest {
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
 	@Injectable GroupBelongingRepository groupBelongingRepository;
+	@Injectable GroupSearchQuery groupSearchQuery;
 	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Before
@@ -158,4 +163,5 @@ public class GroupAppServiceTest {
 		
 		target.entryGroupAsAdministrator(groupId, memberId);
 	}
+	
 }
