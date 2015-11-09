@@ -21,6 +21,10 @@ import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
+import jp.mts.taskmanage.domain.model.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberFixture;
@@ -44,6 +48,7 @@ public class GroupAppServiceTest {
 	@Injectable MemberRepository memberRepository;
 	@Injectable GroupBelongingRepository groupBelongingRepository;
 	@Injectable GroupSearchQuery groupSearchQuery;
+	@Injectable GroupJoinApplicationRepository groupJoinApplicationRepository;
 	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Before
@@ -162,6 +167,28 @@ public class GroupAppServiceTest {
 		}};
 		
 		target.entryGroupAsAdministrator(groupId, memberId);
+	}
+	
+	@Test
+	public void test_applyJoin() {
+		
+		GroupJoinApplication groupJoinApplication = new GroupJoinApplicationFixture("a01", "g01", "m01").get();
+		new Expectations() {{
+			memberRepository.findById(new MemberId("m01"));
+				result = new MemberFixture("m01").get();
+			groupRepository.findById(new GroupId("g01"));
+				result = new GroupFixture("g01").get();
+			
+			groupJoinApplicationRepository.newApplicationId();
+				result = new GroupJoinApplicationId("a01");
+			groupJoinApplicationRepository.save(groupJoinApplication);
+		}};
+		
+		GroupJoinApplication actual = target.applyJoin("g01", "m01");
+		
+		assertThat(actual.id().value(), is("a01"));
+		assertThat(actual.groupId().value(), is("g01"));
+		assertThat(actual.applicationMemberId().value(), is("m01"));
 	}
 	
 }

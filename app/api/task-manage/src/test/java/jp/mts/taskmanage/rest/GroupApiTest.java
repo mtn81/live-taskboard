@@ -13,6 +13,12 @@ import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupFixture;
+import jp.mts.taskmanage.domain.model.GroupId;
+import jp.mts.taskmanage.domain.model.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
@@ -98,5 +104,24 @@ public class GroupApiTest {
 		assertThat(groups.get(1).getGroupId(), is("g02"));
 		assertThat(groups.get(1).getGroupName(), is("group2"));
 		assertThat(groups.get(1).getOwner(), is("jiro"));
+	}
+	
+	@Test
+	public void test_applyJoin() {
+		
+		String groupId = "g01";
+		String applicantMemberId = "m01";
+		String applicationId = "a01";
+		
+		new Expectations() {{
+			groupAppService.applyJoin(groupId, applicantMemberId);
+				result = new GroupJoinApplicationFixture(groupId,applicantMemberId).get();
+		}};
+		
+		GroupJoinApply groupJoinApply = new GroupJoinApply();
+		groupJoinApply.setApplicantMemberid(applicantMemberId);
+		RestResponse<GroupJoinApply> response = target.applyJoin(groupId, groupJoinApply);
+		
+		assertThat(response.getData().getJoinApplicationId(), is(applicationId));
 	}
 }

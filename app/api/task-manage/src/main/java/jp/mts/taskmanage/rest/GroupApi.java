@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
+import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
@@ -76,6 +78,15 @@ public class GroupApi {
 		GroupSearch groupSearch = new GroupSearch();
 		groupSearch.searchByName(groupName, groupSearchQuery);
 		return RestResponse.of(groupSearch);
+	}
+	
+	@RequestMapping(value="/groups/{groupId}/apply", method=RequestMethod.POST)
+	public RestResponse<GroupJoinApply> applyJoin(
+			@PathVariable String groupId,
+			@RequestBody @Valid GroupJoinApply groupJoinApply){
+		
+		groupJoinApply.apply(groupId, groupAppService);
+		return RestResponse.of(groupJoinApply);
 	}
 	
 }

@@ -30,6 +30,14 @@ public class Member extends DomainObject {
 		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId));
 		return new GroupBelonging(group.groupId(), memberId, true);
 	}
+	
+	public GroupJoinApplication applyJoinTo(
+			GroupJoinApplicationId applicationId, Group group) {
+		return new GroupJoinApplication(
+				applicationId, 
+				group.groupId(), 
+				memberId);
+	}
 
 	public boolean isOwnerFor(Group group) {
 		return this.memberId.equals(group.ownerMemberId());
