@@ -11,23 +11,26 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JdbcGroupSearchQuery implements GroupSearchQuery {
+	
+	@Override
+	public List<Result> notJoinAppliedByName(String memberId, String groupName) {
+		
+		return toResult(
+			Base.findAll(
+					appliedGroupSql("g.name like ? and gj.status is null"),
+					memberId, "%" + groupName + "%"));
+	}
 
 	@Override
-	public List<Result> byName(String groupName) {
-		
-		List<Map> models = Base.findAll(
-			"select "
-			+ "g.group_id as group_id, "
-			+ "g.name as group_name, "
-			+ "m.name as owner_name " + 
-			"from "
-			+ "groups g, "
-			+ "members m " + 
-			"where "
-			+ "g.owner_member_id = m.member_id "
-			+ "and g.name like ?", 
-			"%" + groupName + "%");
-		
+	public List<Result> joinApplied(String memberId) {
+
+		return toResult(
+			Base.findAll( 
+					appliedGroupSql("gj.status is not null"),
+					memberId));
+	}
+	
+	private List<Result> toResult(List<Map> models) {
 		return models.stream().map(m -> { 
 				return new Result(
 						(String)m.get("group_id"), 
@@ -35,5 +38,23 @@ public class JdbcGroupSearchQuery implements GroupSearchQuery {
 						(String)m.get("owner_name")); 
 			}).collect(Collectors.toList());
 	}
-	
+
+	private String appliedGroupSql(String whereClause) {
+		return 
+			"select "
+			+ "g.group_id as group_id, "
+			+ "g.name as group_name, "
+			+ "m.name as owner_name " + 
+			"from "
+			+ "groups g "
+			+ "inner join members m "
+			+ 	"on g.owner_member_id = m.member_id "  
+			+ "left outer join group_joins gj "
+			+ 	"on ( "
+			+ 		"gj.applicant_id = ? " 
+			+ 		"and gj.group_id = g.group_id " 
+			+ 	") " +
+			"where "
+			+  whereClause;
+	}
 }

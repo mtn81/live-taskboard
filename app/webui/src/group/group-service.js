@@ -8,7 +8,8 @@ import {HttpClientWrapper} from '../lib/http-client-wrapper';
 
 
 var _memberGroups = [];
-var _searchedGroups = [];
+var _notAppliedGroups = [];
+var _appliedGroups = [];
 var _watchingAvailableGroup = false;
 
 @inject(HttpClient, EventAggregator, AuthContext)
@@ -72,22 +73,44 @@ export class GroupService {
     }, true);
   }
 
-  searchByName(groupName) {
+  searchNotAppliedByName(groupName) {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/groups/search?groupName=${groupName}`)
+        .get(`/api/task-manage/groups/search?not_join_applied&applicantId=${this.memberId()}&groupName=${groupName}`)
         .then(response => {
           let foundGroups = response.content.data.groups;
-          _searchedGroups.length = 0;
-          $.merge(_searchedGroups, foundGroups);
+          _notAppliedGroups.length = 0;
+          $.merge(_notAppliedGroups, foundGroups);
         });
-    });
+    }, false, 'searchNotAppliedByName');
 
-    return _searchedGroups;
+    return _notAppliedGroups;
+  }
+
+  searchApplied() {
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/groups/search?join_applied&applicantId=${this.memberId()}`)
+        .then(response => {
+          let foundGroups = response.content.data.groups;
+          _appliedGroups.length = 0;
+          $.merge(_appliedGroups, foundGroups);
+        });
+    }, false, 'searchApplied');
+
+    return _appliedGroups;
   }
 
   applyJoin(group) {
     group.applied = true;
+
+    this.http.call(http => {
+      return http
+        .post(`/api/task-manage/groups/${group.groupId}/apply`, { applicantMemberId: this.memberId() })
+        .then(response => {
+          this.eventAggregator.publish(new GroupJoinApplied());
+        })
+    }, true);
   }
 
   memberId() {
@@ -96,3 +119,4 @@ export class GroupService {
 }
 
 export class GroupRegistered {}
+export class GroupJoinApplied {}

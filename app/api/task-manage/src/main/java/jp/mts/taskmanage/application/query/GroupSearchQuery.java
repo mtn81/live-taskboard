@@ -4,7 +4,8 @@ import java.util.List;
 
 public interface GroupSearchQuery {
 
-	List<Result> byName(String groupName);
+	List<Result> notJoinAppliedByName(String memberId, String groupName);
+	List<Result> joinApplied(String memberId);
 	
 	public static class Result {
 		private String groupId;

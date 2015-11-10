@@ -9,7 +9,7 @@
         <h4>グループ名でグループを検索</h4>
         <form class="form-inline">
           <input type="text" class="form-control" value.bind="groupName">
-          <button id="searchGroup" class="btn btn-default" click.delegate="searchGroup()">検索</button>
+          <button id="searchGroup" class="btn btn-default" click.delegate="searchNotAppliedGroup()">検索</button>
         </form>
         <table class="table table-striped group-list">
           <thead>
@@ -20,7 +20,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr repeat.for="group of groupsSearched">
+            <tr repeat.for="group of notAppliedGroups">
               <td>${group.groupName}</td>
               <td>${group.owner}</td>
               <td>
@@ -44,15 +44,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>グループ名</td>
-              <td>所有者</td>
+            <tr repeat.for="group of appliedGroups">
+              <td>${group.groupName}</td>
+              <td>${group.owner}</td>
               <td><button class="btn btn-danger" type="button">取消</button></td>
-            </tr>
-            <tr>
-              <td>グループ名</td>
-              <td>所有者</td>
-              <td>拒否されました</td>
             </tr>
           </tbody>
         </table>

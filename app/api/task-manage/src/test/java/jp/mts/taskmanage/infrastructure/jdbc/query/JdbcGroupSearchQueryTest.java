@@ -2,27 +2,31 @@ package jp.mts.taskmanage.infrastructure.jdbc.query;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.taskmanage.application.query.GroupSearchQuery.Result;
+import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
 
+import org.junit.Before;
 import org.junit.Test;
 
 public class JdbcGroupSearchQueryTest extends JdbcTestBase {
 
-	
-	@Test
-	public void test() {
-	
+	@Before
+	public void setupData() {
+		MemberModel.deleteAll();
+		GroupModel.deleteAll();
+		GroupJoinModel.deleteAll();
+		
 		new MemberModel().set(
 				"member_id", "m01",
 				"name", "member01")
 			.saveIt();
+
 		new GroupModel().set(
 				"group_id", "g01",
 				"owner_member_id", "m01",
@@ -48,17 +52,33 @@ public class JdbcGroupSearchQueryTest extends JdbcTestBase {
 				"owner_member_id", "m02",
 				"name", "グループA")
 			.saveIt();
+
+		new GroupJoinModel().set(
+				"application_id", "a01",
+				"group_id", "g01",
+				"applicant_id", "m99",
+				"status", "APPLIED")
+			.saveIt();
+	}
+	
+	@Test
+	public void test_searchNotApplied() {
+	
+		List<Result> results = new JdbcGroupSearchQuery().notJoinAppliedByName("m99", "グループ");
 		
-		List<Result> results = new JdbcGroupSearchQuery().byName("グループ");
+		assertThat(results.size(), is(1));
+		assertThat(results.get(0).getGroupId(), is("g04"));
+		assertThat(results.get(0).getGroupName(), is("My グループ B"));
+		assertThat(results.get(0).getOwnerName(), is("member01"));
+	}
+
+	@Test
+	public void test_searchApplied() {
+		List<Result> results = new JdbcGroupSearchQuery().joinApplied("m99");
 		
-		assertThat(results.size(), is(2));
+		assertThat(results.size(), is(1));
 		assertThat(results.get(0).getGroupId(), is("g01"));
 		assertThat(results.get(0).getGroupName(), is("グループA"));
 		assertThat(results.get(0).getOwnerName(), is("member01"));
-		assertThat(results.get(1).getGroupId(), is("g04"));
-		assertThat(results.get(1).getGroupName(), is("My グループ B"));
-		assertThat(results.get(1).getOwnerName(), is("member01"));
-		
 	}
-
 }

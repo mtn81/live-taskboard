@@ -13,11 +13,7 @@ import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupFixture;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
@@ -28,6 +24,7 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -87,14 +84,16 @@ public class GroupApiTest {
 	
 	@Test
 	public void test_searchGroupsByName() {
+		target.initialize();
+
 		new Expectations() {{
-			groupSearchQuery.byName("group1");
+			groupSearchQuery.notJoinAppliedByName("m01", "group1");
 				result = Lists.newArrayList(
 						new GroupSearchQuery.Result("g01","group1","taro"),
 						new GroupSearchQuery.Result("g02","group2","jiro"));
 		}};
 		
-		RestResponse<GroupSearch> response = target.searchGroups("group1");
+		RestResponse<GroupSearch> response = target.searchNotAppliedGroups("m01", "group1");
 		
 		List<GroupSearch.GroupView> groups = response.getData().getGroups();
 		assertThat(groups.size(), is(2));
@@ -108,6 +107,7 @@ public class GroupApiTest {
 	
 	@Test
 	public void test_applyJoin() {
+		target.initialize();
 		
 		String groupId = "g01";
 		String applicantMemberId = "m01";
@@ -119,7 +119,7 @@ public class GroupApiTest {
 		}};
 		
 		GroupJoinApply groupJoinApply = new GroupJoinApply();
-		groupJoinApply.setApplicantMemberid(applicantMemberId);
+		groupJoinApply.setApplicantMemberId(applicantMemberId);
 		RestResponse<GroupJoinApply> response = target.applyJoin(groupId, groupJoinApply);
 		
 		assertThat(response.getData().getJoinId(), is(applicationId));

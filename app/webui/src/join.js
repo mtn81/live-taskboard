@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
-import {GroupService} from './group/group-service';
+import {GroupService, GroupJoinApplied} from './group/group-service';
 import 'components/jqueryui';
 
 @inject(EventAggregator, GroupService)
@@ -12,15 +12,25 @@ export class Join {
     this.groupService = groupService;
   }
 
-  searchGroup() {
-    this.groupsSearched = this.groupService.searchByName(this.groupName);
+  searchNotAppliedGroup() {
+    this.notAppliedGroups = this.groupService.searchNotAppliedByName(this.groupName);
   }
+
+  searchAppliedGroup() {
+    this.appliedGroups = this.groupService.searchApplied();
+  }
+
   applyJoin(group) {
     this.groupService.applyJoin(group);
   }
-  
+
   activate() {
-  
+    this.events.subscribe(GroupJoinApplied, payload => {
+      this.searchNotAppliedGroup();
+      this.searchAppliedGroup();
+    });
+
+    this.searchAppliedGroup();
   }
 
 }

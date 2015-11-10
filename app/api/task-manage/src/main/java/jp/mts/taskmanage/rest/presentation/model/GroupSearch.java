@@ -3,11 +3,16 @@ package jp.mts.taskmanage.rest.presentation.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
 
 public class GroupSearch {
+	
+	private static GroupSearchQuery groupSearchQuery;
 
+	public static void setGroupSearchQuery(GroupSearchQuery groupSearchQuery) {
+		GroupSearch.groupSearchQuery = groupSearchQuery;
+	}
+	
 	//output
 	private List<GroupSearchQuery.Result> groupSearchResults;
 	
@@ -37,8 +42,15 @@ public class GroupSearch {
 	}
 
 	//process
-	public void searchByName(String groupName, GroupSearchQuery groupSearchQuery) {
-		this.groupSearchResults = groupSearchQuery.byName(groupName);
+	public void searchNotJoinAppliedGroupsByName(
+			String memberId, 
+			String groupName) {
+
+		this.groupSearchResults = groupSearchQuery.notJoinAppliedByName(memberId, groupName);
+	}
+
+	public void searchJoinAppliedGroups(String memberId) {
+		this.groupSearchResults = groupSearchQuery.joinApplied(memberId);
 	}
 
 }

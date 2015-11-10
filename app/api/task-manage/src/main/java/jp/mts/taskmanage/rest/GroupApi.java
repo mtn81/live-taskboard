@@ -3,6 +3,7 @@ package jp.mts.taskmanage.rest;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -31,6 +32,11 @@ public class GroupApi {
 	private GroupAppService groupAppService;
 	@Autowired
 	private GroupSearchQuery groupSearchQuery;
+	
+	@PostConstruct
+	public void initialize() {
+		GroupSearch.setGroupSearchQuery(groupSearchQuery);
+	}
 
 	@RequestMapping(value="/members/{memberId}/groups/", method=RequestMethod.POST)
 	public RestResponse<GroupSave> createGroupOnMember(
@@ -71,12 +77,22 @@ public class GroupApi {
 		
 	}
 
-	@RequestMapping(value="/groups/search", method=RequestMethod.GET)
-	public RestResponse<GroupSearch> searchGroups(
+	@RequestMapping(value="/groups/search", params="not_join_applied", method=RequestMethod.GET)
+	public RestResponse<GroupSearch> searchNotAppliedGroups(
+			@RequestParam("applicantId") String applicantId,
 			@RequestParam("groupName") String groupName) {
 		
 		GroupSearch groupSearch = new GroupSearch();
-		groupSearch.searchByName(groupName, groupSearchQuery);
+		groupSearch.searchNotJoinAppliedGroupsByName(applicantId, groupName);
+		return RestResponse.of(groupSearch);
+	}
+
+	@RequestMapping(value="/groups/search", params="join_applied", method=RequestMethod.GET)
+	public RestResponse<GroupSearch> searchAppliedGroups(
+			@RequestParam("applicantId") String applicantId) {
+		
+		GroupSearch groupSearch = new GroupSearch();
+		groupSearch.searchJoinAppliedGroups(applicantId);
 		return RestResponse.of(groupSearch);
 	}
 	

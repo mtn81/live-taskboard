@@ -6,10 +6,10 @@ import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 public class GroupJoinApply {
 
 	//input
-	private String applicantMemberid;
+	private String applicantMemberId;
 
-	public void setApplicantMemberid(String applicantMemberid) {
-		this.applicantMemberid = applicantMemberid;
+	public void setApplicantMemberId(String applicantMemberid) {
+		this.applicantMemberId = applicantMemberid;
 	}
 
 	//output
@@ -20,7 +20,7 @@ public class GroupJoinApply {
 	}
 
 	public void apply(String groupId, GroupAppService groupAppService) {
-		this.groupJoin = groupAppService.applyJoin(groupId, applicantMemberid);
+		this.groupJoin = groupAppService.applyJoin(groupId, applicantMemberId);
 	}
 	
 }
