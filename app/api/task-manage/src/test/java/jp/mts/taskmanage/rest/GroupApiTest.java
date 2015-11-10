@@ -122,6 +122,6 @@ public class GroupApiTest {
 		groupJoinApply.setApplicantMemberid(applicantMemberId);
 		RestResponse<GroupJoinApply> response = target.applyJoin(groupId, groupJoinApply);
 		
-		assertThat(response.getData().getJoinApplicationId(), is(applicationId));
+		assertThat(response.getData().getJoinId(), is(applicationId));
 	}
 }

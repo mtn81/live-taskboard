@@ -7,6 +7,7 @@ public class GroupJoinApplication extends DomainObject {
 	private GroupJoinApplicationId id;
 	private GroupId groupId;
 	private MemberId applicantMemberId;
+	private GroupJoinApplicationStatus status;
 
 	public GroupJoinApplication(
 			GroupJoinApplicationId id,
@@ -15,6 +16,7 @@ public class GroupJoinApplication extends DomainObject {
 		this.id = id;
 		this.groupId = groupId;
 		this.applicantMemberId = applicantMemberId;
+		this.status = GroupJoinApplicationStatus.APPLIED;
 	}
 	
 	public GroupJoinApplicationId id() {
@@ -25,6 +27,13 @@ public class GroupJoinApplication extends DomainObject {
 	}
 	public MemberId applicationMemberId() {
 		return applicantMemberId;
+	}
+	public GroupJoinApplicationStatus status() {
+		return status;
+	}
+	
+	void setStatus(GroupJoinApplicationStatus status) {
+		this.status = status;
 	}
 
 	@Override

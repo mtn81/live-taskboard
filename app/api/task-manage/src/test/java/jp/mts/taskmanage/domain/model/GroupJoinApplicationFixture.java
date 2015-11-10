@@ -16,6 +16,10 @@ public class GroupJoinApplicationFixture {
 				new GroupId(groupId), 
 				new MemberId(memberId));
 	}
+	public GroupJoinApplicationFixture setStatus(GroupJoinApplicationStatus status) {
+		target.setStatus(status);
+		return this;
+	}
 	
 	public GroupJoinApplication get() {
 		return target;

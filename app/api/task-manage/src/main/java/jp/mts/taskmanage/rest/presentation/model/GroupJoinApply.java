@@ -13,14 +13,14 @@ public class GroupJoinApply {
 	}
 
 	//output
-	private GroupJoinApplication groupJoinApplication;
+	private GroupJoinApplication groupJoin;
 
-	public String getJoinApplicationId() {
-		return groupJoinApplication.id().value();
+	public String getJoinId() {
+		return groupJoin.id().value();
 	}
 
 	public void apply(String groupId, GroupAppService groupAppService) {
-		this.groupJoinApplication = groupAppService.applyJoin(groupId, applicantMemberid);
+		this.groupJoin = groupAppService.applyJoin(groupId, applicantMemberid);
 	}
 	
 }

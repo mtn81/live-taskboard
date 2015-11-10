@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jp.mts.base.application.AppAssertions;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
@@ -36,7 +35,7 @@ public class GroupAppService {
 	@Autowired
 	private GroupBelongingRepository groupBelongingRepository;
 	@Autowired
-	private GroupJoinApplicationRepository groupJoinApplicationRepository;
+	private GroupJoinApplicationRepository groupJoinRepository;
 
 	public Group registerGroup(String memberId, String name, String description) {
 		Member member = memberRepository.findById(new MemberId(memberId));
@@ -96,9 +95,9 @@ public class GroupAppService {
 		assertTrue(group != null, ErrorType.GROUP_NOT_EXIST);
 		
 		GroupJoinApplication application 
-			= member.applyJoinTo(groupJoinApplicationRepository.newApplicationId(), group);
+			= member.applyJoinTo(groupJoinRepository.newId(), group);
 
-		groupJoinApplicationRepository.save(application);
+		groupJoinRepository.save(application);
 		
 		return application;
 	}

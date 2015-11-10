@@ -2,7 +2,8 @@ package jp.mts.taskmanage.domain.model;
 
 public interface GroupJoinApplicationRepository {
 
-	GroupJoinApplicationId newApplicationId();
-	void save(GroupJoinApplication groupJoinApplication);
+	GroupJoinApplicationId newId();
+	void save(GroupJoinApplication groupJoin);
+	GroupJoinApplication findById(GroupJoinApplicationId groupJoinId);
 
 }

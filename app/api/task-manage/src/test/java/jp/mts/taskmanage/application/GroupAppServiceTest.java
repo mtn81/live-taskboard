@@ -48,7 +48,7 @@ public class GroupAppServiceTest {
 	@Injectable MemberRepository memberRepository;
 	@Injectable GroupBelongingRepository groupBelongingRepository;
 	@Injectable GroupSearchQuery groupSearchQuery;
-	@Injectable GroupJoinApplicationRepository groupJoinApplicationRepository;
+	@Injectable GroupJoinApplicationRepository groupJoinRepository;
 	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Before
@@ -179,9 +179,9 @@ public class GroupAppServiceTest {
 			groupRepository.findById(new GroupId("g01"));
 				result = new GroupFixture("g01").get();
 			
-			groupJoinApplicationRepository.newApplicationId();
+			groupJoinRepository.newId();
 				result = new GroupJoinApplicationId("a01");
-			groupJoinApplicationRepository.save(groupJoinApplication);
+			groupJoinRepository.save(groupJoinApplication);
 		}};
 		
 		GroupJoinApplication actual = target.applyJoin("g01", "m01");

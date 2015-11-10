@@ -28,6 +28,12 @@ create table groups_members (
   constraint uc_groups_members unique (group_id, member_id)
 );
 
+create table group_joins (
+  application_id varchar(100) unique not null,
+  applicant_id varchar(100) not null,
+  group_id varchar(100) not null,
+  status varchar(10) not null
+);
 
 create table tasks (
   task_id varchar(100) not null,
@@ -43,4 +49,5 @@ create table task_id_gen (
   group_id varchar(100) unique not null,
   task_id_num integer
 );
+
 
