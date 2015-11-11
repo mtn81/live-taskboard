@@ -1,39 +1,31 @@
-/*** Handle jQuery plugin naming conflict between jQuery UI and Bootstrap ***/
-import 'components/jqueryui';
-$.widget.bridge('uibutton', $.ui.button);
-$.widget.bridge('uitooltip', $.ui.tooltip);
-
-import 'bootstrap';
-import 'bootstrap/css/bootstrap.css!';
-
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 import {AuthContext} from 'auth/auth-context';
 import {AuthService} from 'auth/auth-service';
 
-@inject(Router, HttpClient, AuthContext, AuthService)
+@inject(HttpClient, AuthContext, AuthService)
 export class App {
-  constructor(router, http, authContext, authService) {
-    this.router = router;
-    this.router.configure(config => {
-      config.title = 'live-taskboard';
-      config.addPipelineStep('authorize', AuthorizeStep);
-      config.map([
-        { route: ['','login'],   moduleId: './login',      nav: false, title: 'ログイン' },
-        { route: 'activate/:id', moduleId: './activation', nav: false, title: 'ログイン' },
-        { route: 'taskboard',    moduleId: './taskboard',  nav: false, title: 'タスクボード',     auth: true},
-        { route: 'join',         moduleId: './join',       nav: false, title: 'グループ参加',     auth: true},
-        { route: 'accept',       moduleId: './accept',     nav: false, title: 'グループ参加承認', auth: true}
-      ]);
-    });
-
+  constructor(http, authContext, authService) {
     http.configure(builder => {
       builder.withHeader("Content-Type", "application/json");
     });
-
     this.authContext = authContext;
     this.authService = authService;
+  }
+
+  configureRouter(config, router) {
+    this.router = router;
+
+    config.title = 'live-taskboard';
+    config.addPipelineStep('authorize', AuthorizeStep);
+    config.map([
+      { route: ['','login'],   name: 'login',     moduleId: 'login',      nav: false, title: 'ログイン' },
+      { route: 'activate/:id', name: 'activate',  moduleId: 'activation', nav: false, title: 'ログイン' },
+      { route: 'taskboard',    name: 'taskboard', moduleId: 'taskboard',  nav: false, title: 'タスクボード',     auth: true},
+      { route: 'join',         name: 'join',      moduleId: 'join',       nav: false, title: 'グループ参加',     auth: true},
+      { route: 'accept',       name: 'accept',    moduleId: 'accept',     nav: false, title: 'グループ参加承認', auth: true}
+    ]);
   }
 
   get auth(){
@@ -57,7 +49,7 @@ class AuthorizeStep {
     this.authContext = authContext;
   }
   run(routingContext, next){
-    if (routingContext.nextInstructions.some(i => i.config.auth)) {
+    if (routingContext.config.auth) {
       if(!this.authContext.isAuthenticated()){
         return next.cancel(new Redirect('login'));
       }

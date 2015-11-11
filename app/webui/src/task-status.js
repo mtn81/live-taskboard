@@ -2,7 +2,6 @@ import {customElement, inject, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import bootbox from 'bootbox';
-import {WidgetManager} from './widget/widget-manager';
 import {TaskService, TaskRemoved, TaskModified} from './task/task-service';
 import {MemberService} from './member/member-service';
 import 'components/jqueryui';
@@ -10,15 +9,14 @@ import 'components/jqueryui/themes/base/jquery-ui.css!';
 
 
 @customElement('task-status')
-@inject(EventAggregator, WidgetManager, TaskService, MemberService)
+@inject(EventAggregator, TaskService, MemberService)
 export class TaskStatus {
   @bindable status = '';
   tasks = [];
   members = [];
 
-  constructor(eventAggregator, widgetManager, taskService, memberService) {
+  constructor(eventAggregator, taskService, memberService) {
     this.events = new EventAggregatorWrapper(this, eventAggregator);
-    this.widgetManager = widgetManager;
     this.taskService = taskService;
     this.memberService = memberService;
     this.vm = this;

@@ -13,13 +13,13 @@ export class EventAggregatorWrapper {
     let vmDeactivate = vm.deactivate;
     vm.deactivate = _.bind(() => {
       if(vmDeactivate) vmDeactivate();
-      me.subscriptionClears.forEach(s => s());
+      me.subscriptionClears.forEach(s => s.dispose());
     }, vm);
 
     let vmDetached = vm.detached;
     vm.detached = _.bind(() => {
       if(vmDetached) vmDetached();
-      me.subscriptionClears.forEach(s => s());
+      me.subscriptionClears.forEach(s => s.dispose());
     }, vm);
   }
 

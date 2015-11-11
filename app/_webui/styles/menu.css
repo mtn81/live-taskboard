@@ -1,0 +1,19 @@
+.menu-content {
+  margin-top: 80px;
+  z-index: 500;
+  width: 500px
+}
+
+#group-menu {
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: red;
+}
+
+.menu {
+  margin-left: 10px;
+}
+.menu .btn-group .btn {
+  height: 70px;
+}
