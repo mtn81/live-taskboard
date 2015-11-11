@@ -40,7 +40,7 @@ public class JdbcGroupSearchQuery implements GroupSearchQuery {
 			+ "inner join members m "
 			+ 	"on g.owner_member_id = m.member_id "
 			+ "where "
-			// +   "g.owner_member_id <> ? "
+			+   "g.owner_member_id <> ? "
 			+   "g.name like ? "
 			+   "and not exists ( "
 			+     "select "

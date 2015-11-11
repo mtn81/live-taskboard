@@ -30,6 +30,10 @@ export class Menu {
     this.closeAllMenu();
     this.router.navigate('join');
   }
+  selectAcceptMenu(){
+    this.closeAllMenu();
+    this.router.navigate('accept');
+  }
   showGroupRegister(){
     $(this.groupRegisterModal).modal('show');
   }
