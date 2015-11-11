@@ -14,9 +14,7 @@ import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
 import jp.mts.taskmanage.domain.model.GroupFixture;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
-import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
@@ -26,7 +24,6 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -91,8 +88,8 @@ public class GroupApiTest {
 		new Expectations() {{
 			groupSearchQuery.notJoinAppliedByName("m01", "group1");
 				result = Lists.newArrayList(
-						new GroupSearchQuery.Result("g01","group1","taro", Dates.dateShortTime("2015/11/1 12:00"), GroupJoinApplicationStatus.APPLIED),
-						new GroupSearchQuery.Result("g02","group2","jiro", Dates.dateShortTime("2015/11/2 12:00"), GroupJoinApplicationStatus.ACCEPTED));
+						new GroupSearchQuery.Result("g01","group1","taro"),
+						new GroupSearchQuery.Result("g02","group2","jiro"));
 		}};
 		
 		RestResponse<GroupSearch> response = target.searchNotAppliedGroups("m01", "group1");
@@ -102,32 +99,9 @@ public class GroupApiTest {
 		assertThat(groups.get(0).getGroupId(), is("g01"));
 		assertThat(groups.get(0).getGroupName(), is("group1"));
 		assertThat(groups.get(0).getOwner(), is("taro"));
-		assertThat(groups.get(0).getJoinApplied(), is(Dates.dateShortTime("2015/11/1 12:00")));
-		assertThat(groups.get(0).getJoinApplicationStatus(), is(GroupJoinApplicationStatus.APPLIED));
 		assertThat(groups.get(1).getGroupId(), is("g02"));
 		assertThat(groups.get(1).getGroupName(), is("group2"));
 		assertThat(groups.get(1).getOwner(), is("jiro"));
-		assertThat(groups.get(1).getJoinApplied(), is(Dates.dateShortTime("2015/11/2 12:00")));
-		assertThat(groups.get(1).getJoinApplicationStatus(), is(GroupJoinApplicationStatus.ACCEPTED));
 	}
 	
-	@Test
-	public void test_applyJoin() {
-		target.initialize();
-		
-		String groupId = "g01";
-		String applicantMemberId = "m01";
-		String applicationId = "a01";
-		
-		new Expectations() {{
-			groupAppService.applyJoin(groupId, applicantMemberId);
-				result = new GroupJoinApplicationFixture(groupId,applicantMemberId).get();
-		}};
-		
-		GroupJoinApply groupJoinApply = new GroupJoinApply();
-		groupJoinApply.setApplicantMemberId(applicantMemberId);
-		RestResponse<GroupJoinApply> response = target.applyJoin(groupId, groupJoinApply);
-		
-		assertThat(response.getData().getJoinId(), is(applicationId));
-	}
 }

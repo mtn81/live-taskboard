@@ -1,6 +1,5 @@
 package jp.mts.taskmanage.application;
 
-import static jp.mts.base.application.AppAssertions.assertTrue;
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
 
@@ -13,8 +12,6 @@ import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberId;
@@ -34,8 +31,6 @@ public class GroupAppService {
 	private MemberRepository memberRepository;
 	@Autowired
 	private GroupBelongingRepository groupBelongingRepository;
-	@Autowired
-	private GroupJoinApplicationRepository groupJoinRepository;
 
 	public Group registerGroup(String memberId, String name, String description) {
 		Member member = memberRepository.findById(new MemberId(memberId));
@@ -86,23 +81,6 @@ public class GroupAppService {
 		groupBelongingRepository.save(entry);
 	}
 	
-	public GroupJoinApplication applyJoin(String groupId, String applicantMemberId) {
-		
-		Member member = memberRepository.findById(new MemberId(applicantMemberId));
-		assertTrue(member != null, ErrorType.MEMBER_NOT_EXIST);
-
-		Group group = groupRepository.findById(new GroupId(groupId));
-		assertTrue(group != null, ErrorType.GROUP_NOT_EXIST);
-		
-		GroupJoinApplication application 
-			= member.applyJoinTo(groupJoinRepository.newId(), group);
-
-		groupJoinRepository.save(application);
-		
-		return application;
-	}
-
-
 	public static class GroupBelongingPair {
 		private Group group;
 		private GroupBelonging groupBelonging;

@@ -7,70 +7,16 @@ import {Stomp} from 'stomp-websocket';
 import {HttpClientWrapper} from '../lib/http-client-wrapper';
 
 
-var _memberGroups = [];
 var _notAppliedGroups = [];
 var _appliedGroups = [];
-var _watchingAvailableGroup = false;
 
 @inject(HttpClient, EventAggregator, AuthContext)
-export class GroupService {
+export class GroupJoinService {
 
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
-  }
-
-  register(group){
-
-    this.http.call(http => {
-      return http
-        .post(`/api/task-manage/members/${this.memberId()}/groups/`, group)
-        .then(response => {
-          this.groups();
-          this.eventAggregator.publish(new GroupRegistered(response.content.data));
-        })
-    }, true);
-  }
-
-  watchGroupAvailable(callback){
-    if(!this.authContext.isAuthenticated()) return;
-    if(_watchingAvailableGroup) return;
-
-    let websocket = new WebSocket('ws://localhost:28080/task-manage/websocket/notify');
-    let stompClient = window.Stomp.over(websocket);
-    stompClient.connect({}, frame => {
-      stompClient.subscribe('/topic/' + this.memberId() + '/group_available', response => {
-        if (callback) callback(JSON.parse(response.body));
-        this.groups();
-      });
-    });
-    _watchingAvailableGroup = true;
-  }
-
-  groups() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this.memberId()}/groups/?type=belonging`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _memberGroups.length = 0;
-          $.merge(_memberGroups, foundGroups);
-        });
-    });
-
-    return _memberGroups;
-  }
-
-  remove(group){
-    this.http.call(http => {
-      group.removing = true;
-      return http
-        .delete(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`)
-        .then(response => {
-          this.groups();
-        });
-    }, true);
   }
 
   searchNotAppliedByName(groupName) {
@@ -90,7 +36,7 @@ export class GroupService {
   searchApplied() {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/groups/search?join_applied&applicantId=${this.memberId()}`)
+        .get(`/api/task-manage/members/${this.memberId()}/group_joins/`)
         .then(response => {
           let foundGroups = response.content.data.groups;
           _appliedGroups.length = 0;
@@ -106,7 +52,7 @@ export class GroupService {
 
     this.http.call(http => {
       return http
-        .post(`/api/task-manage/groups/${group.groupId}/apply`, { applicantMemberId: this.memberId() })
+        .post(`/api/task-manage/members/${this.memberId()}/group_joins/`, { groupId: group.groupId })
         .then(response => {
           this.eventAggregator.publish(new GroupJoinApplied());
         })
@@ -117,7 +63,7 @@ export class GroupService {
 
     this.http.call(http => {
       return http
-        .post(`/api/task-manage/groups/${group.groupId}/cancel`, { applicantMemberId: this.memberId() })
+        .delete(`/api/task-manage/members/${this.memberId()}/group_joins/`, { joinApplicationId: group.joinApplicationId })
         .then(response => {
           this.eventAggregator.publish(new GroupJoinCancelled());
         })
@@ -129,6 +75,5 @@ export class GroupService {
   }
 }
 
-export class GroupRegistered {}
 export class GroupJoinApplied {}
 export class GroupJoinCancelled {}

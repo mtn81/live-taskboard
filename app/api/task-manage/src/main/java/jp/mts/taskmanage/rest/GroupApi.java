@@ -5,12 +5,10 @@ import java.io.PrintWriter;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
-import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
@@ -76,7 +74,7 @@ public class GroupApi {
 		}
 		
 	}
-
+	
 	@RequestMapping(value="/groups/search", params="not_join_applied", method=RequestMethod.GET)
 	public RestResponse<GroupSearch> searchNotAppliedGroups(
 			@RequestParam("applicantId") String applicantId,
@@ -85,24 +83,6 @@ public class GroupApi {
 		GroupSearch groupSearch = new GroupSearch();
 		groupSearch.searchNotJoinAppliedGroupsByName(applicantId, groupName);
 		return RestResponse.of(groupSearch);
-	}
-
-	@RequestMapping(value="/groups/search", params="join_applied", method=RequestMethod.GET)
-	public RestResponse<GroupSearch> searchAppliedGroups(
-			@RequestParam("applicantId") String applicantId) {
-		
-		GroupSearch groupSearch = new GroupSearch();
-		groupSearch.searchJoinAppliedGroups(applicantId);
-		return RestResponse.of(groupSearch);
-	}
-	
-	@RequestMapping(value="/groups/{groupId}/apply", method=RequestMethod.POST)
-	public RestResponse<GroupJoinApply> applyJoin(
-			@PathVariable String groupId,
-			@RequestBody @Valid GroupJoinApply groupJoinApply){
-		
-		groupJoinApply.apply(groupId, groupAppService);
-		return RestResponse.of(groupJoinApply);
 	}
 	
 }
