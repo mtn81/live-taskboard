@@ -3,18 +3,17 @@ package jp.mts.taskmanage.application;
 import static com.google.common.collect.Lists.newArrayList;
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
-import java.util.Map;
 
 import jp.mts.base.application.ApplicationException;
+import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
+import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
-import jp.mts.taskmanage.application.query.GroupSearchQuery.Result;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupBelonging;
 import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
@@ -38,9 +37,6 @@ import mockit.Tested;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.Module.SetupContext;
-import com.google.common.collect.Lists;
-
 public class GroupAppServiceTest {
 
 	@Tested GroupAppService target = new GroupAppService();
@@ -50,10 +46,12 @@ public class GroupAppServiceTest {
 	@Injectable GroupSearchQuery groupSearchQuery;
 	@Injectable GroupJoinApplicationRepository groupJoinRepository;
 	@Mocked DomainEventPublisher domainEventPublisher;
+	@Mocked DomainCalendar domainCalendar;
 	
 	@Before
 	public void setup() {
 		DomainObject.setDomainEventPublisher(domainEventPublisher);
+		DomainObject.setDomainCalendar(domainCalendar);
 	}
 
 	@Test
@@ -174,6 +172,9 @@ public class GroupAppServiceTest {
 		
 		GroupJoinApplication groupJoinApplication = new GroupJoinApplicationFixture("a01", "g01", "m01").get();
 		new Expectations() {{
+			domainCalendar.systemDate();
+				result = Dates.dateTime("2015/11/01 12:00:00.000");
+			
 			memberRepository.findById(new MemberId("m01"));
 				result = new MemberFixture("m01").get();
 			groupRepository.findById(new GroupId("g01"));
@@ -189,6 +190,7 @@ public class GroupAppServiceTest {
 		assertThat(actual.id().value(), is("a01"));
 		assertThat(actual.groupId().value(), is("g01"));
 		assertThat(actual.applicationMemberId().value(), is("m01"));
+		assertThat(actual.applied(), is(Dates.dateTime("2015/11/01 12:00:00.000")));
 	}
 	
 }

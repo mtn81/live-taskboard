@@ -1,9 +1,11 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.application.query.GroupSearchQuery;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 
 public class GroupSearch {
 	
@@ -38,6 +40,12 @@ public class GroupSearch {
 		}
 		public String getOwner(){
 			return groupSearchResult.getOwnerName();
+		}
+		public Date getJoinApplied(){
+			return groupSearchResult.getJoinApplied();
+		}
+		public GroupJoinApplicationStatus getJoinApplicationStatus() {
+			return groupSearchResult.getJoinApplicationStatus();
 		}
 	}
 

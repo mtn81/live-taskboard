@@ -32,7 +32,8 @@ create table group_joins (
   application_id varchar(100) unique not null,
   applicant_id varchar(100) not null,
   group_id varchar(100) not null,
-  status varchar(10) not null
+  status varchar(10) not null,
+  applied_time timestamp not null
 );
 
 create table tasks (

@@ -12,7 +12,6 @@ import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 
-import org.javalite.activejdbc.Model;
 import org.springframework.stereotype.Repository;
 
 import com.google.common.collect.Lists;

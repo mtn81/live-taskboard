@@ -3,6 +3,7 @@ package jp.mts.taskmanage.infrastructure.jdbc.repository;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import jp.mts.base.unittest.JdbcTestBase;
+import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
@@ -20,6 +21,7 @@ public class JdbcGroupJoinApplicationRepositoryTest extends JdbcTestBase {
 		target.save(
 			new GroupJoinApplicationFixture("a01", "g01", "m01")
 				.setStatus(GroupJoinApplicationStatus.ACCEPTED)
+				.setApplied(Dates.dateTime("2015/11/01 12:00:00.000"))
 				.get());
 
 		GroupJoinApplication found = target.findById(
@@ -29,6 +31,7 @@ public class JdbcGroupJoinApplicationRepositoryTest extends JdbcTestBase {
 		assertThat(found.groupId().value(), is("g01"));
 		assertThat(found.applicationMemberId().value(), is("m01"));
 		assertThat(found.status(), is(GroupJoinApplicationStatus.ACCEPTED));
+		assertThat(found.applied(), is(Dates.dateTime("2015/11/01 12:00:00.000")));
 	}
 
 }

@@ -1,5 +1,8 @@
 package jp.mts.taskmanage.domain.model;
 
+import java.util.Date;
+
+
 public class GroupJoinApplicationFixture {
 
 	private GroupJoinApplication target;
@@ -18,6 +21,10 @@ public class GroupJoinApplicationFixture {
 	}
 	public GroupJoinApplicationFixture setStatus(GroupJoinApplicationStatus status) {
 		target.setStatus(status);
+		return this;
+	}
+	public GroupJoinApplicationFixture setApplied(Date applied) {
+		target.setApplied(applied);
 		return this;
 	}
 	

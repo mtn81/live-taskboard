@@ -1,5 +1,7 @@
 package jp.mts.taskmanage.domain.model;
 
+import java.sql.Date;
+
 public class GroupJoinApplicationBuilder {
 
 	private GroupJoinApplication target;
@@ -10,6 +12,10 @@ public class GroupJoinApplicationBuilder {
 	
 	public GroupJoinApplicationBuilder setStatus(GroupJoinApplicationStatus status) {
 		target.setStatus(status);
+		return this;
+	}
+	public GroupJoinApplicationBuilder setApplied(Date applied) {
+		target.setApplied(applied);
 		return this;
 	}
 	

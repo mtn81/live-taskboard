@@ -1,5 +1,6 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
+import java.sql.Date;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -33,7 +34,10 @@ public class JdbcGroupJoinApplicationRepository implements GroupJoinApplicationR
 				"application_id", groupJoin.id().value(),
 				"group_id", groupJoin.groupId().value(),
 				"applicant_id", groupJoin.applicationMemberId().value(),
-				"status", groupJoin.status().name())
+				"status", groupJoin.status().name(),
+				"applied_time", groupJoin.applied())
+			.setTimestamp(
+				"applied_time", groupJoin.applied())
 			.saveIt();
 		
 	}
@@ -49,6 +53,7 @@ public class JdbcGroupJoinApplicationRepository implements GroupJoinApplicationR
 						new GroupId(model.getString("group_id")), 
 						new MemberId(model.getString("applicant_id"))))
 				.setStatus(GroupJoinApplicationStatus.valueOf(model.getString("status")))
+				.setApplied(new Date(model.getTimestamp("applied_time").getTime()))
 				.get();
 	}
 

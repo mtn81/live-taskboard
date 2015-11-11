@@ -24,6 +24,11 @@ export class Join {
     this.groupService.applyJoin(group);
   }
 
+  formatTime(time) {
+    let date = new Date(time);
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+  }
+  
   activate() {
     this.events.subscribe(GroupJoinApplied, payload => {
       this.searchNotAppliedGroup();

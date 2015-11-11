@@ -40,6 +40,7 @@
             <tr>
               <th>グループ名</th>
               <th>所有者</th>
+              <th>申請日時</th>
               <th></th>
             </tr>
           </thead>
@@ -47,7 +48,14 @@
             <tr repeat.for="group of appliedGroups">
               <td>${group.groupName}</td>
               <td>${group.owner}</td>
-              <td><button class="btn btn-danger" type="button">取消</button></td>
+              <td>${$parent.formatTime(group.joinApplied)}</td>
+              <td>
+                <span show.bind="group.joinApplicationStatus == 'APPLIED'">
+                  <button class="btn btn-danger" type="button">取消</button>
+                </span>
+                <span show.bind="group.joinApplicationStatus == 'ACCEPTED'">承認済み</span>
+                <span show.bind="group.joinApplicationStatus == 'REJECTED'">却下<span>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -1,5 +1,8 @@
 package jp.mts.taskmanage.domain.model;
 
+
+import java.util.Date;
+
 import jp.mts.base.domain.model.DomainObject;
 
 public class GroupJoinApplication extends DomainObject {
@@ -8,6 +11,7 @@ public class GroupJoinApplication extends DomainObject {
 	private GroupId groupId;
 	private MemberId applicantMemberId;
 	private GroupJoinApplicationStatus status;
+	private Date applied;
 
 	public GroupJoinApplication(
 			GroupJoinApplicationId id,
@@ -17,6 +21,7 @@ public class GroupJoinApplication extends DomainObject {
 		this.groupId = groupId;
 		this.applicantMemberId = applicantMemberId;
 		this.status = GroupJoinApplicationStatus.APPLIED;
+		this.applied = calendar.systemDate();
 	}
 	
 	public GroupJoinApplicationId id() {
@@ -31,9 +36,15 @@ public class GroupJoinApplication extends DomainObject {
 	public GroupJoinApplicationStatus status() {
 		return status;
 	}
+	public Date applied() {
+		return applied;
+	}
 	
 	void setStatus(GroupJoinApplicationStatus status) {
 		this.status = status;
+	}
+	void setApplied(Date applied) {
+		this.applied = applied;
 	}
 
 	@Override
