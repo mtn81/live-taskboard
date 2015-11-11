@@ -49,6 +49,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 			+ 	"on ( "
 			+ 		"gj.applicant_id = ? " 
 			+ 		"and gj.group_id = g.group_id " 
+			+ 		"and gj.status <> 'CANCELLED' " 
 			+ 	") "
 		;
 	}

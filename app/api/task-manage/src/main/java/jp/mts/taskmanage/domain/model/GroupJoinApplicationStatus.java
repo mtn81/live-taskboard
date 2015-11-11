@@ -3,5 +3,7 @@ package jp.mts.taskmanage.domain.model;
 public enum GroupJoinApplicationStatus {
 
 	APPLIED,
-	ACCEPTED
+	ACCEPTED,
+	REJECTED,
+	CANCELLED
 }

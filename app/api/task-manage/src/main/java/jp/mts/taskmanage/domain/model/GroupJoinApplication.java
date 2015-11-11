@@ -39,6 +39,9 @@ public class GroupJoinApplication extends DomainObject {
 	public Date applied() {
 		return applied;
 	}
+	public void cancel() {
+		setStatus(GroupJoinApplicationStatus.CANCELLED);
+	}
 	
 	void setStatus(GroupJoinApplicationStatus status) {
 		this.status = status;

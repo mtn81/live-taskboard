@@ -73,5 +73,12 @@ public class Member extends DomainObject {
 		return true;
 	}
 
+	public boolean cancel(GroupJoinApplication application) {
+		if(!memberId.equals(application.applicationMemberId())) {
+			return false;
+		}
+		application.cancel();
+		return true;
+	}
 	
 }

@@ -4,6 +4,7 @@ import static jp.mts.base.application.AppAssertions.assertTrue;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.Member;
@@ -40,6 +41,20 @@ public class GroupJoinAppService {
 		groupJoinRepository.save(application);
 		
 		return application;
+	}
+
+
+	public void cancelJoin(String applicantMemberId, String joinApplicationId) {
+		
+		Member member = memberRepository.findById(new MemberId(applicantMemberId));
+		assertTrue(member != null, ErrorType.MEMBER_NOT_EXIST);
+
+		GroupJoinApplication application 
+			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId));
+		
+		member.cancel(application);
+		
+		groupJoinRepository.save(application);
 	}
 
 

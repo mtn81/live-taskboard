@@ -54,7 +54,8 @@
               <td>
                 <span show.bind="group.joinApplicationStatus == 'APPLIED'">
                   <button class="btn btn-danger" type="button"
-                    click.delegate="$parent.cancelJoin(group)">取消</button>
+                    click.delegate="$parent.cancelJoin(group)"
+                    disabled="${group.cancelled ? 'disabled' : ''}">取消</button>
                 </span>
                 <span show.bind="group.joinApplicationStatus == 'ACCEPTED'">承認済み</span>
                 <span show.bind="group.joinApplicationStatus == 'REJECTED'">却下<span>

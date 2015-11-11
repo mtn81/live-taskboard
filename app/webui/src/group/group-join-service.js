@@ -63,7 +63,7 @@ export class GroupJoinService {
 
     this.http.call(http => {
       return http
-        .delete(`/api/task-manage/members/${this.memberId()}/group_joins/`, { joinApplicationId: group.joinApplicationId })
+        .delete(`/api/task-manage/members/${this.memberId()}/group_joins/${group.joinApplicationId}`)
         .then(response => {
           this.eventAggregator.publish(new GroupJoinCancelled());
         })

@@ -16,7 +16,7 @@ public class JdbcGroupSearchQuery implements GroupSearchQuery {
 	public List<Result> notJoinAppliedByName(String memberId, String groupName) {
 		
 		return toResult(
-			Base.findAll(appliedGroupSql(), memberId, "%" + groupName + "%"));
+			Base.findAll(appliedGroupSql(), "%" + groupName + "%", memberId));
 	}
 
 	
@@ -30,21 +30,27 @@ public class JdbcGroupSearchQuery implements GroupSearchQuery {
 	}
 
 	private String appliedGroupSql() {
-		return 
-			"select "
-			+ "g.group_id as group_id, "
-			+ "g.name as group_name, "
-			+ "m.name as owner_name " +
-			"from "
+		return ""
+			+ "select "
+			+   "g.group_id as group_id, "
+			+   "g.name as group_name, "
+			+   "m.name as owner_name "
+			+   "from "
 			+ "groups g "
 			+ "inner join members m "
-			+ 	"on g.owner_member_id = m.member_id "  
-			+ "left outer join group_joins gj "
-			+ 	"on ( "
-			+ 		"gj.applicant_id = ? " 
-			+ 		"and gj.group_id = g.group_id " 
-			+ 	") " +
-			"where "
-			+ "g.name like ? and gj.status is null";
+			+ 	"on g.owner_member_id = m.member_id "
+			+ "where "
+			// +   "g.owner_member_id <> ? "
+			+   "g.name like ? "
+			+   "and not exists ( "
+			+     "select "
+			+       "1 "
+			+     "from "
+			+       "group_joins gj "
+			+     "where "
+			+       "gj.applicant_id = ? "
+			+       "and gj.group_id = g.group_id  "
+			+       "and gj.status <> 'CANCELLED'  "
+			+   ") ";
 	}
 }

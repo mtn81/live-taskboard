@@ -22,7 +22,7 @@ public class GroupJoinApply {
 	//output
 	private GroupJoinApplication groupJoin;
 
-	public String getJoinId() {
+	public String getJoinApplicationId() {
 		return groupJoin.id().value();
 	}
 
