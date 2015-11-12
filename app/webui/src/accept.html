@@ -19,7 +19,7 @@
           <tr repeat.for="member of acceptableMembers">
             <td>${member.memberId}</td>
             <td>${member.groupName}</td>
-            <td>${$parent.formatTime(member.applied)}</td>
+            <td>${member.applied | dateFormat}</td>
             <td>
               <button class="btn btn-primary" type="button">承認して管理者に</button>
               <button class="btn btn-primary" type="button">承認して一般メンバーに</button>

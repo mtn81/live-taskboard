@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
+import jp.mts.taskmanage.rest.presentation.model.AcceptableMemberJoinSearch;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinCancel;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinSearch;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,13 +26,14 @@ public class GroupJoinApi {
 	@Autowired
 	private GroupJoinAppService groupJoinAppService;
 	@Autowired
-	private GroupJoinSearchQuery groupSearchQuery;
+	private GroupJoinSearchQuery groupJoinSearchQuery;
 	
 	@PostConstruct
 	public void initialize() {
 		GroupJoinApply.setGroupJoinAppService(groupJoinAppService);
-		GroupJoinSearch.setJoinGroupSearchQuery(groupSearchQuery);
+		GroupJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 		GroupJoinCancel.setGroupJoinAppService(groupJoinAppService);
+		AcceptableMemberJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 	}
 
 	@RequestMapping(
@@ -57,7 +60,9 @@ public class GroupJoinApi {
 	}
 
 	
-	@RequestMapping(value="/members/{memberId}/group_joins/", method=RequestMethod.GET)
+	@RequestMapping(
+			value="/members/{memberId}/group_joins/", 
+			method=RequestMethod.GET)
 	public RestResponse<GroupJoinSearch> searchAppliedGroups(
 			@PathVariable("memberId") String memberId) {
 		
@@ -65,4 +70,18 @@ public class GroupJoinApi {
 		groupSearch.searchByApplicant(memberId);
 		return RestResponse.of(groupSearch);
 	}
+	
+	
+	@RequestMapping(
+			value="/group_joins/search", 
+			params="acceptable",
+			method=RequestMethod.GET)
+	public RestResponse<AcceptableMemberJoinSearch> searchAcceptableGroupJoinApplications(
+			@RequestParam("memberId") String memberId) {
+		
+		AcceptableMemberJoinSearch search = new AcceptableMemberJoinSearch();
+		search.searchAcceptableByAdmin(memberId);
+		return RestResponse.of(search);
+	}
+
 }

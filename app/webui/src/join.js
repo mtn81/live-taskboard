@@ -6,6 +6,9 @@ import 'components/jqueryui';
 
 @inject(EventAggregator, GroupJoinService)
 export class Join {
+  notAppliedGroups = [];
+  appliedGroups = [];
+  notAppliedGroupsSearched = false;
 
   constructor(eventAggregator, groupJoinService){
     this.events = new EventAggregatorWrapper(this, eventAggregator);

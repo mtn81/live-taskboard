@@ -9,7 +9,8 @@ import 'bootstrap/css/bootstrap.css!';
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging();
+    .developmentLogging()
+    .globalResources('./dist/lib/date-format');
 
   aurelia.start().then(a => a.setRoot());
 }

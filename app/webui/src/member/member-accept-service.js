@@ -10,6 +10,8 @@ import {HttpClientWrapper} from '../lib/http-client-wrapper';
 @inject(HttpClient, EventAggregator, AuthContext)
 export class MemberAcceptService {
 
+  _acceptableMemberJoins = [];
+
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
@@ -17,10 +19,17 @@ export class MemberAcceptService {
   }
 
   searchAcceptableMembers() {
-    return [
-      { memberId:'m01', groupName:'group01', applied: new Date().getTime() },
-      { memberId:'m02', groupName:'group02', applied: new Date().getTime() },
-    ];
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/group_joins/search?acceptable&memberId=${this._memberId()}`)
+        .then(response => {
+          let found = response.content.data.members;
+          this._acceptableMemberJoins.length = 0;
+          $.merge(this._acceptableMemberJoins, found);
+        });
+    });
+
+    return this._acceptableMemberJoins;
   }
 
   _memberId() {

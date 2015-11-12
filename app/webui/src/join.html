@@ -49,7 +49,7 @@
             <tr repeat.for="group of appliedGroups">
               <td>${group.groupName}</td>
               <td>${group.owner}</td>
-              <td>${$parent.formatTime(group.joinApplied)}</td>
+              <td>${group.joinApplied | dateFormat}</td>
               <td>
                 <span show.bind="group.joinApplicationStatus == 'APPLIED'">
                   <button class="btn btn-danger" type="button"

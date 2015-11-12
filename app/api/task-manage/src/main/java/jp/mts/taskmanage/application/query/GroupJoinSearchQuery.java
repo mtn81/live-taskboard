@@ -7,17 +7,18 @@ import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 
 public interface GroupJoinSearchQuery {
 
-	List<Result> byApplicant(String memberId);
+	List<ByApplicantResult> byApplicant(String memberId);
+	List<AcceptableByAdminResult> acceptableByAdmin(String memberId);
 	
-	public static class Result {
-		private String joinApplicationId;
-		private String groupId;
-		private String groupName;
-		private String ownerName;
-		private Date joinApplied;
-		private GroupJoinApplicationStatus joinApplicationStatus;
+	public static class ByApplicantResult {
+		public String joinApplicationId;
+		public String groupId;
+		public String groupName;
+		public String ownerName;
+		public Date joinApplied;
+		public GroupJoinApplicationStatus joinApplicationStatus;
 
-		public Result(
+		public ByApplicantResult(
 				String joinApplicationId,
 				String groupId, 
 				String groupName, 
@@ -31,25 +32,28 @@ public interface GroupJoinSearchQuery {
 			this.joinApplied = joinApplied;
 			this.joinApplicationStatus = joinApplicationStatus;
 		}
+	}
 
-		public String getJoinApplicationId() {
-			return joinApplicationId;
+	public static class AcceptableByAdminResult {
+		public String joinApplicationId;
+		public String groupName;
+		public String applicantId;
+		public String applicantName;
+		public Date joinApplied;
+
+		public AcceptableByAdminResult(
+				String joinApplicationId,
+				String groupName, 
+				String applicantId, 
+				String applicantName,
+				Date joinApplied) {
+			super();
+			this.joinApplicationId = joinApplicationId;
+			this.groupName = groupName;
+			this.applicantId = applicantId;
+			this.applicantName = applicantName;
+			this.joinApplied = joinApplied;
 		}
-		public String getGroupId() {
-			return groupId;
-		}
-		public String getGroupName() {
-			return groupName;
-		}
-		public String getOwnerName() {
-			return ownerName;
-		}
-		public Date getJoinApplied() {
-			return joinApplied;
-		}
-		public GroupJoinApplicationStatus getJoinApplicationStatus() {
-			return joinApplicationStatus;
-		}
-		
+
 	}
 }

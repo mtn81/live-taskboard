@@ -16,7 +16,7 @@ public class GroupJoinSearch {
 	}
 	
 	//output
-	private List<GroupJoinSearchQuery.Result> groupSearchResults;
+	private List<GroupJoinSearchQuery.ByApplicantResult> groupSearchResults;
 	
 	public List<GroupJoinView> getGroups() {
 		return groupSearchResults.stream()
@@ -26,29 +26,29 @@ public class GroupJoinSearch {
 
 	public static class GroupJoinView {
 
-		private GroupJoinSearchQuery.Result groupSearchResult;
+		private GroupJoinSearchQuery.ByApplicantResult groupSearchResult;
 		
-		public GroupJoinView(GroupJoinSearchQuery.Result groupSearchResult) {
+		public GroupJoinView(GroupJoinSearchQuery.ByApplicantResult groupSearchResult) {
 			this.groupSearchResult = groupSearchResult;
 		}
 
 		public String getJoinApplicationId() {
-			return groupSearchResult.getJoinApplicationId();
+			return groupSearchResult.joinApplicationId;
 		}
 		public String getGroupId(){
-			return groupSearchResult.getGroupId();
+			return groupSearchResult.groupId;
 		}
 		public String getGroupName(){
-			return groupSearchResult.getGroupName();
+			return groupSearchResult.groupName;
 		}
 		public String getOwner(){
-			return groupSearchResult.getOwnerName();
+			return groupSearchResult.ownerName;
 		}
 		public Date getJoinApplied(){
-			return groupSearchResult.getJoinApplied();
+			return groupSearchResult.joinApplied;
 		}
 		public GroupJoinApplicationStatus getJoinApplicationStatus() {
-			return groupSearchResult.getJoinApplicationStatus();
+			return groupSearchResult.joinApplicationStatus;
 		}
 	}
 

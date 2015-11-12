@@ -7,6 +7,8 @@ import 'components/jqueryui';
 @inject(EventAggregator, MemberAcceptService)
 export class Accept {
 
+  acceptableMembers = [];
+
   constructor(eventAggregator, memberAcceptService){
     this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.memberAcceptService = memberAcceptService;
