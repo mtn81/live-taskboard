@@ -1,13 +1,14 @@
 package jp.mts.taskmanage.domain.model;
 
-import jp.mts.base.domain.model.DomainObject;
+import jp.mts.base.domain.model.DomainEntity;
 
 
-public class Member extends DomainObject {
+public class Member extends DomainEntity<MemberId> {
 	private MemberId memberId;
 	private String name;
 	
 	public Member(MemberId memberId, String name) {
+		super(memberId);
 		this.memberId = memberId;
 		this.name = name;
 	}
@@ -47,32 +48,6 @@ public class Member extends DomainObject {
 		this.name = name;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((memberId == null) ? 0 : memberId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Member other = (Member) obj;
-		if (memberId == null) {
-			if (other.memberId != null)
-				return false;
-		} else if (!memberId.equals(other.memberId))
-			return false;
-		return true;
-	}
-
 	public boolean cancel(GroupJoinApplication application) {
 		if(!memberId.equals(application.applicationMemberId())) {
 			return false;

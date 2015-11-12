@@ -1,6 +1,9 @@
 package jp.mts.taskmanage.domain.model;
 
-public class GroupBelonging {
+import jp.mts.base.domain.model.CompositeIdentifier;
+import jp.mts.base.domain.model.DomainEntity;
+
+public class GroupBelonging extends DomainEntity<CompositeIdentifier>{
 
 	private GroupId groupId;
 	private MemberId memberId;
@@ -10,6 +13,7 @@ public class GroupBelonging {
 			GroupId groupId, 
 			MemberId memberId,
 			boolean isAdmin) {
+		super(CompositeIdentifier.of(groupId, memberId));
 		this.groupId = groupId;
 		this.memberId = memberId;
 		this.isAdmin = isAdmin;
@@ -28,39 +32,5 @@ public class GroupBelonging {
 	void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
 	}
-	
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((groupId == null) ? 0 : groupId.hashCode());
-		result = prime * result
-				+ ((memberId == null) ? 0 : memberId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		GroupBelonging other = (GroupBelonging) obj;
-		if (groupId == null) {
-			if (other.groupId != null)
-				return false;
-		} else if (!groupId.equals(other.groupId))
-			return false;
-		if (memberId == null) {
-			if (other.memberId != null)
-				return false;
-		} else if (!memberId.equals(other.memberId))
-			return false;
-		return true;
-	}
-
 	
 }

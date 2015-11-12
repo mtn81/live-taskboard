@@ -17,7 +17,7 @@ import org.junit.Test;
 public class JdbcMemberRepositoryTest extends JdbcTestBase {
 
 	JdbcMemberRepository memberRepository = new JdbcMemberRepository();
-
+	
 	@Test
 	public void test_persistence() {
 		Member member = new MemberFixture().get();

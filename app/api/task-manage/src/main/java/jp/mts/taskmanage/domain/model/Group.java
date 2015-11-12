@@ -2,8 +2,10 @@ package jp.mts.taskmanage.domain.model;
 
 import java.util.Date;
 
+import jp.mts.base.domain.model.DomainEntity;
 
-public class Group {
+
+public class Group extends DomainEntity<GroupId>{
 	
 	private GroupId groupId;
 	private MemberId ownerMemberId;
@@ -11,7 +13,7 @@ public class Group {
 	private String description;
 
 	public Group(GroupId groupId, MemberId ownerMemberId, String name, String description) {
-		super();
+		super(groupId);
 		this.groupId = groupId;
 		this.ownerMemberId = ownerMemberId;
 		setName(name);
@@ -55,31 +57,6 @@ public class Group {
 	}
 	void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((groupId == null) ? 0 : groupId.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Group other = (Group) obj;
-		if (groupId == null) {
-			if (other.groupId != null)
-				return false;
-		} else if (!groupId.equals(other.groupId))
-			return false;
-		return true;
 	}
 
 }
