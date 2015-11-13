@@ -2,6 +2,7 @@ package jp.mts.taskmanage.application;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -38,11 +39,11 @@ public class TaskAppService {
 		
 		GroupId groupId = new GroupId(aGroupId);
 		Group group = groupRepository.findById(groupId);
-		Member assignedMember = memberRepository.findById(new MemberId(assigned));
+		Optional<Member> assignedMember = memberRepository.findById(new MemberId(assigned));
 		Task task = group.createTask(
 				taskRepository.newTaskId(groupId),
 				taskName,
-				assignedMember,
+				assignedMember.get(),
 				deadline);
 		taskRepository.save(task);
 
@@ -71,9 +72,10 @@ public class TaskAppService {
 		TaskId taskId = new TaskId(aTaskId);
 
 		Task task = taskRepository.findById(groupId, taskId);
+		Optional<Member> member = memberRepository.findById(new MemberId(assigned));
 		task.changeSummary(
 				taskName, 
-				memberRepository.findById(new MemberId(assigned)), 
+				member.get(), 
 				deadline,
 				status);
 		

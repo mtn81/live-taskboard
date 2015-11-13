@@ -7,7 +7,6 @@ import jp.mts.base.domain.model.DomainEntity;
 
 public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 
-	private GroupJoinApplicationId id;
 	private GroupId groupId;
 	private MemberId applicantMemberId;
 	private GroupJoinApplicationStatus status;
@@ -19,16 +18,12 @@ public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 			MemberId applicantMemberId) {
 
 		super(id);
-		this.id = id;
 		this.groupId = groupId;
 		this.applicantMemberId = applicantMemberId;
 		this.status = GroupJoinApplicationStatus.APPLIED;
 		this.applied = calendar.systemDate();
 	}
 	
-	public GroupJoinApplicationId id() {
-		return id;
-	}
 	public GroupId groupId() {
 		return groupId;
 	}

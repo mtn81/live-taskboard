@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
@@ -65,7 +66,8 @@ public class TaskAppServiceTest {
 		
 		new NonStrictExpectations() {{
 			memberRepository.findById(memberId);
-				result = new MemberFixture(memberId.value()).get(); times=1;
+				result = Optional.of(new MemberFixture(memberId.value()).get()); 
+				times=1;
 			groupRepository.findById(groupId);
 				result = new GroupFixture(groupId.value()).get(); times=1;
 		}};
@@ -115,7 +117,8 @@ public class TaskAppServiceTest {
 		
 		new NonStrictExpectations() {{
 			memberRepository.findById(memberId);
-				result = new MemberFixture(memberId.value()).get(); times=1;
+				result = Optional.of(new MemberFixture(memberId.value()).get()); 
+				times=1;
 		}};
 		new Expectations() {{
 			taskRepository.findById(groupId, taskId);

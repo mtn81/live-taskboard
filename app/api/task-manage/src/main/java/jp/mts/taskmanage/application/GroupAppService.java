@@ -5,6 +5,7 @@ import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.mts.base.application.ApplicationException;
@@ -33,12 +34,12 @@ public class GroupAppService {
 	private GroupBelongingRepository groupBelongingRepository;
 
 	public Group registerGroup(String memberId, String name, String description) {
-		Member member = memberRepository.findById(new MemberId(memberId));
-		if (member == null) {
+		Optional<Member> member = memberRepository.findById(new MemberId(memberId));
+		if (!member.isPresent()) {
 			throw new ApplicationException(MEMBER_NOT_EXIST);
 		}
 		
-		Group group = member.createGroup(
+		Group group = member.get().createGroup(
 				groupRepository.newGroupId(), name, description);
 
 		groupRepository.save(group);
@@ -74,10 +75,10 @@ public class GroupAppService {
 		Group group = groupRepository.findById(new GroupId(groupId));
 		if (group == null) return;
 
-		Member member = memberRepository.findById(new MemberId(memberId));
-		if (member == null) return;
+		Optional<Member> member = memberRepository.findById(new MemberId(memberId));
+		if (!member.isPresent()) return;
 		
-		GroupBelonging entry = member.entryAsAdministratorTo(group);
+		GroupBelonging entry = member.get().entryAsAdministratorTo(group);
 		groupBelongingRepository.save(entry);
 	}
 	

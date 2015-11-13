@@ -6,7 +6,6 @@ import jp.mts.base.domain.model.DomainEntity;
 
 public class Task extends DomainEntity<TaskId>{
 
-	private TaskId taskId;
 	private GroupId groupId;
 	private TaskStatus taskStatus;
 	private String name;
@@ -21,7 +20,6 @@ public class Task extends DomainEntity<TaskId>{
 			Date deadline) {
 		super(taskId);
 		this.groupId = groupId;
-		this.taskId = taskId;
 		this.taskStatus = TaskStatus.TODO; 
 		this.name = name;
 		this.assignedMemberId = assignedMemberId;
@@ -32,7 +30,7 @@ public class Task extends DomainEntity<TaskId>{
 		return groupId;
 	}
 	public TaskId taskId(){
-		return taskId;
+		return id();
 	}
 	public TaskStatus status() {
 		return taskStatus;

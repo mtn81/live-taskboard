@@ -9,7 +9,7 @@ public abstract class DomainEntity<I extends Identifier<?>> extends DomainObject
 		this.id = id;
 	}
 	
-	public I Identifier() {
+	public I id() {
 		return id;
 	}
 

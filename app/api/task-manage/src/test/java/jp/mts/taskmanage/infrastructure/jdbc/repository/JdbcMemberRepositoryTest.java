@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -23,8 +24,8 @@ public class JdbcMemberRepositoryTest extends JdbcTestBase {
 		Member member = new MemberFixture().get();
 		memberRepository.save(member);
 		
-		Member found = memberRepository.findById(member.memberId());
-		assertThat(member, is(found));
+		Optional<Member> found = memberRepository.findById(member.memberId());
+		assertThat(member, is(found.get()));
 	}
 	
 	@Test

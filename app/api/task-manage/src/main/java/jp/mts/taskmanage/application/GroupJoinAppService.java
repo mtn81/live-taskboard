@@ -1,6 +1,9 @@
 package jp.mts.taskmanage.application;
 
 import static jp.mts.base.application.AppAssertions.assertTrue;
+
+import java.util.Optional;
+
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
@@ -29,14 +32,14 @@ public class GroupJoinAppService {
 
 	public GroupJoinApplication applyJoin(String groupId, String applicantMemberId) {
 		
-		Member member = memberRepository.findById(new MemberId(applicantMemberId));
-		assertTrue(member != null, ErrorType.MEMBER_NOT_EXIST);
+		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
+		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
 
 		Group group = groupRepository.findById(new GroupId(groupId));
 		assertTrue(group != null, ErrorType.GROUP_NOT_EXIST);
 		
 		GroupJoinApplication application 
-			= member.applyJoinTo(groupJoinRepository.newId(), group);
+			= member.get().applyJoinTo(groupJoinRepository.newId(), group);
 
 		groupJoinRepository.save(application);
 		
@@ -46,13 +49,13 @@ public class GroupJoinAppService {
 
 	public void cancelJoin(String applicantMemberId, String joinApplicationId) {
 		
-		Member member = memberRepository.findById(new MemberId(applicantMemberId));
-		assertTrue(member != null, ErrorType.MEMBER_NOT_EXIST);
+		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
+		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
 
 		GroupJoinApplication application 
 			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId));
 		
-		member.cancel(application);
+		member.get().cancel(application);
 		
 		groupJoinRepository.save(application);
 	}

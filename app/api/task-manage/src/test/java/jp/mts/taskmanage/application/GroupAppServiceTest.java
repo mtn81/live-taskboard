@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
@@ -52,7 +53,7 @@ public class GroupAppServiceTest {
 	public void test_group_creation() {
 		new Expectations() {{
 			memberRepository.findById(new MemberId("m01"));
-				result = new MemberFixture().get();
+				result = Optional.of(new MemberFixture().get());
 			groupRepository.newGroupId();
 				result = new GroupId("g01");
 				
@@ -110,7 +111,7 @@ public class GroupAppServiceTest {
 	public void test_member_absent_error_on_group_creation() {
 		new Expectations() {{
 			memberRepository.findById(new MemberId("m01"));
-				result = null;
+				result = Optional.empty();
 		}};
 
 		try{
@@ -154,7 +155,7 @@ public class GroupAppServiceTest {
 			groupRepository.findById(new GroupId(groupId));
 				result = group;
 			memberRepository.findById(new MemberId(memberId));
-				result = member;
+				result = Optional.of(member);
 			groupBelongingRepository.save(groupBelonging);
 		}};
 		

@@ -7,21 +7,19 @@ import jp.mts.base.domain.model.DomainEntity;
 
 public class Group extends DomainEntity<GroupId>{
 	
-	private GroupId groupId;
 	private MemberId ownerMemberId;
 	private String name;
 	private String description;
 
 	public Group(GroupId groupId, MemberId ownerMemberId, String name, String description) {
 		super(groupId);
-		this.groupId = groupId;
 		this.ownerMemberId = ownerMemberId;
 		setName(name);
 		setDescription(description);
 	}
 
 	public GroupId groupId() {
-		return groupId;
+		return id();
 	}
 	public MemberId ownerMemberId() {
 		return ownerMemberId;
@@ -43,7 +41,7 @@ public class Group extends DomainEntity<GroupId>{
 			Date deadline) {
 
 		Task task = new Task(
-				groupId, 
+				groupId(), 
 				taskId,
 				taskName, 
 				assignedMember.memberId(), 

@@ -4,17 +4,15 @@ import jp.mts.base.domain.model.DomainEntity;
 
 
 public class Member extends DomainEntity<MemberId> {
-	private MemberId memberId;
 	private String name;
 	
 	public Member(MemberId memberId, String name) {
 		super(memberId);
-		this.memberId = memberId;
 		this.name = name;
 	}
 	
 	public MemberId memberId(){
-		return memberId;
+		return id();
 	}
 	public String name() {
 		return name;
@@ -22,14 +20,14 @@ public class Member extends DomainEntity<MemberId> {
 	
 	public Group createGroup(
 			GroupId groupId, String groupName, String description){
-		Group group = new Group(groupId, memberId, groupName, description);
-		domainEventPublisher.publish(new GroupCreated(groupId, memberId));
+		Group group = new Group(groupId, memberId(), groupName, description);
+		domainEventPublisher.publish(new GroupCreated(groupId, memberId()));
 		return group;
 	}
 	
 	public GroupBelonging entryAsAdministratorTo(Group group) {
-		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId));
-		return new GroupBelonging(group.groupId(), memberId, true);
+		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId()));
+		return new GroupBelonging(group.groupId(), memberId(), true);
 	}
 	
 	public GroupJoinApplication applyJoinTo(
@@ -37,11 +35,11 @@ public class Member extends DomainEntity<MemberId> {
 		return new GroupJoinApplication(
 				applicationId, 
 				group.groupId(), 
-				memberId);
+				memberId());
 	}
 
 	public boolean isOwnerFor(Group group) {
-		return this.memberId.equals(group.ownerMemberId());
+		return this.memberId().equals(group.ownerMemberId());
 	}
 	
 	void setName(String name) {
@@ -49,7 +47,7 @@ public class Member extends DomainEntity<MemberId> {
 	}
 	
 	public boolean cancel(GroupJoinApplication application) {
-		if(!memberId.equals(application.applicationMemberId())) {
+		if(!memberId().equals(application.applicationMemberId())) {
 			return false;
 		}
 		application.cancel();

@@ -2,6 +2,9 @@ package jp.mts.taskmanage.application;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
+import java.util.Optional;
+
 import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
@@ -49,7 +52,7 @@ public class GroupJoinAppServiceTest {
 				result = Dates.dateTime("2015/11/01 12:00:00.000");
 			
 			memberRepository.findById(new MemberId("m01"));
-				result = new MemberFixture("m01").get();
+				result = Optional.of(new MemberFixture("m01").get());
 			groupRepository.findById(new GroupId("g01"));
 				result = new GroupFixture("g01").get();
 			

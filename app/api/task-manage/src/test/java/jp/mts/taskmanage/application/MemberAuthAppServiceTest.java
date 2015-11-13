@@ -21,9 +21,12 @@ public class MemberAuthAppServiceTest {
 	
 	@Test
 	public void test_successWhenValidMemberAuthExists() {
-		new Expectations() {{
+		MemberAuth memberAuth = new MemberAuth(new MemberId("a01"));
+		new Expectations(memberAuth) {{
+			memberAuth.isExpired(); 
+				result = false;
 			memberAuthService.establishAuth("a01");
-				result = Optional.of(new MemberAuth(new MemberId("a01")));
+				result = Optional.of(memberAuth);
 		}};
 		
 		boolean actual = target.validateAuth("a01");
