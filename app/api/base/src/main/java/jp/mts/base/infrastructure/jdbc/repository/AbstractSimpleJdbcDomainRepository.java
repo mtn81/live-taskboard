@@ -56,6 +56,12 @@ public abstract class AbstractSimpleJdbcDomainRepository<
 		toModel(model, entity).saveIt();
 	}
 	
+	@Override
+	public void remove(E entity) {
+		M model = findModelById(entity.id().value());
+		model.delete();
+	}
+	
 	protected List<E> findList(String subquery, Object... params) {
 		List<M> models = (List<M>) ReflectionUtils.invokeMethod(findMethod, null, subquery, params);
 		return models.stream()

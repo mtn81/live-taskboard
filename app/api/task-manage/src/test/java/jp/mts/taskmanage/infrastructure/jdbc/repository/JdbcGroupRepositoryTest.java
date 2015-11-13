@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.taskmanage.domain.model.Group;
@@ -36,13 +37,13 @@ public class JdbcGroupRepositoryTest extends JdbcTestBase {
 		Group group = new GroupFixture().get();
 		groupRepository.save(group);
 		
-		Group found = groupRepository.findById(group.groupId());
+		Group found = groupRepository.findById(group.groupId()).get();
 		assertThat(group, is(found));
 		
 		found.changeAttributes("group_changed_name", "group changed");
 		groupRepository.save(found);
 
-		found = groupRepository.findById(group.groupId());
+		found = groupRepository.findById(group.groupId()).get();
 		assertThat(found.name(), is("group_changed_name"));
 	}
 	
@@ -70,8 +71,8 @@ public class JdbcGroupRepositoryTest extends JdbcTestBase {
 		
 		groupRepository.remove(group);
 		
-		Group foundGroup = groupRepository.findById(new GroupId("g01"));
-		assertThat(foundGroup, is(nullValue()));
+		Optional<Group> foundGroup = groupRepository.findById(new GroupId("g01"));
+		assertThat(foundGroup.isPresent(), is(false));
 		
 		GroupBelonging foundGroupBelonging = groupBelongingRepository.findById(new MemberId("m01"), new GroupId("g01"));
 		assertThat(foundGroupBelonging, is(nullValue()));

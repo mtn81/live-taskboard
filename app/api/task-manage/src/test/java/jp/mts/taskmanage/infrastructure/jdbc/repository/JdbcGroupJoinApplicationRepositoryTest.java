@@ -25,7 +25,7 @@ public class JdbcGroupJoinApplicationRepositoryTest extends JdbcTestBase {
 				.get());
 
 		GroupJoinApplication found = target.findById(
-				new GroupJoinApplicationId("a01"));
+				new GroupJoinApplicationId("a01")).get();
 		
 		assertThat(found.id().value(), is("a01"));
 		assertThat(found.groupId().value(), is("g01"));

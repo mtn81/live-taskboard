@@ -3,8 +3,7 @@ package jp.mts.taskmanage.infrastructure.jdbc.repository;
 import java.sql.Date;
 import java.util.UUID;
 
-import org.springframework.stereotype.Repository;
-
+import jp.mts.base.infrastructure.jdbc.repository.AbstractSimpleJdbcDomainRepository;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationBuilder;
@@ -14,8 +13,15 @@ import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 
+import org.springframework.stereotype.Repository;
+
 @Repository
-public class JdbcGroupJoinApplicationRepository implements GroupJoinApplicationRepository {
+public class JdbcGroupJoinApplicationRepository 
+	extends AbstractSimpleJdbcDomainRepository<
+		GroupJoinApplicationId, 
+		GroupJoinApplication, 
+		GroupJoinModel>
+	implements GroupJoinApplicationRepository {
 
 	@Override
 	public GroupJoinApplicationId newId() {
@@ -23,30 +29,12 @@ public class JdbcGroupJoinApplicationRepository implements GroupJoinApplicationR
 	}
 
 	@Override
-	public void save(GroupJoinApplication groupJoin) {
-
-		GroupJoinModel model = GroupJoinModel.findFirst("application_id=?", groupJoin.id().value());
-		if (model == null) {
-			model = new GroupJoinModel();
-		}
-		
-		model.set(
-				"application_id", groupJoin.id().value(),
-				"group_id", groupJoin.groupId().value(),
-				"applicant_id", groupJoin.applicationMemberId().value(),
-				"status", groupJoin.status().name(),
-				"applied_time", groupJoin.applied())
-			.setTimestamp(
-				"applied_time", groupJoin.applied())
-			.saveIt();
-		
+	protected String idColumnName() {
+		return "application_id";
 	}
+
 	@Override
-	public GroupJoinApplication findById(GroupJoinApplicationId groupJoinId) {
-		
-		GroupJoinModel model = GroupJoinModel.findFirst("application_id=?", groupJoinId.value());
-		if (model == null)  return null;
-		
+	protected GroupJoinApplication toDomain(GroupJoinModel model) {
 		return new GroupJoinApplicationBuilder(
 				new GroupJoinApplication(
 						new GroupJoinApplicationId(model.getString("application_id")), 
@@ -55,6 +43,23 @@ public class JdbcGroupJoinApplicationRepository implements GroupJoinApplicationR
 				.setStatus(GroupJoinApplicationStatus.valueOf(model.getString("status")))
 				.setApplied(new Date(model.getTimestamp("applied_time").getTime()))
 				.get();
+	}
+
+	@Override
+	protected GroupJoinModel toModel(
+			GroupJoinModel model,
+			GroupJoinApplication groupJoin) {
+
+		model.set(
+				"application_id", groupJoin.id().value(),
+				"group_id", groupJoin.groupId().value(),
+				"applicant_id", groupJoin.applicationMemberId().value(),
+				"status", groupJoin.status().name(),
+				"applied_time", groupJoin.applied())
+			.setTimestamp(
+				"applied_time", groupJoin.applied());
+		
+		return model;
 	}
 
 }

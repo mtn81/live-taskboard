@@ -2,12 +2,13 @@ package jp.mts.taskmanage.domain.model;
 
 import java.util.List;
 
+import jp.mts.base.domain.model.DomainRepository;
 
-public interface GroupRepository {
+
+public interface GroupRepository 
+	extends DomainRepository<GroupId, Group>{
 
 	GroupId newGroupId();
-	void save(Group group);
-	Group findById(GroupId groupId);
 	List<Group> findByIds(List<GroupId> groupIds);
 	void remove(Group group);
 	

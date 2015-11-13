@@ -35,11 +35,11 @@ public class GroupJoinAppService {
 		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
 		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
 
-		Group group = groupRepository.findById(new GroupId(groupId));
+		Optional<Group> group = groupRepository.findById(new GroupId(groupId));
 		assertTrue(group != null, ErrorType.GROUP_NOT_EXIST);
 		
 		GroupJoinApplication application 
-			= member.get().applyJoinTo(groupJoinRepository.newId(), group);
+			= member.get().applyJoinTo(groupJoinRepository.newId(), group.get());
 
 		groupJoinRepository.save(application);
 		
@@ -52,12 +52,12 @@ public class GroupJoinAppService {
 		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
 		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
 
-		GroupJoinApplication application 
+		Optional<GroupJoinApplication> application 
 			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId));
 		
-		member.get().cancel(application);
+		member.get().cancel(application.get());
 		
-		groupJoinRepository.save(application);
+		groupJoinRepository.save(application.get());
 	}
 
 

@@ -38,9 +38,9 @@ public class TaskAppService {
 			String aGroupId, String taskName, String assigned, Date deadline) {
 		
 		GroupId groupId = new GroupId(aGroupId);
-		Group group = groupRepository.findById(groupId);
+		Optional<Group> group = groupRepository.findById(groupId);
 		Optional<Member> assignedMember = memberRepository.findById(new MemberId(assigned));
-		Task task = group.createTask(
+		Task task = group.get().createTask(
 				taskRepository.newTaskId(groupId),
 				taskName,
 				assignedMember.get(),

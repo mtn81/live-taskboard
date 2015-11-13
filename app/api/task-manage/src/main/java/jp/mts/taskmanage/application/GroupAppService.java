@@ -53,8 +53,8 @@ public class GroupAppService {
 			throw new ApplicationException(GROUP_REMOVE_DISABLED);
 		}
 		
-		Group targetGroup = groupRepository.findById(new GroupId(groupId));
-		groupRepository.remove(targetGroup);
+		Optional<Group> targetGroup = groupRepository.findById(new GroupId(groupId));
+		groupRepository.remove(targetGroup.get());
 		
 	}
 	
@@ -68,17 +68,17 @@ public class GroupAppService {
 	public Group findBelongingGroup(String groupId, String memberId) {
 		GroupBelonging groupBelonging = groupBelongingRepository.findById(
 				new MemberId(memberId), new GroupId(groupId));
-		return groupRepository.findById(groupBelonging.groupId());
+		return groupRepository.findById(groupBelonging.groupId()).get();
 	}
 	
 	public void entryGroupAsAdministrator(String groupId, String memberId) {
-		Group group = groupRepository.findById(new GroupId(groupId));
-		if (group == null) return;
+		Optional<Group> group = groupRepository.findById(new GroupId(groupId));
+		if (!group.isPresent()) return;
 
 		Optional<Member> member = memberRepository.findById(new MemberId(memberId));
 		if (!member.isPresent()) return;
 		
-		GroupBelonging entry = member.get().entryAsAdministratorTo(group);
+		GroupBelonging entry = member.get().entryAsAdministratorTo(group.get());
 		groupBelongingRepository.save(entry);
 	}
 	
