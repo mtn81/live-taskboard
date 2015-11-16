@@ -1,8 +1,8 @@
 package jp.mts.taskmanage.domain.model;
 
-import jp.mts.base.domain.model.Identifier;
+import jp.mts.base.domain.model.DomainId;
 
-public class TaskId extends Identifier<String> {
+public class TaskId extends DomainId<String> {
 	
 	public TaskId(String value) {
 		super(value);

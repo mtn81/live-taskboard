@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import jp.mts.base.domain.model.CompositeId;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
@@ -53,7 +54,7 @@ public class TaskAppService {
 	public Task removeTask(String groupId, String taskId) {
 		
 		Task task = taskRepository.findById(
-				new GroupId(groupId), new TaskId(taskId));
+				CompositeId.of(new GroupId(groupId), new TaskId(taskId))).get();
 		
 		taskRepository.remove(task);
 		
@@ -71,11 +72,11 @@ public class TaskAppService {
 		GroupId groupId = new GroupId(aGroupId);
 		TaskId taskId = new TaskId(aTaskId);
 
-		Task task = taskRepository.findById(groupId, taskId);
-		Optional<Member> member = memberRepository.findById(new MemberId(assigned));
+		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
+		Member member = memberRepository.findById(new MemberId(assigned)).get();
 		task.changeSummary(
 				taskName, 
-				member.get(), 
+				member, 
 				deadline,
 				status);
 		

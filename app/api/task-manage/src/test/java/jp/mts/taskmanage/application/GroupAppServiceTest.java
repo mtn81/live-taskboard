@@ -81,7 +81,7 @@ public class GroupAppServiceTest {
 			groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
 				result = adminGroupBelonging;
 			groupRepository.findById(new GroupId(groupId));
-				result = removeTarget;
+				result = Optional.of(removeTarget);
 			groupRepository.remove(removeTarget);
 		}};
 
@@ -153,7 +153,7 @@ public class GroupAppServiceTest {
 		
 		new Expectations() {{
 			groupRepository.findById(new GroupId(groupId));
-				result = group;
+				result = Optional.of(group);
 			memberRepository.findById(new MemberId(memberId));
 				result = Optional.of(member);
 			groupBelongingRepository.save(groupBelonging);

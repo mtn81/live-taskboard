@@ -2,11 +2,11 @@ package jp.mts.taskmanage.domain.model;
 
 import java.util.List;
 
-public interface TaskRepository {
+import jp.mts.base.domain.model.CompositeId;
+import jp.mts.base.domain.model.DomainRepository;
+
+public interface TaskRepository extends DomainRepository<CompositeId, Task>{
 
 	List<Task> findByGroupId(GroupId groupId);
-	void save(Task task);
 	TaskId newTaskId(GroupId groupId);
-	Task findById(GroupId groupId, TaskId taskId);
-	void remove(Task task);
 }

@@ -54,7 +54,7 @@ public class GroupJoinAppServiceTest {
 			memberRepository.findById(new MemberId("m01"));
 				result = Optional.of(new MemberFixture("m01").get());
 			groupRepository.findById(new GroupId("g01"));
-				result = new GroupFixture("g01").get();
+				result = Optional.of(new GroupFixture("g01").get());
 			
 			groupJoinRepository.newId();
 				result = new GroupJoinApplicationId("a01");

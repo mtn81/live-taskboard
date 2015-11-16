@@ -1,9 +1,8 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
+import jp.mts.base.infrastructure.jdbc.repository.AbstractCompositeIdJdbcDomainRepository;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.Task;
@@ -14,46 +13,18 @@ import jp.mts.taskmanage.domain.model.TaskStatus;
 import jp.mts.taskmanage.infrastructure.jdbc.model.TaskIdGeneratorModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.TaskModel;
 
-import org.javalite.activejdbc.Model;
 import org.springframework.stereotype.Repository;
 
+import com.google.common.collect.Lists;
+
 @Repository
-public class JdbcTaskRepository implements TaskRepository {
+public class JdbcTaskRepository 
+	extends AbstractCompositeIdJdbcDomainRepository<Task, TaskModel>
+	implements TaskRepository {
 
 	@Override
 	public List<Task> findByGroupId(GroupId groupId) {
-		return TaskModel.find("group_id=?", groupId.value()).stream()
-				.map(taskModel -> toDomain(taskModel))
-				.collect(toList());
-	}
-
-	@Override
-	public void save(Task task) {
-		Model taskModel = find(task.taskId(), task.groupId());
-		if (taskModel == null) {
-			taskModel = new TaskModel();
-		}
-		taskModel.set(
-				"task_id", task.taskId().value(),
-				"group_id", task.groupId().value(),
-				"status", task.status().name(),
-				"name", task.name(),
-				"assigned", task.assignedMemberId().value());
-		taskModel.setDate("deadline", task.deadline());
-		taskModel.saveIt();
-	}
-
-
-	private Task toDomain(Model taskModel) {
-		return new TaskBuilder(
-			new Task(
-				new GroupId(taskModel.getString("group_id")), 
-				new TaskId(taskModel.getString("task_id")),
-				taskModel.getString("name"),
-				new MemberId(taskModel.getString("assigned")),
-				taskModel.getDate("deadline")))
-			.setStatus(TaskStatus.valueOf(taskModel.getString("status")))
-			.get();
+		return findList("group_id=?", groupId.value());
 	}
 
 	@Override
@@ -69,21 +40,35 @@ public class JdbcTaskRepository implements TaskRepository {
 		return new TaskId("TASK-" + newTaskIdNumber);
 	}
 
+
 	@Override
-	public Task findById(GroupId groupId, TaskId taskId) {
-		Model taskModel = find(taskId, groupId);
-		if (taskModel == null)  return null;
-		return toDomain(taskModel);
+	protected List<String> idColumnNames() {
+		return Lists.newArrayList("group_id", "task_id");
 	}
 
 	@Override
-	public void remove(Task task) {
-		TaskModel.delete("task_id=? and group_id=?", 
-				task.taskId().value(), task.groupId().value());
+	protected Task toDomain(TaskModel taskModel) {
+		return new TaskBuilder(
+			new Task(
+				new GroupId(taskModel.getString("group_id")), 
+				new TaskId(taskModel.getString("task_id")),
+				taskModel.getString("name"),
+				new MemberId(taskModel.getString("assigned")),
+				taskModel.getDate("deadline")))
+			.setStatus(TaskStatus.valueOf(taskModel.getString("status")))
+			.get();
+	}
+
+	@Override
+	protected void toModel(TaskModel taskModel, Task task) {
+		taskModel.set(
+				"task_id", task.taskId().value(),
+				"group_id", task.groupId().value(),
+				"status", task.status().name(),
+				"name", task.name(),
+				"assigned", task.assignedMemberId().value());
+		taskModel.setDate("deadline", task.deadline());
 	}
 	
-	private TaskModel find(TaskId taskId, GroupId groupId) {
-		return TaskModel.findFirst(
-				"task_id=? and group_id=?", taskId.value(), groupId.value());
-	}
+	
 }

@@ -71,14 +71,12 @@ public class JdbcGroupRepository
 	}
 
 	@Override
-	protected GroupModel toModel(GroupModel model, Group group) {
+	protected void toModel(GroupModel model, Group group) {
 
 		model.set(
 			"group_id", group.groupId().value(),
 			"owner_member_id", group.ownerMemberId().value(),
 			"name", group.name(),
 			"description", group.description());
-
-		return model;
 	}
 }

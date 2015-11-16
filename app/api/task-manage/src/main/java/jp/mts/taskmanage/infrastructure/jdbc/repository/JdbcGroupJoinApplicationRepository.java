@@ -46,7 +46,7 @@ public class JdbcGroupJoinApplicationRepository
 	}
 
 	@Override
-	protected GroupJoinModel toModel(
+	protected void toModel(
 			GroupJoinModel model,
 			GroupJoinApplication groupJoin) {
 
@@ -58,8 +58,6 @@ public class JdbcGroupJoinApplicationRepository
 				"applied_time", groupJoin.applied())
 			.setTimestamp(
 				"applied_time", groupJoin.applied());
-		
-		return model;
 	}
 
 }

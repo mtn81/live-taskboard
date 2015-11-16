@@ -1,10 +1,12 @@
 package jp.mts.base.domain.model;
 
-public abstract class Identifier<T> {
+import java.io.Serializable;
+
+public abstract class DomainId<T> implements Serializable {
 
 	private T value;
 
-	public Identifier(T value) {
+	public DomainId(T value) {
 		this.value = value;
 	}
 	
@@ -28,7 +30,7 @@ public abstract class Identifier<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Identifier other = (Identifier) obj;
+		DomainId other = (DomainId) obj;
 		if (value == null) {
 			if (other.value != null)
 				return false;

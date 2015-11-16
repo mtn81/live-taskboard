@@ -1,7 +1,7 @@
 package jp.mts.base.domain.model;
 
 
-public abstract class DomainEntity<I extends Identifier<?>> extends DomainObject {
+public abstract class DomainEntity<I extends DomainId<?>> extends DomainObject {
 	
 	private I id;
 

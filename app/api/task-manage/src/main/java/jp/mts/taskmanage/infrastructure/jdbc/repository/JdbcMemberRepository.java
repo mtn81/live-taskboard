@@ -42,10 +42,9 @@ public class JdbcMemberRepository
 	}
 
 	@Override
-	protected MemberModel toModel(MemberModel model, Member entity) {
+	protected void toModel(MemberModel model, Member entity) {
 		model.set(
 			"member_id", entity.memberId().value(),
 			"name", entity.name());
-		return model;
 	}
 }

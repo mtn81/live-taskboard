@@ -1,9 +1,9 @@
 package jp.mts.taskmanage.domain.model;
 
-import jp.mts.base.domain.model.CompositeIdentifier;
+import jp.mts.base.domain.model.CompositeId;
 import jp.mts.base.domain.model.DomainEntity;
 
-public class GroupBelonging extends DomainEntity<CompositeIdentifier>{
+public class GroupBelonging extends DomainEntity<CompositeId>{
 
 	private GroupId groupId;
 	private MemberId memberId;
@@ -13,7 +13,7 @@ public class GroupBelonging extends DomainEntity<CompositeIdentifier>{
 			GroupId groupId, 
 			MemberId memberId,
 			boolean isAdmin) {
-		super(CompositeIdentifier.of(groupId, memberId));
+		super(CompositeId.of(groupId, memberId));
 		this.groupId = groupId;
 		this.memberId = memberId;
 		this.isAdmin = isAdmin;

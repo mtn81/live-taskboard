@@ -1,12 +1,15 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
+import static jp.mts.base.domain.model.CompositeId.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.List;
+import java.util.Optional;
 
+import jp.mts.base.domain.model.CompositeId;
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -74,12 +77,12 @@ public class JdbcTaskRepositoryTest extends JdbcTestBase {
 		TaskId taskId = new TaskId("t01");
 		target.save(new TaskFixture("g01", "t01").get());
 		
-		Task task = target.findById(groupId, taskId);
-		assertThat(task, is(notNullValue()));
+		Optional<Task> task = target.findById(of(groupId, taskId));
+		assertThat(task.isPresent(), is(true));
 
-		target.remove(task);
+		target.remove(task.get());
 
-		task = target.findById(groupId, taskId);
-		assertThat(task, is(nullValue()));
+		task = target.findById(of(groupId, taskId));
+		assertThat(task.isPresent(), is(false));
 	}
 }
