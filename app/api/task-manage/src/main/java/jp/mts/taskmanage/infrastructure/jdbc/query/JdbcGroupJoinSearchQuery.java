@@ -38,8 +38,39 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				memberId));
 	}
 	@Override
-	public List<AcceptableByAdminResult> acceptableByAdmin(String memberId) {
-		return toAcceptableByAdminResults(Base.findAll(
+	public List<ByAdminResult> acceptableByAdmin(String memberId) {
+		return toByAdminResults(Base.findAll(
+				byAdminSql("APPLIED"), memberId));
+	}
+	@Override
+	public List<ByAdminResult> rejectedByAdmin(String memberId) {
+		return toByAdminResults(Base.findAll(
+				byAdminSql("REJECTED"), memberId));
+	}
+	
+	private List<ByApplicantResult> toResult(List<Map> models) {
+		return models.stream().map(m -> { 
+				return new ByApplicantResult(
+						(String)m.get("application_id"), 
+						(String)m.get("group_id"), 
+						(String)m.get("group_name"), 
+						(String)m.get("owner_name"),
+						m.get("applied_time") == null ? null : new Date(((Timestamp)m.get("applied_time")).getTime()),
+						m.get("applied_status") == null ? null : GroupJoinApplicationStatus.valueOf((String)m.get("applied_status"))); 
+			}).collect(Collectors.toList());
+	}
+	private List<ByAdminResult> toByAdminResults(List<Map> models) {
+		return models.stream().map(m -> { 
+				return new ByAdminResult(
+						(String)m.get("application_id"), 
+						(String)m.get("group_name"), 
+						(String)m.get("applicant_id"),
+						(String)m.get("applicant_name"),
+						m.get("applied_time") == null ? null : new Date(((Timestamp)m.get("applied_time")).getTime()));
+			}).collect(Collectors.toList());
+	}
+	private String byAdminSql(String status) {
+		return
 				"select "
 				+ "g.group_id as group_id, "
 				+ "g.name as group_name, "
@@ -55,7 +86,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				+ "inner join members m "
 				+ 	"on gj.applicant_id = m.member_id " +
 				"where "
-				+ "gj.status = 'APPLIED' " 
+				+ "gj.status = '"+ status + "' " 
 				+ "and exists ( "
 				+   "select "
 				+     "1 "
@@ -66,29 +97,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				+ 	  "and gm.member_id = ? "  
 				+ 	  "and gm.admin = true "  
 				+ ") "
-				, memberId));
-	}
-	
-	private List<ByApplicantResult> toResult(List<Map> models) {
-		return models.stream().map(m -> { 
-				return new ByApplicantResult(
-						(String)m.get("application_id"), 
-						(String)m.get("group_id"), 
-						(String)m.get("group_name"), 
-						(String)m.get("owner_name"),
-						m.get("applied_time") == null ? null : new Date(((Timestamp)m.get("applied_time")).getTime()),
-						m.get("applied_status") == null ? null : GroupJoinApplicationStatus.valueOf((String)m.get("applied_status"))); 
-			}).collect(Collectors.toList());
-	}
-	private List<AcceptableByAdminResult> toAcceptableByAdminResults(List<Map> models) {
-		return models.stream().map(m -> { 
-				return new AcceptableByAdminResult(
-						(String)m.get("application_id"), 
-						(String)m.get("group_name"), 
-						(String)m.get("applicant_id"),
-						(String)m.get("applicant_name"),
-						m.get("applied_time") == null ? null : new Date(((Timestamp)m.get("applied_time")).getTime()));
-			}).collect(Collectors.toList());
+			;
 	}
 
 }

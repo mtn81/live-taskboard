@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.AcceptableByAdminResult;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByAdminResult;
 
-public class AcceptableMemberJoinSearch {
+public class MemberJoinSearch {
 	
 	private static GroupJoinSearchQuery groupJoinSearchQuery;
 
 	public static void setJoinGroupSearchQuery(GroupJoinSearchQuery groupJoinSearchQuery) {
-		AcceptableMemberJoinSearch.groupJoinSearchQuery = groupJoinSearchQuery;
+		MemberJoinSearch.groupJoinSearchQuery = groupJoinSearchQuery;
 	}
 	
 	//output
-	private List<GroupJoinSearchQuery.AcceptableByAdminResult> memberSearchResults;
+	private List<GroupJoinSearchQuery.ByAdminResult> memberSearchResults;
 	
 	public List<MemberJoinView> getMembers() {
 		return memberSearchResults.stream()
@@ -25,9 +25,9 @@ public class AcceptableMemberJoinSearch {
 	}
 	
 	public static class MemberJoinView {
-		private GroupJoinSearchQuery.AcceptableByAdminResult result;
+		private GroupJoinSearchQuery.ByAdminResult result;
 
-		public MemberJoinView(AcceptableByAdminResult result) {
+		public MemberJoinView(ByAdminResult result) {
 			this.result = result;
 		}
 		
@@ -40,6 +40,9 @@ public class AcceptableMemberJoinSearch {
 	//process
 	public void searchAcceptableByAdmin(String memberId) {
 		this.memberSearchResults = groupJoinSearchQuery.acceptableByAdmin(memberId);
+	}
+	public void searchRejectedByAdmin(String memberId) {
+		this.memberSearchResults = groupJoinSearchQuery.rejectedByAdmin(memberId);
 	}
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
-import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.AcceptableByAdminResult;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByAdminResult;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByApplicantResult;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
@@ -29,6 +29,10 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 		GroupModel.deleteAll();
 		GroupJoinModel.deleteAll();
 		GroupMemberModel.deleteAll();
+	}
+
+	@Test
+	public void test_searchApplied() {
 		
 		new MemberModel().set(
 				"member_id", "m01",
@@ -38,35 +42,21 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 				"member_id", "m99",
 				"name", "member99")
 			.saveIt();
-		new MemberModel().set(
-				"member_id", "m98",
-				"name", "member98")
-			.saveIt();
 
 		new GroupModel().set(
 				"group_id", "g01",
 				"owner_member_id", "m01",
-				"name", "グループA")
+				"name", "グループ1")
 			.saveIt();
 		new GroupModel().set(
 				"group_id", "g02",
 				"owner_member_id", "m01",
-				"name", "groupB")
+				"name", "グループ2")
 			.saveIt();
 		new GroupModel().set(
 				"group_id", "g03",
 				"owner_member_id", "m01",
-				"name", "GROUPA")
-			.saveIt();
-		new GroupModel().set(
-				"group_id", "g04",
-				"owner_member_id", "m01",
-				"name", "My グループ B")
-			.saveIt();
-		new GroupModel().set(
-				"group_id", "g05",
-				"owner_member_id", "m02",
-				"name", "グループA")
+				"name", "グループ3")
 			.saveIt();
 
 		new GroupJoinModel().set(
@@ -86,54 +76,219 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 		new GroupJoinModel().set(
 				"application_id", "a03",
 				"group_id", "g03",
-				"applicant_id", "m98",
+				"applicant_id", "m99",
+				"status", "REJECTED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a04",
+				"group_id", "g02",
+				"applicant_id", "m01",
 				"status", "APPLIED",
-				"applied_time", Timestamp.valueOf("2015-11-01 13:00:00"))
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
 			.saveIt();
 		
-		new GroupMemberModel().set(
-				"group_id", "g01",
-				"member_id", "m02",
-				"admin", true)
-			.saveIt();
-		new GroupMemberModel().set(
-				"group_id", "g03",
-				"member_id", "m02",
-				"admin", true)
-			.saveIt();
-	}
-
-	@Test
-	public void test_searchApplied() {
 		List<ByApplicantResult> results = target.byApplicant("m99");
 		
-		assertThat(results.size(), is(2));
+		assertThat(results.size(), is(3));
 		assertThat(results.get(0).groupId, is("g01"));
-		assertThat(results.get(0).groupName, is("グループA"));
+		assertThat(results.get(0).groupName, is("グループ1"));
 		assertThat(results.get(0).ownerName, is("member01"));
 		assertThat(results.get(0).joinApplicationStatus, is(GroupJoinApplicationStatus.APPLIED));
 		assertThat(results.get(0).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
+
 		assertThat(results.get(1).groupId, is("g02"));
-		assertThat(results.get(1).groupName, is("groupB"));
+		assertThat(results.get(1).groupName, is("グループ2"));
 		assertThat(results.get(1).ownerName, is("member01"));
 		assertThat(results.get(1).joinApplicationStatus, is(GroupJoinApplicationStatus.APPLIED));
 		assertThat(results.get(1).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
+
+		assertThat(results.get(2).groupId, is("g03"));
+		assertThat(results.get(2).groupName, is("グループ3"));
+		assertThat(results.get(2).ownerName, is("member01"));
+		assertThat(results.get(2).joinApplicationStatus, is(GroupJoinApplicationStatus.REJECTED));
+		assertThat(results.get(2).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
 	}
 	@Test
 	public void test_searchAcceptable() {
 		
-		List<AcceptableByAdminResult> results = target.acceptableByAdmin("m02");
+		new MemberModel().set(
+				"member_id", "m01",
+				"name", "member01")
+			.saveIt();
+		new MemberModel().set(
+				"member_id", "m02",
+				"name", "member01")
+			.saveIt();
+		new MemberModel().set(
+				"member_id", "m99",
+				"name", "member99")
+			.saveIt();
+
+		new GroupModel().set(
+				"group_id", "g01",
+				"owner_member_id", "m01",
+				"name", "グループ1")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g02",
+				"owner_member_id", "m02",
+				"name", "グループ2")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g03",
+				"owner_member_id", "m02",
+				"name", "グループ3")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g04",
+				"owner_member_id", "m02",
+				"name", "グループ4")
+			.saveIt();
+
+		new GroupJoinModel().set(
+				"application_id", "a01",
+				"group_id", "g01",
+				"applicant_id", "m99",
+				"status", "APPLIED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a02",
+				"group_id", "g02",
+				"applicant_id", "m99",
+				"status", "APPLIED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a03",
+				"group_id", "g03",
+				"applicant_id", "m99",
+				"status", "APPLIED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a04",
+				"group_id", "g04",
+				"applicant_id", "m99",
+				"status", "REJECTED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		
+		new GroupMemberModel().set(
+				"group_id", "g01",
+				"member_id", "m01",
+				"admin", true)
+			.saveIt();
+		new GroupMemberModel().set(
+				"group_id", "g02",
+				"member_id", "m01",
+				"admin", true)
+			.saveIt();
+		new GroupMemberModel().set(
+				"group_id", "g04",
+				"member_id", "m01",
+				"admin", true)
+			.saveIt();
+		
+		List<ByAdminResult> results = target.acceptableByAdmin("m01");
 		
 		assertThat(results.size(), is(2));
 		assertThat(results.get(0).applicantId, is("m99"));
 		assertThat(results.get(0).applicantName, is("member99"));
-		assertThat(results.get(0).groupName, is("グループA"));
+		assertThat(results.get(0).groupName, is("グループ1"));
 		assertThat(results.get(0).joinApplicationId, is("a01"));
 		assertThat(results.get(0).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
-		assertThat(results.get(1).applicantId, is("m98"));
-		assertThat(results.get(1).applicantName, is("member98"));
-		assertThat(results.get(1).groupName, is("GROUPA"));
-		assertThat(results.get(1).joinApplicationId, is("a03"));
-		assertThat(results.get(1).joinApplied, is(Dates.dateTime("2015/11/01 13:00:00.000")));
+
+		assertThat(results.get(1).applicantId, is("m99"));
+		assertThat(results.get(1).applicantName, is("member99"));
+		assertThat(results.get(1).groupName, is("グループ2"));
+		assertThat(results.get(1).joinApplicationId, is("a02"));
+		assertThat(results.get(1).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
+	}
+	@Test
+	public void test_searchRejected() {
+		new MemberModel().set(
+				"member_id", "m01",
+				"name", "member01")
+			.saveIt();
+		new MemberModel().set(
+				"member_id", "m02",
+				"name", "member01")
+			.saveIt();
+		new MemberModel().set(
+				"member_id", "m99",
+				"name", "member99")
+			.saveIt();
+
+		new GroupModel().set(
+				"group_id", "g01",
+				"owner_member_id", "m01",
+				"name", "グループ1")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g02",
+				"owner_member_id", "m02",
+				"name", "グループ2")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g03",
+				"owner_member_id", "m02",
+				"name", "グループ3")
+			.saveIt();
+		new GroupModel().set(
+				"group_id", "g04",
+				"owner_member_id", "m02",
+				"name", "グループ4")
+			.saveIt();
+
+		new GroupJoinModel().set(
+				"application_id", "a01",
+				"group_id", "g01",
+				"applicant_id", "m99",
+				"status", "APPLIED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a02",
+				"group_id", "g02",
+				"applicant_id", "m99",
+				"status", "REJECTED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a03",
+				"group_id", "g03",
+				"applicant_id", "m99",
+				"status", "APPLIED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		new GroupJoinModel().set(
+				"application_id", "a04",
+				"group_id", "g04",
+				"applicant_id", "m99",
+				"status", "REJECTED",
+				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
+			.saveIt();
+		
+		new GroupMemberModel().set(
+				"group_id", "g01",
+				"member_id", "m01",
+				"admin", true)
+			.saveIt();
+		new GroupMemberModel().set(
+				"group_id", "g02",
+				"member_id", "m01",
+				"admin", true)
+			.saveIt();
+		
+		List<ByAdminResult> results = target.rejectedByAdmin("m01");
+		
+		assertThat(results.size(), is(1));
+		assertThat(results.get(0).applicantId, is("m99"));
+		assertThat(results.get(0).applicantName, is("member99"));
+		assertThat(results.get(0).groupName, is("グループ2"));
+		assertThat(results.get(0).joinApplicationId, is("a02"));
+		assertThat(results.get(0).joinApplied, is(Dates.dateTime("2015/11/01 12:00:00.000")));
 	}
 }

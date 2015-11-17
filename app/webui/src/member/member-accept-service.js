@@ -11,6 +11,7 @@ import {HttpClientWrapper} from '../lib/http-client-wrapper';
 export class MemberAcceptService {
 
   _acceptableMemberJoins = [];
+  _rejectedMemberJoins = [];
 
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
@@ -27,9 +28,23 @@ export class MemberAcceptService {
           this._acceptableMemberJoins.length = 0;
           $.merge(this._acceptableMemberJoins, found);
         });
-    });
+    }, false, 'searchAcceptableMembers');
 
     return this._acceptableMemberJoins;
+  }
+
+  searchRejectedMembers() {
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/group_joins/search?rejected&memberId=${this._memberId()}`)
+        .then(response => {
+          let found = response.content.data.members;
+          this._rejectedMemberJoins.length = 0;
+          $.merge(this._rejectedMemberJoins, found);
+        });
+    }, false, 'searchRejectedMembers');
+
+    return this._rejectedMemberJoins;
   }
 
   _memberId() {

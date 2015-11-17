@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.rest.presentation.model.AcceptableMemberJoinSearch;
+import jp.mts.taskmanage.rest.presentation.model.MemberJoinSearch;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinCancel;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinSearch;
@@ -33,7 +33,7 @@ public class GroupJoinApi {
 		GroupJoinApply.setGroupJoinAppService(groupJoinAppService);
 		GroupJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 		GroupJoinCancel.setGroupJoinAppService(groupJoinAppService);
-		AcceptableMemberJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
+		MemberJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 	}
 
 	@RequestMapping(
@@ -76,11 +76,23 @@ public class GroupJoinApi {
 			value="/group_joins/search", 
 			params="acceptable",
 			method=RequestMethod.GET)
-	public RestResponse<AcceptableMemberJoinSearch> searchAcceptableGroupJoinApplications(
+	public RestResponse<MemberJoinSearch> searchAcceptableGroupJoinApplications(
 			@RequestParam("memberId") String memberId) {
 		
-		AcceptableMemberJoinSearch search = new AcceptableMemberJoinSearch();
+		MemberJoinSearch search = new MemberJoinSearch();
 		search.searchAcceptableByAdmin(memberId);
+		return RestResponse.of(search);
+	}
+
+	@RequestMapping(
+			value="/group_joins/search", 
+			params="rejected",
+			method=RequestMethod.GET)
+	public RestResponse<MemberJoinSearch> searchRejectedGroupJoinApplications(
+			@RequestParam("memberId") String memberId) {
+		
+		MemberJoinSearch search = new MemberJoinSearch();
+		search.searchRejectedByAdmin(memberId);
 		return RestResponse.of(search);
 	}
 

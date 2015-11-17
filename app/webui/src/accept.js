@@ -8,6 +8,7 @@ import 'components/jqueryui';
 export class Accept {
 
   acceptableMembers = [];
+  rejectedMembers = [];
 
   constructor(eventAggregator, memberAcceptService){
     this.events = new EventAggregatorWrapper(this, eventAggregator);
@@ -18,6 +19,10 @@ export class Accept {
     this.acceptableMembers = this.memberAcceptService.searchAcceptableMembers();
   }
 
+  searchRejectedMembers() {
+    this.rejectedMembers = this.memberAcceptService.searchRejectedMembers();
+  }
+
   formatTime(time) {
     let date = new Date(time);
     return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
@@ -25,6 +30,7 @@ export class Accept {
 
   activate() {
     this.searchAcceptableMembers();
+    this.searchRejectedMembers();
   }
 
 }

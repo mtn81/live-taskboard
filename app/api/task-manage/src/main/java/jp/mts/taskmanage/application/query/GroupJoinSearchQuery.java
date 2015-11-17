@@ -8,7 +8,8 @@ import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 public interface GroupJoinSearchQuery {
 
 	List<ByApplicantResult> byApplicant(String memberId);
-	List<AcceptableByAdminResult> acceptableByAdmin(String memberId);
+	List<ByAdminResult> acceptableByAdmin(String memberId);
+	List<ByAdminResult> rejectedByAdmin(String memberId);
 	
 	public static class ByApplicantResult {
 		public String joinApplicationId;
@@ -34,14 +35,14 @@ public interface GroupJoinSearchQuery {
 		}
 	}
 
-	public static class AcceptableByAdminResult {
+	public static class ByAdminResult {
 		public String joinApplicationId;
 		public String groupName;
 		public String applicantId;
 		public String applicantName;
 		public Date joinApplied;
 
-		public AcceptableByAdminResult(
+		public ByAdminResult(
 				String joinApplicationId,
 				String groupName, 
 				String applicantId, 
