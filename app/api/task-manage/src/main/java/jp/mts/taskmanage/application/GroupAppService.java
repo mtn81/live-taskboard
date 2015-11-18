@@ -1,17 +1,8 @@
 package jp.mts.taskmanage.application;
 
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
-import static jp.mts.taskmanage.application.ErrorType.MEMBER_NOT_EXIST;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupBelonging;
-import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.Member;
@@ -30,95 +21,35 @@ public class GroupAppService {
 	private GroupRepository groupRepository;
 	@Autowired
 	private MemberRepository memberRepository;
-	@Autowired
-	private GroupBelongingRepository groupBelongingRepository;
 
 	public Group registerGroup(String memberId, String name, String description) {
-		Optional<Member> member = memberRepository.findById(new MemberId(memberId));
-		if (!member.isPresent()) {
-			throw new ApplicationException(MEMBER_NOT_EXIST);
-		}
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
 		
-		Group group = member.get().createGroup(
+		Group group = member.createGroup(
 				groupRepository.newGroupId(), name, description);
 
 		groupRepository.save(group);
+		memberRepository.save(member);
+
 		return group;
 	}
 
 	public void removeGroup(String memberId, String groupId) {
-		GroupBelonging groupBelonging 
-			= groupBelongingRepository.findById(new MemberId(memberId), new GroupId(groupId));
-		if (!groupBelonging.isAdmin()) {
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		Group targetGroup = groupRepository.findById(new GroupId(groupId)).get();
+
+		if (!member.remove(targetGroup, groupRepository)) {
 			throw new ApplicationException(GROUP_REMOVE_DISABLED);
 		}
-		
-		Optional<Group> targetGroup = groupRepository.findById(new GroupId(groupId));
-		groupRepository.remove(targetGroup.get());
-		
-	}
-	
-	public List<GroupBelongingPair> listGroupBelongingFor(String memberId) {
-		List<GroupBelonging> groupBelongings 
-			= groupBelongingRepository.findByMember(new MemberId(memberId));
-		List<Group> groups = groupRepository.findByIds(toGroupIds(groupBelongings));
-		return GroupBelongingPair.pairs(groups, groupBelongings);
 	}
 
 	public Group findBelongingGroup(String groupId, String memberId) {
-		GroupBelonging groupBelonging = groupBelongingRepository.findById(
-				new MemberId(memberId), new GroupId(groupId));
-		return groupRepository.findById(groupBelonging.groupId()).get();
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		if (member.belongsTo(groupId)) {
+			return groupRepository.findById(new GroupId(groupId)).get();
+		}
+	
+		throw new ApplicationException(ErrorType.GROUP_NOT_AVAILABLE);
 	}
 	
-	public void entryGroupAsAdministrator(String groupId, String memberId) {
-		Optional<Group> group = groupRepository.findById(new GroupId(groupId));
-		if (!group.isPresent()) return;
-
-		Optional<Member> member = memberRepository.findById(new MemberId(memberId));
-		if (!member.isPresent()) return;
-		
-		GroupBelonging entry = member.get().entryAsAdministratorTo(group.get());
-		groupBelongingRepository.save(entry);
-	}
-	
-	public static class GroupBelongingPair {
-		private Group group;
-		private GroupBelonging groupBelonging;
-
-		public GroupBelongingPair(Group group, GroupBelonging groupBelonging) {
-			this.group = group;
-			this.groupBelonging = groupBelonging;
-		}
-
-		public static List<GroupBelongingPair> pairs(
-				List<Group> groups,
-				List<GroupBelonging> groupBelongings) {
-			List<GroupBelongingPair> pairs = new ArrayList<>();
-			groups.forEach(g -> {
-				groupBelongings.forEach(gb -> {
-					if(g.groupId().equals(gb.groupId())) 
-						pairs.add(new GroupBelongingPair(g, gb));
-				});
-			});
-			return pairs;
-		}
-
-		public Group getGroup() {
-			return group;
-		}
-		public GroupBelonging getGroupBelonging() {
-			return groupBelonging;
-		}
-	}
-	
-	private List<GroupId> toGroupIds(List<GroupBelonging> groupBelongings){
-		return groupBelongings.stream()
-				.map(gb -> gb.groupId())
-				.collect(Collectors.toList());
-	}
-
-
-
-
 }

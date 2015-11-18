@@ -3,18 +3,18 @@ package jp.mts.taskmanage.rest.presentation.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import jp.mts.taskmanage.application.query.GroupSearchQuery;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 
 public class GroupSearch {
 	
-	private static GroupSearchQuery groupSearchQuery;
+	private static GroupJoinSearchQuery groupJoinSearchQuery;
 	
-	public static void setGroupSearchQuery(GroupSearchQuery groupSearchQuery) {
-		GroupSearch.groupSearchQuery = groupSearchQuery;
+	public static void setGroupJoinSearchQuery(GroupJoinSearchQuery groupJoinSearchQuery) {
+		GroupSearch.groupJoinSearchQuery = groupJoinSearchQuery;
 	}
 
 	//output
-	private List<GroupSearchQuery.Result> groupSearchResults;
+	private List<GroupJoinSearchQuery.NotJoinAppliedWithNameResult> groupSearchResults;
 	
 	public List<GroupView> getGroups() {
 		return groupSearchResults.stream()
@@ -24,9 +24,9 @@ public class GroupSearch {
 
 	public static class GroupView {
 
-		private GroupSearchQuery.Result groupSearchResult;
+		private GroupJoinSearchQuery.NotJoinAppliedWithNameResult groupSearchResult;
 		
-		public GroupView(GroupSearchQuery.Result groupSearchResult) {
+		public GroupView(GroupJoinSearchQuery.NotJoinAppliedWithNameResult groupSearchResult) {
 			this.groupSearchResult = groupSearchResult;
 		}
 
@@ -45,7 +45,7 @@ public class GroupSearch {
 	public void searchNotJoinAppliedGroupsByName(
 			String memberId, String groupName) {
 
-		this.groupSearchResults = groupSearchQuery.notJoinAppliedByName(memberId, groupName);
+		this.groupSearchResults = groupJoinSearchQuery.notJoinAppliedWithName(memberId, groupName);
 	}
 
 

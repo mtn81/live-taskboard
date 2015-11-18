@@ -8,7 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
-import jp.mts.taskmanage.application.query.GroupSearchQuery;
+import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
 import jp.mts.taskmanage.rest.presentation.model.GroupSave;
@@ -29,11 +30,14 @@ public class GroupApi {
 	@Autowired
 	private GroupAppService groupAppService;
 	@Autowired
-	private GroupSearchQuery groupSearchQuery;
+	private GroupJoinSearchQuery groupJoinSearchQuery;
+	@Autowired
+	private GroupBelongingSearchQuery groupBelongingSearchQuery;
 	
 	@PostConstruct
 	public void initialize() {
-		GroupSearch.setGroupSearchQuery(groupSearchQuery);
+		GroupSearch.setGroupJoinSearchQuery(groupJoinSearchQuery);
+		GroupList.setGroupBelongingSearchQuery(groupBelongingSearchQuery);
 	}
 
 	@RequestMapping(value="/members/{memberId}/groups/", method=RequestMethod.POST)
@@ -57,7 +61,7 @@ public class GroupApi {
 	public RestResponse<GroupList> listBelongingGroups(
 			@PathVariable String memberId) {
 		GroupList groupList = new GroupList();
-		groupList.loadBelongingGroups(memberId, groupAppService);
+		groupList.loadBelongingGroups(memberId);
 		return RestResponse.of(groupList);
 	}
 	

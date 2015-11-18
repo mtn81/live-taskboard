@@ -21,12 +21,14 @@ public abstract class AbstractJdbcDomainRepository<
 	protected Class<?> tableModelClass;
 	protected Method findFirstMethod;
 	protected Method findMethod;
+	protected Method findBySqlMethod;
 	
 	protected void setTableModelClass(Class<?> tableModelClass) {
 		try {
 			this.tableModelClass = tableModelClass;
 			this.findFirstMethod = tableModelClass.getMethod("findFirst", String.class, Object[].class);
 			this.findMethod = tableModelClass.getMethod("find", String.class, Object[].class);
+			this.findBySqlMethod = tableModelClass.getMethod("findBySQL", String.class, Object[].class);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -36,7 +38,8 @@ public abstract class AbstractJdbcDomainRepository<
 	public Optional<E> findById(I id) {
 		M model = findModelById(id);
 		if (model == null) return Optional.empty();
-		return Optional.of(toDomain(model));
+		E entity = toDomain(model);
+		return Optional.of(entity);
 	}
 
 	@Override
@@ -62,6 +65,13 @@ public abstract class AbstractJdbcDomainRepository<
 	
 	protected List<E> findList(String subquery, Object... params) {
 		List<M> models = (List<M>) ReflectionUtils.invokeMethod(findMethod, null, subquery, params);
+		return models.stream()
+				.map(model -> toDomain(model))
+				.collect(Collectors.toList());
+	}
+
+	protected List<E> findListBySql(String fullQuery, Object... params) {
+		List<M> models = (List<M>) ReflectionUtils.invokeMethod(findBySqlMethod, null, fullQuery, params);
 		return models.stream()
 				.map(model -> toDomain(model))
 				.collect(Collectors.toList());

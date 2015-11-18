@@ -47,8 +47,19 @@ export class MemberAcceptService {
     return this._rejectedMemberJoins;
   }
 
+  rejectMember(member) {
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/group_joins/${member.joinId}?reject`, { memberId: this._memberId() })
+        .then(response => {
+          this.eventAggregator.publish(new MemberRejected());
+        })
+    }, true);
+  }
+
   _memberId() {
     return this.authContext.getAuth().userId;
   }
 }
 
+export class MemberRejected {}

@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
-import {MemberAcceptService} from './member/member-accept-service';
+import {MemberAcceptService, MemberRejected} from './member/member-accept-service';
 import 'components/jqueryui';
 
 @inject(EventAggregator, MemberAcceptService)
@@ -23,9 +23,12 @@ export class Accept {
     this.rejectedMembers = this.memberAcceptService.searchRejectedMembers();
   }
 
-  formatTime(time) {
-    let date = new Date(time);
-    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+  reject(member) {
+    this.events.subscribe(MemberRejected, payload => {
+      this.searchAcceptableMembers();
+      this.searchRejectedMembers();
+    });
+    this.memberAcceptService.rejectMember(member);
   }
 
   activate() {

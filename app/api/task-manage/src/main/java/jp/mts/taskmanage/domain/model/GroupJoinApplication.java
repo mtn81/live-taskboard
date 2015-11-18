@@ -39,6 +39,9 @@ public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 	public void cancel() {
 		setStatus(GroupJoinApplicationStatus.CANCELLED);
 	}
+	public void reject() {
+		setStatus(GroupJoinApplicationStatus.REJECTED);
+	}
 	
 	void setStatus(GroupJoinApplicationStatus status) {
 		this.status = status;
@@ -46,5 +49,6 @@ public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 	void setApplied(Date applied) {
 		this.applied = applied;
 	}
+
 
 }

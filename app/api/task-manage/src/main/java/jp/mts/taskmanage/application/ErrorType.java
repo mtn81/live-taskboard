@@ -6,6 +6,8 @@ public enum ErrorType implements jp.mts.base.application.ErrorType{
 	GROUP_NOT_AVAILABLE("e-tm-003", "指定されたグループは利用できません"),
 	GROUP_REMOVE_DISABLED("e-tm-004", "管理者ではないのでグループを削除できません"),
 	NOT_AUTHENTICATED("e-tm-005", "認証が必要です"),
+	JOIN_NOT_EXIST("e-tm-006", "参加申請が見つかりません。"),
+	CANNOT_ACCEPT_JOIN("e-tm-007", "参加申請グループの管理者ではありません")
 	;
 	
 	private String errorCode;

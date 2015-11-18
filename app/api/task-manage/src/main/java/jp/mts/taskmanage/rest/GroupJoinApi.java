@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
+import jp.mts.taskmanage.rest.presentation.model.MemberJoinAccept;
 import jp.mts.taskmanage.rest.presentation.model.MemberJoinSearch;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinCancel;
@@ -34,6 +35,7 @@ public class GroupJoinApi {
 		GroupJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 		GroupJoinCancel.setGroupJoinAppService(groupJoinAppService);
 		MemberJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
+		MemberJoinAccept.setGroupJoinAppService(groupJoinAppService);
 	}
 
 	@RequestMapping(
@@ -59,6 +61,17 @@ public class GroupJoinApi {
 		return RestResponse.of(groupJoinCancel);
 	}
 
+	@RequestMapping(
+			value="/group_joins/{joinApplicationId}", 
+			params="reject",
+			method=RequestMethod.PUT)
+	public RestResponse<MemberJoinAccept> reject(
+			@PathVariable("joinApplicationId") String joinApplicationId,
+			@Valid @RequestBody MemberJoinAccept memberJoinAccept){
+		
+		memberJoinAccept.reject(joinApplicationId);
+		return RestResponse.of(memberJoinAccept);
+	}
 	
 	@RequestMapping(
 			value="/members/{memberId}/group_joins/", 

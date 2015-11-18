@@ -8,13 +8,10 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import jp.mts.base.rest.RestResponse;
-import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.GroupAppService;
-import jp.mts.taskmanage.application.GroupAppService.GroupBelongingPair;
-import jp.mts.taskmanage.application.query.GroupSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupBelongingFixture;
+import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 import jp.mts.taskmanage.domain.model.GroupFixture;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
@@ -32,7 +29,8 @@ public class GroupApiTest {
 
 	@Tested GroupApi target = new GroupApi();
 	@Injectable GroupAppService groupAppService;
-	@Injectable GroupSearchQuery groupSearchQuery;
+	@Injectable GroupJoinSearchQuery groupJoinSearchQuery;
+	@Injectable GroupBelongingSearchQuery groupBelongingSearchQuery;
 
 	@Test
 	public void test_register() {
@@ -51,11 +49,13 @@ public class GroupApiTest {
 
 	@Test
 	public void test_list_belonging_groups() {
+		target.initialize();
+		
 		new Expectations() {{
-			groupAppService.listGroupBelongingFor("m01");
+			groupBelongingSearchQuery.byMember("m01");
 				result = newArrayList(
-						new GroupBelongingPair(new GroupFixture("g01").get(), new GroupBelongingFixture("g01", "m01").get()), 
-						new GroupBelongingPair(new GroupFixture("g02").get(), new GroupBelongingFixture("g02", "m01").get()));
+						new GroupBelongingSearchQuery.ByMemberResult("g01", "group01", true),
+						new GroupBelongingSearchQuery.ByMemberResult("g02", "group02", false));
 		}};
 
 		RestResponse<GroupList> response = target.listBelongingGroups("m01");
@@ -63,7 +63,11 @@ public class GroupApiTest {
 		List<GroupView> groups = response.getData().getGroups();
 		assertThat(groups.size(), is(2));
 		assertThat(groups.get(0).getGroupId(), is("g01"));
+		assertThat(groups.get(0).getGroupName(), is("group01"));
+		assertThat(groups.get(0).isAdmin(), is(true));
 		assertThat(groups.get(1).getGroupId(), is("g02"));
+		assertThat(groups.get(1).getGroupName(), is("group02"));
+		assertThat(groups.get(1).isAdmin(), is(false));
 	}
 	
 	@Test
@@ -86,10 +90,10 @@ public class GroupApiTest {
 		target.initialize();
 
 		new Expectations() {{
-			groupSearchQuery.notJoinAppliedByName("m01", "group1");
+			groupJoinSearchQuery.notJoinAppliedWithName("m01", "group1");
 				result = Lists.newArrayList(
-						new GroupSearchQuery.Result("g01","group1","taro"),
-						new GroupSearchQuery.Result("g02","group2","jiro"));
+						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g01","group1","taro"),
+						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g02","group2","jiro"));
 		}};
 		
 		RestResponse<GroupSearch> response = target.searchNotAppliedGroups("m01", "group1");

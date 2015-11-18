@@ -22,8 +22,10 @@
             <td>${member.groupName}</td>
             <td>${member.applied | dateFormat}</td>
             <td>
-              <button class="btn btn-primary" type="button">承認</button>
-              <button class="btn btn-danger" type="button">拒否</button>
+              <button class="btn btn-primary" type="button"
+                click.delegate="reject(member)">承認</button>
+              <button class="btn btn-danger" type="button"
+                click.delegate="reject(member)">拒否</button>
             </td>
           </tr>
         </tbody>

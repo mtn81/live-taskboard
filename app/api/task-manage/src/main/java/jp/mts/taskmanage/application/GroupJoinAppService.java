@@ -4,6 +4,7 @@ import static jp.mts.base.application.AppAssertions.assertTrue;
 
 import java.util.Optional;
 
+import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
@@ -60,6 +61,20 @@ public class GroupJoinAppService {
 		groupJoinRepository.save(application.get());
 	}
 
+
+	public GroupJoinApplication rejectJoin(
+			String joinApplicationId, String adminMemberId) {
+		
+		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		Member member = memberRepository.findById(new MemberId(adminMemberId)).get();
+
+		if(!member.reject(application)) {
+			throw new ApplicationException(ErrorType.CANNOT_ACCEPT_JOIN);
+		}
+
+		groupJoinRepository.save(application);
+		return application;
+	}
 
 
 }

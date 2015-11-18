@@ -5,19 +5,19 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
 
+import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
-import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
-import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupBelongingRepository;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.domain.model.GroupRepository;
+import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberFixture;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
@@ -69,5 +69,42 @@ public class GroupJoinAppServiceTest {
 		assertThat(actual.applied(), is(Dates.dateTime("2015/11/01 12:00:00.000")));
 	}
 	
+	@Test
+	public void test_rejectJoin() {
+		
+		GroupJoinApplication application = new GroupJoinApplicationFixture("a01", "g01", "m02").get();
+		Member member = new MemberFixture("m01").addGroupBelonging("g01", true).get();
+		new Expectations() {{
+			groupJoinRepository.findById(new GroupJoinApplicationId("a01"));
+				result = Optional.of(application);
+			memberRepository.findById(new MemberId("m01"));
+				result = Optional.of(member);
+			
+			groupJoinRepository.save(application);
+		}};
+		
+		GroupJoinApplication actual = target.rejectJoin("a01", "m01");
+
+		assertThat(actual.id().value(), is("a01"));
+		assertThat(actual.status(), is(GroupJoinApplicationStatus.REJECTED));
+	}
+	@Test
+	public void test_rejectJoin__member_is_not_group_admin() {
+		
+		GroupJoinApplication application = new GroupJoinApplicationFixture("a01", "g01", "m02").get();
+		Member member = new MemberFixture("m01").addGroupBelonging("g01", false).get();
+		new Expectations() {{
+			groupJoinRepository.findById(new GroupJoinApplicationId("a01"));
+				result = Optional.of(application);
+			memberRepository.findById(new MemberId("m01"));
+				result = Optional.of(member);
+		}};
+		
+		try {
+			target.rejectJoin("a01", "m01");
+		} catch (ApplicationException e) {
+			assertThat(e.hasErrorOf(ErrorType.CANNOT_ACCEPT_JOIN), is(true));
+		} 
+	}
 
 }
