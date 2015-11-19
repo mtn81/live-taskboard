@@ -15,7 +15,6 @@ export class HttpClientWrapper {
   }
 
   call(httpCall, nosync, syncKey) {
-    console.log(this.loading, this.keyLoading[syncKey]);
     if(this._isLoading(nosync, syncKey)) return;
     if(!!this.authContext && !this.authContext.isAuthenticated()) return;
 
@@ -30,8 +29,18 @@ export class HttpClientWrapper {
         this._setLoading(nosync, syncKey, false);
       })
       .catch(response => {
+        console.log('error !', response.content);
         this._setLoading(nosync, syncKey, false);
-        this.eventAggregator.publish(new GlobalError(response.content.errors));
+
+        let errors;
+        if (response.content.errors) {
+          errors = response.content.errors;
+        } else if (response.content.includes('ECONNREFUSED')) {
+          errors = [{ message: 'サーバに接続できませんでした。'}];
+        } else {
+          errors = [{ message: 'エラーが発生しました。'}];
+        }
+        this.eventAggregator.publish(new GlobalError(errors));
       });
   }
 

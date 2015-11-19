@@ -50,7 +50,7 @@ export class MemberAcceptService {
   rejectMember(member) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/group_joins/${member.joinId}?reject`, { memberId: this._memberId() })
+        .put(`/api/task-manage/group_joins/${member.joinId}?reject`, { adminMemberId: this._memberId() })
         .then(response => {
           this.eventAggregator.publish(new MemberRejected());
         })

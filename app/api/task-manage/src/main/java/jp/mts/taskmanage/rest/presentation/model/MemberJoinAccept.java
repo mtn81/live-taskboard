@@ -1,5 +1,7 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 
@@ -14,6 +16,7 @@ public class MemberJoinAccept {
 	}
 
 	//input
+	@NotBlank
 	private String adminMemberId;
 	
 	public void setAdminMemberId(String adminMemberId) {
