@@ -81,7 +81,7 @@ public class Member extends DomainEntity<MemberId> {
 					&& belonging.isAdmin();
 		});
 	}
-	public boolean belongsTo(String groupId) {
+	public boolean belongsTo(GroupId groupId) {
 		return groupBelongings.stream().anyMatch(belonging -> {
 			return belonging.groupId().equals(groupId);
 		});
@@ -106,7 +106,7 @@ public class Member extends DomainEntity<MemberId> {
 		this.groupBelongings = new HashSet<>(groupBelongings);
 	}
 	void addGroupBelonging(GroupBelonging groupBelongings) {
-		if(belongsTo(groupBelongings.groupId().value()))
+		if(belongsTo(groupBelongings.groupId()))
 			throw new IllegalArgumentException();
 
 		this.groupBelongings.add(groupBelongings);

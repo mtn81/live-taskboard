@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes="jp.mts.authaccess.domain.model.GroupCreated")
+@MqEventHandlerConfig(targetEventTypes="jp.mts.taskmanage.domain.model.GroupCreated")
 public class GroupCreatedEventHandler implements MqEventHandler {
 
 	@Autowired
@@ -19,7 +19,7 @@ public class GroupCreatedEventHandler implements MqEventHandler {
 	
 	@Override
 	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
-		String memberId = eventBody.asString("memberId.value");
+		String memberId = eventBody.asString("creator.value");
 		String groupId = eventBody.asString("groupId.value");
 		
 		groupAppService.entryGroup(groupId, memberId, true);

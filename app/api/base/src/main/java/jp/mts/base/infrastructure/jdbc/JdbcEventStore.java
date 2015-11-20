@@ -12,10 +12,12 @@ public class JdbcEventStore implements EventStore {
 	@Override
 	public void add(StoredEvent e) {
 		EventModel model = new EventModel();
-		model.set(
-			"occurred", new java.sql.Date(e.getOccurred().getTime()),
-			"type", e.getEventType(),
-			"body", e.getEventBody());
+		model
+			.setTimestamp(
+				"occurred", e.getOccurred())
+			.set(
+				"type", e.getEventType(),
+				"body", e.getEventBody());
 		model.saveIt();
 	}
 

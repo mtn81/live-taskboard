@@ -45,7 +45,7 @@ public class GroupAppService {
 
 	public Group findBelongingGroup(String groupId, String memberId) {
 		Member member = memberRepository.findById(new MemberId(memberId)).get();
-		if (member.belongsTo(groupId)) {
+		if (member.belongsTo(new GroupId(groupId))) {
 			return groupRepository.findById(new GroupId(groupId)).get();
 		}
 	

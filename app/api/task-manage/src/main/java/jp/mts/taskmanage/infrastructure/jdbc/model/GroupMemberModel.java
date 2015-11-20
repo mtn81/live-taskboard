@@ -5,3 +5,4 @@ import org.javalite.activejdbc.annotations.Table;
 
 @Table("groups_members")
 public class GroupMemberModel extends Model {}
+
