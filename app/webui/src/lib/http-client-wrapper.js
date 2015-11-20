@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 
@@ -35,7 +36,7 @@ export class HttpClientWrapper {
         let errors;
         if (response.content.errors) {
           errors = response.content.errors;
-        } else if (response.content.includes('ECONNREFUSED')) {
+        } else if (_.isString(response.content) && response.content.includes('ECONNREFUSED')) {
           errors = [{ message: 'サーバに接続できませんでした。'}];
         } else {
           errors = [{ message: 'エラーが発生しました。'}];

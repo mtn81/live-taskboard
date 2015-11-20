@@ -24,10 +24,17 @@ public class EventStoreAspect {
 	
 	@Around("jp.mts.base.config.aspect.AppArchitecture.appService()")
 	public Object subscribeEvent(ProceedingJoinPoint pjp) throws Throwable {
+		domainEventPublisher.initialize();
+
 		domainEventPublisher.register(DomainEvent.class, e -> {
 			eventStore.add(storedEventSerializer.serialize(e));
 		});
-		return pjp.proceed();
+
+		Object result = pjp.proceed();
+		
+		domainEventPublisher.fire();
+		
+		return result;
 	}
 
 }

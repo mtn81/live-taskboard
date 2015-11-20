@@ -29,14 +29,23 @@ public class Member extends DomainEntity<MemberId> {
 	public Group createGroup(
 			GroupId groupId, String groupName, String description){
 		Group group = new Group(groupId, memberId(), groupName, description);
-		addGroupBelonging(new GroupBelonging(groupId, true));
 
 		domainEventPublisher.publish(new GroupCreated(groupId, memberId()));
 		return group;
 	}
+
+	public void entryTo(Group group) {
+		entryTo(group, false);
+	}
+
+	public void entryTo(Group group, boolean admin) {
+		addGroupBelonging(new GroupBelonging(group.groupId(), admin));
+		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId()));
+	}
 	
 	public GroupJoinApplication applyJoinTo(
 			GroupJoinApplicationId applicationId, Group group) {
+
 		return new GroupJoinApplication(
 				applicationId, 
 				group.groupId(), 
@@ -53,11 +62,19 @@ public class Member extends DomainEntity<MemberId> {
 		if(!belongsAsAdmin(application.groupId())){
 			return false;
 		}
-		
 		application.reject();
 		return true;
 	}
-
+	public boolean accept(GroupJoinApplication application) {
+		if(!belongsAsAdmin(application.groupId())){
+			return false;
+		}
+		
+		application.accept();
+		domainEventPublisher.publish(
+				new MemberJoinAccepted(application.applicationMemberId(), application.groupId()));
+		return true;
+	}
 	public boolean belongsAsAdmin(GroupId groupId) {
 		return groupBelongings.stream().anyMatch(belonging -> {
 			return belonging.groupId().equals(groupId)
@@ -74,11 +91,11 @@ public class Member extends DomainEntity<MemberId> {
 		return this.memberId().equals(group.ownerMemberId());
 	}
 	
-	public boolean remove(Group group, GroupRepository groupRepository) {
+	public boolean remove(Group group) {
 		if(!belongsAsAdmin(group.groupId())) {
 			return false;
 		}
-		groupRepository.remove(group);
+		domainEventPublisher.publish(new GroupRemoved());
 		return true;
 	}
 	
@@ -89,10 +106,14 @@ public class Member extends DomainEntity<MemberId> {
 		this.groupBelongings = new HashSet<>(groupBelongings);
 	}
 	void addGroupBelonging(GroupBelonging groupBelongings) {
+		if(belongsTo(groupBelongings.groupId().value()))
+			throw new IllegalArgumentException();
+
 		this.groupBelongings.add(groupBelongings);
 	}
 	void addGroupBelongings(Collection<GroupBelonging> groupBelongings) {
-		this.groupBelongings.addAll(groupBelongings);
+		groupBelongings.forEach(groupBelonging -> 
+			addGroupBelonging(groupBelonging));
 	}
 
 	

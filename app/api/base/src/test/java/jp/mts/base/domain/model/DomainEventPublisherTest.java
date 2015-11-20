@@ -22,6 +22,7 @@ public class DomainEventPublisherTest {
 		}};
 
 		publisher.publish(event);
+		publisher.fire();
 	}
 	@Test
 	public void test_eventSubTyping() {
@@ -33,6 +34,7 @@ public class DomainEventPublisherTest {
 		}};
 
 		publisher.publish(event);
+		publisher.fire();
 	}
 	
 	@Test
@@ -50,10 +52,12 @@ public class DomainEventPublisherTest {
 		Thread t1 = new Thread(() -> {
 			publisher.register(TestEvent.class, subscriber1);
 			publisher.publish(new TestEvent());
+			publisher.fire();
 		});
 		Thread t2 = new Thread(() -> {
 			publisher.register(TestEvent2.class, subscriber2);
 			publisher.publish(new TestEvent2());
+			publisher.fire();
 		});
 		
 		t1.start(); t2.start();
@@ -73,6 +77,7 @@ public class DomainEventPublisherTest {
 			publisher.initialize();
 			publisher.register(TestEvent.class, subscriber);
 			publisher.publish(new TestEvent());
+			publisher.fire();
 		});
 		
 		t.run(); t.run();

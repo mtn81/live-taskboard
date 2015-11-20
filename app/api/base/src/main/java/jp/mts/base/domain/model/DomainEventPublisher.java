@@ -14,17 +14,30 @@ public class DomainEventPublisher {
 					return new HashMap<>();
 				}
 			};
+	private static ThreadLocal<List<DomainEvent>> events 
+		= new ThreadLocal<List<DomainEvent>>(){
+				@Override
+				protected List<DomainEvent> initialValue() {
+					return new ArrayList<>();
+				}
+			};
 			
-	public <T extends DomainEvent> void publish(T event) {
-		this.subscribers.get().keySet().forEach(keyType -> {
-			if(keyType.isAssignableFrom(event.getClass())){
-				List<Subscriber<?>> subscribers = this.subscribers.get().get(keyType);
-				subscribers.forEach(s -> {
-					((Subscriber<T>)s).subscribe(event);
-				});
-			}
-		});
+	public void publish(DomainEvent event) {
+		this.events.get().add(event);
 	} 
+	
+	public void fire() {
+		this.events.get().forEach(event -> {
+			this.subscribers.get().keySet().forEach(keyType -> {
+				if(keyType.isAssignableFrom(event.getClass())){
+					List<Subscriber<?>> subscribers = this.subscribers.get().get(keyType);
+					subscribers.forEach(s -> {
+						((Subscriber<DomainEvent>)s).subscribe(event);
+					});
+				}
+			});
+		});
+	}
 	public <T extends DomainEvent> void register(Class<T> eventType, Subscriber<T> subscriber){
 		if(!subscribers.get().containsKey(eventType)){
 			subscribers.get().put(eventType, new ArrayList<>());
@@ -33,6 +46,7 @@ public class DomainEventPublisher {
 	}
 	public void initialize(){
 		subscribers.remove();
+		events.remove();
 	}
 	
 	@FunctionalInterface

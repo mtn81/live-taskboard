@@ -42,6 +42,10 @@ public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 	public void reject() {
 		setStatus(GroupJoinApplicationStatus.REJECTED);
 	}
+	public void accept() {
+		setStatus(GroupJoinApplicationStatus.ACCEPTED);
+	}
+
 	
 	void setStatus(GroupJoinApplicationStatus status) {
 		this.status = status;

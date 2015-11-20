@@ -77,4 +77,19 @@ public class GroupJoinAppService {
 	}
 
 
+	public GroupJoinApplication acceptJoin(
+			String joinApplicationId, String adminMemberId) {
+
+		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		Member member = memberRepository.findById(new MemberId(adminMemberId)).get();
+
+		if(!member.accept(application)) {
+			throw new ApplicationException(ErrorType.CANNOT_ACCEPT_JOIN);
+		}
+
+		groupJoinRepository.save(application);
+		return application;
+	}
+
+
 }

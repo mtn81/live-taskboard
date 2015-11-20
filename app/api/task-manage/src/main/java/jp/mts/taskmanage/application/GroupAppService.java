@@ -29,7 +29,6 @@ public class GroupAppService {
 				groupRepository.newGroupId(), name, description);
 
 		groupRepository.save(group);
-		memberRepository.save(member);
 
 		return group;
 	}
@@ -38,9 +37,10 @@ public class GroupAppService {
 		Member member = memberRepository.findById(new MemberId(memberId)).get();
 		Group targetGroup = groupRepository.findById(new GroupId(groupId)).get();
 
-		if (!member.remove(targetGroup, groupRepository)) {
+		if (!member.remove(targetGroup)) {
 			throw new ApplicationException(GROUP_REMOVE_DISABLED);
 		}
+		groupRepository.remove(targetGroup);
 	}
 
 	public Group findBelongingGroup(String groupId, String memberId) {
@@ -50,6 +50,15 @@ public class GroupAppService {
 		}
 	
 		throw new ApplicationException(ErrorType.GROUP_NOT_AVAILABLE);
+	}
+	
+	public void entryGroup(String groupId, String memberId, boolean admin) {
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
+		
+		member.entryTo(group, admin);
+		
+		memberRepository.save(member);
 	}
 	
 }

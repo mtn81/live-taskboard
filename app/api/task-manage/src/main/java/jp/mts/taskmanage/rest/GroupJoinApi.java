@@ -63,6 +63,18 @@ public class GroupJoinApi {
 
 	@RequestMapping(
 			value="/group_joins/{joinApplicationId}", 
+			params="accept",
+			method=RequestMethod.PUT)
+	public RestResponse<MemberJoinAccept> accept(
+			@PathVariable("joinApplicationId") String joinApplicationId,
+			@Valid @RequestBody MemberJoinAccept memberJoinAccept){
+		
+		memberJoinAccept.accept(joinApplicationId);
+		return RestResponse.of(memberJoinAccept);
+	}
+	
+	@RequestMapping(
+			value="/group_joins/{joinApplicationId}", 
 			params="reject",
 			method=RequestMethod.PUT)
 	public RestResponse<MemberJoinAccept> reject(

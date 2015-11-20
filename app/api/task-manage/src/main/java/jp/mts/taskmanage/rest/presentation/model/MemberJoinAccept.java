@@ -34,5 +34,9 @@ public class MemberJoinAccept {
 	public void reject(String joinApplicationId) {
 		groupJoinApplication = groupJoinAppService.rejectJoin(joinApplicationId, adminMemberId);
 	}
+	public void accept(String joinApplicationId) {
+		groupJoinApplication = groupJoinAppService.acceptJoin(joinApplicationId, adminMemberId);
+	}
+
 
 }
