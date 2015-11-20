@@ -1,5 +1,7 @@
 package jp.mts.base.config.aspect;
 
+import java.sql.Connection;
+
 import javax.sql.DataSource;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -21,11 +23,16 @@ public class ActiveJdbcIntegrateAspect {
 			"jp.mts.base.config.aspect.AppArchitecture.query() || " +
 			"jp.mts.base.config.aspect.AppArchitecture.eventStore()")
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
+		Connection connection = DataSourceUtils.getConnection(dataSource);
 		try {
-			Base.attach(DataSourceUtils.getConnection(dataSource));
+			Base.attach(connection);
 			return pjp.proceed();
 		} finally {
-			Base.detach();
+			if (DataSourceUtils.isConnectionTransactional(connection, dataSource)) {
+				Base.detach();
+			}else{
+				Base.close();
+			}
 		}
 	}
 
