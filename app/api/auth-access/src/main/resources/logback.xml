@@ -7,7 +7,7 @@
   
   <logger name="org.springframework" level="INFO"/>
   <logger name="org.javalite.activejdbc" level="DEBUG"/>
-  <logger name="jp.mts.base.task.EventDelegateTask" level="INFO"/>
+  <logger name="jp.mts.base.task.EventDelegateTask" level="DEBUG"/>
   
   <root level="debug">
     <appender-ref ref="STDOUT" />

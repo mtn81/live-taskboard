@@ -11,6 +11,7 @@ import 'components/jqueryui';
 export class Menu {
 
   groups = [];
+  group = null;
 
   constructor(router, authContext, eventAggregator, groupService){
     this.router = router;
@@ -25,6 +26,10 @@ export class Menu {
 
     this.groups = this.groupService.groups();
     this.toggleMenu(this.groupMenuContent);
+  }
+  selectMemberMenu(){
+    this.closeAllMenu();
+    this.router.navigate(`member/${this.group.groupId}`);
   }
   selectJoinMenu(){
     this.closeAllMenu();

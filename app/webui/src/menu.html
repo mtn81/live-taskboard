@@ -10,7 +10,11 @@
       <span show.bind="group == null"><small>[未選択]</small></span>
       <span show.bind="group != null"><small>[${group.groupName}]</small></span>
     </button>
-    <button type="button" class="btn btn-default" disabled="${group == null ? 'disabled' : ''}">メンバー</button>
+    <button type="button" class="btn btn-default"
+      disabled="${group == null ? 'disabled' : ''}"
+      click.delegate="selectMemberMenu()">
+      メンバー
+    </button>
   </div>
   <div class="menu btn-group">
     <button type="button" class="btn btn-default"

@@ -20,11 +20,40 @@ export class App {
     config.title = 'live-taskboard';
     config.addPipelineStep('authorize', AuthorizeStep);
     config.map([
-      { route: ['','login'],   name: 'login',     moduleId: 'login',      nav: false, title: 'ログイン' },
-      { route: 'activate/:id', name: 'activate',  moduleId: 'activation', nav: false, title: 'ログイン' },
-      { route: 'taskboard',    name: 'taskboard', moduleId: 'taskboard',  nav: false, title: 'タスクボード',     auth: true},
-      { route: 'join',         name: 'join',      moduleId: 'join',       nav: false, title: 'グループ参加',     auth: true},
-      { route: 'accept',       name: 'accept',    moduleId: 'accept',     nav: false, title: 'グループ参加承認', auth: true}
+      { route: ['','login'],
+        name: 'login',
+        moduleId: 'login',
+        nav: false,
+        title: 'ログイン' },
+      { route: 'activate/:id',
+        name: 'activate',
+        moduleId: 'activation',
+        nav: false,
+        title: 'ログイン' },
+      { route: 'taskboard',
+        name: 'taskboard',
+        moduleId: 'taskboard',
+        nav: false,
+        title: 'タスクボード',
+        auth: true},
+      { route: 'join',
+        name: 'join',
+        moduleId: 'join',
+        nav: false,
+        title: 'グループ参加',
+        auth: true},
+      { route: 'accept',
+        name: 'accept',
+        moduleId: 'accept',
+        nav: false,
+        title: 'グループ参加承認',
+        auth: true},
+      { route: 'member/:groupId',
+        name: 'member',
+        moduleId: 'member',
+        nav: false,
+        title: 'メンバー管理',
+        auth: true}
     ]);
   }
 
