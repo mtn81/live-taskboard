@@ -29,4 +29,31 @@ export class MemberService {
 
     return this._members;
   }
+
+  changeToAdmin(groupId, member) {
+    if (member.admin) return;
+
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/members/${member.memberId}?change_admin`, { groupId: groupId })
+        .then(response => {
+          member.admin = true;
+          this.eventAggregator.publish(new MemberRoleChanged());
+        });
+    }, true);
+  }
+  changeToNormal(groupId, member) {
+    if (!member.admin) return;
+
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/members/${member.memberId}?change_normal`, { groupId: groupId })
+        .then(response => {
+          member.admin = false;
+          this.eventAggregator.publish(new MemberRoleChanged());
+        });
+    }, true);
+  }
 }
+
+export class MemberRoleChanged {}

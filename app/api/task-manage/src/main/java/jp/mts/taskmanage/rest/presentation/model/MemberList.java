@@ -10,10 +10,17 @@ import jp.mts.taskmanage.domain.model.Member;
 
 public class MemberList {
 	
+	//required services
+	private static MemberAppService memberAppService;
+	
+	public static void setMemberAppService(MemberAppService memberAppService) {
+		MemberList.memberAppService = memberAppService;
+	}
+
 	private List<Member> members;
 	private String groupId;
 
-	public void findByGroupId(String groupId, MemberAppService memberAppService) {
+	public void findByGroupId(String groupId) {
 		members = memberAppService.findMembersInGroup(groupId);
 		this.groupId = groupId;
 	}

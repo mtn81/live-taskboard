@@ -86,6 +86,11 @@ public class Member extends DomainEntity<MemberId> {
 			return belonging.groupId().equals(groupId);
 		});
 	}
+	public GroupBelonging belongingOf(GroupId groupId) {
+		return groupBelongings.stream().filter(belonging -> {
+			return belonging.groupId().equals(groupId);
+		}).findFirst().get();
+	}
 	
 	public boolean isOwnerFor(Group group) {
 		return this.memberId().equals(group.ownerMemberId());
@@ -106,8 +111,9 @@ public class Member extends DomainEntity<MemberId> {
 		this.groupBelongings = new HashSet<>(groupBelongings);
 	}
 	void addGroupBelonging(GroupBelonging groupBelongings) {
-		if(belongsTo(groupBelongings.groupId()))
-			throw new IllegalArgumentException();
+		if(belongsTo(groupBelongings.groupId())) {
+			this.groupBelongings.remove(belongingOf(groupBelongings.groupId()));
+		}
 
 		this.groupBelongings.add(groupBelongings);
 	}

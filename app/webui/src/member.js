@@ -14,8 +14,16 @@ export class Member {
     this.memberService = memberService;
   }
 
+  changeToAdmin(member) {
+    this.memberService.changeToAdmin(this.groupId, member);
+  }
+  changeToNormal(member) {
+    this.memberService.changeToNormal(this.groupId, member);
+  }
+
   activate(params) {
-    this.members = this.memberService.loadByGroup(params.groupId);
+    this.groupId = params.groupId;
+    this.members = this.memberService.loadByGroup(this.groupId);
   }
 
 }
