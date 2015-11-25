@@ -21,21 +21,23 @@ export class GlobalInfos {
       this.infos.length = 0;
       jQuery.merge(this.infos, infos);
 
-      if(!this.showing){
-        this.showing = true;
-        toggleSlide(this.messageContainer);
-      }
+      this.open();
     });
+  }
+
+  open(){
+    if(!this.showing){
+      this.showing = true;
+      $(this.messageContainer).slideToggle( "slow", () => {
+        _.delay(() => { this.close(); }, 5000);
+      });
+    }
   }
 
   close(){
     if(this.showing){
       this.showing = false;
-      toggleSlide(this.messageContainer);
+      $(this.messageContainer).slideToggle( "slow" )
     }
   }
-}
-
-function toggleSlide(element){
-  jQuery(element).slideToggle( "slow" );
 }
