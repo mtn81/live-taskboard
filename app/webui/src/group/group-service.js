@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
@@ -51,7 +52,7 @@ export class GroupService {
   groups() {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/members/${this.memberId()}/groups/?type=belonging`)
+        .get(`/api/task-manage/members/${this.memberId()}/groups/`)
         .then(response => {
           let foundGroups = response.content.data.groups;
           _memberGroups.length = 0;
@@ -60,6 +61,20 @@ export class GroupService {
     });
 
     return _memberGroups;
+  }
+
+  group(groupId) {
+    let group = {};
+    this.http.call(http => {
+      return http
+        .get(`/api/task-manage/members/${this.memberId()}/groups/${groupId}`)
+        .then(response => {
+          let foundGroup = response.content.data;
+          _.extend(group, foundGroup);
+          this.eventAggregator.publish(new GroupLoaded());
+        });
+    });
+    return group;
   }
 
   remove(group){
@@ -73,62 +88,12 @@ export class GroupService {
     }, true);
   }
 
-  searchNotAppliedByName(groupName) {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/groups/search?not_join_applied&applicantId=${this.memberId()}&groupName=${groupName}`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _notAppliedGroups.length = 0;
-          $.merge(_notAppliedGroups, foundGroups);
-        });
-    }, false, 'searchNotAppliedByName');
-
-    return _notAppliedGroups;
-  }
-
-  searchApplied() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/groups/search?join_applied&applicantId=${this.memberId()}`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _appliedGroups.length = 0;
-          $.merge(_appliedGroups, foundGroups);
-        });
-    }, false, 'searchApplied');
-
-    return _appliedGroups;
-  }
-
-  applyJoin(group) {
-    group.applied = true;
-
-    this.http.call(http => {
-      return http
-        .post(`/api/task-manage/groups/${group.groupId}/apply`, { applicantMemberId: this.memberId() })
-        .then(response => {
-          this.eventAggregator.publish(new GroupJoinApplied());
-        })
-    }, true);
-  }
-  cancelJoin(group) {
-    group.canceled = true;
-
-    this.http.call(http => {
-      return http
-        .post(`/api/task-manage/groups/${group.groupId}/cancel`, { applicantMemberId: this.memberId() })
-        .then(response => {
-          this.eventAggregator.publish(new GroupJoinCancelled());
-        })
-    }, true);
-  }
-
   memberId() {
     return this.authContext.getAuth().userId;
   }
 }
 
+export class GroupLoaded {}
 export class GroupRegistered {}
 export class GroupJoinApplied {}
 export class GroupJoinCancelled {}

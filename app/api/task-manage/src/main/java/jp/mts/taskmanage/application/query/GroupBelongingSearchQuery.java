@@ -5,6 +5,7 @@ import java.util.List;
 public interface GroupBelongingSearchQuery {
 
 	List<ByMemberResult> byMember(String memberId);
+	ByMemberResult byMember(String memberId, String groupId);
 	
 	public static class ByMemberResult {
 		public String groupId;

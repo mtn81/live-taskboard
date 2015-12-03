@@ -5,23 +5,17 @@ import org.hibernate.validator.constraints.NotBlank;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 
-public class MemberJoinAccept {
+public class GroupJoinAccept {
 
 	//required services
 	private static GroupJoinAppService groupJoinAppService;
 	
 	public static void setGroupJoinAppService(
 			GroupJoinAppService groupJoinAppService) {
-		MemberJoinAccept.groupJoinAppService = groupJoinAppService;
+		GroupJoinAccept.groupJoinAppService = groupJoinAppService;
 	}
 
 	//input
-	@NotBlank
-	private String adminMemberId;
-	
-	public void setAdminMemberId(String adminMemberId) {
-		this.adminMemberId = adminMemberId;
-	}
 
 	//output
 	private GroupJoinApplication groupJoinApplication;
@@ -31,11 +25,11 @@ public class MemberJoinAccept {
 	}
 
 	//process
-	public void reject(String joinApplicationId) {
-		groupJoinApplication = groupJoinAppService.rejectJoin(joinApplicationId, adminMemberId);
+	public void reject(String groupId, String joinApplicationId) {
+		groupJoinApplication = groupJoinAppService.rejectJoin(groupId, joinApplicationId);
 	}
-	public void accept(String joinApplicationId) {
-		groupJoinApplication = groupJoinAppService.acceptJoin(joinApplicationId, adminMemberId);
+	public void accept(String groupId, String joinApplicationId) {
+		groupJoinApplication = groupJoinAppService.acceptJoin(groupId, joinApplicationId);
 	}
 
 

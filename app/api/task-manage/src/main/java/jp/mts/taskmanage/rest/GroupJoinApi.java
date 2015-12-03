@@ -6,18 +6,19 @@ import javax.validation.Valid;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.rest.presentation.model.MemberJoinAccept;
-import jp.mts.taskmanage.rest.presentation.model.MemberJoinSearch;
+import jp.mts.taskmanage.rest.authorize.GroupAdmin;
+import jp.mts.taskmanage.rest.authorize.Me;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinCancel;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinSearch;
+import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
+import jp.mts.taskmanage.rest.presentation.model.MemberJoinSearch;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,14 +36,14 @@ public class GroupJoinApi {
 		GroupJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
 		GroupJoinCancel.setGroupJoinAppService(groupJoinAppService);
 		MemberJoinSearch.setJoinGroupSearchQuery(groupJoinSearchQuery);
-		MemberJoinAccept.setGroupJoinAppService(groupJoinAppService);
+		GroupJoinAccept.setGroupJoinAppService(groupJoinAppService);
 	}
 
 	@RequestMapping(
 			value="/members/{applicantId}/group_joins/", 
 			method=RequestMethod.POST)
 	public RestResponse<GroupJoinApply> apply(
-			@PathVariable("applicantId") String applicantId,
+			@PathVariable("applicantId") @Me String applicantId,
 			@RequestBody @Valid GroupJoinApply groupJoinApply){
 		
 		groupJoinApply.apply(applicantId);
@@ -53,7 +54,7 @@ public class GroupJoinApi {
 			value="/members/{applicantId}/group_joins/{joinApplicationId}", 
 			method=RequestMethod.DELETE)
 	public RestResponse<GroupJoinCancel> cancel(
-			@PathVariable("applicantId") String applicantId,
+			@PathVariable("applicantId") @Me String applicantId,
 			@PathVariable("joinApplicationId") String joinApplicationId){
 		
 		GroupJoinCancel groupJoinCancel = new GroupJoinCancel();
@@ -62,34 +63,34 @@ public class GroupJoinApi {
 	}
 
 	@RequestMapping(
-			value="/group_joins/{joinApplicationId}", 
-			params="accept",
-			method=RequestMethod.PUT)
-	public RestResponse<MemberJoinAccept> accept(
-			@PathVariable("joinApplicationId") String joinApplicationId,
-			@Valid @RequestBody MemberJoinAccept memberJoinAccept){
-		
-		memberJoinAccept.accept(joinApplicationId);
-		return RestResponse.of(memberJoinAccept);
+			value="/groups/{groupId}/group_joins/{joinApplicationId}/accept", 
+			method=RequestMethod.PUT) 
+	public RestResponse<GroupJoinAccept> accept(
+			@PathVariable("groupId") @GroupAdmin String groupId,
+			@PathVariable("joinApplicationId") String joinApplicationId){
+
+		GroupJoinAccept groupJoinAccept = new GroupJoinAccept();
+		groupJoinAccept.accept(groupId, joinApplicationId);
+		return RestResponse.of(groupJoinAccept);
 	}
 	
 	@RequestMapping(
-			value="/group_joins/{joinApplicationId}", 
-			params="reject",
-			method=RequestMethod.PUT)
-	public RestResponse<MemberJoinAccept> reject(
-			@PathVariable("joinApplicationId") String joinApplicationId,
-			@Valid @RequestBody MemberJoinAccept memberJoinAccept){
+			value="/groups/{groupId}/group_joins/{joinApplicationId}/reject", 
+			method=RequestMethod.PUT) 
+	public RestResponse<GroupJoinAccept> reject(
+			@PathVariable("groupId") @GroupAdmin String groupId,
+			@PathVariable("joinApplicationId") String joinApplicationId){
 		
-		memberJoinAccept.reject(joinApplicationId);
-		return RestResponse.of(memberJoinAccept);
+		GroupJoinAccept groupJoinAccept = new GroupJoinAccept();
+		groupJoinAccept.reject(groupId, joinApplicationId);
+		return RestResponse.of(groupJoinAccept);
 	}
 	
 	@RequestMapping(
 			value="/members/{memberId}/group_joins/", 
 			method=RequestMethod.GET)
 	public RestResponse<GroupJoinSearch> searchAppliedGroups(
-			@PathVariable("memberId") String memberId) {
+			@PathVariable("memberId") @Me String memberId) {
 		
 		GroupJoinSearch groupSearch = new GroupJoinSearch();
 		groupSearch.searchByApplicant(memberId);
@@ -98,11 +99,10 @@ public class GroupJoinApi {
 	
 	
 	@RequestMapping(
-			value="/group_joins/search", 
-			params="acceptable",
+			value="/members/{memberId}/acceptable_group_joins/search", 
 			method=RequestMethod.GET)
 	public RestResponse<MemberJoinSearch> searchAcceptableGroupJoinApplications(
-			@RequestParam("memberId") String memberId) {
+			@PathVariable("memberId") @Me String memberId) {
 		
 		MemberJoinSearch search = new MemberJoinSearch();
 		search.searchAcceptableByAdmin(memberId);
@@ -110,11 +110,10 @@ public class GroupJoinApi {
 	}
 
 	@RequestMapping(
-			value="/group_joins/search", 
-			params="rejected",
+			value="/members/{memberId}/reject_group_joins/search", 
 			method=RequestMethod.GET)
 	public RestResponse<MemberJoinSearch> searchRejectedGroupJoinApplications(
-			@RequestParam("memberId") String memberId) {
+			@PathVariable("memberId") @Me String memberId) {
 		
 		MemberJoinSearch search = new MemberJoinSearch();
 		search.searchRejectedByAdmin(memberId);

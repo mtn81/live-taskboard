@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.application;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
@@ -29,8 +30,8 @@ public class MemberAuthAppServiceTest {
 				result = Optional.of(memberAuth);
 		}};
 		
-		boolean actual = target.validateAuth("a01");
-		assertThat(actual, is(true));
+		MemberAuth actual = target.validateAuth("a01");
+		assertThat(actual.isExpired(), is(false));
 	}
 	@Test
 	public void test_failedWhenMemberAuthNotExsist() {
@@ -39,8 +40,8 @@ public class MemberAuthAppServiceTest {
 				result = Optional.empty();
 		}};
 		
-		boolean actual = target.validateAuth("a01");
-		assertThat(actual, is(false));
+		MemberAuth actual = target.validateAuth("a01");
+		assertThat(actual, is(nullValue()));
 	}
 	@Test
 	public void test_failedWhenMemberAuthExpired() {
@@ -52,8 +53,8 @@ public class MemberAuthAppServiceTest {
 				result = Optional.of(memberAuth);
 		}};
 		
-		boolean actual = target.validateAuth("a01");
-		assertThat(actual, is(false));
+		MemberAuth actual = target.validateAuth("a01");
+		assertThat(actual.isExpired(), is(true));
 	}
 
 }

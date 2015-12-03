@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.application;
 
 import static jp.mts.base.application.AppAssertions.assertTrue;
+import static jp.mts.taskmanage.application.ErrorType.CANNOT_ACCEPT_JOIN;
 
 import java.util.Optional;
 
@@ -50,46 +51,42 @@ public class GroupJoinAppService {
 
 	public void cancelJoin(String applicantMemberId, String joinApplicationId) {
 		
-		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
-		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
+		Member member = memberRepository.findById(new MemberId(applicantMemberId)).get();
 
-		Optional<GroupJoinApplication> application 
-			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId));
+		GroupJoinApplication application 
+			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
 		
-		member.get().cancel(application.get());
-		
-		groupJoinRepository.save(application.get());
-	}
-
-
-	public GroupJoinApplication rejectJoin(
-			String joinApplicationId, String adminMemberId) {
-		
-		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
-		Member member = memberRepository.findById(new MemberId(adminMemberId)).get();
-
-		if(!member.reject(application)) {
-			throw new ApplicationException(ErrorType.CANNOT_ACCEPT_JOIN);
+		if(!member.cancel(application)){
+			throw new ApplicationException(CANNOT_ACCEPT_JOIN);
 		}
-
+		
 		groupJoinRepository.save(application);
-		return application;
 	}
-
 
 	public GroupJoinApplication acceptJoin(
-			String joinApplicationId, String adminMemberId) {
+			String groupId, String joinApplicationId) {
 
 		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
-		Member member = memberRepository.findById(new MemberId(adminMemberId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
 
-		if(!member.accept(application)) {
+		if(!group.accept(application)) {
 			throw new ApplicationException(ErrorType.CANNOT_ACCEPT_JOIN);
 		}
 
 		groupJoinRepository.save(application);
 		return application;
 	}
+	public GroupJoinApplication rejectJoin(
+			String groupId, String joinApplicationId) {
+		
+		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
 
+		if(!group.reject(application)) {
+			throw new ApplicationException(ErrorType.CANNOT_REJECT_JOIN);
+		}
 
+		groupJoinRepository.save(application);
+		return application;
+	}
 }

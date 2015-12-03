@@ -6,6 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.List;
 
 import jp.mts.base.rest.RestResponse;
+import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.MemberAppService;
 import jp.mts.taskmanage.domain.model.MemberFixture;
 import jp.mts.taskmanage.rest.presentation.model.MemberList;
@@ -22,9 +23,12 @@ public class MemberApiTest {
 
 	@Tested MemberApi target = new MemberApi();
 	@Injectable MemberAppService memberAppService;
+	@Injectable GroupAppService groupAppService;
 	
 	@Test
 	public void test() {
+		
+		target.initialize();
 		
 		new Expectations() {{
 			memberAppService.findMembersInGroup("g01");

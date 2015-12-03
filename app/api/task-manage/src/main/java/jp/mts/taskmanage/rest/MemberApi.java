@@ -6,8 +6,11 @@ import javax.validation.Valid;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.MemberAppService;
+import jp.mts.taskmanage.rest.authorize.GroupAdmin;
+import jp.mts.taskmanage.rest.authorize.GroupBelong;
 import jp.mts.taskmanage.rest.presentation.model.MemberList;
-import jp.mts.taskmanage.rest.presentation.model.MemberRoleChange;
+import jp.mts.taskmanage.rest.presentation.model.MemberChange;
+import jp.mts.taskmanage.rest.presentation.model.MemberRemove;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,38 +31,41 @@ public class MemberApi {
 	@PostConstruct
 	public void initialize() {
 		MemberList.setMemberAppService(memberAppService);
-		MemberRoleChange.setGroupAppService(groupAppService);
+		MemberChange.setGroupAppService(groupAppService);
+		MemberRemove.setGroupAppService(groupAppService);
 	}
 	
 	@RequestMapping(
 			value="/groups/{groupId}/members/", 
 			method=RequestMethod.GET)
-	public RestResponse<MemberList> loadMembersInGroup(@PathVariable String groupId) {
+	public RestResponse<MemberList> loadMembersInGroup(
+			@PathVariable @GroupBelong String groupId) {
+
 		MemberList memberList = new MemberList();
 		memberList.findByGroupId(groupId);
 		return RestResponse.of(memberList);
 	}
 	@RequestMapping(
-			value="/members/{memberId}", 
-			params="change_admin", 
+			value="/groups/{groupId}/members/{memberId}", 
 			method=RequestMethod.PUT)
-	public RestResponse<MemberRoleChange> changeToAdmin(
+	public RestResponse<MemberChange> changeMember(
 			@PathVariable String memberId,
-			@RequestBody @Valid MemberRoleChange memberRoleChange) {
+			@PathVariable @GroupAdmin String groupId,
+			@RequestBody @Valid MemberChange memberChange) {
 		
-		memberRoleChange.changeToAdmin(memberId);
-		return RestResponse.of(memberRoleChange);
+		memberChange.change(groupId, memberId);
+		return RestResponse.of(memberChange);
 	}
 	@RequestMapping(
-			value="/members/{memberId}", 
-			params="change_normal", 
-			method=RequestMethod.PUT)
-	public RestResponse<MemberRoleChange> changeToNormal(
+			value="/groups/{groupId}/members/{memberId}", 
+			method=RequestMethod.DELETE)
+	public RestResponse<MemberRemove> removeMember(
 			@PathVariable String memberId,
-			@RequestBody @Valid MemberRoleChange memberRoleChange) {
-		
-		memberRoleChange.changeToNormal(memberId);
-		return RestResponse.of(memberRoleChange);
+			@PathVariable @GroupAdmin String groupId) {
+
+		MemberRemove memberRemove = new MemberRemove();
+		memberRemove.remove(groupId, memberId);
+		return RestResponse.of(memberRemove);
 	}
 
 }

@@ -7,7 +7,7 @@ import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
-import jp.mts.taskmanage.rest.presentation.model.MemberJoinAccept;
+import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
@@ -41,17 +41,15 @@ public class GroupJoinApiTest {
 	}
 
 	@Test
-	public void test_rejectMemberJoin() {
+	public void test_rejectGroupJoin() {
 		target.initialize();
 		
 		new Expectations() {{
-			groupJoinAppService.rejectJoin("a01", "m01");
+			groupJoinAppService.rejectJoin("g01", "a01");
 				result = new GroupJoinApplicationFixture("g01", "a01").get();
 		}};
 		
-		MemberJoinAccept memberJoinAccept = new MemberJoinAccept();
-		memberJoinAccept.setAdminMemberId("m01");
-		RestResponse<MemberJoinAccept> response = target.reject("a01", memberJoinAccept);
+		RestResponse<GroupJoinAccept> response = target.reject("g01", "a01");
 		
 		assertThat(response.getData().getJoinId(), is("a01"));
 		

@@ -25,9 +25,10 @@ export class HttpClientWrapper {
 
     this._setLoading(nosync, syncKey, true);
 
-    httpCall(this.http, this)
+    return httpCall(this.http, this)
       .then(response => {
         this._setLoading(nosync, syncKey, false);
+        return true;
       })
       .catch(response => {
         console.log('error !', response.content);
@@ -42,6 +43,7 @@ export class HttpClientWrapper {
           errors = [{ message: 'エラーが発生しました。'}];
         }
         this.eventAggregator.publish(new GlobalError(errors));
+        return false;
       });
   }
 

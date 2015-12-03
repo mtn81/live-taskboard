@@ -14,11 +14,11 @@ public class MemberAuthAppService {
 	@Autowired
 	private MemberAuthService memberAuthService;
 
-	public boolean validateAuth(String authId) {
+	public MemberAuth validateAuth(String authId) {
 		Optional<MemberAuth> memberAuthResult = memberAuthService.establishAuth(authId);
-		if (!memberAuthResult.isPresent()) return false;
+		if (!memberAuthResult.isPresent()) return null;
 		
 		MemberAuth memberAuth = memberAuthResult.get();
-		return !memberAuth.isExpired();
+		return memberAuth;
 	}
 }

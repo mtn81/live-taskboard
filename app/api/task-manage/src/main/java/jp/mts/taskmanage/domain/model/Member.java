@@ -34,6 +34,9 @@ public class Member extends DomainEntity<MemberId> {
 		return group;
 	}
 
+	public boolean owns(Group group) {
+		return memberId().equals(group.ownerMemberId());
+	}
 	public void entryTo(Group group) {
 		entryTo(group, false);
 	}
@@ -42,6 +45,29 @@ public class Member extends DomainEntity<MemberId> {
 		addGroupBelonging(new GroupBelonging(group.groupId(), admin));
 		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId()));
 	}
+	public LeaveResult leave(Group group) {
+		if(!belongsAsAdmin(group.groupId()))
+			return LeaveResult.NOT_ADMIN_ERROR;
+		if(owns(group))
+			return LeaveResult.OWNER_ERROR;
+
+		removeGroupBelonging(group.groupId());
+		domainEventPublisher.publish(new GroupMemberLeaved(group.groupId(), memberId()));
+		return LeaveResult.SUCCESS;
+	}
+	
+	
+	public void changeToAdmin(Group group) {
+		addGroupBelonging(new GroupBelonging(group.groupId(), true));
+	}
+
+	public boolean changeToNormal(Group group) {
+		if(owns(group)) return false;
+
+		addGroupBelonging(new GroupBelonging(group.groupId(), false));
+		return true;
+	}
+	
 	
 	public GroupJoinApplication applyJoinTo(
 			GroupJoinApplicationId applicationId, Group group) {
@@ -121,6 +147,14 @@ public class Member extends DomainEntity<MemberId> {
 		groupBelongings.forEach(groupBelonging -> 
 			addGroupBelonging(groupBelonging));
 	}
-
+	private void removeGroupBelonging(GroupId groupId) {
+		if(!belongsTo(groupId)) {
+			throw new IllegalArgumentException();
+		}
+		this.groupBelongings.remove(belongingOf(groupId));
+	}
 	
+	public enum LeaveResult {
+		SUCCESS, NOT_ADMIN_ERROR, OWNER_ERROR
+	}
 }

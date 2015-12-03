@@ -6,6 +6,7 @@ import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
 import jp.mts.taskmanage.domain.model.Member;
+import jp.mts.taskmanage.domain.model.Member.LeaveResult;
 import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.MemberRepository;
 
@@ -57,6 +58,34 @@ public class GroupAppService {
 		Group group = groupRepository.findById(new GroupId(groupId)).get();
 		
 		member.entryTo(group, admin);
+		
+		memberRepository.save(member);
+	}
+	public void changeGroupBelonging(String groupId, String memberId, boolean admin) {
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
+		
+	 	if (admin) {
+			member.changeToAdmin(group);
+		} else {
+			if(!member.changeToNormal(group)){
+				throw new ApplicationException(ErrorType.CANNOT_CHANGE_NORMAL_OWNER);
+			}
+		}
+		
+		memberRepository.save(member);
+	}
+	public void removeGroupBelonging(String groupId, String memberId) {
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
+
+		LeaveResult result = member.leave(group);
+		if(result == LeaveResult.NOT_ADMIN_ERROR){
+			throw new ApplicationException(ErrorType.CANNOT_LEAVE_MEMBER_NORMAL);
+		}
+		if(result == LeaveResult.OWNER_ERROR){
+			throw new ApplicationException(ErrorType.CANNOT_LEAVE_MEMBER_OWNER);
+		}
 		
 		memberRepository.save(member);
 	}

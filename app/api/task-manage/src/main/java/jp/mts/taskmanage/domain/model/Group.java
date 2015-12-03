@@ -34,6 +34,25 @@ public class Group extends DomainEntity<GroupId>{
 		setName(name);
 		setDescription(description);
 	}
+	
+	public boolean accept(GroupJoinApplication application) {
+		if(!groupId().equals(application.groupId())){
+			return false;
+		}
+		
+		application.accept();
+		domainEventPublisher.publish(
+				new MemberJoinAccepted(application.applicationMemberId(), application.groupId()));
+		return true;
+	}
+	public boolean reject(GroupJoinApplication application){
+		if(!groupId().equals(application.groupId())){
+			return false;
+		}
+		application.reject();
+		return true;
+	}
+	
 	public Task createTask(
 			TaskId taskId, 
 			String taskName, 

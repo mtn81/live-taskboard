@@ -1,10 +1,7 @@
-package jp.mts.taskmanage;
+package jp.mts.authaccess;
 
+import jp.mts.authaccess.mq.listener.UserRegisteredEventHandler;
 import jp.mts.libs.event.mq.MqEventListener;
-import jp.mts.taskmanage.mq.listener.CreateMemberEventHandler;
-import jp.mts.taskmanage.mq.listener.GroupCreatedEventHandler;
-import jp.mts.taskmanage.mq.listener.MemberJoinAcceptedEventHandler;
-import jp.mts.taskmanage.websocket.GroupNotifyWebSocketController;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerEndpoint;
@@ -16,24 +13,15 @@ import org.springframework.context.annotation.Configuration;
 public class MqEventListenerConfig implements RabbitListenerConfigurer {
 	
 	@Autowired
-	private GroupNotifyWebSocketController groupNotifyController;
-	@Autowired
-	private CreateMemberEventHandler memberCreatedEventHandler;
-	@Autowired
-	private GroupCreatedEventHandler groupCreatedEventHandler;
-	@Autowired
-	private MemberJoinAcceptedEventHandler memberJoinAcceptedEventHandler;
+	private UserRegisteredEventHandler userRegisteredEventHandler;
 	
 	@Override
 	public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {
 		MqEventListener listener = new MqEventListener(
-				memberCreatedEventHandler,
-				groupNotifyController,
-				groupCreatedEventHandler,
-				memberJoinAcceptedEventHandler);
+				userRegisteredEventHandler);
 		SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
-		endpoint.setId("task-manage");
-		endpoint.setQueueNames("task-manage");
+		endpoint.setId("auth-access");
+		endpoint.setQueueNames("auth-access");
 		endpoint.setMessageListener(listener::process);
 		registrar.registerEndpoint(endpoint);
 	}

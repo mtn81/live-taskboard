@@ -29,7 +29,7 @@ export class GlobalInfos {
     if(!this.showing){
       this.showing = true;
       $(this.messageContainer).slideToggle( "slow", () => {
-        _.delay(() => { this.close(); }, 5000);
+        _.delay(() => { this.close(); }, 3000);
       });
     }
   }

@@ -26,7 +26,7 @@ export class UserService {
   validate(user) {
 
     this.http
-      .post('/api/auth-access/users/?validate', user)
+      .post('/api/auth-access/users/validate', user)
       .then(response => {
         this.eventAggregator.publish(new UserRegisterValidationSuccess());
       })

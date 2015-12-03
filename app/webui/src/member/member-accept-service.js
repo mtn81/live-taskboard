@@ -22,7 +22,7 @@ export class MemberAcceptService {
   searchAcceptableMembers() {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/group_joins/search?acceptable&memberId=${this._memberId()}`)
+        .get(`/api/task-manage/members/${this._memberId()}/acceptable_group_joins/search`)
         .then(response => {
           let found = response.content.data.members;
           this._acceptableMemberJoins.length = 0;
@@ -36,7 +36,7 @@ export class MemberAcceptService {
   searchRejectedMembers() {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/group_joins/search?rejected&memberId=${this._memberId()}`)
+        .get(`/api/task-manage/members/${this._memberId()}/reject_group_joins/search`)
         .then(response => {
           let found = response.content.data.members;
           this._rejectedMemberJoins.length = 0;
@@ -50,7 +50,7 @@ export class MemberAcceptService {
   acceptMember(member) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/group_joins/${member.joinId}?accept`, { adminMemberId: this._memberId() })
+        .put(`/api/task-manage/groups/${member.groupId}/group_joins/${member.joinId}/accept`)
         .then(response => {
           this.eventAggregator.publish(new MemberAccepted());
         })
@@ -59,7 +59,7 @@ export class MemberAcceptService {
   rejectMember(member) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/group_joins/${member.joinId}?reject`, { adminMemberId: this._memberId() })
+        .put(`/api/task-manage/groups/${member.groupId}/group_joins/${member.joinId}/reject`)
         .then(response => {
           this.eventAggregator.publish(new MemberRejected());
         })

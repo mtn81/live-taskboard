@@ -1,17 +1,20 @@
 import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
-import {MemberService} from './member/member-service';
+import {MemberService, MemberRemoved} from './member/member-service';
+import {GroupService, GroupLoaded} from './group/group-service';
 import 'components/jqueryui';
 
-@inject(EventAggregator, MemberService)
+@inject(EventAggregator, MemberService, GroupService)
 export class Member {
 
+  group = null;
   members = [];
 
-  constructor(eventAggregator, memberService){
+  constructor(eventAggregator, memberService, groupService){
     this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.memberService = memberService;
+    this.groupService = groupService;
   }
 
   changeToAdmin(member) {
@@ -20,10 +23,21 @@ export class Member {
   changeToNormal(member) {
     this.memberService.changeToNormal(this.groupId, member);
   }
+  removeMember(member) {
+    this.memberService.remove(this.groupId, member);
+  }
+  loadMembers() {
+    this.members = this.memberService.loadByGroup(this.groupId);
+  }
 
   activate(params) {
     this.groupId = params.groupId;
-    this.members = this.memberService.loadByGroup(this.groupId);
+    this.group = this.groupService.group(this.groupId);
+
+    this.events.subscribe(GroupLoaded, () => {
+      this.loadMembers();
+    });
   }
+  
 
 }

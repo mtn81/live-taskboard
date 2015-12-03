@@ -7,7 +7,13 @@ public enum ErrorType implements jp.mts.base.application.ErrorType{
 	GROUP_REMOVE_DISABLED("e-tm-004", "管理者ではないのでグループを削除できません"),
 	NOT_AUTHENTICATED("e-tm-005", "認証が必要です"),
 	JOIN_NOT_EXIST("e-tm-006", "参加申請が見つかりません。"),
-	CANNOT_ACCEPT_JOIN("e-tm-007", "参加申請グループの管理者ではありません")
+	CANNOT_CANCEL_JOIN("e-tm-007", "自分が申請した申請のみキャンセルできます。"),
+	CANNOT_ACCEPT_JOIN("e-tm-007", "参加申請グループの管理者ではありません"),
+	CANNOT_REJECT_JOIN("e-tm-007", "参加申請グループの管理者ではありません"),
+	CANNOT_LEAVE_MEMBER_NORMAL("e-tm-008", "管理者ではないためメンバーを削除できません"),
+	CANNOT_LEAVE_MEMBER_OWNER("e-tm-009", "所有者は削除できません"),
+	CANNOT_CHANGE_NORMAL_OWNER("e-tm-010", "所有者を一般に変更できません"),
+	NOT_AUTHORIZED("e-tm-011", "指定されたデータへのアクセスが許可させていません")
 	;
 	
 	private String errorCode;

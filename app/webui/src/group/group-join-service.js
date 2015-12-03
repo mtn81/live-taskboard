@@ -22,7 +22,7 @@ export class GroupJoinService {
   searchNotAppliedByName(groupName) {
     this.http.call(http => {
       return http
-        .get(`/api/task-manage/groups/search?not_join_applied&applicantId=${this.memberId()}&groupName=${groupName}`)
+        .get(`/api/task-manage/members/${this.memberId()}/not_join_applied_groups/search?groupName=${groupName}`)
         .then(response => {
           let foundGroups = response.content.data.groups;
           _notAppliedGroups.length = 0;

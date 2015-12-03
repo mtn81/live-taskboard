@@ -63,6 +63,7 @@ public interface GroupJoinSearchQuery {
 
 	public static class ByAdminResult {
 		public String joinApplicationId;
+		public String groupId;
 		public String groupName;
 		public String applicantId;
 		public String applicantName;
@@ -70,12 +71,14 @@ public interface GroupJoinSearchQuery {
 
 		public ByAdminResult(
 				String joinApplicationId,
+				String groupId, 
 				String groupName, 
 				String applicantId, 
 				String applicantName,
 				Date joinApplied) {
 			super();
 			this.joinApplicationId = joinApplicationId;
+			this.groupId = groupId;
 			this.groupName = groupName;
 			this.applicantId = applicantId;
 			this.applicantName = applicantName;

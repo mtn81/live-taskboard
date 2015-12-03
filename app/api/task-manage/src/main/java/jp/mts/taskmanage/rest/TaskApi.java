@@ -2,6 +2,7 @@ package jp.mts.taskmanage.rest;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.TaskAppService;
+import jp.mts.taskmanage.rest.authorize.GroupBelong;
 import jp.mts.taskmanage.rest.presentation.model.TaskList;
 import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
 import jp.mts.taskmanage.rest.presentation.model.TaskSave;
@@ -22,7 +23,7 @@ public class TaskApi {
 
 	@RequestMapping(value="/groups/{groupId}/tasks/", method=RequestMethod.GET)
 	public RestResponse<TaskList> loadTasksInGroup(
-			@PathVariable("groupId") String groupId) {
+			@PathVariable("groupId") @GroupBelong String groupId) {
 		
 		TaskList taskList = new TaskList();
 		taskList.loadTasks(groupId, taskAppService);
@@ -31,7 +32,7 @@ public class TaskApi {
 
 	@RequestMapping(value="/groups/{groupId}/tasks/", method=RequestMethod.POST)
 	public RestResponse<TaskSave> registerTask(
-			@PathVariable("groupId") String groupId,
+			@PathVariable("groupId") @GroupBelong String groupId,
 			@RequestBody TaskSave taskSave) {
 		
 		taskSave.create(groupId, taskAppService);
@@ -40,7 +41,7 @@ public class TaskApi {
 	
 	@RequestMapping(value="/groups/{groupId}/tasks/{taskId}", method=RequestMethod.PUT)
 	public RestResponse<TaskSave> modifyTask(
-			@PathVariable String groupId, 
+			@PathVariable @GroupBelong String groupId, 
 			@PathVariable String taskId, 
 			@RequestBody TaskSave taskSave) {
 		
@@ -51,7 +52,7 @@ public class TaskApi {
 	
 	@RequestMapping(value="/groups/{groupId}/tasks/{taskId}", method=RequestMethod.DELETE)
 	public RestResponse<TaskRemove> removeTask(
-			@PathVariable("groupId") String groupId,
+			@PathVariable("groupId") @GroupBelong String groupId,
 			@PathVariable("taskId") String taskId) {
 		
 		TaskRemove taskRemove = new TaskRemove();

@@ -70,9 +70,22 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				+     "where "
 				+       "gj.applicant_id = ? "
 				+       "and gj.group_id = g.group_id  "
-				+       "and gj.status <> 'CANCELLED'  "
-				+   ") ",
-				memberId, "%" + groupName + "%", memberId)
+				+       "and gj.status not in ('CANCELLED', 'ACCEPTED')  "
+				+   ") "
+				+   "and not exists ( "
+				+     "select "
+				+       "1 "
+				+     "from "
+				+       "groups_members gm "
+				+     "where "
+				+       "gm.group_id = g.group_id "
+				+       "and gm.member_id = ?  "
+				+   ") "
+				,
+				memberId, 
+				"%" + groupName + "%", 
+				memberId,
+				memberId)
 			,
 			record -> new NotJoinAppliedWithNameResult(
 						(String)record.get("group_id"), 
@@ -124,6 +137,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 			,
 			record -> new ByAdminResult(
 						(String)record.get("application_id"), 
+						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
 						(String)record.get("applicant_id"),
 						(String)record.get("applicant_name"),

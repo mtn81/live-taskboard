@@ -15,7 +15,7 @@ export class MemberService {
   }
 
   loadByGroup(groupId, callback) {
-    
+
     this.http.call(http => {
       return http
         .get(`/api/task-manage/groups/${groupId}/members/`)
@@ -35,7 +35,7 @@ export class MemberService {
 
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/members/${member.memberId}?change_admin`, { groupId: groupId })
+        .put(`/api/task-manage/groups/${groupId}/members/${member.memberId}`, { admin: true })
         .then(response => {
           member.admin = true;
           this.eventAggregator.publish(new MemberRoleChanged());
@@ -47,13 +47,25 @@ export class MemberService {
 
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/members/${member.memberId}?change_normal`, { groupId: groupId })
+        .put(`/api/task-manage/groups/${groupId}/members/${member.memberId}`, { admin: false })
         .then(response => {
           member.admin = false;
-          this.eventAggregator.publish(new MemberRoleChanged());
+          this.eventAggregator.publish(new MemberChanged());
+        });
+    }, true);
+  }
+  remove(groupId, member) {
+    member.removed = true;
+
+    this.http.call(http => {
+      return http
+        .delete(`/api/task-manage/groups/${groupId}/members/${member.memberId}`)
+        .then(response => {
+          this.eventAggregator.publish(new MemberRemoved());
         });
     }, true);
   }
 }
 
-export class MemberRoleChanged {}
+export class MemberChanged {}
+export class MemberRemoved {}

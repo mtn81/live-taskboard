@@ -1,7 +1,5 @@
 package jp.mts.authaccess.rest;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import javax.servlet.http.HttpServletResponse;
 
 import jp.mts.authaccess.application.AuthAppService;
@@ -21,13 +19,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 public class AuthApi {
 	
 	@Autowired
 	private AuthAppService authService;
 
-	@RequestMapping(value="/{authId}", method = RequestMethod.GET)
+	@RequestMapping(
+			value="/auth/{authId}", 
+			method = RequestMethod.GET)
 	public RestResponse<AuthLoad> loadAuth(
 			@PathVariable String authId) {
 		
@@ -43,7 +43,9 @@ public class AuthApi {
 		}
 	}
 	
-	@RequestMapping(value="/", method = RequestMethod.POST)
+	@RequestMapping(
+			value="/auth", 
+			method = RequestMethod.POST)
 	public RestResponse<Authenticate> authenticate(
 			@RequestBody Authenticate authenticate){
 		
@@ -58,7 +60,9 @@ public class AuthApi {
 		}
 	}
 	
-	@RequestMapping(value="/{authId}", method = RequestMethod.DELETE)
+	@RequestMapping(
+			value="/auth/{authId}", 
+			method = RequestMethod.DELETE)
 	public RestResponse<AuthRemove> removeAuth(@PathVariable String authId) {
 		try {
 			AuthRemove authRemove = new AuthRemove();
