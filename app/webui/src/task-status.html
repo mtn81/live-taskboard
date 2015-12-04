@@ -19,17 +19,18 @@
       <div repeat.for="task of tasks" class="task panel panel-default"
         widget.bind="{ widgetId: task.taskId, freeOnDrag: false}"
         style="z-index: 100">
-        <div class.bind="'panel-body ' + $parent.deadlineCss(task.deadline)">
-          <p>
-            <strong>${task.taskName}</strong>
-            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
-              click.delegate="$parent.removeTask(task)"></span>
-          </p>
-          <hr>
+        <div class.bind="'panel-heading ' + $parent.deadlineCss(task.deadline)">
+          <strong>${task.taskName}</strong>
+          <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+            click.delegate="$parent.removeTask(task)"></span>
+        </div>
+        <div class="panel-body">
           <ul>
             <li>
-              <select class="form-control"
-                value.bind="task.assigned" change.delegate="$parent.modifyTask(task)">
+              <select
+                value.bind="task.assigned"
+                class.bind="'form-control ' + ($parent.assigned(task.assigned) ? 'assigned' : '')"
+                change.delegate="$parent.modifyTask(task)">
                 <option repeat.for="member of $parent.members" value.bind="member.memberId">${member.name}</option>
               </select>
             </li>

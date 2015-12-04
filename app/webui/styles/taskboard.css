@@ -39,9 +39,16 @@ main {
   margin: 0;
   padding: 0;
 }
-.task-deadline-error {
+.task .panel-heading {
+  height: 30%;
+  word-wrap: break-word;
+}
+.task .task-deadline-error {
   background-color: #FF69B4;
 }
-.task-deadline-warn {
+.task .task-deadline-warn {
   background-color: #FFD700;
+}
+.task select.assigned {
+  background-color: #FFB6C1;
 }

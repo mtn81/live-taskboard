@@ -21,14 +21,6 @@ public class GroupNotifyWebSocketController implements MqEventHandler {
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
 	
-//	@MessageMapping(value="/groups/{groupId}/watch_available")
-//	@SendToUser(value="/queue/group_available", broadcast=false)
-//	public GroupAvailableNotification notifyGroupAvailable(
-//			@DestinationVariable String groupId){
-//		Group group = groupAppService.detectRegisteredGroupAvailable(groupId);
-//		return new GroupAvailableNotification(group);
-//	}
-	
 	@Override
 	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
 		String groupId = eventBody.asString("groupId.value");

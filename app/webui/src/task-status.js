@@ -4,22 +4,24 @@ import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import bootbox from 'bootbox';
 import {TaskService, TaskRemoved, TaskModified} from './task/task-service';
 import {MemberService} from './member/member-service';
+import {AuthContext} from './auth/auth-context';
 import 'components/jqueryui';
 import 'components/jqueryui/themes/base/jquery-ui.css!';
 
 
 @customElement('task-status')
-@inject(EventAggregator, TaskService, MemberService)
+@inject(EventAggregator, TaskService, MemberService, AuthContext)
 export class TaskStatus {
   @bindable status = '';
   tasks = [];
   members = [];
 
-  constructor(eventAggregator, taskService, memberService) {
+  constructor(eventAggregator, taskService, memberService, authContext) {
     this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.taskService = taskService;
     this.memberService = memberService;
     this.vm = this;
+    this.authContext = authContext;
   }
 
   removeTask(task) {
@@ -51,6 +53,10 @@ export class TaskStatus {
       return 'task-deadline-warn';
     }
     return '';
+  }
+
+  assigned(assignedMemberId) {
+    return assignedMemberId === this.authContext.getAuth().userId;
   }
 
   bind(bindingContext) {

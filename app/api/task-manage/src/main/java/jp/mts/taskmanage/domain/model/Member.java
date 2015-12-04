@@ -37,9 +37,6 @@ public class Member extends DomainEntity<MemberId> {
 	public boolean owns(Group group) {
 		return memberId().equals(group.ownerMemberId());
 	}
-	public void entryTo(Group group) {
-		entryTo(group, false);
-	}
 
 	public void entryTo(Group group, boolean admin) {
 		addGroupBelonging(new GroupBelonging(group.groupId(), admin));
