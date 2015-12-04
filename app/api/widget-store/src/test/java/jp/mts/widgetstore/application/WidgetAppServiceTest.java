@@ -34,7 +34,7 @@ public class WidgetAppServiceTest {
 			widgetRepository.save((Widget)any);
 		}};
 		
-		target.save(widgetId, position, size);
+		target.changeGraphic(widgetId, position, size);
 		
 		new Verifications() {{
 			Widget widget;

@@ -13,7 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes={"jp.mts.authaccess.domain.model.UserRegistered"})
+@MqEventHandlerConfig(targetEventTypes={"mts:authaccess/UserRegistered"})
 public class UserRegisteredEventHandler implements MqEventHandler {
 
 	@Autowired

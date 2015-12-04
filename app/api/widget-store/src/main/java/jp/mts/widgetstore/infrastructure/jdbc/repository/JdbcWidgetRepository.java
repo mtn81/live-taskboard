@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import jp.mts.widgetstore.domain.model.Position;
 import jp.mts.widgetstore.domain.model.Size;
 import jp.mts.widgetstore.domain.model.Widget;
+import jp.mts.widgetstore.domain.model.WidgetBuilder;
 import jp.mts.widgetstore.domain.model.WidgetId;
 import jp.mts.widgetstore.domain.model.WidgetRepository;
 import jp.mts.widgetstore.infrastructure.jdbc.model.WidgetModel;
@@ -52,10 +53,18 @@ public class JdbcWidgetRepository implements WidgetRepository {
 	private Widget toDomain(WidgetModel model) {
 		if(model == null) return null;
 
-		return new Widget(
-				new WidgetId(model.getString("category_id"), model.getString("widget_id")), 
-				new Position(model.getInteger("x"), model.getInteger("y")), 
-				new Size(model.getInteger("width"), model.getInteger("height")));
+		return new WidgetBuilder(
+				new Widget(
+					new WidgetId(
+						model.getString("category_id"), 
+						model.getString("widget_id"))))
+			.size(new Size(
+					model.getInteger("width"), 
+					model.getInteger("height")))
+			.position(new Position(
+					model.getInteger("x"), 
+					model.getInteger("y")))
+			.get();
 	}
 
 

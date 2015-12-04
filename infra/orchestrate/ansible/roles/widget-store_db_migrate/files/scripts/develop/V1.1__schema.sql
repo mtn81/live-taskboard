@@ -1,3 +1,14 @@
+create table events (
+  type varchar(100),
+  occurred timestamp,
+  body bytea
+);
+
+create table event_processes (
+  type varchar(100) unique,
+  last_event_id integer
+);
+
 create table widgets (
   category_id varchar(100) not null,
   widget_id varchar(100) not null,

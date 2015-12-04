@@ -62,6 +62,8 @@ public class MqConfig {
 		rabbitAdmin.deleteQueue("auth-access");
 		rabbitAdmin.deleteExchange("task-manage");
 		rabbitAdmin.deleteQueue("task-manage");
+		rabbitAdmin.deleteExchange("widget-store");
+		rabbitAdmin.deleteQueue("widget-store");
 		
 		Queue aa_queue = new Queue("auth-access", true);
 		FanoutExchange aa_exchange = new FanoutExchange("auth-access", true, false);
@@ -73,9 +75,15 @@ public class MqConfig {
 		rabbitAdmin.declareQueue(tm_queue);
 		rabbitAdmin.declareExchange(tm_exchange);
 
+		Queue wm_queue = new Queue("widget-store", true);
+		FanoutExchange wm_exchange = new FanoutExchange("widget-store", true, false);
+		rabbitAdmin.declareQueue(wm_queue);
+		rabbitAdmin.declareExchange(wm_exchange);
+
 		rabbitAdmin.declareBinding(BindingBuilder.bind(aa_queue).to(aa_exchange));
 		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(aa_exchange));
 		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(tm_exchange));
+		rabbitAdmin.declareBinding(BindingBuilder.bind(wm_queue).to(wm_exchange));
 		
 		return rabbitAdmin;
 	}

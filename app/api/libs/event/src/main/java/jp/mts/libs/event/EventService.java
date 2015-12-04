@@ -47,9 +47,11 @@ public class EventService {
 		List<StoredEvent> targetEvents = eventStore.findEventsAfter(
 				eventProcessRecord.lastDelegatedEventId());
 
-		targetEvents.forEach(this::sendEvent);
+		targetEvents.forEach(e -> { 
+			this.sendEvent(e);
+			eventProcessRecord.delegate(e);
+		});
 	}
-	
 	
 	private void sendEvent(StoredEvent e) {
 		MessageProperties props = MessagePropertiesBuilder.newInstance()
@@ -67,6 +69,5 @@ public class EventService {
 		rabbitTemplate.send(message);
 		logger.debug("send event: " + e.getEventId());
 		
-		eventProcessRecord.delegate(e);
 	}
 }

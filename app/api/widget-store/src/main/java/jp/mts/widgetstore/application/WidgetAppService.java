@@ -19,10 +19,15 @@ public class WidgetAppService {
 	@Autowired
 	private WidgetRepository widgetRepository;
 
-	public void save(WidgetId widgetId, Position position, Size size) {
+	public void changeGraphic(WidgetId widgetId, Position position, Size size) {
+		Widget widget = widgetRepository.findById(widgetId);
+		if (widget == null) {
+			widget = new Widget(widgetId);
+		}
 		
-		widgetRepository.save(
-				new Widget(widgetId, position, size));
+		widget.change(position, size);
+		
+		widgetRepository.save(widget);
 	}
 
 	public List<Widget> findWidgetsInCategory(String categoryId) {

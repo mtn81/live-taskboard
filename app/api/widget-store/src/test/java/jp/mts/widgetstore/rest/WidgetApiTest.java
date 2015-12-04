@@ -31,7 +31,7 @@ public class WidgetApiTest {
 	public void test_save() {
 		
 		new Expectations() {{
-			widgetAppService.save(
+			widgetAppService.changeGraphic(
 					new WidgetId("cate01", "w01"),
 					new Position(20, 10),
 					new Size(40, 30));

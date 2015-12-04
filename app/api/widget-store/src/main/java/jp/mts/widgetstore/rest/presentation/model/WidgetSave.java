@@ -43,7 +43,7 @@ public class WidgetSave {
 			WidgetAppService widgetAppService) {
 
 		WidgetId _widgetId = new WidgetId(categoryId, widgetId);
-		widgetAppService.save(
+		widgetAppService.changeGraphic(
 				_widgetId,
 				new Position(left, top),
 				new Size(width, height));

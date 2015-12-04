@@ -11,7 +11,9 @@ public class WidgetFixture {
 		this(widgetId, new Position(10, 20), new Size(100, 200));
 	}
 	public WidgetFixture(WidgetId widgetId, Position position, Size size) {
-		widget = new Widget(widgetId, position, size);
+		widget = new Widget(widgetId);
+		widget.setPosition(position);
+		widget.setPosition(position);
 	}
 	
 	public Widget get(){
