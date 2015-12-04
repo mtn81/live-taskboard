@@ -13,7 +13,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
-@MqEventHandlerConfig(targetEventTypes="jp.mts.taskmanage.domain.model.GroupMemberEntried")
+@MqEventHandlerConfig(targetEventTypes="mts:taskmanage/GroupMemberEntried")
 public class GroupNotifyWebSocketController implements MqEventHandler {
 
 	@Autowired

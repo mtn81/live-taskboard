@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes="jp.mts.taskmanage.domain.model.MemberJoinAccepted")
+@MqEventHandlerConfig(targetEventTypes="mts:taskmanage/MemberJoinAccepted")
 public class MemberJoinAcceptedEventHandler implements MqEventHandler {
 
 	@Autowired

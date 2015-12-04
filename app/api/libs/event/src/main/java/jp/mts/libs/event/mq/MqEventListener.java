@@ -12,7 +12,6 @@ import jp.mts.libs.event.eventstore.StoredEventSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class MqEventListener {
 

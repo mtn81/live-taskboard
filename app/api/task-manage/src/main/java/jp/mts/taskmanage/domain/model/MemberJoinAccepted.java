@@ -1,7 +1,9 @@
 package jp.mts.taskmanage.domain.model;
 
 import jp.mts.base.domain.model.DomainEvent;
+import jp.mts.base.domain.model.DomainEventConfig;
 
+@DomainEventConfig(eventType="mts:taskmanage/MemberJoinAccepted")
 public class MemberJoinAccepted extends DomainEvent {
 	
 	private MemberId memberId;

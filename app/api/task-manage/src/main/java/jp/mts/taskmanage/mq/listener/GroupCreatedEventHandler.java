@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes="jp.mts.taskmanage.domain.model.GroupCreated")
+@MqEventHandlerConfig(targetEventTypes="mts:taskmanage/GroupCreated")
 public class GroupCreatedEventHandler implements MqEventHandler {
 
 	@Autowired

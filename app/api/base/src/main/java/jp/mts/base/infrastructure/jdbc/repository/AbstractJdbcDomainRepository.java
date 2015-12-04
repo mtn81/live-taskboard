@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.mts.base.domain.model.DomainEntity;
-import jp.mts.base.domain.model.DomainRepository;
 import jp.mts.base.domain.model.DomainId;
+import jp.mts.base.domain.model.DomainRepository;
 
 import org.javalite.activejdbc.Model;
 import org.springframework.util.ReflectionUtils;

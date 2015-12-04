@@ -1,7 +1,9 @@
 package jp.mts.authaccess.domain.model;
 
 import jp.mts.base.domain.model.DomainEvent;
+import jp.mts.base.domain.model.DomainEventConfig;
 
+@DomainEventConfig(eventType="mts:authaccess/UserRegistered")
 public class UserRegistered extends DomainEvent {
 	
 	private UserId userId;

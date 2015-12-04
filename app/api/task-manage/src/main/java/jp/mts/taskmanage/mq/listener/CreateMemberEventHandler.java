@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes="jp.mts.authaccess.domain.model.UserRegistered")
+@MqEventHandlerConfig(targetEventTypes="mts:authaccess/UserRegistered")
 public class CreateMemberEventHandler implements MqEventHandler {
 
 	@Autowired

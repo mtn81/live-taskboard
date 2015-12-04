@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.util.Date;
 
 import jp.mts.libs.event.Event;
+import jp.mts.libs.event.EventDelegateType;
 
 import org.junit.Test;
 
@@ -34,6 +35,11 @@ public class StoredEventSerializerTest {
 		@Override
 		public String eventType() {
 			return "testevent";
+		}
+
+		@Override
+		public EventDelegateType eventDelegateType() {
+			return EventDelegateType.EVENT_STORE;
 		}
 	}
 	

@@ -1,7 +1,9 @@
 package jp.mts.taskmanage.domain.model;
 
 import jp.mts.base.domain.model.DomainEvent;
+import jp.mts.base.domain.model.DomainEventConfig;
 
+@DomainEventConfig(eventType="mts:taskmanage/GroupMemberLeaved")
 public class GroupMemberLeaved extends DomainEvent {
 	
 	private GroupId groupId;

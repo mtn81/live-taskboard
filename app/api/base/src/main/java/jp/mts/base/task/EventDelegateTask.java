@@ -21,7 +21,7 @@ public class EventDelegateTask {
 	@Scheduled(fixedDelay=10000)
 	public void delegateEvent() {
 		logger.debug("start delegate event");
-		eventService.delegateEvent();
+		eventService.sendEventsInStore();
 		logger.debug("end delegate event");
 	}
 }
