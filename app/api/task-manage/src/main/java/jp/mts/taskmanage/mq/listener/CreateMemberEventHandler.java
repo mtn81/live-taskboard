@@ -18,7 +18,8 @@ public class CreateMemberEventHandler implements MqEventHandler {
 	private MemberAppService memberAppService;
 	
 	@Override
-	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
+	public void handleEvent(
+			long eventId, String publisherId, Date occurred, EventBody eventBody) {
 		String memberId = eventBody.asString("userId.value");
 		String name = eventBody.asString("name");
 		memberAppService.registerMember(memberId, name);

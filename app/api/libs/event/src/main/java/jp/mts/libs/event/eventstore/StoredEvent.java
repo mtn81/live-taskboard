@@ -8,17 +8,27 @@ public class StoredEvent {
 	private Date occurred;
 	private String eventType;
 	private byte[] eventBody;
+	private String publisherId;
 	
-	public StoredEvent(long eventId, Date occurred, String eventType, byte[] eventBody) {
+	public StoredEvent(
+			long eventId, 
+			String publisherId,
+			Date occurred, 
+			String eventType, 
+			byte[] eventBody) {
 		this.eventId = eventId;
+		this.publisherId = publisherId;
 		this.occurred = occurred;
 		this.eventType = eventType;
 		this.eventBody = eventBody;
 	}
-	public StoredEvent(Date occurred, String eventType, byte[] eventBody) {
-		this.occurred = occurred;
-		this.eventType = eventType;
-		this.eventBody = eventBody;
+	public StoredEvent(
+			String publisherId,
+			Date occurred, 
+			String eventType, 
+			byte[] eventBody) {
+		
+		this(0, publisherId, occurred, eventType, eventBody);
 	}
 
 	public long getEventId() {
@@ -35,5 +45,8 @@ public class StoredEvent {
 
 	public byte[] getEventBody() {
 		return eventBody;
+	}
+	public String getPublisherId() {
+		return publisherId;
 	}
 }

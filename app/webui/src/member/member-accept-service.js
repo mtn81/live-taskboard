@@ -4,47 +4,33 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
-import {HttpClientWrapper} from '../lib/http-client-wrapper';
+import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class MemberAcceptService {
 
-  _acceptableMemberJoins = [];
-  _rejectedMemberJoins = [];
-
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
+    this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
 
   searchAcceptableMembers() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this._memberId()}/acceptable_group_joins/search`)
-        .then(response => {
-          let found = response.content.data.members;
-          this._acceptableMemberJoins.length = 0;
-          $.merge(this._acceptableMemberJoins, found);
-        });
-    }, false, 'searchAcceptableMembers');
-
-    return this._acceptableMemberJoins;
+    return this.httpLoader.list(
+      `/api/task-manage/members/${this._memberId()}/acceptable_group_joins/search`,
+      response => {
+        return response.content.data.members;
+      });
   }
 
   searchRejectedMembers() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this._memberId()}/reject_group_joins/search`)
-        .then(response => {
-          let found = response.content.data.members;
-          this._rejectedMemberJoins.length = 0;
-          $.merge(this._rejectedMemberJoins, found);
-        });
-    }, false, 'searchRejectedMembers');
-
-    return this._rejectedMemberJoins;
+    return this.httpLoader.list(
+      `/api/task-manage/members/${this._memberId()}/reject_group_joins/search`,
+      response => {
+        return response.content.data.members;
+      });
   }
 
   acceptMember(member) {

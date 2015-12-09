@@ -25,4 +25,17 @@ public class EventBody {
 		return null;
 	}
 	
+	public <T> T as(Class<T> clazz, String keyPath) {
+		
+		List<String> keys = Arrays.asList(keyPath.split("\\."));
+		EventBody target = this;
+		for(String key : keys){
+			if(keys.indexOf(key) == keys.size() - 1){
+				return (T)target.value.get(key);
+			}else{
+				target = new EventBody((Map)value.get(key));
+			}
+		};
+		return null;
+	}
 }

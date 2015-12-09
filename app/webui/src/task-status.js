@@ -13,7 +13,7 @@ import 'components/jqueryui/themes/base/jquery-ui.css!';
 @inject(EventAggregator, TaskService, MemberService, AuthContext)
 export class TaskStatus {
   @bindable status = '';
-  tasks = [];
+  _tasks = {};
   members = [];
 
   constructor(eventAggregator, taskService, memberService, authContext) {
@@ -59,6 +59,10 @@ export class TaskStatus {
     return assignedMemberId === this.authContext.getAuth().userId;
   }
 
+  get tasks() {
+    return this._tasks[this.status] || [];
+  }
+
   bind(bindingContext) {
     //this.taskboardContext = bindingContext.taskboardContext;
   }
@@ -68,14 +72,11 @@ export class TaskStatus {
     this.events.subscribe('group.selected', group => {
       this.group = group;
       this.members = this.memberService.loadByGroup(group.groupId);
-      this.tasks = this.taskService.load(this.group.groupId, this.status);
+      this._tasks = this.taskService.load(this.group.groupId);
     });
-    this.events.subscribe2(
-      ['task-register.register.success', TaskRemoved, TaskModified],
-      () => {
-        this.tasks = this.taskService.load(this.group.groupId, this.status);
-      }
-    );
+    this.events.subscribe2(['task-register.register.success', TaskRemoved, TaskModified], () => {
+      this._tasks = this.taskService.load(this.group.groupId);
+    });
 
   }
 

@@ -4,47 +4,33 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
-import {HttpClientWrapper} from '../lib/http-client-wrapper';
+import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
-
-var _notAppliedGroups = [];
-var _appliedGroups = [];
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class GroupJoinService {
 
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
+    this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
 
   searchNotAppliedByName(groupName) {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this.memberId()}/not_join_applied_groups/search?groupName=${groupName}`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _notAppliedGroups.length = 0;
-          $.merge(_notAppliedGroups, foundGroups);
-        });
-    }, false, 'searchNotAppliedByName');
-
-    return _notAppliedGroups;
+    return this.httpLoader.list(
+      `/api/task-manage/members/${this.memberId()}/not_join_applied_groups/search?groupName=${groupName}`,
+      response => {
+        return response.content.data.groups;
+      });
   }
 
   searchApplied() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this.memberId()}/group_joins/`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _appliedGroups.length = 0;
-          $.merge(_appliedGroups, foundGroups);
-        });
-    }, false, 'searchApplied');
-
-    return _appliedGroups;
+    return this.httpLoader.list(
+      `/api/task-manage/members/${this.memberId()}/group_joins/`,
+      response => {
+        return response.content.data.groups;
+      });
   }
 
   applyJoin(group) {

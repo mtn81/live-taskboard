@@ -18,9 +18,7 @@ export class GlobalInfos {
       const infos = event.infos;
       if (_.isEmpty(infos)) return;
 
-      this.infos.length = 0;
-      jQuery.merge(this.infos, infos);
-
+      this.infos.splice(0, this.infos.length, ...infos);
       this.open();
     });
   }

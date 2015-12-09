@@ -8,5 +8,8 @@ import jp.mts.libs.event.eventstore.EventBody;
 public interface MqEventHandler {
 
 	void handleEvent(
-		long eventId, Date occurred, EventBody eventBody);
+		long eventId, 
+		String publisherId,
+		Date occurred, 
+		EventBody eventBody);
 }

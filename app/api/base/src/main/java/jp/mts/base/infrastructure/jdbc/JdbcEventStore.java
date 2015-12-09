@@ -16,6 +16,7 @@ public class JdbcEventStore implements EventStore {
 			.setTimestamp(
 				"occurred", e.getOccurred())
 			.set(
+				"publisher", e.getPublisherId(),
 				"type", e.getEventType(),
 				"body", e.getEventBody());
 		model.saveIt();
@@ -27,6 +28,7 @@ public class JdbcEventStore implements EventStore {
 		EventModel.findWith(model -> {
 			events.add(new StoredEvent(
 					model.getLongId(), 
+					model.getString("publisher"),
 					model.getDate("occurred"), 
 					model.getString("type"), 
 					model.getBytes("body")));

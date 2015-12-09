@@ -1,30 +1,41 @@
 import _ from 'underscore';
 import {inject} from 'aurelia-framework';
 import {WidgetService} from './widget/widget-service';
+import {AuthContext} from './auth/auth-context';
 import {EventAggregator} from 'aurelia-event-aggregator';
 
-@inject(WidgetService, EventAggregator)
+@inject(WidgetService, EventAggregator, AuthContext)
 export class WidgetManager {
 
   widgetHandlers = [];
   status = '';
 
-  constructor(widgetService, eventAggregator) {
+  constructor(widgetService, eventAggregator, authContext) {
     this.widgetService = widgetService;
     this.eventAggregator = eventAggregator;
 
     this.eventAggregator.subscribe('group.selected', group => {
       this.groupId = group.groupId;
-      this.status = 'loading';
+      this.loadWidgets();
 
-      this.widgetService.loadAll(this.groupId, (widgets) => {
-        this.widgets = widgets;
-        this.status = 'loaded';
+      this.widgetService.watchWidgetChange(this.groupId, widgetChange => {
+        if(!authContext.hasClientId(widgetChange.clientId)) {
+          this.loadWidgets();
+        }
+      });
+    });
+  }
 
-        this.widgetHandlers.forEach(handler => {
-          handler.element.widget = this._widget(handler.widgetId);
-          handler.callback(handler.element);
-        });
+  loadWidgets() {
+    this.status = 'loading';
+
+    this.widgetService.loadAll(this.groupId, (widgets) => {
+      this.widgets = widgets;
+      this.status = 'loaded';
+
+      this.widgetHandlers.forEach(handler => {
+        handler.element.widget = this._widget(handler.widgetId);
+        handler.callback(handler.element);
       });
     });
   }

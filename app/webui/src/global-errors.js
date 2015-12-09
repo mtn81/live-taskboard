@@ -21,10 +21,7 @@ export class GlobalErrors {
     this.events.subscribe(target.event, event => {
       const targetErrors = !!target.excludeField ? event.globalErrors : event.errors;
       if (_.isEmpty(targetErrors)) return;
-
-      this.errors.length = 0;
-      jQuery.merge(this.errors, targetErrors);
-
+      this.errors.splice(0, this.errors.length, ...targetErrors);
       this.open();
     });
   }

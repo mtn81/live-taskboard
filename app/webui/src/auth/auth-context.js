@@ -5,6 +5,7 @@ export class AuthContext {
   }
 
   store(auth){
+    auth.clientId = `${auth.userId}_${new Date().getTime()}`;
     this.storage.setItem('auth', JSON.stringify(auth));
   }
 
@@ -16,6 +17,13 @@ export class AuthContext {
     var auth = this.storage.getItem('auth');
     if (!auth) return auth;
     return JSON.parse(auth);
+  }
+  getClientId(){
+    if(!this.isAuthenticated()) return '';
+    return this.getAuth().clientId;
+  }
+  hasClientId(clientId) {
+    return this.getClientId() === clientId;
   }
 
   remove(){

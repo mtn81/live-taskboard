@@ -18,7 +18,8 @@ public class GroupCreatedEventHandler implements MqEventHandler {
 	private GroupAppService groupAppService;
 	
 	@Override
-	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
+	public void handleEvent(
+			long eventId, String publisherId, Date occurred, EventBody eventBody) {
 		String memberId = eventBody.asString("creator.value");
 		String groupId = eventBody.asString("groupId.value");
 		

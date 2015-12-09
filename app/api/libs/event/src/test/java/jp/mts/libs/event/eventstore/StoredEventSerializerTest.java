@@ -7,6 +7,7 @@ import java.util.Date;
 
 import jp.mts.libs.event.Event;
 import jp.mts.libs.event.EventDelegateType;
+import jp.mts.libs.unittest.Dates;
 
 import org.junit.Test;
 
@@ -21,6 +22,9 @@ public class StoredEventSerializerTest {
 		EventBody deserializeBody = target.deserializeBody(serialized);
 		
 		assertThat(deserializeBody.asString("testId.value"), is("id value"));
+		assertThat(serialized.getEventType(), is("testevent"));
+		assertThat(serialized.getOccurred(), is(Dates.date("2015/01/01")));
+		assertThat(serialized.getPublisherId(), is("publisher01"));
 	}
 	
 	
@@ -29,7 +33,7 @@ public class StoredEventSerializerTest {
 
 		@Override
 		public Date occurred() {
-			return new Date();
+			return Dates.date("2015/01/01");
 		}
 
 		@Override
@@ -40,6 +44,11 @@ public class StoredEventSerializerTest {
 		@Override
 		public EventDelegateType eventDelegateType() {
 			return EventDelegateType.EVENT_STORE;
+		}
+
+		@Override
+		public String publisherId() {
+			return "publisher01";
 		}
 	}
 	

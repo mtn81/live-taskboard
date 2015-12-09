@@ -8,7 +8,7 @@ import 'components/jqueryui';
 @inject(EventAggregator, MemberService, GroupService)
 export class Member {
 
-  group = null;
+  group = {};
   members = [];
 
   constructor(eventAggregator, memberService, groupService){

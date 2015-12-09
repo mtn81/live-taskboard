@@ -22,7 +22,8 @@ public class GroupNotifyWebSocketController implements MqEventHandler {
 	private SimpMessagingTemplate simpMessagingTemplate;
 	
 	@Override
-	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
+	public void handleEvent(
+			long eventId, String publisherId, Date occurred, EventBody eventBody) {
 		String groupId = eventBody.asString("groupId.value");
 		String memberId = eventBody.asString("memberId.value");
 		

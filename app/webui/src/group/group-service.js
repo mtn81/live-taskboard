@@ -5,19 +5,15 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
-import {HttpClientWrapper} from '../lib/http-client-wrapper';
-
-
-var _memberGroups = [];
-var _notAppliedGroups = [];
-var _appliedGroups = [];
-var _watchingAvailableGroup = false;
+import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class GroupService {
+  _watchingAvailableGroup = false;
 
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
+    this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
@@ -36,7 +32,7 @@ export class GroupService {
 
   watchGroupAvailable(callback){
     if(!this.authContext.isAuthenticated()) return;
-    if(_watchingAvailableGroup) return;
+    if(this._watchingAvailableGroup) return;
 
     let websocket = new WebSocket('ws://localhost:28080/task-manage/websocket/notify');
     let stompClient = window.Stomp.over(websocket);
@@ -46,35 +42,24 @@ export class GroupService {
         this.groups();
       });
     });
-    _watchingAvailableGroup = true;
+    this._watchingAvailableGroup = true;
   }
 
   groups() {
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this.memberId()}/groups/`)
-        .then(response => {
-          let foundGroups = response.content.data.groups;
-          _memberGroups.length = 0;
-          $.merge(_memberGroups, foundGroups);
+    return this.httpLoader.list(
+        `/api/task-manage/members/${this.memberId()}/groups/`,
+        response => {
+          return response.content.data.groups;
         });
-    });
-
-    return _memberGroups;
   }
 
   group(groupId) {
-    let group = {};
-    this.http.call(http => {
-      return http
-        .get(`/api/task-manage/members/${this.memberId()}/groups/${groupId}`)
-        .then(response => {
-          let foundGroup = response.content.data;
-          _.extend(group, foundGroup);
+    return this.httpLoader.object(
+        `/api/task-manage/members/${this.memberId()}/groups/${groupId}`,
+        response => {
           this.eventAggregator.publish(new GroupLoaded());
+          return response.content.data;
         });
-    });
-    return group;
   }
 
   remove(group){

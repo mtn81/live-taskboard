@@ -58,6 +58,7 @@ public class EventService {
 			.setContentType(MessageProperties.CONTENT_TYPE_BYTES)
 			.setMessageId(UUID.randomUUID().toString())
 			.setHeader("eventId", e.getEventId())
+			.setHeader("publisherId", e.getPublisherId())
 			.setHeader("occurred", e.getOccurred())
 			.setHeader("eventType", e.getEventType())
 			.build();

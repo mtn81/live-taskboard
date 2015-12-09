@@ -28,7 +28,7 @@ public class StoredEventSerializer {
 	public StoredEvent serialize(Event event) {
 		try {
 			byte[] serialized = objectMapper.writeValueAsBytes(event);
-			return new StoredEvent(event.occurred(), event.eventType(), serialized);
+			return new StoredEvent(event.publisherId(), event.occurred(), event.eventType(), serialized);
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}

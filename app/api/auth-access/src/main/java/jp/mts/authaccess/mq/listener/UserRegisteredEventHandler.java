@@ -22,7 +22,8 @@ public class UserRegisteredEventHandler implements MqEventHandler {
 	private JavaMailSender javaMailSender;
 	
 	@Override
-	public void handleEvent(long eventId, Date occurred, EventBody eventBody) {
+	public void handleEvent(
+			long eventId, String publisherId, Date occurred, EventBody eventBody) {
 		String activationIdValue = eventBody.asString("activationId.value");
 		String email = eventBody.asString("email");
 		

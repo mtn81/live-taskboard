@@ -5,7 +5,6 @@ import javax.sql.DataSource;
 import jp.mts.base.unittest.JdbcTestBase.TestConfig;
 
 import org.javalite.activejdbc.Base;
-import org.javalite.activejdbc.DB;
 import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;

@@ -29,6 +29,7 @@ public class MqEventListener {
 		
 		Map<String, Object> headers = message.getMessageProperties().getHeaders();
 		long eventId = (Long)headers.get("eventId");
+		String publisherId = (String)headers.get("publisherId");
 		Date occurred = (Date)headers.get("occurred");
 		String eventType = (String)headers.get("eventType");
 		EventBody eventBody = storedEventSerializer.deserializeBody(message.getBody());
@@ -36,7 +37,7 @@ public class MqEventListener {
 		handlers.forEach(handler -> {
 			if(isEventTypeHandled(eventType, handler)){
 				logger.debug("event proccess: eventId={}, eventType={}", eventId, eventType);
-				handler.handleEvent(eventId, occurred, eventBody);
+				handler.handleEvent(eventId, publisherId, occurred, eventBody);
 			}
 		});
 	}

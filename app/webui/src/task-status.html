@@ -31,7 +31,7 @@
                 value.bind="task.assigned"
                 class.bind="'form-control ' + ($parent.assigned(task.assigned) ? 'assigned' : '')"
                 change.delegate="$parent.modifyTask(task)">
-                <option repeat.for="member of $parent.members" value.bind="member.memberId">${member.name}</option>
+                <option repeat.for="member of members" value.bind="member.memberId">${member.name}</option>
               </select>
             </li>
             <li>
