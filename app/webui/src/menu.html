@@ -31,13 +31,14 @@
     <div class="panel-body">
       <button type="button" class="btn btn-primary" click.delegate="showGroupRegister()">グループ作成</button>
       <div class="list-group">
-        <a href="#" class="list-group-item group-enabled"
-          repeat.for="group of groups" click.delegate="$parent.selectGroup(group)">
+        <a href="#" class="list-group-item group-enabled ${group.removing ? 'disabled' : ''}"
+          repeat.for="group of groups"
+          click.delegate="$parent.selectGroup(group)">
           ${group.groupName}
           <span if.bind="group.removing">(削除中)</span>
           <button type="button" class="btn btn-default" aria-label="Left Align"
-            if.bind="!group.removing && group.admin"
-            click.trigger="$parent.removeGroup(group)">
+            disabled="${group.removing || !group.admin ? 'disabled' : ''}"
+            click.delegate="$parent.removeGroup(group)">
             <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>
           </button>
         </a>

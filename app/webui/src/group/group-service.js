@@ -24,8 +24,7 @@ export class GroupService {
       return http
         .post(`/api/task-manage/members/${this.memberId()}/groups/`, group)
         .then(response => {
-          this.groups();
-          this.eventAggregator.publish(new GroupRegistered(response.content.data));
+          this.eventAggregator.publish(new GroupRegistered());
         })
     }, true);
   }
@@ -59,7 +58,7 @@ export class GroupService {
       return http
         .delete(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`)
         .then(response => {
-          this.groups();
+          this.eventAggregator.publish(new GroupRemoved());
         });
     }, true);
   }
@@ -71,5 +70,6 @@ export class GroupService {
 
 export class GroupLoaded {}
 export class GroupRegistered {}
+export class GroupRemoved {}
 export class GroupJoinApplied {}
 export class GroupJoinCancelled {}

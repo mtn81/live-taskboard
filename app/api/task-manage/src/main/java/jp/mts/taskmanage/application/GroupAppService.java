@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.application;
 
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -49,8 +50,7 @@ public class GroupAppService {
 		if (member.belongsTo(new GroupId(groupId))) {
 			return groupRepository.findById(new GroupId(groupId)).get();
 		}
-	
-		throw new ApplicationException(ErrorType.GROUP_NOT_AVAILABLE);
+		return null; 
 	}
 	
 	public void entryGroup(String groupId, String memberId, boolean admin) {

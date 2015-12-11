@@ -2,7 +2,8 @@ import {customElement, inject, bindable} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {AuthContext} from './auth/auth-context';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {GroupService} from './group/group-service';
+import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
+import {GroupService, GroupRemoved} from './group/group-service';
 import {GlobalInfo} from './global-info';
 import 'components/jqueryui';
 
@@ -16,7 +17,7 @@ export class Menu {
   constructor(router, authContext, eventAggregator, groupService){
     this.router = router;
     this.authContext = authContext;
-    this.eventAggregator = eventAggregator;
+    this.events = new EventAggregatorWrapper(this, eventAggregator);
     this.groupService = groupService;
   }
 
@@ -44,31 +45,34 @@ export class Menu {
   }
 
   removeGroup(group){
+    if (group.removing) return;
     this.groupService.remove(group);
   }
 
   selectGroup(group){
+    if (group.removing) return;
     this.group = group;
-    this.eventAggregator.publish('group.selected', this.group);
+    this.events.publish('group.selected', this.group);
     this.closeAllMenu();
   }
 
   fire(eventId, hideTarget){
-    this.eventAggregator.subscribe(eventId + '.success', payload => {
+    this.events.subscribe(eventId + '.success', payload => {
       $(hideTarget).modal('hide');
       this.closeAllMenu();
     });
-    this.eventAggregator.publish(eventId);
+    this.events.publish(eventId);
   }
 
   attached() {
-    if(this.authContext.isAuthenticated()){
-      this.groupService.watchGroupAvailable(groupNotify => {
-        this.eventAggregator.publish(new GlobalInfo([
-          { message: `グループ(${groupNotify.groupName})が利用可能になりました。` }
-        ]));
-      });
-    }
+    this.groupService.watchGroupAvailable(groupNotify => {
+      this.events.publish(new GlobalInfo([
+        { message: `グループ(${groupNotify.groupName})が利用可能になりました。` }
+      ]));
+    });
+    this.events.subscribe(GroupRemoved, () => {
+      this.groups = this.groupService.groups();
+    });
   }
 
   closeAllMenu() {
