@@ -43,8 +43,6 @@ public class Member extends DomainEntity<MemberId> {
 		domainEventPublisher.publish(new GroupMemberEntried(group.groupId(), memberId()));
 	}
 	public LeaveResult leave(Group group) {
-		if(!belongsAsAdmin(group.groupId()))
-			return LeaveResult.NOT_ADMIN_ERROR;
 		if(owns(group))
 			return LeaveResult.OWNER_ERROR;
 

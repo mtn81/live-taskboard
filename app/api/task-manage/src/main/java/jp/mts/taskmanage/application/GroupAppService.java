@@ -80,9 +80,6 @@ public class GroupAppService {
 		Group group = groupRepository.findById(new GroupId(groupId)).get();
 
 		LeaveResult result = member.leave(group);
-		if(result == LeaveResult.NOT_ADMIN_ERROR){
-			throw new ApplicationException(ErrorType.CANNOT_LEAVE_MEMBER_NORMAL);
-		}
 		if(result == LeaveResult.OWNER_ERROR){
 			throw new ApplicationException(ErrorType.CANNOT_LEAVE_MEMBER_OWNER);
 		}

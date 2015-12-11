@@ -34,7 +34,7 @@ export class Member {
     this.groupId = params.groupId;
     this.group = this.groupService.group(this.groupId);
 
-    this.events.subscribe(GroupLoaded, () => {
+    this.events.subscribe2([GroupLoaded, MemberRemoved], () => {
       this.loadMembers();
     });
   }
