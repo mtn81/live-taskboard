@@ -5,6 +5,7 @@ import jp.mts.taskmanage.mq.listener.CreateMemberEventHandler;
 import jp.mts.taskmanage.mq.listener.GroupCreatedEventHandler;
 import jp.mts.taskmanage.mq.listener.MemberJoinAcceptedEventHandler;
 import jp.mts.taskmanage.websocket.GroupNotifyWebSocketController;
+import jp.mts.taskmanage.websocket.TaskNotifyWebSocketController;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerEndpoint;
@@ -23,6 +24,8 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 	private GroupCreatedEventHandler groupCreatedEventHandler;
 	@Autowired
 	private MemberJoinAcceptedEventHandler memberJoinAcceptedEventHandler;
+	@Autowired
+	private TaskNotifyWebSocketController taskNotifyWebSocketController;
 	
 	@Override
 	public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {
@@ -30,7 +33,8 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 				memberCreatedEventHandler,
 				groupNotifyController,
 				groupCreatedEventHandler,
-				memberJoinAcceptedEventHandler);
+				memberJoinAcceptedEventHandler,
+				taskNotifyWebSocketController);
 		SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
 		endpoint.setId("task-manage");
 		endpoint.setQueueNames("task-manage");

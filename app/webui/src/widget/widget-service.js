@@ -3,18 +3,16 @@ import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
-import {Stomp} from 'stomp-websocket';
-import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
+import {HttpClientWrapper, CachedHttpLoader, StompClient} from '../lib/http-client-wrapper';
 
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class WidgetService {
 
-  _watchingWidgetChanges = {};
-
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
+    this.stomp = new StompClient('ws://localhost:38080/widget-store/websocket/notify', authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
@@ -39,18 +37,9 @@ export class WidgetService {
   }
 
   watchWidgetChange(groupId, callback) {
-    if(!this.authContext.isAuthenticated()) return;
-    if(this._watchingWidgetChanges[groupId]) return;
-
-    let websocket = new WebSocket('ws://localhost:38080/widget-store/websocket/notify');
-    let stompClient = window.Stomp.over(websocket);
-    stompClient.connect({}, frame => {
-      stompClient.subscribe(`/topic/${groupId}/widget_changed`, response => {
-        if (callback) callback(JSON.parse(response.body));
-      });
+    this.stomp.subscribe(`/topic/${groupId}/widget_changed`, widgetChange => {
+      callback(widgetChange, this.authContext.hasClientId(widgetChange.clientId));
     });
-
-    this._watchingWidgetChanges[groupId] = true;
   }
 }
 

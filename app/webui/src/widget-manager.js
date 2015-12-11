@@ -14,14 +14,12 @@ export class WidgetManager {
     this.widgetService = widgetService;
     this.eventAggregator = eventAggregator;
 
-    this.eventAggregator.subscribe('group.selected', group => {
-      this.groupId = group.groupId;
+    this.eventAggregator.subscribe('task.loaded', groupId => {
+      this.groupId = groupId;
       this.loadWidgets();
 
-      this.widgetService.watchWidgetChange(this.groupId, widgetChange => {
-        if(!authContext.hasClientId(widgetChange.clientId)) {
-          this.loadWidgets();
-        }
+      this.widgetService.watchWidgetChange(this.groupId, (widgetChange, self) => {
+        if(!self) this.loadWidgets();
       });
     });
   }

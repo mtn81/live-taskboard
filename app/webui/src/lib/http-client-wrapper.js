@@ -155,3 +155,52 @@ export class CachedHttpLoader {
   }
 
 }
+
+export class StompClient {
+
+  stompClient = null;
+  subsriptions = {};
+  connecting = true;
+  subscriptionPromises = [];
+
+  constructor(url, authContext) {
+    this.stompClient = window.Stomp.over(new WebSocket(url));
+
+    this.connecting = true;
+    this.stompClient.connect({}, () => {
+      this.connecting = false;
+      _.each(this.subscriptionPromises, s => s());
+    });
+    this.authContext = authContext;
+  }
+
+  subscribe(key, callback) {
+
+    if(!this.authContext.isAuthenticated()) return;
+
+    _.each(this.subsriptions, (value, aKey) => {
+      if (key !== aKey) {
+        value.unsubscribe();
+      }
+    });
+
+    if(this.subsriptions[key]) return;
+
+    let me = this;
+    let subscription = function() {
+      me.subsriptions[key] = me.stompClient.subscribe(key, response => {
+        let result = JSON.parse(response.body);
+        if (callback) {
+          callback(result);
+        }
+      });
+    }
+
+    if (this.connecting) {
+      this.subscriptionPromises.push(subscription);
+    } else {
+      subscription();
+    }
+
+  }
+}

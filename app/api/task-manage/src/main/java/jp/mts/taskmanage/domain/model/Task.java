@@ -54,6 +54,8 @@ public class Task extends DomainEntity<CompositeId>{
 		setAssignedMemberId(assignedMember.memberId());
 		setDeadline(deadline);
 		setStatus(status);
+		
+		domainEventPublisher.publish(new TaskModified(this));
 	}
 	
 	void setStatus(TaskStatus status) {

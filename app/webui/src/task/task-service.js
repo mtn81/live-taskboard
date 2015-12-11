@@ -2,10 +2,8 @@ import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
-import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
+import {HttpClientWrapper, CachedHttpLoader, StompClient} from '../lib/http-client-wrapper';
 import {AuthContext} from '../auth/auth-context';
-
-
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class TaskService {
@@ -14,13 +12,16 @@ export class TaskService {
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
+    this.stomp = new StompClient('ws://localhost:28080/task-manage/websocket/notify', authContext);
     this.eventAggregator = eventAggregator;
+    this.authContext = authContext;
   }
 
   load(groupId) {
     this._tasks = this.httpLoader.object(
       `/api/task-manage/groups/${groupId}/tasks/`,
       response => {
+        this.eventAggregator.publish(new TasksLoaded());
         return response.content.data;
       });
     return this._tasks;
@@ -64,6 +65,12 @@ export class TaskService {
     this.modify(groupId, task);
   }
 
+  watchTaskChange(groupId, callback) {
+    this.stomp.subscribe(`/topic/${groupId}/task_changed`, taskChange => {
+      callback(taskChange, this.authContext.hasClientId(taskChange.clientId));
+    });
+  }
+
   _allTasks(){
     var allTasks = [];
     $.each(this._tasks, (status, tasksInStatus) => {
@@ -85,3 +92,4 @@ export class TaskService {
 export class TaskRegistered {}
 export class TaskModified {}
 export class TaskRemoved {}
+export class TasksLoaded {}

@@ -63,9 +63,9 @@ export class Menu {
 
   attached() {
     if(this.authContext.isAuthenticated()){
-      this.groupService.watchGroupAvailable(e => {
+      this.groupService.watchGroupAvailable(groupNotify => {
         this.eventAggregator.publish(new GlobalInfo([
-          { message: `グループ(${e.groupName})が利用可能になりました。` }
+          { message: `グループ(${groupNotify.groupName})が利用可能になりました。` }
         ]));
       });
     }

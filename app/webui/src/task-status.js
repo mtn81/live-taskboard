@@ -2,7 +2,7 @@ import {customElement, inject, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import bootbox from 'bootbox';
-import {TaskService, TaskRemoved, TaskModified} from './task/task-service';
+import {TaskService, TaskRemoved, TaskModified, TasksLoaded} from './task/task-service';
 import {MemberService} from './member/member-service';
 import {AuthContext} from './auth/auth-context';
 import 'components/jqueryui';
@@ -30,6 +30,10 @@ export class TaskStatus {
         this.taskService.remove(this.group.groupId, task.taskId);
       }
     });
+  }
+
+  loadTasks() {
+    this._tasks = this.taskService.load(this.group.groupId);
   }
 
   modifyTask(task) {
@@ -72,10 +76,16 @@ export class TaskStatus {
     this.events.subscribe('group.selected', group => {
       this.group = group;
       this.members = this.memberService.loadByGroup(group.groupId);
-      this._tasks = this.taskService.load(this.group.groupId);
+      this.taskService.watchTaskChange(this.group.groupId, (taskChange, self) => {
+        if(!self) this.loadTasks();
+      });
+      this.loadTasks();
     });
-    this.events.subscribe2(['task-register.register.success', TaskRemoved, TaskModified], () => {
-      this._tasks = this.taskService.load(this.group.groupId);
+    this.events.subscribe2(['task-register.register.success', TaskRemoved], () => {
+      this.loadTasks();
+    });
+    this.events.subscribe(TasksLoaded, () => {
+      this.events.publish('task.loaded', this.group.groupId);
     });
 
   }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.CompositeId;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -53,8 +54,13 @@ public class TaskAppService {
 
 	public Task removeTask(String groupId, String taskId) {
 		
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
 		Task task = taskRepository.findById(
 				CompositeId.of(new GroupId(groupId), new TaskId(taskId))).get();
+		
+		if(!group.removeTask(task)){
+			throw new ApplicationException(ErrorType.NOT_AUTHORIZED);
+		};
 		
 		taskRepository.remove(task);
 		

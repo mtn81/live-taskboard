@@ -65,7 +65,18 @@ public class Group extends DomainEntity<GroupId>{
 				taskName, 
 				assignedMember.memberId(), 
 				deadline);
+		
+		domainEventPublisher.publish(new TaskRegistered(task));
+		
 		return task;
+	}
+
+	public boolean removeTask(Task task) {
+		if (!task.groupId().equals(groupId())) {
+			return false;
+		}
+		domainEventPublisher.publish(new TaskRemoved(task));
+		return true;
 	}
 	
 	void setName(String name) {
