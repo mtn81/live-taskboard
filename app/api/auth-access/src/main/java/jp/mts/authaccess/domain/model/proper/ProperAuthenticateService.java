@@ -1,16 +1,20 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
+import jp.mts.authaccess.domain.model.Auth;
+import jp.mts.authaccess.domain.model.AuthId;
+import jp.mts.authaccess.domain.model.AuthRepository;
+import jp.mts.authaccess.domain.model.UserAuthenticated;
 import jp.mts.base.domain.model.DomainEventPublisher;
 
-public class AuthenticateService {
+public class ProperAuthenticateService {
 
-	private UserRepository userRepository;
+	private ProperUserRepository userRepository;
 	private AuthRepository authRepository;
 	private PasswordEncriptionService passwordEncriptionService;
 	private DomainEventPublisher domainEventPublisher;
 
-	public AuthenticateService(
-			UserRepository userRepository,
+	public ProperAuthenticateService(
+			ProperUserRepository userRepository,
 			AuthRepository authRepository,
 			PasswordEncriptionService passwordEncriptionService,
 			DomainEventPublisher domainEventPublisher) {
@@ -20,11 +24,11 @@ public class AuthenticateService {
 		this.domainEventPublisher = domainEventPublisher;
 	}
 
-	public Auth authenticate(UserId userId, String password) {
+	public Auth authenticate(ProperUserId userId, String password) {
 		String encriptedPassword = passwordEncriptionService.encrypt(userId, password);
-		User user = userRepository.findByAuthCredential(userId, encriptedPassword);
+		ProperUser user = userRepository.findByAuthCredential(userId, encriptedPassword);
 		if(user == null) return null;
-		if(user.status() != UserStatus.ACTIVE) return null;
+		if(user.status() != ProperUserStatus.ACTIVE) return null;
 
 		AuthId authId = authRepository.newAuthId();
 		Auth auth = new Auth(authId, userId);
@@ -34,21 +38,21 @@ public class AuthenticateService {
 		return auth;
 	}
 	
-	public User createUser(
+	public ProperUser createUser(
 			String id, 
 			String email, 
 			String name,
 			String password){
 
-		UserId userId = new UserId(id);
-		User newUser = new User(
+		ProperUserId userId = new ProperUserId(id);
+		ProperUser newUser = new ProperUser(
 				userId, 
 				email, 
 				passwordEncriptionService.encrypt(userId, password), 
 				name);
 		
 		domainEventPublisher.publish(
-				new UserRegistered(userId, newUser.userActivation().id(), name, email));
+				new ProperUserRegistered(userId, newUser.userActivation().id(), name, email));
 		
 		return newUser;
 	}

@@ -2,22 +2,22 @@ package jp.mts.authaccess.infrastructure.jdbc.repository;
 
 import java.util.Date;
 
-import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserActivation;
-import jp.mts.authaccess.domain.model.UserActivationId;
-import jp.mts.authaccess.domain.model.UserBuilder;
-import jp.mts.authaccess.domain.model.UserId;
-import jp.mts.authaccess.domain.model.UserRepository;
-import jp.mts.authaccess.domain.model.UserStatus;
+import jp.mts.authaccess.domain.model.proper.ProperUser;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivation;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivationId;
+import jp.mts.authaccess.domain.model.proper.ProperUserBuilder;
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
+import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
+import jp.mts.authaccess.domain.model.proper.ProperUserStatus;
 import jp.mts.authaccess.infrastructure.jdbc.model.UserModel;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcUserRepository implements UserRepository {
+public class JdbcProperUserRepository implements ProperUserRepository {
 
 	@Override
-	public void save(User aUser) {
+	public void save(ProperUser aUser) {
 		UserModel userModel = UserModel.findFirst("user_id = ?", aUser.id().value());
 		if(userModel == null){
 			userModel = new UserModel();
@@ -35,36 +35,36 @@ public class JdbcUserRepository implements UserRepository {
 	}
 
 	@Override
-	public User findById(UserId userId) {
+	public ProperUser findById(ProperUserId userId) {
 		UserModel userModel = UserModel.findFirst("user_id = ?", userId.value());
 		return fromDbToDomain(userModel);
 	}
 
 	@Override
-	public User findByAuthCredential(UserId userId, String encryptedPassword) {
+	public ProperUser findByAuthCredential(ProperUserId userId, String encryptedPassword) {
 		UserModel userModel = UserModel.findFirst("user_id = ? and password = ?", userId.value(), encryptedPassword);
 		return fromDbToDomain(userModel);
 	}
 	
 	@Override
-	public User findByActivationId(UserActivationId userActivationId) {
+	public ProperUser findByActivationId(ProperUserActivationId userActivationId) {
 		UserModel userModel = UserModel.findFirst("activation_id = ?", userActivationId.value());
 		return fromDbToDomain(userModel);
 	}
 	
-	private User fromDbToDomain(UserModel userModel){
+	private ProperUser fromDbToDomain(UserModel userModel){
 		if(userModel == null) return null;
 
-		return new UserBuilder(
-			new User(
-				new UserId(userModel.getString("user_id")), 
+		return new ProperUserBuilder(
+			new ProperUser(
+				new ProperUserId(userModel.getString("user_id")), 
 				userModel.getString("email"), 
 				userModel.getString("password"),
 				userModel.getString("name")))
-			.setStatus(UserStatus.valueOf(userModel.getString("status")))
+			.setStatus(ProperUserStatus.valueOf(userModel.getString("status")))
 			.setUserActivation(
-				new UserActivation(
-					new UserActivationId(userModel.getString("activation_id")), 
+				new ProperUserActivation(
+					new ProperUserActivationId(userModel.getString("activation_id")), 
 					new Date(userModel.getTimestamp("activation_expire").getTime())))
 			.get();
 	}

@@ -12,7 +12,7 @@ public class AuthLoad {
 		return auth.id().value();
 	}
 	public String getUserId() {
-		return auth.userId().value();
+		return auth.userId().idValue();
 	}
 	
 	//proccess

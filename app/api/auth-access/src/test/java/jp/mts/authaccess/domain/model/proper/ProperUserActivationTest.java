@@ -1,7 +1,8 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivation;
 import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
@@ -11,14 +12,14 @@ import mockit.Mocked;
 import org.junit.Before;
 import org.junit.Test;
 
-public class UserActivationTest {
+public class ProperUserActivationTest {
 
-	UserActivation target;
+	ProperUserActivation target;
 	@Mocked DomainCalendar domainCalendar;
 	
 	@Before
 	public void setup() {
-		target = new UserActivationFixture()
+		target = new ProperUserActivationFixture()
 			.setExpireTime(Dates.dateShortTime("2015/10/01 12:00")).get();
 
 		DomainObject.setDomainCalendar(domainCalendar);

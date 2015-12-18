@@ -2,14 +2,14 @@ package jp.mts.authaccess.application;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import jp.mts.authaccess.domain.model.AuthenticateService;
-import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserActivationFixture;
-import jp.mts.authaccess.domain.model.UserActivationId;
-import jp.mts.authaccess.domain.model.UserFixture;
-import jp.mts.authaccess.domain.model.UserId;
-import jp.mts.authaccess.domain.model.UserRepository;
-import jp.mts.authaccess.domain.model.UserStatus;
+import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
+import jp.mts.authaccess.domain.model.proper.ProperUser;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivationId;
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
+import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
+import jp.mts.authaccess.domain.model.proper.ProperUserStatus;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivationFixture;
+import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainObject;
@@ -24,23 +24,23 @@ import org.junit.Test;
 public class UserAppServiceTest {
 
 	@Tested UserAppService target = new UserAppService();
-	@Injectable UserRepository userRepository;
-	@Injectable AuthenticateService authenticateService;
+	@Injectable ProperUserRepository userRepository;
+	@Injectable ProperAuthenticateService authenticateService;
 
 	@Test
 	public void test_register() {
 
-		final User user = new UserFixture().get();
+		final ProperUser user = new ProperUserFixture().get();
 		new Expectations() {{
 			authenticateService.createUser("u01", "taro@hoge.jp", "タスク太郎", "pass");
 				result = user;
-			userRepository.findById(new UserId("u01"));
+			userRepository.findById(new ProperUserId("u01"));
 				result = null;
 			
 			userRepository.save(user);
 		}};
 		
-		User actual = target.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
+		ProperUser actual = target.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
 		
 		assertThat(actual, is(user));
 	}
@@ -50,15 +50,15 @@ public class UserAppServiceTest {
 			@Mocked DomainCalendar domainCalendar) {
 		String userId = "u01";
 		String activationId = "activate01";
-		User user = new UserFixture(userId)
+		ProperUser user = new ProperUserFixture(userId)
 			.setUserActivation(
-				new UserActivationFixture(activationId)
+				new ProperUserActivationFixture(activationId)
 					.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
 					.get())
 			.get();
 		
 		new Expectations() {{
-			userRepository.findByActivationId(new UserActivationId(activationId));
+			userRepository.findByActivationId(new ProperUserActivationId(activationId));
 				result = user;
 
 			domainCalendar.systemDate();
@@ -68,16 +68,16 @@ public class UserAppServiceTest {
 		}};
 		DomainObject.setDomainCalendar(domainCalendar);
 		
-		User activatedUser = target.activateUser(activationId);
+		ProperUser activatedUser = target.activateUser(activationId);
 
-		assertThat(activatedUser.status(), is(UserStatus.ACTIVE));
+		assertThat(activatedUser.status(), is(ProperUserStatus.ACTIVE));
 	}
 
 	@Test
 	public void test_activateUser__no_activation_found() {
 
 		new Expectations() {{
-			userRepository.findByActivationId(new UserActivationId("activate01"));
+			userRepository.findByActivationId(new ProperUserActivationId("activate01"));
 				result = null;
 		}};
 		
@@ -94,15 +94,15 @@ public class UserAppServiceTest {
 		
 		String userId = "u01";
 		String activationId = "activate01";
-		User user = new UserFixture(userId)
+		ProperUser user = new ProperUserFixture(userId)
 			.setUserActivation(
-				new UserActivationFixture(activationId)
+				new ProperUserActivationFixture(activationId)
 					.setExpireTime(Dates.dateShortTime("2015/10/01 12:00"))
 					.get())
 			.get();
 		
 		new Expectations() {{
-			userRepository.findByActivationId(new UserActivationId(activationId));
+			userRepository.findByActivationId(new ProperUserActivationId(activationId));
 				result = user;
 
 			domainCalendar.systemDate();

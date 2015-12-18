@@ -1,11 +1,11 @@
 package jp.mts.authaccess.application;
 
-import jp.mts.authaccess.domain.model.AuthenticateService;
-import jp.mts.authaccess.domain.model.User;
-import jp.mts.authaccess.domain.model.UserActivationId;
-import jp.mts.authaccess.domain.model.UserId;
-import jp.mts.authaccess.domain.model.UserRepository;
-import jp.mts.authaccess.domain.model.UserStatus;
+import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
+import jp.mts.authaccess.domain.model.proper.ProperUser;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivationId;
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
+import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
+import jp.mts.authaccess.domain.model.proper.ProperUserStatus;
 import jp.mts.base.application.ApplicationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserAppService {
 	
-	@Autowired UserRepository userRepository;
-	@Autowired AuthenticateService authenticateService;
+	@Autowired ProperUserRepository userRepository;
+	@Autowired ProperAuthenticateService authenticateService;
 
-	public User register(
+	public ProperUser register(
 			String userId, 
 			String email, 
 			String name, 
@@ -27,7 +27,7 @@ public class UserAppService {
 		
 		validateForRegister(userId);
 		
-		User newUser = authenticateService.createUser(
+		ProperUser newUser = authenticateService.createUser(
 				userId, email, name, password);
 		
 		userRepository.save(newUser);
@@ -36,16 +36,16 @@ public class UserAppService {
 	}
 
 	public void validateForRegister(String userId) {
-		User user = userRepository.findById(new UserId(userId));
+		ProperUser user = userRepository.findById(new ProperUserId(userId));
 		if(user != null) 
 			throw new ApplicationException(ErrorType.USER_ID_ALREADY_EXISTS);
 	}
 
-	public User activateUser(String activationId) {
-		User user = userRepository.findByActivationId(new UserActivationId(activationId));
+	public ProperUser activateUser(String activationId) {
+		ProperUser user = userRepository.findByActivationId(new ProperUserActivationId(activationId));
 		if(user == null) 
 			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
-		if(user.status() == UserStatus.ACTIVE)
+		if(user.status() == ProperUserStatus.ACTIVE)
 			throw new ApplicationException(ErrorType.ACTIVATION_NOT_FOUND);
 
 		if (!user.activate()) {

@@ -2,7 +2,7 @@ package jp.mts.authaccess.rest.presentation.model;
 
 import jp.mts.authaccess.application.AuthAppService;
 import jp.mts.authaccess.domain.model.Auth;
-import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.proper.ProperUser;
 
 public class Authenticate {
 	
@@ -19,13 +19,13 @@ public class Authenticate {
 	
 	//output
 	private Auth auth;
-	private User user;
+	private ProperUser user;
 	
 	public String getId(){
 		return auth.id().value();
 	}
 	public String getUserId(){
-		return auth.userId().value();
+		return auth.userId().idValue();
 	}
 	public String getUserName(){
 		return user.name();

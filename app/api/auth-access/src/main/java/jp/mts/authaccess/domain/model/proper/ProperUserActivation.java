@@ -1,22 +1,22 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import java.util.Date;
 
 import jp.mts.base.domain.model.DomainObject;
 
-public class UserActivation extends DomainObject {
+public class ProperUserActivation extends DomainObject {
 	
-	private UserActivationId id;
+	private ProperUserActivationId id;
 	private Date expireTime;
 	
-	public UserActivation(
-			UserActivationId id, Date expireTime) {
+	public ProperUserActivation(
+			ProperUserActivationId id, Date expireTime) {
 		this.id = id;
 		this.expireTime = expireTime;
 	}
 
 	
-	public UserActivationId id() {
+	public ProperUserActivationId id() {
 		return id;
 	}
 	public Date expireTime() {
@@ -47,7 +47,7 @@ public class UserActivation extends DomainObject {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserActivation other = (UserActivation) obj;
+		ProperUserActivation other = (ProperUserActivation) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

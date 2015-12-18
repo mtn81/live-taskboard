@@ -1,5 +1,7 @@
 package jp.mts.authaccess.domain.model;
 
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
+
 public class Auth {
 	
 	private AuthId id;

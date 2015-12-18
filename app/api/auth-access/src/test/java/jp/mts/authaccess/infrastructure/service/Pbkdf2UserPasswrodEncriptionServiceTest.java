@@ -1,6 +1,6 @@
 package jp.mts.authaccess.infrastructure.service;
 
-import jp.mts.authaccess.domain.model.UserId;
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
 
 import org.junit.Test;
 
@@ -10,15 +10,15 @@ public class Pbkdf2UserPasswrodEncriptionServiceTest {
 	public void test() {
 		System.out.println(
 			new Pbkdf2UserPasswrodEncriptionService()
-				.encrypt(new UserId("taro"), "pass")
+				.encrypt(new ProperUserId("taro"), "pass")
 		);
 		System.out.println(
 			new Pbkdf2UserPasswrodEncriptionService()
-				.encrypt(new UserId("taro1"), "pass")
+				.encrypt(new ProperUserId("taro1"), "pass")
 		);
 		System.out.println(
 			new Pbkdf2UserPasswrodEncriptionService()
-				.encrypt(new UserId("taro2"), "pass")
+				.encrypt(new ProperUserId("taro2"), "pass")
 		);
 	}
 

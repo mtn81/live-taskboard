@@ -3,7 +3,7 @@ package jp.mts.authaccess.rest.presentation.model;
 import org.hibernate.validator.constraints.NotBlank;
 
 import jp.mts.authaccess.application.UserAppService;
-import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.proper.ProperUser;
 
 public class UserActivation {
 
@@ -16,7 +16,7 @@ public class UserActivation {
 	}
 
 	//output
-	private User user;
+	private ProperUser user;
 
 	public String getUserId() {
 		return user.id().value();

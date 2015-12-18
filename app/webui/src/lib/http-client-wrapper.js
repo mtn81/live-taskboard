@@ -164,6 +164,8 @@ export class StompClient {
   subscriptionPromises = [];
 
   constructor(url, authContext) {
+    if(!authContext.isAuthenticated()) return;
+
     this.stompClient = window.Stomp.over(new WebSocket(url));
 
     this.connecting = true;
@@ -176,7 +178,7 @@ export class StompClient {
 
   subscribe(key, callback) {
 
-    if(!this.authContext.isAuthenticated()) return;
+    if(!this.stompClient) return;
 
     _.each(this.subsriptions, (value, aKey) => {
       if (key !== aKey) {

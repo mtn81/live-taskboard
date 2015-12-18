@@ -6,6 +6,7 @@ public enum ErrorType implements jp.mts.base.application.ErrorType {
 	ACTIVATION_EXPIRED("e003", "ユーザを有効にできる期間を過ぎています。再度ユーザを登録してください。"),
 	USER_ID_ALREADY_EXISTS("e004", "指定されたユーザIDは利用できません。"),
 	AUTH_NOT_FOUND("e005", "認証が必要です。"),
+	SOCIAL_AUTH_FAILED("e006", "認証に失敗しました。"),
 	;
 	
 	private String errorCode;

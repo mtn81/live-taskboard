@@ -1,19 +1,19 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import jp.mts.base.domain.model.DomainEvent;
 import jp.mts.base.domain.model.DomainEventConfig;
 
 @DomainEventConfig(eventType="mts:authaccess/UserRegistered")
-public class UserRegistered extends DomainEvent {
+public class ProperUserRegistered extends DomainEvent {
 	
-	private UserId userId;
-	private UserActivationId activationId;
+	private ProperUserId userId;
+	private ProperUserActivationId activationId;
 	private String name;
 	private String email;
 
-	public UserRegistered(
-			UserId userId, 
-			UserActivationId activationId,
+	public ProperUserRegistered(
+			ProperUserId userId, 
+			ProperUserActivationId activationId,
 			String name,
 			String email) {
 		this.userId = userId;
@@ -22,10 +22,10 @@ public class UserRegistered extends DomainEvent {
 		this.email = email;
 	}
 	
-	public UserId getUserId() {
+	public ProperUserId getUserId() {
 		return userId;
 	}
-	public UserActivationId getActivationId() {
+	public ProperUserActivationId getActivationId() {
 		return activationId;
 	}
 	public String getEmail() {

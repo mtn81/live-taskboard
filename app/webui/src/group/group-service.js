@@ -64,7 +64,7 @@ export class GroupService {
   }
 
   memberId() {
-    return this.authContext.getAuth().userId;
+    return this.authContext.getUserId();
   }
 }
 

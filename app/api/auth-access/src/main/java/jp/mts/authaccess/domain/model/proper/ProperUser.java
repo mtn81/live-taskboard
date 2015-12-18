@@ -1,20 +1,20 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import jp.mts.base.domain.model.DomainObject;
 
 import org.apache.commons.lang3.time.DateUtils;
 
 
-public class User extends DomainObject{
+public class ProperUser extends DomainObject{
 	
-	private UserId id;
+	private ProperUserId id;
 	private String email;
 	private String encryptedPassword;
 	private String name;
-	private UserStatus status;
-	private UserActivation userActivation;
+	private ProperUserStatus status;
+	private ProperUserActivation userActivation;
 	
-	public User(UserId id, 
+	public ProperUser(ProperUserId id, 
 				String email, 
 				String encryptedPassword, 
 				String name) {
@@ -22,20 +22,20 @@ public class User extends DomainObject{
 		this.email = email;
 		this.encryptedPassword = encryptedPassword;
 		this.name = name;
-		this.status = UserStatus.NEW;
-		this.userActivation = new UserActivation(
-				new UserActivationId(), 
+		this.status = ProperUserStatus.NEW;
+		this.userActivation = new ProperUserActivation(
+				new ProperUserActivationId(), 
 				DateUtils.addHours(calendar.systemDate(), 1));
 	}
 	
 	public boolean activate() {
 		if(userActivation.isExpired()) return false;
 		
-		this.status = UserStatus.ACTIVE;
+		this.status = ProperUserStatus.ACTIVE;
 		return true;
 	}
 	
-	public UserId id() {
+	public ProperUserId id() {
 		return this.id;
 	}
 	public String email() {
@@ -47,10 +47,10 @@ public class User extends DomainObject{
 	public String encryptedPassword() {
 		return encryptedPassword;
 	}
-	public UserStatus status() {
+	public ProperUserStatus status() {
 		return status;
 	}
-	public UserActivation userActivation() {
+	public ProperUserActivation userActivation() {
 		return userActivation;
 	}
 
@@ -70,7 +70,7 @@ public class User extends DomainObject{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		ProperUser other = (ProperUser) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -79,10 +79,10 @@ public class User extends DomainObject{
 		return true;
 	}
 
-	void setStatus(UserStatus status) {
+	void setStatus(ProperUserStatus status) {
 		this.status = status;
 	}
-	void setUserActivation(UserActivation userActivation) {
+	void setUserActivation(ProperUserActivation userActivation) {
 		this.userActivation = userActivation;
 	}
 	void setEmail(String email) {

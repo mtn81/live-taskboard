@@ -3,7 +3,7 @@ package jp.mts.authaccess.rest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import jp.mts.authaccess.application.UserAppService;
-import jp.mts.authaccess.domain.model.UserFixture;
+import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.authaccess.rest.presentation.model.UserSave;
 import jp.mts.base.rest.RestResponse;
 import mockit.Deencapsulation;
@@ -25,7 +25,7 @@ public class UsersApiTest {
 		Deencapsulation.setField(target, userService);
 		new Expectations() {{
 			userService.register("u01", "taro@hoge.jp", "タスク太郎", "pass");
-				result = new UserFixture("u01").get();
+				result = new ProperUserFixture("u01").get();
 		}};
 		
 		UserSave request = new UserSave();

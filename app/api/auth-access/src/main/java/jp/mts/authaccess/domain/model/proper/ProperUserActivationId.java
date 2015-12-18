@@ -1,16 +1,16 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import java.util.UUID;
 
-public class UserActivationId {
+public class ProperUserActivationId {
 
 	private String value;
 	
-	public UserActivationId() {
+	public ProperUserActivationId() {
 		this.value = UUID.randomUUID().toString();
 	}
 	
-	public UserActivationId(String value) {
+	public ProperUserActivationId(String value) {
 		this.value = value;
 	}
 	
@@ -34,7 +34,7 @@ public class UserActivationId {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserActivationId other = (UserActivationId) obj;
+		ProperUserActivationId other = (ProperUserActivationId) obj;
 		if (value == null) {
 			if (other.value != null)
 				return false;

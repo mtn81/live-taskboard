@@ -3,7 +3,7 @@ package jp.mts.authaccess.rest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.application.UserAppService;
-import jp.mts.authaccess.domain.model.UserFixture;
+import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.authaccess.rest.presentation.model.UserActivation;
 import jp.mts.base.rest.RestResponse;
 import mockit.Expectations;
@@ -24,7 +24,7 @@ public class ActivationApiTest {
 		
 		new Expectations() {{
 			userAppService.activateUser("activate01");
-				result = new UserFixture("user01").get();
+				result = new ProperUserFixture("user01").get();
 		}};
 		
 		UserActivation userActivation = new UserActivation();;

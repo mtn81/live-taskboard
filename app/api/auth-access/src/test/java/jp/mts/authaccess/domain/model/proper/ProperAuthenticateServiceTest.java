@@ -1,32 +1,39 @@
-package jp.mts.authaccess.domain.model;
+package jp.mts.authaccess.domain.model.proper;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import jp.mts.authaccess.domain.model.Auth;
+import jp.mts.authaccess.domain.model.AuthId;
+import jp.mts.authaccess.domain.model.AuthRepository;
+import jp.mts.authaccess.domain.model.proper.PasswordEncriptionService;
+import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
+import jp.mts.authaccess.domain.model.proper.ProperUserId;
+import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import mockit.Expectations;
 import mockit.Mocked;
 
 import org.junit.Test;
 
-public class AuthenticateServiceTest {
+public class ProperAuthenticateServiceTest {
 
-	@Mocked	UserRepository userRepository;
+	@Mocked	ProperUserRepository userRepository;
 	@Mocked	AuthRepository authRepository;
 	@Mocked PasswordEncriptionService userPasswordEncriptinService;
 	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Test
 	public void test() {
-		AuthenticateService target = new AuthenticateService(
+		ProperAuthenticateService target = new ProperAuthenticateService(
 				userRepository, authRepository, userPasswordEncriptinService, domainEventPublisher);
 
-		final UserId userId = new UserId("u01");
+		final ProperUserId userId = new ProperUserId("u01");
 		final AuthId authId = new AuthId("a01");
 		new Expectations() {{
 			userPasswordEncriptinService.encrypt(userId, "pass");
 				result = "encryptedPass";
 			userRepository.findByAuthCredential(userId, "encryptedPass");
-				result = new UserFixture().get();
+				result = new ProperUserFixture().get();
 			authRepository.newAuthId();
 				result = authId;
 			authRepository.save((Auth)any);
