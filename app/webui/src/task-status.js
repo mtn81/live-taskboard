@@ -60,7 +60,7 @@ export class TaskStatus {
   }
 
   assigned(assignedMemberId) {
-    return assignedMemberId === this.authContext.getAuth().userId;
+    return assignedMemberId === this.authContext.getUserId();
   }
 
   get tasks() {

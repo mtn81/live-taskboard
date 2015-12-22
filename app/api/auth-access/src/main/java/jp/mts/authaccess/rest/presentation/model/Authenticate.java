@@ -21,7 +21,7 @@ public class Authenticate {
 	private Auth auth;
 	private ProperUser user;
 	
-	public String getId(){
+	public String getAuthId(){
 		return auth.id().value();
 	}
 	public String getUserId(){

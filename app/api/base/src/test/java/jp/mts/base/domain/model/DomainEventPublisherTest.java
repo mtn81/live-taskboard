@@ -84,12 +84,16 @@ public class DomainEventPublisherTest {
 		
 	}
 
+	@DomainEventConfig(eventType="test")
 	public static class TestEvent extends DomainEvent{
 	}
+	@DomainEventConfig(eventType="testsub")
 	public static class TestEventSub extends TestEvent{
 	}
+	@DomainEventConfig(eventType="test2")
 	public static class TestEvent2 extends DomainEvent{
 	}
+	@DomainEventConfig(eventType="test3")
 	public static class TestEvent3 extends DomainEvent{
 		static int subscribed = 0;
 	}

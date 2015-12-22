@@ -19,13 +19,22 @@ public class WidgetChanged extends DomainEvent {
 		this.size = size;
 	}
 
-	public WidgetId getWidgetId() {
-		return widgetId;
+	public String getWidgetCategoryId() {
+		return widgetId.categoryId();
 	}
-	public Position getPosition() {
-		return position;
+	public String getWidgetId() {
+		return widgetId.widgetId();
 	}
-	public Size getSize() {
-		return size;
+	public int getPositionX() {
+		return position.x();
+	}
+	public int getPositionY() {
+		return position.y();
+	}
+	public int getWidth() {
+		return size.width();
+	}
+	public int getHeight() {
+		return size.height();
 	}
 }

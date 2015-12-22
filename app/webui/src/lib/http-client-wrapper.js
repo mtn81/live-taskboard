@@ -20,7 +20,7 @@ export class HttpClientWrapper {
     if(!!this.authContext && !this.authContext.isAuthenticated()) return;
 
     this.http.configure(builder => {
-      builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuth().id);
+      builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuthId());
       builder.withHeader('X-ClientId', this.authContext.getClientId());
     });
 
@@ -84,7 +84,7 @@ export class CachedHttpLoader {
 
     if(!!this.authContext) {
       this.http.configure(builder => {
-        builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuth().id);
+        builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuthId());
         builder.withHeader('X-ClientId', this.authContext.getClientId());
       });
     }
@@ -122,7 +122,7 @@ export class CachedHttpLoader {
 
     if(!!this.authContext) {
       this.http.configure(builder => {
-        builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuth().id);
+        builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuthId());
         builder.withHeader('X-ClientId', this.authContext.getClientId());
       });
     }

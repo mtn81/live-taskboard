@@ -18,6 +18,10 @@ export class AuthContext {
     if (!auth) return auth;
     return JSON.parse(auth);
   }
+  getAuthId() {
+    if(!this.isAuthenticated()) return '';
+    return this.getAuth().authId;
+  }
   getUserId() {
     if(!this.isAuthenticated()) return '';
     return this.getAuth().userId;

@@ -1,13 +1,14 @@
 package jp.mts.authaccess.domain.model.proper;
 
-import jp.mts.base.domain.model.DomainObject;
+import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserEntried;
+import jp.mts.base.domain.model.DomainEntity;
 
 import org.apache.commons.lang3.time.DateUtils;
 
 
-public class ProperUser extends DomainObject{
+public class ProperUser extends DomainEntity<ProperUserId> implements User {
 	
-	private ProperUserId id;
 	private String email;
 	private String encryptedPassword;
 	private String name;
@@ -18,7 +19,7 @@ public class ProperUser extends DomainObject{
 				String email, 
 				String encryptedPassword, 
 				String name) {
-		this.id = id;
+		super(id);
 		this.email = email;
 		this.encryptedPassword = encryptedPassword;
 		this.name = name;
@@ -30,13 +31,15 @@ public class ProperUser extends DomainObject{
 	
 	public boolean activate() {
 		if(userActivation.isExpired()) return false;
-		
 		this.status = ProperUserStatus.ACTIVE;
+		
+		domainEventPublisher.publish(new UserEntried(this));
 		return true;
 	}
 	
-	public ProperUserId id() {
-		return this.id;
+	@Override
+	public ProperUserId userId() {
+		return id();
 	}
 	public String email() {
 		return email;
@@ -54,31 +57,6 @@ public class ProperUser extends DomainObject{
 		return userActivation;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ProperUser other = (ProperUser) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
-	}
-
 	void setStatus(ProperUserStatus status) {
 		this.status = status;
 	}
@@ -94,4 +72,5 @@ public class ProperUser extends DomainObject{
 	void setName(String name) {
 		this.name = name;
 	}
+
 }

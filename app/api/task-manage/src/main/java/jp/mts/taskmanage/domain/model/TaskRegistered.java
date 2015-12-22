@@ -14,10 +14,10 @@ public class TaskRegistered extends DomainEvent {
 		this.groupId = task.groupId();
 	}
 	
-	public TaskId getTaskId() {
-		return taskId;
+	public String getTaskId() {
+		return taskId.value();
 	}
-	public GroupId getGroupId() {
-		return groupId;
+	public String getGroupId() {
+		return groupId.value();
 	}
 }

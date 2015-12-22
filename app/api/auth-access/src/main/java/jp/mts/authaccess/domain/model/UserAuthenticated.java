@@ -14,10 +14,10 @@ public class UserAuthenticated extends DomainEvent {
 		this.userId = userId;
 	}
 	
-	public AuthId authId() {
-		return authId;
+	public String getAuthId() {
+		return authId.value();
 	}
-	public UserId userId() {
-		return userId;
+	public String getUserId() {
+		return userId.idValue();
 	}
 }

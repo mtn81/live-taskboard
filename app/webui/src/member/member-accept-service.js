@@ -53,7 +53,7 @@ export class MemberAcceptService {
   }
 
   _memberId() {
-    return this.authContext.getAuth().userId;
+    return this.authContext.getUserId();
   }
 }
 

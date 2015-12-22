@@ -14,12 +14,12 @@ public class GroupCreated extends DomainEvent {
 		this.creator = creator;
 	}
 
-	public GroupId groupId() {
-		return groupId;
+	public String getGroupId() {
+		return groupId.value();
 	}
 
-	public MemberId creator() {
-		return creator;
+	public String getCreatorMemberId() {
+		return creator.value();
 	}
 	
 }

@@ -25,7 +25,7 @@ public class TaskNotifyWebSocketController implements MqEventHandler {
 	@Override
 	public void handleEvent(
 			long eventId, String publisherId, Date occurred, EventBody eventBody) {
-		String groupId = eventBody.asString("groupId.value");
+		String groupId = eventBody.asString("groupId");
 
 		simpMessagingTemplate.convertAndSend(
 				"/topic/" + groupId + "/task_changed", 

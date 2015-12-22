@@ -1,7 +1,6 @@
 package jp.mts.widgetstore.websocket;
 
 import java.util.Date;
-import java.util.List;
 
 import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.mq.MqEventHandler;
@@ -22,9 +21,8 @@ public class WidgetChangeNotifyWebSocketController implements MqEventHandler {
 	@Override
 	public void handleEvent(
 			long eventId, String publisherId, Date occurred, EventBody eventBody) {
-		List<String> widgetIds = eventBody.as(List.class, "widgetId.value");
-
-		String categoryId = widgetIds.get(0);
+		String categoryId = eventBody.asString("widgetCategoryId");
+		String widgetId = eventBody.asString("widgetId");
 
 		simpMessagingTemplate.convertAndSend(
 				"/topic/" + categoryId + "/widget_changed", 

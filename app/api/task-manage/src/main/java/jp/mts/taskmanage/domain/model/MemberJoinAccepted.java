@@ -14,12 +14,12 @@ public class MemberJoinAccepted extends DomainEvent {
 		this.groupId = groupId;
 	}
 
-	public MemberId memberId() {
-		return memberId;
+	public String getMemberId() {
+		return memberId.value();
 	}
 
-	public GroupId groupId() {
-		return groupId;
+	public String getGroupId() {
+		return groupId.value();
 	}
 
 }

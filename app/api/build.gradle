@@ -96,6 +96,7 @@ subprojects {
     compile "org.msgpack:msgpack-core:0.7.0-p9"
     compile "org.msgpack:jackson-dataformat-msgpack:0.7.0-p5"
 	  compile 'com.google.guava:guava:18.0'
+    compile 'io.jsonwebtoken:jjwt:0.6.0'
   }
 
   sourceSets.test.compileClasspath = configurations.testMock + sourceSets.test.compileClasspath

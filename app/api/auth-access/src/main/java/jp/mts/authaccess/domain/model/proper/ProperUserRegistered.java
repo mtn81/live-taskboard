@@ -22,11 +22,11 @@ public class ProperUserRegistered extends DomainEvent {
 		this.email = email;
 	}
 	
-	public ProperUserId getUserId() {
-		return userId;
+	public String getUserId() {
+		return userId.value();
 	}
-	public ProperUserActivationId getActivationId() {
-		return activationId;
+	public String getActivationId() {
+		return activationId.value();
 	}
 	public String getEmail() {
 		return email;

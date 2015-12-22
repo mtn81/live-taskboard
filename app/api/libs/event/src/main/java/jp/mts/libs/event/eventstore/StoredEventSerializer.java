@@ -20,9 +20,9 @@ public class StoredEventSerializer {
 		objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 		objectMapper.setVisibilityChecker(
 			objectMapper.getSerializationConfig().getDefaultVisibilityChecker()
-				.withGetterVisibility(Visibility.NONE)
+				.withGetterVisibility(Visibility.PUBLIC_ONLY)
 				.withSetterVisibility(Visibility.NONE)
-				.withFieldVisibility(Visibility.ANY));
+				.withFieldVisibility(Visibility.NONE));
 	}
 	
 	public StoredEvent serialize(Event event) {

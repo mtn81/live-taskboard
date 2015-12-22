@@ -20,8 +20,8 @@ public class MemberJoinAcceptedEventHandler implements MqEventHandler {
 	@Override
 	public void handleEvent(
 			long eventId, String publisherId, Date occurred, EventBody eventBody) {
-		String memberId = eventBody.asString("memberId.value");
-		String groupId = eventBody.asString("groupId.value");
+		String memberId = eventBody.asString("memberId");
+		String groupId = eventBody.asString("groupId");
 		
 		groupAppService.entryGroup(groupId, memberId, false);
 	}

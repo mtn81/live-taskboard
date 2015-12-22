@@ -24,8 +24,8 @@ public class GroupNotifyWebSocketController implements MqEventHandler {
 	@Override
 	public void handleEvent(
 			long eventId, String publisherId, Date occurred, EventBody eventBody) {
-		String groupId = eventBody.asString("groupId.value");
-		String memberId = eventBody.asString("memberId.value");
+		String groupId = eventBody.asString("groupId");
+		String memberId = eventBody.asString("memberId");
 		
 		Group group = groupAppService.findBelongingGroup(groupId, memberId);
 		if (group != null) {

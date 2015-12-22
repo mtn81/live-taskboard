@@ -14,11 +14,11 @@ public class GroupMemberLeaved extends DomainEvent {
 		this.memberId = memberId;
 	}
 
-	public GroupId getGroupId() {
-		return groupId;
+	public String getGroupId() {
+		return groupId.value();
 	}
-	public MemberId getMemberId() {
-		return memberId;
+	public String getMemberId() {
+		return memberId.value();
 	}
 	
 }

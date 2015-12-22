@@ -59,7 +59,7 @@ export class AuthService {
     }
 
     this.http
-      .delete(`/api/auth-access/auth/${this.authContext.getAuth().id}`)
+      .delete(`/api/auth-access/auth/${this.authContext.getAuthId()}`)
       .then(response => {
         this.eventAggregator.publish(new LogoutSuccessed());
       })

@@ -21,7 +21,7 @@ public class StoredEventSerializerTest {
 		StoredEvent serialized = target.serialize(new TestEvent());
 		EventBody deserializeBody = target.deserializeBody(serialized);
 		
-		assertThat(deserializeBody.asString("testId.value"), is("id value"));
+		assertThat(deserializeBody.asString("testId"), is("id value"));
 		assertThat(serialized.getEventType(), is("testevent"));
 		assertThat(serialized.getOccurred(), is(Dates.date("2015/01/01")));
 		assertThat(serialized.getPublisherId(), is("publisher01"));
@@ -49,6 +49,10 @@ public class StoredEventSerializerTest {
 		@Override
 		public String publisherId() {
 			return "publisher01";
+		}
+		
+		public String getTestId() {
+			return testId.value;
 		}
 	}
 	
