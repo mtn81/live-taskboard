@@ -12,6 +12,7 @@ import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.Member;
 import jp.mts.taskmanage.domain.model.MemberBuilder;
 import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.domain.model.MemberRegisterType;
 import jp.mts.taskmanage.domain.model.MemberRepository;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
@@ -102,14 +103,16 @@ public class JdbcMemberRepository
 	protected Member toDomain(MemberModel model) {
 		return new Member(
 				new MemberId(model.getString("member_id")),
-				model.getString("name"));
+				model.getString("name"),
+				MemberRegisterType.valueOf(model.getString("type")));
 	}
 
 	@Override
 	protected void toModel(MemberModel model, Member entity) {
 		model.set(
 			"member_id", entity.memberId().value(),
-			"name", entity.name());
+			"name", entity.name(),
+			"type", entity.registerType().name());
 	}
 
 	private void setGroupBelongings(MemberBuilder memberBuilder, List<GroupMemberModel> models) {

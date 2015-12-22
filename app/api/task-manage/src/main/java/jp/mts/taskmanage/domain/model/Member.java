@@ -9,11 +9,16 @@ import jp.mts.base.domain.model.DomainEntity;
 
 public class Member extends DomainEntity<MemberId> {
 	private String name;
+	private MemberRegisterType registerType;
 	private Set<GroupBelonging> groupBelongings = new HashSet<>();
 	
-	public Member(MemberId memberId, String name) {
+	public Member(
+			MemberId memberId, 
+			String name,
+			MemberRegisterType registerType) {
 		super(memberId);
 		this.name = name;
+		this.registerType = registerType;
 	}
 	
 	public MemberId memberId(){
@@ -21,6 +26,9 @@ public class Member extends DomainEntity<MemberId> {
 	}
 	public String name() {
 		return name;
+	}
+	public MemberRegisterType registerType() {
+		return registerType;
 	}
 	public Set<GroupBelonging> groupBelongings() {
 		return new HashSet<>(groupBelongings);

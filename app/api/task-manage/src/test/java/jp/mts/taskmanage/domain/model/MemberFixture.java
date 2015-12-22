@@ -10,7 +10,7 @@ public class MemberFixture {
 		this(memberId, "taro");
 	}
 	public MemberFixture(String memberId, String name){
-		member = new Member(new MemberId(memberId), name);
+		member = new Member(new MemberId(memberId), name, MemberRegisterType.PROPER);
 	}
 	public MemberFixture setName(String name) {
 		member.setName(name);

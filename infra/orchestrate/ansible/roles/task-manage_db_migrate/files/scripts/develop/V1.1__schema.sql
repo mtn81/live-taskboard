@@ -18,13 +18,14 @@ create table groups (
 );
 
 create table members (
-  member_id varchar(10) unique not null,
-  name varchar(100) not null
+  member_id varchar(100) unique not null,
+  name varchar(100) not null,
+  type varchar(10) not null
 );
 
 create table groups_members (
   group_id varchar(100) not null,
-  member_id varchar(10) not null,
+  member_id varchar(100) not null,
   admin boolean not null,
   constraint uc_groups_members unique (group_id, member_id)
 );
