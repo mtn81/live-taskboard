@@ -6,25 +6,44 @@
 
 
   <main>
-    <form id="loginForm" submit.delegate="login()">
-      <div class="form-group">
-        <label for="loginId">ログインID</label>
-        <input type="text" class="form-control" id="loginForm_loginId" value.bind="loginId" />
-      </div>
-      <div class="form-group">
-        <label for="password">パスワード</label>
-        <input type="password" class="form-control" id="loginForm_password" value.bind="password" />
-      </div>
 
-      <button type="submit" id="loginForm_loginAction" class="btn btn-default">ログイン</button>
-    </form>
+    <div class="row">
+      <div class="col-md-6 social-login">
+        <h3 class="login-title text-center">次のユーザで利用</h3>
+        <div class="register-link">
+          <ul>
+            <li><a href="#" click.delegate="loginAsGoogle()"><span class="google-icon">Google</span></a></li>
+            <li><a href="#" click.delegate="loginAsYahoo()"><span class="yahoo-icon">Yahoo!</span></a></li>
+          </ul>
 
-    <div class="register-link">
-      新規登録の方は <a href="#" click.delegate="showUserRegister()">こちら</a>
+        </div>
+
+      </div>
+      <div class="col-md-6 proper-login">
+        <h3 class="login-title text-center">サイト登録ユーザで利用</h3>
+
+        <form id="loginForm" submit.delegate="login()">
+          <div class="form-group">
+            <label for="loginId">ログインID</label>
+            <input type="text" class="form-control" id="loginForm_loginId" value.bind="loginId" />
+          </div>
+          <div class="form-group">
+            <label for="password">パスワード</label>
+            <input type="password" class="form-control" id="loginForm_password" value.bind="password" />
+          </div>
+
+          <p class="text-center">
+          <button type="submit" id="loginForm_loginAction" class="btn btn-default">ログイン</button>
+          </p>
+        </form>
+
+        <div class="register-link">
+          新規登録の方は <a href="#" click.delegate="showUserRegister()">こちら</a>
+        </div>
+
+      </div>
     </div>
-    <div class="register-link">
-      次のユーザで利用 <a href="#" click.delegate="loginAsGoogle()">g</a>
-    </div>
+
 
     <div class="modal fade" ref="userRegisterModal">
     <div class="modal-dialog">

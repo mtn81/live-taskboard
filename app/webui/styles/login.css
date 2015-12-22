@@ -1,5 +1,39 @@
+.login-title {
+  margin-bottom: 50px;
+}
+.social-login {
+  position: relative;
+  left: 50px;
+}
+.social-login ul {
+  list-style: none;
+  font-size: 2em;
+  position: relative;
+  left: -50px;
+}
+.social-login ul li{
+  margin-bottom: 10px;
+}
+span.google-icon {
+  background-image: url('../images/google-icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 40px;
+}
+span.yahoo-icon {
+  background-image: url('../images/yahoo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 40px;
+}
+
+.proper-login {
+  position: relative;
+  left: -50px;
+}
+
 form#loginForm {
-  width: 25%;
+  width: 50%;
   display: block;
   margin-left: auto;
   margin-right: auto;
