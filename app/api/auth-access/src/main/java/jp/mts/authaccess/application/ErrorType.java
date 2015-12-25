@@ -7,6 +7,7 @@ public enum ErrorType implements jp.mts.base.application.ErrorType {
 	USER_ID_ALREADY_EXISTS("e004", "指定されたユーザIDは利用できません。"),
 	AUTH_NOT_FOUND("e005", "認証が必要です。"),
 	SOCIAL_AUTH_FAILED("e006", "認証に失敗しました。"),
+	UNSUPPORTED_SOCIAL_AUTH("e007", "サポートされていないサイトです"),
 	;
 	
 	private String errorCode;

@@ -21,7 +21,7 @@ export class Login {
     this.authService.authenticate(this.loginId, this.password);
   }
 
-  loginAsGoogle() {
+  loginAs(socialSite) {
     this.events.subscribe(SocialAuthStarted, payload => {
       let authProcess = payload.data;
       document.cookie = `auth_pid=${authProcess.processId};path=/;max-age=600`;
@@ -29,6 +29,7 @@ export class Login {
     });
 
     this.authService.startSocialLogin(
+        socialSite,
         `${window.location.origin}/#/social_login`,
         `${window.location.origin}`);
   }

@@ -15,6 +15,7 @@ import jp.mts.base.rest.RestResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -38,12 +39,13 @@ public class SocialAuthApi {
 	}
 	
 	@RequestMapping(
-		value="/social_auth", 
+		value="/social_auth/{socialSite}", 
 		params="start",
 		method=RequestMethod.POST)
 	public RestResponse<SocialAuthStart> startAuth(
+			@PathVariable String socialSite,
 			@Valid @RequestBody SocialAuthStart socialAuthStart){
-		socialAuthStart.start();
+		socialAuthStart.start(socialSite);
 		return RestResponse.of(socialAuthStart);
 	}
 

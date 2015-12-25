@@ -2,6 +2,7 @@ package jp.mts.authaccess.application;
 
 import jp.mts.authaccess.domain.model.Auth;
 import jp.mts.authaccess.domain.model.AuthRepository;
+import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialAuthDomainService;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcess;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcessId;
@@ -26,16 +27,19 @@ public class SocialAuthAppService {
 	private AuthRepository authRepository;
 
 	public SocialAuthProcess issueAuthProcess(
+			UserType userType,
 			String acceptClientUrl,
 			String rejectClientUrl) {
+
 		String state = socialAuthDomainService.generateStateToken();
 
 		SocialAuthProcess authProcess = new SocialAuthProcess(
 				socialAuthProcessRepository.newAuthProcessId(), 
 				state,
-				socialAuthDomainService.authLocation(state),
+				socialAuthDomainService.providerOf(userType).authLocation(state),
 				acceptClientUrl,
-				rejectClientUrl);
+				rejectClientUrl,
+				userType);
 
 		socialAuthProcessRepository.save(authProcess);
 		
@@ -58,7 +62,7 @@ public class SocialAuthAppService {
 			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 		}
 		
-		SocialUser socialUser = socialAuthDomainService.loadSocialUser(authCode);
+		SocialUser socialUser = socialAuthDomainService.providerOf(socialAuthProcess.userType()).loadSocialUser(authCode);
 		if (socialUser == null) {
 			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 		}

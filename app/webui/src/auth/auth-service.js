@@ -27,10 +27,10 @@ export class AuthService {
     }, true);
   }
 
-  startSocialLogin(acceptUrl, rejectUrl) {
+  startSocialLogin(socialSite, acceptUrl, rejectUrl) {
     this.http.call(http => {
       return http
-        .post('/api/auth-access/social_auth?start', {
+        .post(`/api/auth-access/social_auth/${socialSite}?start`, {
           acceptClientUrl: acceptUrl,
           rejectClientUrl: rejectUrl
         })

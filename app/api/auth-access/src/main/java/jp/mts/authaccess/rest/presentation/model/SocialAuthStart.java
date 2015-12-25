@@ -2,8 +2,11 @@ package jp.mts.authaccess.rest.presentation.model;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import jp.mts.authaccess.application.ErrorType;
 import jp.mts.authaccess.application.SocialAuthAppService;
+import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcess;
+import jp.mts.base.application.ApplicationException;
 
 public class SocialAuthStart {
 
@@ -42,8 +45,16 @@ public class SocialAuthStart {
 	}
 	
 	//process
-	public void start() {
+	public void start(String socialSite) {
+		UserType userType = getUserType(socialSite);
+
 		socialAuthProcess = socialAuthAppService.issueAuthProcess(
-				acceptClientUrl, rejectClientUrl);
+				userType, acceptClientUrl, rejectClientUrl);
+	}
+
+	private UserType getUserType(String socialSite) {
+		if("google".equals(socialSite)) return UserType.GOOGLE;
+		if("yahoo".equals(socialSite)) return UserType.YAHOO;
+		throw new ApplicationException(ErrorType.ACTIVATION_EXPIRED);
 	}
 }

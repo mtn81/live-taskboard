@@ -1,9 +1,14 @@
 package jp.mts.authaccess.domain.model.social;
 
+import jp.mts.authaccess.domain.model.UserType;
+
 public interface SocialAuthDomainService {
 
+	SocialAuthProvider providerOf(UserType userType);
 	String generateStateToken();
-	String authLocation(String stateToken);
-	SocialUser loadSocialUser(String authCode);
 
+	public interface SocialAuthProvider {
+		String authLocation(String stateToken);
+		SocialUser loadSocialUser(String authCode);
+	}
 }
