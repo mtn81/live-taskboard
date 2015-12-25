@@ -24,3 +24,12 @@ rabbitmq:
   username: guest
   password: guest
   exchange: auth-access
+  
+social:
+  google-app-id: 992563238212-ff6k6vor5i3bkq6d8p8k0j44m0tmufhd.apps.googleusercontent.com
+  google-app-secret: LxzUP-U-aTalQYfk5_ttEBWB
+  yahoo-app-id: dj0zaiZpPTkxTWh3Q01vRUVhOSZzPWNvbnN1bWVyc2VjcmV0Jng9NzI-
+  yahoo-app-secret: 3e1d1ba52cd60e21fcb865c7156f7bf0bb26d3df
+  facebook-app-Id: 737148613086693
+  facebook-app-secret: b80d5f99609f5e8c65500608d19ec46e
+  social-login-redirect: http://localhost:9000/api/auth-access/social_auth?accept

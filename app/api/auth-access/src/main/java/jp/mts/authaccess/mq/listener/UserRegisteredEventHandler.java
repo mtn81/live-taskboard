@@ -29,7 +29,7 @@ public class UserRegisteredEventHandler implements MqEventHandler {
 		
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		mailMessage.setTo(email);
-		mailMessage.setText("http://192.168.77.11:9000/#/activate/" + activationIdValue);
+		mailMessage.setText("http://192.168.77.11:9000/#/activate/" + activationIdValue); //TODO
 		javaMailSender.send(mailMessage);
 	}
 	
