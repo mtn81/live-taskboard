@@ -24,11 +24,13 @@ public class OpenIdConnectSocialAuthDomainService implements SocialAuthDomainSer
 
 	private SocialAuthProvider googleSocialAuthProvider = new GoogleSocialAuthProvider();
 	private SocialAuthProvider yahooSocialAuthProvider = new YahooSocialAuthProvider();
+	private SocialAuthProvider facebookSocialAuthProvider = new FacebookSocialAuthProvider();
 	
 	@Override
 	public SocialAuthProvider providerOf(UserType userType) {
 		if (userType == UserType.GOOGLE) return googleSocialAuthProvider;
 		if (userType == UserType.YAHOO) return yahooSocialAuthProvider;
+		if (userType == UserType.FACEBOOK) return facebookSocialAuthProvider;
 		throw new IllegalArgumentException();
 	}
 	@Override
@@ -37,6 +39,60 @@ public class OpenIdConnectSocialAuthDomainService implements SocialAuthDomainSer
 	}
 
 
+	static class FacebookSocialAuthProvider implements SocialAuthProvider {
+		private static final String APP_ID = "737148613086693";
+		private static final String APP_SECRET = "b80d5f99609f5e8c65500608d19ec46e";
+
+		@Override
+		public String authLocation(String stateToken) {
+			return "https://www.facebook.com/dialog/oauth"
+					+ "?client_id=" + APP_ID
+					+ "&redirect_uri=http://localhost:9000/api/auth-access/social_auth?accept"
+					+ "&state=" + stateToken
+					+ "&response_type=code"
+					+ "&scope=email%20public_profile";
+		}
+
+		@Override
+		public SocialUser loadSocialUser(String authCode) {
+			try {
+				HttpResponse<JsonNode> accessTokenResponse 
+					= Unirest.get("https://graph.facebook.com/v2.3/oauth/access_token")
+						.queryString("client_id", APP_ID)
+						.queryString("client_secret", APP_SECRET)
+						.queryString("code", authCode)
+						.queryString("redirect_uri", "http://localhost:9000/api/auth-access/social_auth?accept")
+						.asJson();
+				
+			
+				if (accessTokenResponse.getStatus() >= 400) {
+					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+				}
+			
+				String accessToken = accessTokenResponse.getBody().getObject().getString("access_token");
+				
+				HttpResponse<JsonNode> userInfoResponse 
+					= Unirest.get("https://graph.facebook.com/v2.3/me")
+					.queryString("access_token", accessToken)
+					.queryString("fields", "id,name,email")
+					.asJson();
+				
+				if (userInfoResponse.getStatus() >= 400) {
+					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+				}
+
+				JSONObject userInfo = userInfoResponse.getBody().getObject();
+				
+				return new SocialUser(
+						new SocialUserId(UserType.FACEBOOK, (String)userInfo.get("id")), 
+						(String)userInfo.get("email"), 
+						(String)userInfo.get("name"));
+
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 	static class YahooSocialAuthProvider implements SocialAuthProvider {
 
 		private static final String APPLICATION_ID = "dj0zaiZpPTkxTWh3Q01vRUVhOSZzPWNvbnN1bWVyc2VjcmV0Jng9NzI-"; 

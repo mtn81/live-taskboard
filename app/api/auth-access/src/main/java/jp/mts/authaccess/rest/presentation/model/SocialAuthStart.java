@@ -55,6 +55,7 @@ public class SocialAuthStart {
 	private UserType getUserType(String socialSite) {
 		if("google".equals(socialSite)) return UserType.GOOGLE;
 		if("yahoo".equals(socialSite)) return UserType.YAHOO;
+		if("facebook".equals(socialSite)) return UserType.FACEBOOK;
 		throw new ApplicationException(ErrorType.ACTIVATION_EXPIRED);
 	}
 }

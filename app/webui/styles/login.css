@@ -26,6 +26,12 @@ span.yahoo-icon {
   background-size: contain;
   padding-left: 40px;
 }
+span.facebook-icon {
+  background-image: url('../images/facebook-icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 40px;
+}
 
 .proper-login {
   position: relative;

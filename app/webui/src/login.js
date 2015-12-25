@@ -31,7 +31,7 @@ export class Login {
     this.authService.startSocialLogin(
         socialSite,
         `${window.location.origin}/#/social_login`,
-        `${window.location.origin}`);
+        `${window.location.origin}/#/login`);
   }
 
   showUserRegister() {

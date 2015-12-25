@@ -5,4 +5,5 @@ public enum UserType {
 	PROPER,
 	GOOGLE,
 	YAHOO,
+	FACEBOOK,
 }
