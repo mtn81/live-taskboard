@@ -32,6 +32,12 @@ span.facebook-icon {
   background-size: contain;
   padding-left: 40px;
 }
+span.twitter-icon {
+  background-image: url('../images/twitter-icon.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding-left: 40px;
+}
 
 .proper-login {
   position: relative;

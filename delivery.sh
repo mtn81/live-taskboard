@@ -7,26 +7,13 @@ commands=$@
 for command in $commands; do
   case "$command" in
 
-    "webui_build" )
-      : webui_build!
+    "images" )
+      sudo docker build -t livetaskboard/web -f Dockerfile_web .
     ;;
 
-    "webui_deploy" )
-      : webui_deploy!
+    "build:webui" )
     ;;
 
-    "api_build" )
-      : api_build!
-    ;;
-
-    "api_deploy" )
-      : api_deploy!
-    ;;
-
-    "acceptance_test" )
-      : acceptance_test!
-    ;;
-    
     * )
       echo "invalid command $command"
       exit 1

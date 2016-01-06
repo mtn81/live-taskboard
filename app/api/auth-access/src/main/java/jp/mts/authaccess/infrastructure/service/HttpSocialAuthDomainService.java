@@ -41,6 +41,52 @@ public class HttpSocialAuthDomainService implements SocialAuthDomainService {
 		providers.put(userType, provider);
 	}
 
+	public static class TwitterSocialAuthProvider implements SocialAuthProvider {
+		
+		private String redirectUri;
+		
+		public TwitterSocialAuthProvider(String redirectUri) {
+			this.redirectUri = redirectUri;
+		}
+
+		@Override
+		public String authLocation(String stateToken) {
+			try {
+				HttpResponse<String> response = Unirest.post("https://api.twitter.com/oauth/request_token")
+					.header("Authorization", "OAuth "
+							+ "oauth_callback=\"" + redirectUri + "\","
+							+ "oauth_consumer_key=\"Z3OkrqKvW7OWAKLudkncQpwZe\","
+							+ "oauth_nounce=\"xxx\","
+							+ "oauth_signature=\"yyy\","
+							+ "oauth_signature_method=\"HMAC-SHA1\","
+							+ "oauth_timestamp=\"zzz\""
+							+ "oauth_version=\"1.0\"")
+					.asString();
+				if (response.getStatus() != 200) {
+					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+				}
+				String body = response.getBody();
+				
+				System.out.println(body);
+				
+			} catch (UnirestException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public SocialUser loadSocialUser(String authCode) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		
+	}
+	
 	private abstract static class OAuth2AuthProvider implements SocialAuthProvider {
 		
 		private String appId;

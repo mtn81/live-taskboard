@@ -1,0 +1,30 @@
+---
+
+######################################
+# consul server
+######################################
+# - name: start consul server
+#   shell: consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -bind=172.17.0.1
+
+######################################
+# docker containers
+######################################
+- name: clean containers
+  docker:
+    state: absent
+    image: "{{ item }}"
+  sudo: yes
+  with_items:
+    - livetaskboard/web
+
+- name: run containers
+  docker:
+    name: web
+    state: started
+    image: livetaskboard/web
+    ports: "80:80"
+    volumes:
+      - "{{ orchestrate_base }}/consul/web:/etc/consul.d:ro"
+      - "{{ orchestrate_base }}/ansible:/ansible:ro"
+    command: /usr/local/bin/consul agent -config-dir /etc/consul.d
+  sudo: yes

@@ -46,16 +46,16 @@ public class SocialAuthStart {
 	
 	//process
 	public void start(String socialSite) {
-		UserType userType = getUserType(socialSite);
-
 		socialAuthProcess = socialAuthAppService.issueAuthProcess(
-				userType, acceptClientUrl, rejectClientUrl);
+				getUserType(socialSite), acceptClientUrl, rejectClientUrl);
 	}
 
 	private UserType getUserType(String socialSite) {
 		if("google".equals(socialSite)) return UserType.GOOGLE;
 		if("yahoo".equals(socialSite)) return UserType.YAHOO;
 		if("facebook".equals(socialSite)) return UserType.FACEBOOK;
+		if("twitter".equals(socialSite)) return UserType.TWITTER;
+
 		throw new ApplicationException(ErrorType.ACTIVATION_EXPIRED);
 	}
 }

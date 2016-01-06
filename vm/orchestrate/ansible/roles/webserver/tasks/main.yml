@@ -1,0 +1,20 @@
+---
+
+#######################
+# nginx
+#######################
+
+- name: add apt key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+  sudo: yes
+
+- name: add apt repo
+  apt_repository: repo='{{ item }} http://nginx.org/packages/ubuntu/ trusty nginx' state=present
+  sudo: yes
+  with_items:
+    - deb
+    - deb-src
+
+- name: install nginx
+  apt: name=nginx state=present
+  sudo: yes

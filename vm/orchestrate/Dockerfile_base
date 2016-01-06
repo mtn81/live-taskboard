@@ -1,0 +1,7 @@
+#################################
+# Features:
+#  ansible for local provision
+#################################
+
+FROM ansible/ubuntu14.04-ansible:latest
+

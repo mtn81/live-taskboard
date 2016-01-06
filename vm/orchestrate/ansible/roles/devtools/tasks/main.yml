@@ -1,0 +1,29 @@
+---
+
+######################################
+# general commands
+######################################
+- name: install general commands
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - curl
+
+######################################
+# docker
+######################################
+- name: check already installed
+  shell: docker -v
+  register: is_docker_installed
+  ignore_errors : yes
+
+- name: install docker
+  shell: curl https://get.docker.com/ | sh
+  when: is_docker_installed.rc != 0
+
+######################################
+# ansible tools
+######################################
+- name: install docker-py
+  pip: name=docker-py version=1.1.0
+  sudo: yes

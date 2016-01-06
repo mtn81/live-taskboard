@@ -9,6 +9,7 @@ import jp.mts.authaccess.domain.model.social.SocialAuthDomainService;
 import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService;
 import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.FacebookSocialAuthProvider;
 import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.GoogleSocialAuthProvider;
+import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.TwitterSocialAuthProvider;
 import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.YahooSocialAuthProvider;
 import jp.mts.base.domain.model.DomainEventPublisher;
 
@@ -58,6 +59,9 @@ public class DomainConfig {
 				new FacebookSocialAuthProvider(
 						socialSettings.getFacebookAppId(), 
 						socialSettings.getFacebookAppSecret(),
+						socialSettings.getSocialLoginRedirect()));
+		socialAuthDomainService.addProvider(UserType.TWITTER, 
+				new TwitterSocialAuthProvider(
 						socialSettings.getSocialLoginRedirect()));
 		return socialAuthDomainService;
 	}

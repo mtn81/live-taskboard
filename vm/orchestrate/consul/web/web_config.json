@@ -1,0 +1,11 @@
+{
+  "data_dir": "/tmp/consul",
+  "log_level": "trace",
+  "node_name": "web",
+  "start_join": ["172.17.0.1"],
+  "watches": [{
+    "type": "event",
+    "name": "deploy",
+    "handler": "cd /ansible && ansible-playbook webservers.yml -i inventories/develop -c local --tags deploy"
+  }]
+}

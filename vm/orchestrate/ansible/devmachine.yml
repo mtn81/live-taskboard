@@ -1,0 +1,7 @@
+---
+
+- hosts: localhost
+  roles:
+    - { role: common,            tags: ['setup'] }
+    - { role: devtools,          tags: ['setup'] }
+    - { role: docker_image_load, tags: ['start'] }
