@@ -2,6 +2,7 @@ package jp.mts.authaccess.infrastructure.service;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import jp.mts.authaccess.domain.model.social.SocialUserId;
 import jp.mts.base.application.ApplicationException;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -56,10 +58,10 @@ public class HttpSocialAuthDomainService implements SocialAuthDomainService {
 					.header("Authorization", "OAuth "
 							+ "oauth_callback=\"" + redirectUri + "\","
 							+ "oauth_consumer_key=\"Z3OkrqKvW7OWAKLudkncQpwZe\","
-							+ "oauth_nounce=\"xxx\","
+							+ "oauth_nounce=\"" + RandomStringUtils.randomAlphanumeric(32)  + "\","
 							+ "oauth_signature=\"yyy\","
 							+ "oauth_signature_method=\"HMAC-SHA1\","
-							+ "oauth_timestamp=\"zzz\""
+							+ "oauth_timestamp=\"" + Instant.now().getEpochSecond() + "\""
 							+ "oauth_version=\"1.0\"")
 					.asString();
 				if (response.getStatus() != 200) {
