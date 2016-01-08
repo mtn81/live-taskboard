@@ -1,10 +1,15 @@
 package jp.mts.base.application;
 
 public class ApplicationException extends RuntimeException {
+
 	private ErrorType errorType;
 
 	public ApplicationException(ErrorType errorType) {
 		super();
+		this.errorType = errorType;
+	}
+	public ApplicationException(ErrorType errorType, Throwable cause) {
+		super(cause);
 		this.errorType = errorType;
 	}
 	

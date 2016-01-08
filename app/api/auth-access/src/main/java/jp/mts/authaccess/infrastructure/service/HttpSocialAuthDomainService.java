@@ -2,7 +2,6 @@ package jp.mts.authaccess.infrastructure.service;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,10 +10,10 @@ import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialAuthDomainService;
 import jp.mts.authaccess.domain.model.social.SocialUser;
 import jp.mts.authaccess.domain.model.social.SocialUserId;
+import jp.mts.authaccess.infrastructure.service.OAuth1Header.OAuth1SignatureBuilder;
 import jp.mts.base.application.ApplicationException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +43,8 @@ public class HttpSocialAuthDomainService implements SocialAuthDomainService {
 	}
 
 	public static class TwitterSocialAuthProvider implements SocialAuthProvider {
-		
+		private String appId = "Z3OkrqKvW7OWAKLudkncQpwZe";
+		private String appSecret = "4P4WkAiWA1GMWc196YUTTS746BeedCCi3PBTDO8vTHWiUIRvdR";
 		private String redirectUri;
 		
 		public TwitterSocialAuthProvider(String redirectUri) {
@@ -53,31 +53,30 @@ public class HttpSocialAuthDomainService implements SocialAuthDomainService {
 
 		@Override
 		public String authLocation(String stateToken) {
+			String httpMethod = "POST";
+			String baseUrl = "https://api.twitter.com/oauth/request_token";
+			
+			OAuth1Header oAuth1Header = new OAuth1Header(appId, null, redirectUri, 
+					new OAuth1SignatureBuilder(httpMethod, baseUrl, appSecret));
+			
 			try {
-				HttpResponse<String> response = Unirest.post("https://api.twitter.com/oauth/request_token")
-					.header("Authorization", "OAuth "
-							+ "oauth_callback=\"" + redirectUri + "\","
-							+ "oauth_consumer_key=\"Z3OkrqKvW7OWAKLudkncQpwZe\","
-							+ "oauth_nounce=\"" + RandomStringUtils.randomAlphanumeric(32)  + "\","
-							+ "oauth_signature=\"yyy\","
-							+ "oauth_signature_method=\"HMAC-SHA1\","
-							+ "oauth_timestamp=\"" + Instant.now().getEpochSecond() + "\""
-							+ "oauth_version=\"1.0\"")
+				HttpResponse<String> response = Unirest.post(baseUrl)
+					.header("Authorization", oAuth1Header.buildAuthenticationHeader())
 					.asString();
 				if (response.getStatus() != 200) {
 					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 				}
-				String body = response.getBody();
+
+				QueryParameters oAuthTokenParams = new QueryParameters(response.getBody());
+				if (!Boolean.valueOf(oAuthTokenParams.get("oauth_callback_confirmed"))) {
+					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+				}
 				
-				System.out.println(body);
+				return "https://api.twitter.com/oauth/authenticate?oauth_token=" + oAuthTokenParams.get("oauth_token");
 				
 			} catch (UnirestException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 			}
-			
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		@Override
