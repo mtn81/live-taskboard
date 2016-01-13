@@ -54,7 +54,8 @@
     "require-dir": "^0.1.0",
     "run-sequence": "^1.0.2",
     "vinyl-paths": "^1.0.0",
-    "yargs": "^2.1.1"
+    "yargs": "^2.1.1",
+    "proxy-middleware": "^0.15.0"
   },
   "jspm": {
     "dependencies": {

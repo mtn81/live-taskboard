@@ -44,26 +44,27 @@ public class DomainConfig {
 	
 	@Bean
 	public SocialAuthDomainService socialAuthDomainService() {
-		HttpSocialAuthDomainService socialAuthDomainService = new HttpSocialAuthDomainService();
-		socialAuthDomainService.addProvider(UserType.GOOGLE, 
+		return new HttpSocialAuthDomainService()
+			.addProvider( 
 				new GoogleSocialAuthProvider(
 						socialSettings.getGoogleAppId(), 
 						socialSettings.getGoogleAppSecret(),
-						socialSettings.getSocialLoginRedirect()));
-		socialAuthDomainService.addProvider(UserType.YAHOO, 
+						socialSettings.getSocialLoginRedirect()))
+			.addProvider( 
 				new YahooSocialAuthProvider(
 						socialSettings.getYahooAppId(), 
 						socialSettings.getYahooAppSecret(),
-						socialSettings.getSocialLoginRedirect()));
-		socialAuthDomainService.addProvider(UserType.FACEBOOK, 
+						socialSettings.getSocialLoginRedirect()))
+			.addProvider( 
 				new FacebookSocialAuthProvider(
 						socialSettings.getFacebookAppId(), 
 						socialSettings.getFacebookAppSecret(),
-						socialSettings.getSocialLoginRedirect()));
-		socialAuthDomainService.addProvider(UserType.TWITTER, 
+						socialSettings.getSocialLoginRedirect()))
+			.addProvider( 
 				new TwitterSocialAuthProvider(
-						socialSettings.getSocialLoginRedirect()));
-		return socialAuthDomainService;
+						socialSettings.getTwitterAppId(),
+						socialSettings.getTwitterAppSecret(),
+						socialSettings.getSocialLoginOauth1Redirect()));
 	}
 	
 	
@@ -76,7 +77,10 @@ public class DomainConfig {
 		private String yahooAppSecret;
 		private String facebookAppId;
 		private String facebookAppSecret;
+		private String twitterAppId;
+		private String twitterAppSecret;
 		private String socialLoginRedirect;
+		private String socialLoginOauth1Redirect;
 
 		public String getSocialLoginRedirect() {
 			return socialLoginRedirect;
@@ -119,6 +123,24 @@ public class DomainConfig {
 		}
 		public void setFacebookAppSecret(String facebookAppSecret) {
 			this.facebookAppSecret = facebookAppSecret;
+		}
+		public String getSocialLoginOauth1Redirect() {
+			return socialLoginOauth1Redirect;
+		}
+		public void setSocialLoginOauth1Redirect(String socialLoginOauth1Redirect) {
+			this.socialLoginOauth1Redirect = socialLoginOauth1Redirect;
+		}
+		public String getTwitterAppId() {
+			return twitterAppId;
+		}
+		public void setTwitterAppId(String twitterAppId) {
+			this.twitterAppId = twitterAppId;
+		}
+		public String getTwitterAppSecret() {
+			return twitterAppSecret;
+		}
+		public void setTwitterAppSecret(String twitterAppSecret) {
+			this.twitterAppSecret = twitterAppSecret;
 		}
 	}
 	

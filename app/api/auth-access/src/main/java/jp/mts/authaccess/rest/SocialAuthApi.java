@@ -65,8 +65,25 @@ public class SocialAuthApi {
 	}
 
 	@RequestMapping(
+		value="/social_auth/oauth1", 
+		params={"accept", "!error", "oauth_token", "oauth_verifier"},
+		method=RequestMethod.GET)
+	public ModelAndView acceptAuthInOAuth1(
+			@CookieValue("auth_pid") String processId,
+			@RequestParam("oauth_token") String oAuthToken,
+			@RequestParam("oauth_verifier") String oAuthVerifier,
+			HttpServletRequest request) throws IOException{
+		
+		SocialAuthAccept socialAuthAccept = new SocialAuthAccept();
+		socialAuthAccept.acceptOAuth1(processId, oAuthToken, oAuthVerifier);
+		return new ModelAndView("redirect:" 
+				+ socialAuthAccept.getClientUrl() 
+				+ "?first_use=" + socialAuthAccept.isFirstUse());
+	}
+
+	@RequestMapping(
 		value="/social_auth", 
-		params={"accept", "!error"},
+		params={"accept", "!error", "state", "code"},
 		method=RequestMethod.GET)
 	public ModelAndView acceptAuth(
 			@CookieValue("auth_pid") String processId,
@@ -75,7 +92,7 @@ public class SocialAuthApi {
 			HttpServletRequest request) throws IOException{
 
 		SocialAuthAccept socialAuthAccept = new SocialAuthAccept();
-		socialAuthAccept.accept(processId, stateToken, authCode);
+		socialAuthAccept.acceptOAuth2(processId, stateToken, authCode);
 		return new ModelAndView("redirect:" 
 				+ socialAuthAccept.getClientUrl() 
 				+ "?first_use=" + socialAuthAccept.isFirstUse());

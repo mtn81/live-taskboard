@@ -19,7 +19,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public class OAuth1Header {
 	private String appKey;
-	private String accessToken;
+	private String oauthToken;
 	private String callbackUrl;
 	private OAuth1SignatureBuilder oAuth1SignatureBuilder;
 	
@@ -34,12 +34,12 @@ public class OAuth1Header {
 		Assertions.assertNonNull(othAuth1SignatureBuilder);
 		
 		this.appKey = appKey;
-		this.accessToken = accessToken;
+		this.oauthToken = accessToken;
 		this.callbackUrl = callbackUrl;
 		this.oAuth1SignatureBuilder = othAuth1SignatureBuilder;
 	}
 
-	public String buildAuthenticationHeader() {
+	public String buildAuthenticationHeader(Map<String, String> paramMap) {
 		
 		Map<String, String> oAuthParams = MapUtils.pairs(
 			"oauth_callback", callbackUrl,
@@ -48,11 +48,12 @@ public class OAuth1Header {
 			"oauth_signature_method", "HMAC-SHA1",
 			"oauth_timestamp", String.valueOf(Instant.now().getEpochSecond()),
 			"oauth_version", "1.0");
-		if (accessToken != null) {
-			oAuthParams.put("oauth_token", accessToken);
+		if (oauthToken != null) {
+			oAuthParams.put("oauth_token", oauthToken);
 		}
 		
-		oAuthParams.put("oauth_signature", oAuth1SignatureBuilder.build(oAuthParams));
+		oAuthParams.put("oauth_signature", oAuth1SignatureBuilder.build(
+				MapUtils.sum(oAuthParams, paramMap)));
 		
 		StringBuilder result = new StringBuilder(); 
 		

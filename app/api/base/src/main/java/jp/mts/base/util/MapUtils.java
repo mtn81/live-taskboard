@@ -37,4 +37,11 @@ public class MapUtils {
 		src.forEach((key, value) -> map.put(keyMapper.apply(key), valueMapper.apply(value)));
 		return map;
 	}
+
+	public static <K, V> Map<K, V> sum(Map<K, V> m1, Map<K, V> m2) {
+		Map<K, V> map = new LinkedHashMap<>();
+		if(m1 != null) map.putAll(m1);
+		if(m2 != null) map.putAll(m2);
+		return map;
+	}
 }

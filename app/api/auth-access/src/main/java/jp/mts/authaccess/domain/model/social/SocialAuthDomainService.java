@@ -8,7 +8,8 @@ public interface SocialAuthDomainService {
 	String generateStateToken();
 
 	public interface SocialAuthProvider {
-		String authLocation(String stateToken);
-		SocialUser loadSocialUser(String authCode);
+		SocialAuthProcess startAuthProcess(SocialAuthProcessId id, String acceptClientUrl, String rejectClientUrl);
+		SocialUser loadSocialUser(String... authKeys);
+		UserType targetUserType();
 	}
 }

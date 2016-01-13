@@ -41,7 +41,7 @@ public class OAuth1HeaderTest {
 	    	
 	    	OAuth1Header target = new OAuth1Header("appkey01", "access01", "http://callback", oAuth1SignatureBuilder);
 	    	
-	    	assertThat(target.buildAuthenticationHeader(), is(
+	    	assertThat(target.buildAuthenticationHeader(null), is(
 	    		"OAuth "
 	    		+ "oauth_callback=\"http%3A%2F%2Fcallback\","
 	    		+ " oauth_consumer_key=\"appkey01\","

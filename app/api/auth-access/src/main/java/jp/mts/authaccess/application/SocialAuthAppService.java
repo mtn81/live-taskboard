@@ -4,6 +4,7 @@ import jp.mts.authaccess.domain.model.Auth;
 import jp.mts.authaccess.domain.model.AuthRepository;
 import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialAuthDomainService;
+import jp.mts.authaccess.domain.model.social.SocialAuthDomainService.SocialAuthProvider;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcess;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcessId;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcessRepository;
@@ -31,15 +32,12 @@ public class SocialAuthAppService {
 			String acceptClientUrl,
 			String rejectClientUrl) {
 
-		String state = socialAuthDomainService.generateStateToken();
-
-		SocialAuthProcess authProcess = new SocialAuthProcess(
+		SocialAuthProvider provider = socialAuthDomainService.providerOf(userType);
+		
+		SocialAuthProcess authProcess = provider.startAuthProcess(
 				socialAuthProcessRepository.newAuthProcessId(), 
-				state,
-				socialAuthDomainService.providerOf(userType).authLocation(state),
 				acceptClientUrl,
-				rejectClientUrl,
-				userType);
+				rejectClientUrl);
 
 		socialAuthProcessRepository.save(authProcess);
 		
@@ -52,7 +50,7 @@ public class SocialAuthAppService {
 		 return socialAuthProcess;
 	}
 
-	public SocialAuthProcess acceptAuthProcess(
+	public SocialAuthProcess acceptOAuth2Process(
 			String processId,
 			String stateToken,
 			String authCode) {
@@ -61,20 +59,17 @@ public class SocialAuthAppService {
 		if (!socialAuthProcess.stateToken().equals(stateToken)) {
 			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 		}
-		
-		SocialUser socialUser = socialAuthDomainService.providerOf(socialAuthProcess.userType()).loadSocialUser(authCode);
-		if (socialUser == null) {
-			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
-		}
-		
-		socialAuthProcess.associateUser(
-				socialUser, !socialUserRepository.exists(socialUser.id()));
-
-		socialUserRepository.save(socialUser);
-		socialAuthProcessRepository.save(socialAuthProcess);
-		
+		attachSocialUserToProcess(authCode, stateToken, socialAuthProcess);
 		return socialAuthProcess;
 	}
+	public SocialAuthProcess acceptOAuth1Process(
+			String processId, String oAuthToken, String oAuthVerifier) {
+		
+		SocialAuthProcess socialAuthProcess = socialAuthProcessRepository.findById(new SocialAuthProcessId(processId)).get();
+		attachSocialUserToProcess(oAuthVerifier, oAuthToken, socialAuthProcess);
+		return socialAuthProcess;
+	}
+
 
 	public void confirmAuth(String processId, AuthenticateCallback callback) {
 		
@@ -93,5 +88,23 @@ public class SocialAuthAppService {
 	@FunctionalInterface
 	public interface AuthenticateCallback {
 		void execute(Auth auth, SocialUser user);
+	}
+	
+	
+	private void attachSocialUserToProcess(
+			String authCode, String stateToken, SocialAuthProcess socialAuthProcess) {
+
+		SocialUser socialUser = socialAuthDomainService.providerOf(socialAuthProcess.userType())
+				.loadSocialUser(authCode, stateToken);
+		if (socialUser == null) {
+			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+		}
+		
+		socialAuthProcess.associateUser(
+				socialUser, !socialUserRepository.exists(socialUser.id()));
+
+		socialUserRepository.save(socialUser);
+		socialAuthProcessRepository.save(socialAuthProcess);
+		
 	}
 }

@@ -14,6 +14,9 @@ for command in $commands; do
     "build:webui" )
     ;;
 
+    "build:deploy" )
+    ;;
+
     * )
       echo "invalid command $command"
       exit 1

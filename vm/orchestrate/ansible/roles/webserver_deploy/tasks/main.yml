@@ -1,5 +1,10 @@
 ---
 
-- name: start nginx
-  service: name=nginx state=restarted
+- name: copy builded modules
+  copy: src=build/ dest=/usr/share/nginx/html/
   sudo: yes
+
+- name: start nginx
+  service: name=nginx state=started
+  sudo: yes
+

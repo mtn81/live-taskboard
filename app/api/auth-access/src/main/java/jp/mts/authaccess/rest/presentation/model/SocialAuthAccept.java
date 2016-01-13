@@ -23,13 +23,22 @@ public class SocialAuthAccept {
 		return socialAuthProcess.firstUse();
 	}
 	
-	public void accept(
+	public void acceptOAuth2(
 			String processId, 
 			String stateToken,
 			String authCode) {
 		
 		socialAuthProcess 
-			= socialAuthAppService.acceptAuthProcess(processId, stateToken, authCode);
+			= socialAuthAppService.acceptOAuth2Process(processId, stateToken, authCode);
+		
+	}
+	public void acceptOAuth1(
+			String processId, 
+			String oAuthToken,
+			String oAuthVerifier) {
+		
+		socialAuthProcess 
+			= socialAuthAppService.acceptOAuth1Process(processId, oAuthToken, oAuthVerifier);
 		
 	}
 

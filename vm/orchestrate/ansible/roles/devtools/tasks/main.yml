@@ -27,3 +27,25 @@
 - name: install docker-py
   pip: name=docker-py version=1.1.0
   sudo: yes
+
+######################################
+# node, gulp, jspm
+######################################
+- name: check node already installed
+  stat: path=~/.nvm/nvm.sh
+  register: is_node_installed
+
+- name: install nvm
+  shell: curl https://raw.githubusercontent.com/creationix/nvm/v0.24.1/install.sh | bash
+  when: is_node_installed.stat.exists == False
+
+- name: install node
+  raw: source ~/.nvm/nvm.sh && nvm install 0.10.38
+  when: is_node_installed.stat.exists == False
+
+- name: install node modules
+  npm: name={{ item }} global=yes executable=~/.nvm/v0.10.38/bin/npm
+  with_items:
+    - gulp
+    - jspm
+
