@@ -1,4 +1,4 @@
-package jp.mts.authaccess.infrastructure.service;
+package jp.mts.authaccess.infrastructure.service.socialauth;
 
 import java.util.Arrays;
 import java.util.HashMap;

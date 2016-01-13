@@ -1,4 +1,4 @@
-package jp.mts.authaccess.infrastructure.service;
+package jp.mts.authaccess.infrastructure.service.socialauth;
 
 import static jp.mts.base.util.Assertions.assertNonNull;
 

@@ -1,4 +1,4 @@
-package jp.mts.authaccess.infrastructure.service;
+package jp.mts.authaccess.infrastructure.service.socialauth;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -6,7 +6,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.time.Instant;
 import java.util.Map;
 
-import jp.mts.authaccess.infrastructure.service.OAuth1Header.OAuth1SignatureBuilder;
+import jp.mts.authaccess.infrastructure.service.socialauth.OAuth1Header;
+import jp.mts.authaccess.infrastructure.service.socialauth.OAuth1Header.OAuth1SignatureBuilder;
 import jp.mts.base.util.MapUtils;
 import mockit.Expectations;
 import mockit.Mocked;

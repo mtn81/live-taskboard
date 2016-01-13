@@ -1,16 +1,14 @@
 package jp.mts.authaccess;
 
 import jp.mts.authaccess.domain.model.AuthRepository;
-import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.proper.PasswordEncriptionService;
 import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
 import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
 import jp.mts.authaccess.domain.model.social.SocialAuthDomainService;
-import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService;
-import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.FacebookSocialAuthProvider;
-import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.GoogleSocialAuthProvider;
-import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.TwitterSocialAuthProvider;
-import jp.mts.authaccess.infrastructure.service.HttpSocialAuthDomainService.YahooSocialAuthProvider;
+import jp.mts.authaccess.infrastructure.service.socialauth.FacebookSocialAuthProvider;
+import jp.mts.authaccess.infrastructure.service.socialauth.GoogleSocialAuthProvider;
+import jp.mts.authaccess.infrastructure.service.socialauth.TwitterSocialAuthProvider;
+import jp.mts.authaccess.infrastructure.service.socialauth.YahooSocialAuthProvider;
 import jp.mts.base.domain.model.DomainEventPublisher;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ public class DomainConfig {
 	
 	@Bean
 	public SocialAuthDomainService socialAuthDomainService() {
-		return new HttpSocialAuthDomainService()
+		return new SocialAuthDomainService()
 			.addProvider( 
 				new GoogleSocialAuthProvider(
 						socialSettings.getGoogleAppId(), 

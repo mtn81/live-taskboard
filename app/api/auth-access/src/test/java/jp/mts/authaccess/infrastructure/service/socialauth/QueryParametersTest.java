@@ -1,7 +1,8 @@
-package jp.mts.authaccess.infrastructure.service;
+package jp.mts.authaccess.infrastructure.service.socialauth;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
+import jp.mts.authaccess.infrastructure.service.socialauth.QueryParameters;
 
 import org.junit.Test;
 
