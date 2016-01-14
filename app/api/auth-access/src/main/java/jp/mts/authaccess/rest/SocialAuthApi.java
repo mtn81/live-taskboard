@@ -49,24 +49,10 @@ public class SocialAuthApi {
 		return RestResponse.of(socialAuthStart);
 	}
 
-	@RequestMapping(
-		value="/social_auth", 
-		params={"accept", "error"},
-		method=RequestMethod.GET)
-	public ModelAndView acceptAuth(
-			@CookieValue("auth_pid") String processId,
-			HttpServletRequest request) throws IOException{
-		
-		SocialAuthReject socialAuthReject = new SocialAuthReject();
-		socialAuthReject.reject(processId);
-		
-		return new ModelAndView("redirect:" 
-				+ socialAuthReject.getClientUrl());
-	}
 
 	@RequestMapping(
 		value="/social_auth/oauth1", 
-		params={"accept", "!error", "oauth_token", "oauth_verifier"},
+		params={"accept", "!denied", "oauth_token", "oauth_verifier"},
 		method=RequestMethod.GET)
 	public ModelAndView acceptAuthInOAuth1(
 			@CookieValue("auth_pid") String processId,
@@ -79,6 +65,20 @@ public class SocialAuthApi {
 		return new ModelAndView("redirect:" 
 				+ socialAuthAccept.getClientUrl() 
 				+ "?first_use=" + socialAuthAccept.isFirstUse());
+	}
+	@RequestMapping(
+		value="/social_auth/oauth1", 
+		params={"accept", "denied"},
+		method=RequestMethod.GET)
+	public ModelAndView rejectAuthInOAuth1(
+			@CookieValue("auth_pid") String processId,
+			HttpServletRequest request) throws IOException{
+
+		SocialAuthReject socialAuthReject = new SocialAuthReject();
+		socialAuthReject.reject(processId);
+		
+		return new ModelAndView("redirect:" 
+				+ socialAuthReject.getClientUrl());
 	}
 
 	@RequestMapping(
@@ -96,6 +96,20 @@ public class SocialAuthApi {
 		return new ModelAndView("redirect:" 
 				+ socialAuthAccept.getClientUrl() 
 				+ "?first_use=" + socialAuthAccept.isFirstUse());
+	}
+	@RequestMapping(
+		value="/social_auth", 
+		params={"accept", "error"},
+		method=RequestMethod.GET)
+	public ModelAndView rejectAuth(
+			@CookieValue("auth_pid") String processId,
+			HttpServletRequest request) throws IOException{
+		
+		SocialAuthReject socialAuthReject = new SocialAuthReject();
+		socialAuthReject.reject(processId);
+		
+		return new ModelAndView("redirect:" 
+				+ socialAuthReject.getClientUrl());
 	}
 	
 	@RequestMapping(
