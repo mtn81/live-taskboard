@@ -40,12 +40,12 @@
   when: is_node_installed.stat.exists == False
 
 - name: install node
-  raw: source ~/.nvm/nvm.sh && nvm install 0.10.38
+  raw: source ~/.nvm/nvm.sh && nvm install 5.4.1
   when: is_node_installed.stat.exists == False
 
 - name: install node modules
-  npm: name={{ item }} global=yes executable=~/.nvm/v0.10.38/bin/npm
+  npm: name={{ item.name }} version={{ item.version }} global=yes executable=~/.nvm/v0.10.38/bin/npm
   with_items:
-    - gulp
-    - jspm
+    - { name: gulp, version: 3.9.0 }
+    - { name: jspm, version: 0.16.9 }
 

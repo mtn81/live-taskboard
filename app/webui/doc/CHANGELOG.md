@@ -1,3 +1,62 @@
+### 1.0.0-beta.1.0.5 (2016-01-08)
+
+
+#### Bug Fixes
+
+* **build:** add build tasks back in ([46b8c482](http://github.com/aurelia/skeleton-navigation/commit/46b8c482b482d60cf817647fde2aed77a4c6ab5d))
+* **bundling:** update bundle config ([c524ed06](http://github.com/aurelia/skeleton-navigation/commit/c524ed069002850c16602d7643110ebd0ef249a1))
+
+
+#### Features
+
+* **asp.net5:** add asp.net5 skeleton ([30221c68](http://github.com/aurelia/skeleton-navigation/commit/30221c680b64db90b0112404c38ddeb3ae09e57c))
+* **build:**
+  * improve update own deps to work with deeper forder structure ([484c2d4d](http://github.com/aurelia/skeleton-navigation/commit/484c2d4d597fc8beb323f25b186ab3cd1fcc3b56))
+  * add pull-dev-env task ([48eaf16b](http://github.com/aurelia/skeleton-navigation/commit/48eaf16bd31a2021c0971112a90b2f0786039b2b))
+
+
+### 1.0.0-beta.1.0.4 (2015-12-22)
+
+* update dependencies
+
+### 1.0.0-beta.1.0.3 (2015-12-16)
+
+
+#### Bug Fixes
+
+* **build:** remove the faulty doc task ([e5119bf4](http://github.com/aurelia/skeleton-navigation/commit/e5119bf4f772033a73dfbd34a9a426a15e358fd3))
+* **main:** add notes on swap order ([c051b2cb](http://github.com/aurelia/skeleton-navigation/commit/c051b2cb93f2e8d24b4c224af40f56cba6949955))
+
+
+## 1.0.0-beta.1.0.2 (2015-12-03)
+
+
+#### Bug Fixes
+
+* **build:** do not reload after CSS injection ([00bab07a](http://github.com/aurelia/skeleton-navigation/commit/00bab07a8256556e96886ad586b14ae73990512b))
+
+
+#### Features
+
+* **build:** add CSS injecting ([fb620e72](http://github.com/aurelia/skeleton-navigation/commit/fb620e72e5dd532f7a0d7133c3c35e64be0d5b5f))
+
+
+## 1.0.0-beta.1.0.1 (2015-11-17)
+
+
+#### Features
+
+* **notify:** notify when build fails ([f8584189](http://github.com/aurelia/skeleton-navigation/commit/f858418944341fab609765eee36e88219486d17c))
+
+
+### 1.0.0-beta.1 (2015-11-16)
+
+
+#### Bug Fixes
+
+* **eslintrc:** remove dangling comma ([c05c7894](http://github.com/aurelia/skeleton-navigation/commit/c05c78945e596b6d08c9d186efbcffeef9b18ad2), closes [#205](http://github.com/aurelia/skeleton-navigation/issues/205))
+
+
 ## 0.20.0 (2015-11-10)
 
 
@@ -608,4 +667,3 @@
 
 * **package:** update dependencies to latest versions ([77986163](http://github.com/aurelia/skeleton-navigation/commit/779861632b7e48152ce7bed9d0316e90fda2482d))
 * **package:** update dependencies to latest versions ([4f1661dc](http://github.com/aurelia/skeleton-navigation/commit/4f1661dceafe93c8c117133bd07b9edb243b913e))
-

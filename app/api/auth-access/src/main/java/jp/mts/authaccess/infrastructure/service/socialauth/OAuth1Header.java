@@ -106,7 +106,6 @@ public class OAuth1Header {
 			assertNonNull(httpMethod);
 			assertNonNull(baseUrl);
 			assertNonNull(appSecret);
-			assertNonNull(tokenSecret);
 			
 			this.httpMethod = httpMethod;
 			this.baseUrl = baseUrl;

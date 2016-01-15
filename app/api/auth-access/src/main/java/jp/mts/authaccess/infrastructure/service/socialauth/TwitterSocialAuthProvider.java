@@ -20,6 +20,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.request.GetRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 
 public class TwitterSocialAuthProvider implements SocialAuthProvider {
 	private String appId;
@@ -87,42 +89,29 @@ public class TwitterSocialAuthProvider implements SocialAuthProvider {
 		String oAuthToken = authKeys[1];
 		
 		try {
-			HttpResponse<String> response;
-			{
-				String httpMethod = "POST";
-				String baseUrl = "https://api.twitter.com/oauth/access_token";
-				Map<String, String> params = MapUtils.pairs("oauth_verifier", oAuthVerifier);
-				
-				OAuth1Header oAuth1Header = new OAuth1Header(appId, oAuthToken, redirectUri, 
-						new OAuth1SignatureBuilder(httpMethod, baseUrl, appSecret));
-				response = Unirest.post(baseUrl)
-					.header("Authorization", oAuth1Header.buildAuthenticationHeader(params))
-					.header("Content-Type", "application/x-www-form-urlencoded")
-					.field("oauth_verifier", oAuthVerifier)
-					.asString();
-				if (response.getStatus() != 200) {
-					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
-				}
+			HttpResponse<String> response = createPostWithOAuth1(
+					"https://api.twitter.com/oauth/access_token", 
+					MapUtils.pairs("oauth_verifier", oAuthVerifier), 
+					oAuthToken,
+					null).asString();
+
+			if (response.getStatus() != 200) {
+				throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 			}
 			
-			HttpResponse<JsonNode> accountResponse;
-			{
-				String httpMethod = "GET";
-				String baseUrl = "https://api.twitter.com/1.1/account/verify_credentials.json";
 			
-				QueryParameters oAuthTokenParams = new QueryParameters(response.getBody());
-				String newOAuthToken = oAuthTokenParams.get("oauth_token");
-				String newOAuthTokenSecret = oAuthTokenParams.get("oauth_token_secret");
+			QueryParameters oAuthTokenParams = new QueryParameters(response.getBody());
 			
-				OAuth1Header oAuth1Header = new OAuth1Header(appId, newOAuthToken, redirectUri, 
-						new OAuth1SignatureBuilder(httpMethod, baseUrl, appSecret, newOAuthTokenSecret));
-				accountResponse = Unirest.get(baseUrl)
-					.header("Authorization", oAuth1Header.buildAuthenticationHeader(null))
-					.asJson();
-				if (accountResponse.getStatus() != 200) {
-					throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
-				}
+			HttpResponse<JsonNode> accountResponse = createGetWithOAuth1(
+					"https://api.twitter.com/1.1/account/verify_credentials.json", 
+					null, 
+					oAuthTokenParams.get("oauth_token"), 
+					oAuthTokenParams.get("oauth_token_secret")).asJson();
+
+			if (accountResponse.getStatus() != 200) {
+				throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
 			}
+
 			JSONObject account = accountResponse.getBody().getObject();
 			return new SocialUser(
 					new SocialUserId(UserType.TWITTER, account.getString("id_str")), 
@@ -137,6 +126,38 @@ public class TwitterSocialAuthProvider implements SocialAuthProvider {
 	@Override
 	public UserType targetUserType() {
 		return userType;
+	}
+	
+	private HttpRequestWithBody createPostWithOAuth1(
+			String baseUrl, 
+			Map<String, String> params,
+			String oAuthToken,
+			String oAuthTokenSecret) {
+		
+		OAuth1Header oAuth1Header = new OAuth1Header(appId, oAuthToken, redirectUri, 
+				new OAuth1SignatureBuilder("POST", baseUrl, appSecret, oAuthTokenSecret));
+		HttpRequestWithBody request = Unirest.post(baseUrl)
+			.header("Authorization", oAuth1Header.buildAuthenticationHeader(params))
+			.header("Content-Type", "application/x-www-form-urlencoded");
+		
+		params.forEach((key, value) -> {
+			request.field(key, value);
+		});
+		
+		return request;
+	}
+	
+	private GetRequest createGetWithOAuth1(
+			String baseUrl, 
+			Map<String, String> params,
+			String oAuthToken,
+			String oAuthTokenSecret) {
+		
+		OAuth1Header oAuth1Header = new OAuth1Header(appId, oAuthToken, redirectUri, 
+				new OAuth1SignatureBuilder("GET", baseUrl, appSecret, oAuthTokenSecret));
+
+		return Unirest.get(baseUrl)
+			.header("Authorization", oAuth1Header.buildAuthenticationHeader(params));
 	}
 	
 }
