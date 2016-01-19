@@ -19,6 +19,12 @@ public class GroupLoad {
 	public String getGroupId() {
 		return result.groupId;
 	}
+	public String getName() {
+		return result.groupName;
+	}
+	public String getDescription() {
+		return result.description;
+	}
 	public boolean isAdmin() {
 		return result.isAdmin;
 	}

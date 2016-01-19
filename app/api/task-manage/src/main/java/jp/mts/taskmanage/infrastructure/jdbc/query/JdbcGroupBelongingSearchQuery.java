@@ -18,6 +18,7 @@ public class JdbcGroupBelongingSearchQuery implements GroupBelongingSearchQuery 
 				  "select "
 				+   "g.group_id as group_id, "
 				+   "g.name as group_name, "
+				+   "g.description as description, "
 				+   "gm.admin as admin "
 				+ "from "
 				+   "groups g "
@@ -30,6 +31,7 @@ public class JdbcGroupBelongingSearchQuery implements GroupBelongingSearchQuery 
 			record -> new ByMemberResult(
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
+						(String)record.get("description"), 
 						(boolean)record.get("admin"))
 		);
 	}
@@ -41,6 +43,7 @@ public class JdbcGroupBelongingSearchQuery implements GroupBelongingSearchQuery 
 				  "select "
 				+   "g.group_id as group_id, "
 				+   "g.name as group_name, "
+				+   "g.description as description, "
 				+   "gm.admin as admin "
 				+ "from "
 				+   "groups g "
@@ -54,6 +57,7 @@ public class JdbcGroupBelongingSearchQuery implements GroupBelongingSearchQuery 
 			record -> new ByMemberResult(
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
+						(String)record.get("description"), 
 						(boolean)record.get("admin"))
 		);
 

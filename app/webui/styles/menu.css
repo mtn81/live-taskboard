@@ -16,3 +16,9 @@
 .menu .btn-group .btn {
   height: 70px;
 }
+
+.group-actions {
+  float: right;
+  position: relative;
+  top: -7px;
+}

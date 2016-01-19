@@ -7,8 +7,7 @@ import {GlobalInfo} from './global-info';
 @inject(EventAggregator, GroupService)
 export class GroupRegister {
 
-  groupName = '';
-  groupDescription = '';
+  group = null;
 
   constructor(eventAggregator, groupService){
     this.groupService = groupService;
@@ -16,15 +15,22 @@ export class GroupRegister {
   }
 
   register(){
-    this.groupService.register({
-      name: this.groupName,
-      description: this.groupDescription
-    });
+    this.groupService.register(this.group);
   }
 
   attached(){
+    this.events.subscribe('group-register.init', group => {
+      this.group = {};
+    });
     this.events.subscribe('group-register.register', payload => {
       this.register();
+    });
+    this.events.subscribe('group-register.edit', group => {
+      this.group = this.groupService.group(group.groupId);
+    });
+    this.events.subscribe('group-register.change', payload => {
+      console.log(this.editGroup);
+      this.modify();
     });
     this.events.subscribe(GroupRegistered, message => {
       this.events.publish('group-register.register.success');

@@ -10,14 +10,17 @@ public interface GroupBelongingSearchQuery {
 	public static class ByMemberResult {
 		public String groupId;
 		public String groupName;
+		public String description;
 		public boolean isAdmin;
 
 		public ByMemberResult(
 				String groupId, 
-				String groupName, 
+				String groupName,
+				String description, 
 				boolean isAdmin) {
 			this.groupId = groupId;
 			this.groupName = groupName;
+			this.description = description;
 			this.isAdmin = isAdmin;
 		}
 	}

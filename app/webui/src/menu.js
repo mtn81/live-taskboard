@@ -13,6 +13,7 @@ export class Menu {
 
   groups = [];
   group = null;
+  groupRegisterModalAttrs = null;
 
   constructor(router, authContext, eventAggregator, groupService){
     this.router = router;
@@ -41,6 +42,21 @@ export class Menu {
     this.router.navigate('accept');
   }
   showGroupRegister(){
+    this.groupRegisterModalAttrs = {
+      title: 'グループ登録',
+      eventLabel: '登録',
+      event: 'group-register.register'
+    };
+    this.events.publish('group-register.init');
+    $(this.groupRegisterModal).modal('show');
+  }
+  showGroupEdit(group){
+    this.groupRegisterModalAttrs = {
+      title: 'グループ編集',
+      eventLabel: '変更',
+      event: 'group-register.change'
+    };
+    this.events.publish('group-register.edit', group);
     $(this.groupRegisterModal).modal('show');
   }
 
