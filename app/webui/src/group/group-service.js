@@ -43,12 +43,14 @@ export class GroupService {
         });
   }
 
-  group(groupId) {
+  group(groupId, callback) {
     return this.httpLoader.object(
         `/api/task-manage/members/${this.memberId()}/groups/${groupId}`,
         response => {
           this.eventAggregator.publish(new GroupLoaded());
-          return response.content.data;
+          let group = response.content.data;
+          if(callback) callback(group);
+          return group;
         });
   }
 

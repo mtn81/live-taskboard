@@ -56,7 +56,7 @@ export class Menu {
       eventLabel: '変更',
       event: 'group-register.change'
     };
-    this.events.publish('group-register.edit', group);
+    this.events.publish('group-register.init', group.groupId);
     $(this.groupRegisterModal).modal('show');
   }
 

@@ -20,23 +20,13 @@ for command in $commands; do
 
       set +eu
       . ~/.nvm/nvm.sh
-      nvm use 0.10
+      nvm use 5
       set -eu
-      gulp clean build && gulp bundle
+      gulp export
 
       dest_dir=$ansible_dir/roles/webserver_deploy/files/build
-      cp \
-        index.html \
-        config.js \
-        favicon.ico \
-        $dest_dir
-      cp --parents -r \
-        styles/styles.css \
-        jspm_packages/npm/font-awesome@4.4.0/css \
-        jspm_packages/npm/font-awesome@4.4.0/fonts \
-        jspm_packages/system.js \
-        dist/app-build.js dist/aurelia.js \
-        $dest_dir
+      rm -fR $dest_dir/*
+      cp -r export/* $dest_dir
     ;;
 
     "run:base" )
