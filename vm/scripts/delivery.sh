@@ -12,7 +12,9 @@ for command in $commands; do
   case "$command" in
 
     "build:images" )
+      cd $orchestrate_dir
       sudo docker build -t livetaskboard/web -f Dockerfile_web .
+      sudo docker build -t livetaskboard/tm-db -f Dockerfile_tm-db .
     ;;
 
     "build:webui" )

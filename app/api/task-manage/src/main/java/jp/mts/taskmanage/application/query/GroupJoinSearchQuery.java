@@ -16,14 +16,17 @@ public interface GroupJoinSearchQuery {
 		private String groupId;
 		private String groupName;
 		private String ownerName;
+		private String description;
 
 		public NotJoinAppliedWithNameResult(
 				String groupId, 
 				String groupName, 
-				String ownerName) {
+				String ownerName,
+				String description) {
 			this.groupId = groupId;
 			this.groupName = groupName;
 			this.ownerName = ownerName;
+			this.description = description;
 		}
 
 		public String getGroupId() {
@@ -34,6 +37,9 @@ public interface GroupJoinSearchQuery {
 		}
 		public String getOwnerName() {
 			return ownerName;
+		}
+		public String getDescription() {
+			return description;
 		}
 	}
 	

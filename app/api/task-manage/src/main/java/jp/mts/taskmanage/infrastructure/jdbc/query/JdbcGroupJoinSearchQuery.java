@@ -54,7 +54,8 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				  "select "
 				+   "g.group_id as group_id, "
 				+   "g.name as group_name, "
-				+   "m.name as owner_name "
+				+   "m.name as owner_name, "
+				+   "g.description as description "
 				+ "from "
 				+   "groups g "
 				+   "inner join members m "
@@ -90,7 +91,8 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 			record -> new NotJoinAppliedWithNameResult(
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
-						(String)record.get("owner_name"))
+						(String)record.get("owner_name"),
+						(String)record.get("description"))
 		);
 	}
 

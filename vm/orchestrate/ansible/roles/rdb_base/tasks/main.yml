@@ -1,0 +1,83 @@
+---
+
+- name: add apt-repository
+  apt_repository: repo={{ item }} state=present
+  with_items:
+    - 'deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main'
+  sudo: yes
+
+- name: add apt-key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  sudo: yes
+
+- name: set up locale
+  locale_gen: name={{ item }} state=present
+  sudo: yes
+  with_items:
+    - ja_JP.UTF-8
+    - en_US.UTF-8
+
+- name: install postgresql
+  apt: name={{ item }} state=present force=yes update-cache=yes
+  sudo: yes
+  with_items:
+    - postgresql-9.4
+      # - libpq-dev
+    - python-psycopg2
+
+- name: copy conf files
+  copy: src=postgresql/conf/{{ item }}
+        dest=/etc/postgresql/9.4/main
+        owner=postgres group=postgres
+        mode='u=rw,g=r,o=r'
+  sudo: yes
+  with_items:
+    - pg_hba.conf
+    - postgresql.conf
+
+- name: restart postgresql
+  service: name=postgresql state=restarted
+  sudo: yes
+
+- name: create db
+  postgresql_db: >
+    name={{ db_name }}
+    encoding='UTF-8'
+    lc_collate='ja_JP.utf8'
+    lc_ctype='ja_JP.utf8'
+    template='template0'
+  sudo: yes
+  sudo_user: postgres
+
+- name: create db user
+  postgresql_user: name=app password=pass
+  sudo: yes
+  sudo_user: postgres
+
+- name: add privilege to db user
+  postgresql_privs: >
+    db={{ db_name }}
+    state=present
+    privs=ALL
+    type=schema
+    objs=public
+    roles=app
+  sudo: yes
+  sudo_user: postgres
+
+- name: check flyway already installed
+  stat: path={{ flyway_home }}
+  register: flyway_stat
+
+- name: copy flyway cli
+  copy: src=flyway/flyway-commandline-3.2.1-linux-x64.tar.gz
+        dest=~/flyway.tar.gz
+  when: not flyway_stat.stat.exists
+
+- name: expand flyway
+  shell: cd ~ && tar zxvf ~/flyway.tar.gz
+  when: not flyway_stat.stat.exists
+
+- name: copy flyway conf
+  copy: src=flyway/flyway.conf dest={{ flyway_home }}/conf
+

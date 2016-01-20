@@ -92,8 +92,8 @@ public class GroupApiTest {
 		new Expectations() {{
 			groupJoinSearchQuery.notJoinAppliedWithName("m01", "group1");
 				result = Lists.newArrayList(
-						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g01","group1","taro"),
-						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g02","group2","jiro"));
+						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g01","group1","taro","desc1"),
+						new GroupJoinSearchQuery.NotJoinAppliedWithNameResult("g02","group2","jiro","desc2"));
 		}};
 		
 		RestResponse<GroupSearch> response = target.searchNotAppliedGroups("m01", "group1");
@@ -103,9 +103,11 @@ public class GroupApiTest {
 		assertThat(groups.get(0).getGroupId(), is("g01"));
 		assertThat(groups.get(0).getGroupName(), is("group1"));
 		assertThat(groups.get(0).getOwner(), is("taro"));
+		assertThat(groups.get(0).getDescription(), is("desc1"));
 		assertThat(groups.get(1).getGroupId(), is("g02"));
 		assertThat(groups.get(1).getGroupName(), is("group2"));
 		assertThat(groups.get(1).getOwner(), is("jiro"));
+		assertThat(groups.get(1).getDescription(), is("desc2"));
 	}
 	
 }

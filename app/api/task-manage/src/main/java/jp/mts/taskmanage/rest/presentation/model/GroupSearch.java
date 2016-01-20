@@ -39,6 +39,9 @@ public class GroupSearch {
 		public String getOwner(){
 			return groupSearchResult.getOwnerName();
 		}
+		public String getDescription() {
+			return groupSearchResult.getDescription();
+		}
 	}
 
 	//process
