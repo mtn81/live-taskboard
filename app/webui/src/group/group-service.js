@@ -29,6 +29,17 @@ export class GroupService {
     }, true);
   }
 
+  modify(group){
+
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`, group)
+        .then(response => {
+          this.eventAggregator.publish(new GroupModified());
+        })
+    }, true);
+  }
+
   watchGroupAvailable(callback){
     this.stomp.subscribe(`/topic/${this.memberId()}/group_available`, groupNotify => {
       callback(groupNotify);
@@ -72,6 +83,7 @@ export class GroupService {
 
 export class GroupLoaded {}
 export class GroupRegistered {}
+export class GroupModified {}
 export class GroupRemoved {}
 export class GroupJoinApplied {}
 export class GroupJoinCancelled {}

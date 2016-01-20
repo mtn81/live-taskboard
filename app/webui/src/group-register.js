@@ -1,7 +1,7 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {inject} from 'aurelia-framework';
-import {GroupService, GroupRegistered} from './group/group-service';
+import {GroupService, GroupRegistered, GroupModified} from './group/group-service';
 import {GlobalInfo} from './global-info';
 
 @inject(EventAggregator, GroupService)
@@ -24,7 +24,7 @@ export class GroupRegister {
   }
 
   modify(){
-    this.groupService.register({
+    this.groupService.modify({
       groupId: this.groupId,
       name: this.groupName,
       description: this.description
@@ -39,6 +39,10 @@ export class GroupRegister {
           this.groupName = group.name;
           this.description = group.description;
         });
+      } else {
+          this.groupId = null;
+          this.groupName = '';
+          this.description = '';
       }
     });
     this.events.subscribe('group-register.register', payload => {
@@ -50,6 +54,9 @@ export class GroupRegister {
     this.events.subscribe(GroupRegistered, message => {
       this.events.publish('group-register.register.success');
       this.events.publish(new GlobalInfo([{message: 'グループが利用可能になるまで少々お待ち下さい'}]));
+    });
+    this.events.subscribe(GroupModified, message => {
+      this.events.publish('group-register.change.success');
     });
   }
 

@@ -50,6 +50,16 @@ public class GroupApi {
 	}
 	@RequestMapping(
 			value="/members/{memberId}/groups/{groupId}", 
+			method=RequestMethod.PUT)
+	public RestResponse<GroupSave> modifyGroupOnMember(
+			@PathVariable @Me String memberId, 
+			@PathVariable String groupId,
+			@RequestBody GroupSave groupSave) {
+		groupSave.modify(memberId, groupId, groupAppService);
+		return RestResponse.of(groupSave);
+	}
+	@RequestMapping(
+			value="/members/{memberId}/groups/{groupId}", 
 			method=RequestMethod.DELETE)
 	public RestResponse<GroupRemove> removeGroupOnMember(
 			@PathVariable @Me String memberId, 

@@ -28,8 +28,16 @@ public class GroupSave {
 	}
 
 	//exec
-	public void create(String memberId, GroupAppService groupAppService){
+	public void create(
+			String memberId, 
+			GroupAppService groupAppService){
 		this.group = groupAppService.registerGroup(memberId, name, description);
+	}
+	public void modify(
+			String memberId, 
+			String groupId,
+			GroupAppService groupAppService) {
+		this.group = groupAppService.modifyGroup(memberId, groupId, name, description);
 	}
 	
 }

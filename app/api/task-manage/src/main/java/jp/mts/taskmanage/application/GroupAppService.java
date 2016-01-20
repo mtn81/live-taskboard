@@ -35,6 +35,24 @@ public class GroupAppService {
 		return group;
 	}
 
+	public Group modifyGroup(
+			String memberId, 
+			String groupId, 
+			String name,
+			String description) {
+
+		Member member = memberRepository.findById(new MemberId(memberId)).get();
+		Group group = groupRepository.findById(new GroupId(groupId)).get();
+		
+		if (!member.editGroup(group, name, description)) {
+			throw new ApplicationException(GROUP_REMOVE_DISABLED);
+		}
+		
+		groupRepository.save(group);
+
+		return group;
+	}
+
 	public void removeGroup(String memberId, String groupId) {
 		Member member = memberRepository.findById(new MemberId(memberId)).get();
 		Group targetGroup = groupRepository.findById(new GroupId(groupId)).get();
@@ -86,5 +104,6 @@ public class GroupAppService {
 		
 		memberRepository.save(member);
 	}
+
 	
 }

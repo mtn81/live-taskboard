@@ -124,6 +124,17 @@ public class Member extends DomainEntity<MemberId> {
 	public boolean isOwnerFor(Group group) {
 		return this.memberId().equals(group.ownerMemberId());
 	}
+
+	public boolean editGroup(
+			Group group, 
+			String name, 
+			String description) {
+		if(!belongsAsAdmin(group.groupId())) {
+			return false;
+		}
+		group.changeAttributes(name, description);
+		return true;
+	}
 	
 	public boolean remove(Group group) {
 		if(!belongsAsAdmin(group.groupId())) {
@@ -160,4 +171,5 @@ public class Member extends DomainEntity<MemberId> {
 	public enum LeaveResult {
 		SUCCESS, NOT_ADMIN_ERROR, OWNER_ERROR
 	}
+
 }
