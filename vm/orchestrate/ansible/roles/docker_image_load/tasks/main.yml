@@ -16,15 +16,19 @@
   sudo: yes
   with_items:
     - livetaskboard/web
+    - livetaskboard/tm-db
 
 - name: run containers
   docker:
-    name: web
+    name: "{{ item.name }}"
     state: started
-    image: livetaskboard/web
-    ports: "80:80"
+    image: "livetaskboard/{{ item.name }}"
+    ports: "{{ item.port }}"
     volumes:
-      - "{{ orchestrate_base }}/consul/web:/etc/consul.d:ro"
+      - "{{ orchestrate_base }}/consul/{{ item.name }}:/etc/consul.d:ro"
       - "{{ orchestrate_base }}/ansible:/ansible:ro"
     command: /usr/local/bin/consul agent -config-dir /etc/consul.d
   sudo: yes
+  with_items:
+    - { name: web,   port: "80:80" }
+    - { name: tm-db, port: "15432:5432" }

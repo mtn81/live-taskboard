@@ -22,6 +22,7 @@ import mockit.Injectable;
 import mockit.Tested;
 
 import org.junit.Test;
+import org.springframework.validation.BindingResult;
 
 import com.google.common.collect.Lists;
 
@@ -31,6 +32,7 @@ public class GroupApiTest {
 	@Injectable GroupAppService groupAppService;
 	@Injectable GroupJoinSearchQuery groupJoinSearchQuery;
 	@Injectable GroupBelongingSearchQuery groupBelongingSearchQuery;
+	@Injectable BindingResult result;
 
 	@Test
 	public void test_register() {
@@ -42,7 +44,7 @@ public class GroupApiTest {
 		GroupSave group = new GroupSave();
 		group.setName("group01");
 		group.setDescription("this is a test group");
-		RestResponse<GroupSave> response = target.createGroupOnMember("member01", group);
+		RestResponse<GroupSave> response = target.createGroupOnMember("member01", group, result);
 		
 		assertThat(response.getData().getGroupId(), is("g01"));
 	}

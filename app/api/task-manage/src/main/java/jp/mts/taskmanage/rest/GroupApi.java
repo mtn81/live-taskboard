@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.rest;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
@@ -14,6 +15,7 @@ import jp.mts.taskmanage.rest.presentation.model.GroupSave;
 import jp.mts.taskmanage.rest.presentation.model.GroupSearch;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,11 +43,29 @@ public class GroupApi {
 
 	@RequestMapping(
 			value="/members/{memberId}/groups/", 
+			params="!validate",
 			method=RequestMethod.POST)
 	public RestResponse<GroupSave> createGroupOnMember(
 			@PathVariable @Me String memberId, 
-			@RequestBody GroupSave groupSave) {
+			@RequestBody @Valid GroupSave groupSave,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return RestResponse.of(result);
+		}
 		groupSave.create(memberId, groupAppService);
+		return RestResponse.of(groupSave);
+	}
+	@RequestMapping(
+			value="/members/{memberId}/groups/", 
+			params="validate",
+			method=RequestMethod.POST)
+	public RestResponse<GroupSave> validateGroup(
+			@PathVariable @Me String memberId, 
+			@RequestBody @Valid GroupSave groupSave,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return RestResponse.of(result);
+		}
 		return RestResponse.of(groupSave);
 	}
 	@RequestMapping(
@@ -54,7 +74,11 @@ public class GroupApi {
 	public RestResponse<GroupSave> modifyGroupOnMember(
 			@PathVariable @Me String memberId, 
 			@PathVariable String groupId,
-			@RequestBody GroupSave groupSave) {
+			@RequestBody @Valid GroupSave groupSave,
+			BindingResult result) {
+		if (result.hasErrors()) {
+			return RestResponse.of(result);
+		}
 		groupSave.modify(memberId, groupId, groupAppService);
 		return RestResponse.of(groupSave);
 	}

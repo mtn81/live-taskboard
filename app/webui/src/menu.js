@@ -47,8 +47,7 @@ export class Menu {
       eventLabel: '登録',
       event: 'group-register.register'
     };
-    this.events.publish('group-register.init');
-    $(this.groupRegisterModal).modal('show');
+    this._showGroupRegisterModal();
   }
   showGroupEdit(group){
     this.groupRegisterModalAttrs = {
@@ -56,7 +55,16 @@ export class Menu {
       eventLabel: '変更',
       event: 'group-register.change'
     };
-    this.events.publish('group-register.init', group.groupId);
+    this._showGroupRegisterModal(group.groupId);
+  }
+  _showGroupRegisterModal(groupId){
+    this.events.publish('group-register.init', groupId);
+    this.events.subscribe('group-register.enable', payload => {
+      $(this.groupRegisterModal).find('.btn-primary').removeAttr('disabled');
+    });
+    this.events.subscribe('group-register.disable', payload => {
+      $(this.groupRegisterModal).find('.btn-primary').attr('disabled', true);
+    });
     $(this.groupRegisterModal).modal('show');
   }
 

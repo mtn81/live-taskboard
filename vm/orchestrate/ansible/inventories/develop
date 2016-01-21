@@ -1,2 +1,6 @@
 [localhost]
 127.0.0.1 orchestrate_base=/home/vagrant/products/live-taskboard/vm/orchestrate
+
+[all:vars]
+stage=develop
+

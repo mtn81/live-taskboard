@@ -1,14 +1,14 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {inject} from 'aurelia-framework';
-import {GroupService, GroupRegistered, GroupModified} from './group/group-service';
+import {GroupService, GroupRegistered, GroupModified, GroupValidationSuccess, GroupValidationError} from './group/group-service';
 import {GlobalInfo} from './global-info';
 
 @inject(EventAggregator, GroupService)
 export class GroupRegister {
 
   groupId = null;
-  groupName = '';
+  name = '';
   description = '';
 
   constructor(eventAggregator, groupService){
@@ -18,7 +18,7 @@ export class GroupRegister {
 
   register(){
     this.groupService.register({
-      name: this.groupName,
+      name: this.name,
       description: this.description
     });
   }
@@ -26,7 +26,14 @@ export class GroupRegister {
   modify(){
     this.groupService.modify({
       groupId: this.groupId,
-      name: this.groupName,
+      name: this.name,
+      description: this.description
+    });
+  }
+
+  validate() {
+    this.groupService.validate({
+      name: this.name,
       description: this.description
     });
   }
@@ -36,14 +43,15 @@ export class GroupRegister {
       if(!!groupId){
         this.groupService.group(groupId, group => {
           this.groupId = group.groupId;
-          this.groupName = group.name;
+          this.name = group.name;
           this.description = group.description;
         });
       } else {
           this.groupId = null;
-          this.groupName = '';
+          this.name = '';
           this.description = '';
       }
+      this.validate();
     });
     this.events.subscribe('group-register.register', payload => {
       this.register();
@@ -57,6 +65,16 @@ export class GroupRegister {
     });
     this.events.subscribe(GroupModified, message => {
       this.events.publish('group-register.change.success');
+    });
+    this.events.subscribe('validate.group.register', () => {
+      this.validate();
+    });
+    this.events.subscribe(GroupValidationError, e => {
+      this.events.publish('validate.group.register.error', e.error);
+      this.events.publish('group-register.disable');
+    });
+    this.events.subscribe(GroupValidationSuccess, e => {
+      this.events.publish('group-register.enable');
     });
   }
 

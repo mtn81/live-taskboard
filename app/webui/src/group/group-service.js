@@ -29,6 +29,19 @@ export class GroupService {
     }, true);
   }
 
+  validate(group){
+    this.http.call(http => {
+      return http
+        .post(`/api/task-manage/members/${this.memberId()}/groups/?validate`, group)
+        .then(response => {
+          this.eventAggregator.publish(new GroupValidationSuccess());
+        })
+        .catch(response => {
+          this.eventAggregator.publish(new GroupValidationError(new GlobalError(response.content.errors)));
+        });
+    }, true);
+  }
+
   modify(group){
 
     this.http.call(http => {
@@ -87,3 +100,9 @@ export class GroupModified {}
 export class GroupRemoved {}
 export class GroupJoinApplied {}
 export class GroupJoinCancelled {}
+export class GroupValidationSuccess {}
+export class GroupValidationError {
+  constructor(error){
+    this.error = error;
+  }
+}

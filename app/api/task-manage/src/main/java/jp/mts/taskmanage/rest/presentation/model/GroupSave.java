@@ -1,12 +1,17 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.domain.model.Group;
 
 public class GroupSave {
 
 	//input
+	@NotBlank
 	private String name;
+	@Length(max=100)
 	private String description;
 
 	public void setName(String name) {
@@ -20,10 +25,11 @@ public class GroupSave {
 	private Group group;
 
 	public String getGroupId(){
-		if(group == null) throw new IllegalStateException();
+		if(group == null) return null;
 		return group.groupId().value();
 	}
 	public String getGroupName() {
+		if(group == null) return null;
 		return group.name();
 	}
 
