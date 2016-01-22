@@ -17,7 +17,7 @@ export class FormValidate {
   valueChanged(newValue){
     const form = $(this.element);
     if(newValue){
-      const $formInputs = form.find('input');
+      const $formInputs = form.find(':input');
 
       $formInputs.change(e => {
         $formInputs.each(i => {

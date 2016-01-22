@@ -45,13 +45,14 @@ export class GroupRegister {
           this.groupId = group.groupId;
           this.name = group.name;
           this.description = group.description;
+          this.validate();
         });
       } else {
           this.groupId = null;
           this.name = '';
           this.description = '';
+          this.validate();
       }
-      this.validate();
     });
     this.events.subscribe('group-register.register', payload => {
       this.register();
