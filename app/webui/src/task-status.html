@@ -2,6 +2,7 @@
 
   <require from="./widget"></require>
   <require from="./droppable"></require>
+  <require from="./editable-text"></require>
 
   <div class="taskstatus panel panel-default" style="display:inline-block"
     widget.bind="{ widgetId: 'taskstatus-' + status, freeOnDrag: true}"
@@ -20,9 +21,18 @@
         widget.bind="{ widgetId: task.taskId, freeOnDrag: false}"
         style="z-index: 100">
         <div class.bind="'panel-heading ' + $parent.deadlineCss(task.deadline)">
-          <strong>${task.taskName}</strong>
-          <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
-            click.delegate="$parent.removeTask(task)"></span>
+          <strong>
+            <editable-text key.bind="task" event="taskName.changed">${task.taskName}</editable-text>
+          </strong>
+          <span class="task-actions">
+            <button type="button" class="btn btn-default" click.delegate="$parent.removeTask(task)">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" click.delegate="$parent.removeTask(task)">
+              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+                click.delegate="$parent.removeTask(task)"></span>
+            </button>
+          </span>
         </div>
         <div class="panel-body">
           <ul>

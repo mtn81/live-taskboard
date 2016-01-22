@@ -11,6 +11,7 @@ main {
 
 .task {
   width: 150px;
+  height: 130px;
   font-size: 85%;
   padding: 0;
   margin: 0;
@@ -51,4 +52,9 @@ main {
 }
 .task select.assigned {
   background-color: #FFB6C1;
+}
+.task-actions {
+  float: right;
+  position: relative;
+  top: -3px;
 }
