@@ -1,12 +1,6 @@
 ---
 
 ######################################
-# consul server
-######################################
-# - name: start consul server
-#   shell: consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -bind=172.17.0.1
-
-######################################
 # docker containers
 ######################################
 - name: clean containers
@@ -17,6 +11,7 @@
   with_items:
     - livetaskboard/web
     - livetaskboard/tm-db
+    - livetaskboard/aa-db
 
 - name: run containers
   docker:
@@ -32,3 +27,4 @@
   with_items:
     - { name: web,   port: "80:80" }
     - { name: tm-db, port: "15432:5432" }
+    - { name: aa-db, port: "25432:5432" }

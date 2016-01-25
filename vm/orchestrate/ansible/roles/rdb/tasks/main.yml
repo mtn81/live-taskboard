@@ -79,5 +79,5 @@
   when: not flyway_stat.stat.exists
 
 - name: copy flyway conf
-  copy: src=flyway/flyway.conf dest={{ flyway_home }}/conf
+  template: src=flyway/flyway.conf dest={{ flyway_home }}/conf
 

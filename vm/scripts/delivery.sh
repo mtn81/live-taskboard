@@ -15,6 +15,7 @@ for command in $commands; do
       cd $orchestrate_dir
       sudo docker build -t livetaskboard/web -f Dockerfile_web .
       sudo docker build -t livetaskboard/tm-db -f Dockerfile_tm-db .
+      sudo docker build -t livetaskboard/aa-db -f Dockerfile_aa-db .
     ;;
 
     "build:webui" )
@@ -34,7 +35,7 @@ for command in $commands; do
     "run:base" )
       cd $orchestrate_dir/ansible
       set +e
-      pkill consul
+      sudo pkill consul
       set -e
       consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -bind=172.17.0.1 &
       ansible-playbook -i inventories/develop -c local --tags start devmachine.yml

@@ -58,3 +58,7 @@ main {
   position: relative;
   top: -3px;
 }
+.task-memo-editor {
+  width: 90%;
+}
+

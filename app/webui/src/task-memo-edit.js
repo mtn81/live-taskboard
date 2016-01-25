@@ -4,4 +4,14 @@ import {inject} from 'aurelia-framework';
 
 @inject(EventAggregator)
 export class TaskMemoEdit {
+  memo = '';
+
+  change() {
+  
+  }
+  
+  activate() {
+  
+  }
+
 }
