@@ -25,6 +25,10 @@ export class TaskStatus {
     this.authContext = authContext;
   }
 
+  showMemoEdit(task) {
+    $(this.taskMemoEditModel).modal('show');
+  }
+
   removeTask(task) {
     bootbox.confirm('削除します。よろしいですか？', confirmation => {
       if(confirmation) {

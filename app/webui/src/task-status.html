@@ -3,6 +3,7 @@
   <require from="./widget"></require>
   <require from="./droppable"></require>
   <require from="./editable-text"></require>
+  <require from="./task-memo-edit"></require>
 
   <div class="taskstatus panel panel-default" style="display:inline-block"
     widget.bind="{ widgetId: 'taskstatus-' + status, freeOnDrag: true}"
@@ -25,7 +26,7 @@
             <editable-text key.bind="task" event="taskName.changed">${task.taskName}</editable-text>
           </strong>
           <span class="task-actions">
-            <button type="button" class="btn btn-default" click.delegate="$parent.removeTask(task)">
+            <button type="button" class="btn btn-default" click.delegate="$parent.showMemoEdit(task)">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </button>
             <button type="button" class="btn btn-default" click.delegate="$parent.removeTask(task)">
@@ -52,6 +53,27 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="modal fade" ref="taskMemoEditModel">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">タスクメモ編集<h4>
+      </div>
+      <div class="modal-body">
+        <compose view-model="task-memo-edit"></compose>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"
+          click.delegate="fire('task-memo-edit.change', taskMemoEditModel)">変更</button>
+      </div>
+  </div>
+  </div>
   </div>
 
 </template>
