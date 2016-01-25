@@ -41,7 +41,7 @@ export class EditableLabel {
       const text = this.$input.val();
       this.$view.text(text);
       if (this.event) {
-        this.events.publish(this.event, this.key, text);
+        this.events.publish(this.event, [this.key, text]);
       }
     });
   }

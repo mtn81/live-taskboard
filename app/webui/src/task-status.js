@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import {customElement, inject, bindable} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
@@ -87,7 +88,20 @@ export class TaskStatus {
     this.events.subscribe(TasksLoaded, () => {
       this.events.publish('task.loaded', this.group.groupId);
     });
+    this.events.subscribe('taskName.changed', args => {
+      const task = args[0];
+      if (this._hasTask(task)) {
+        task.taskName = args[1];
+        this.modifyTask(task);
+      }
+    });
 
+  }
+
+  _hasTask(task) {
+    return !! _.find(this._tasks[this.status], (t) => {
+      return t.taskId === task.taskId;
+    });
   }
 
 }
