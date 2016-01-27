@@ -2,7 +2,7 @@
   "data_dir": "/tmp/consul",
   "node_name": "aa-db",
   "start_join": ["172.17.0.1"],
-  "log_level": "info",
+  "log_level": "debug",
   "watches": [{
     "type": "event",
     "name": "deploy",

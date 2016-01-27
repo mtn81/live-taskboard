@@ -3,6 +3,9 @@
 - name: enable rabbitmq_management
   rabbitmq_plugin: names=rabbitmq_management state=enabled
 
+- name: start rabbitmq-server
+  service: name=rabbitmq-server state=started
+
 - name: create app user
   rabbitmq_user: >
     user=app
@@ -12,9 +15,6 @@
     read_priv=.*
     write_priv=.*
     state=present
-
-- name: start rabbitmq-server
-  service: name=rabbitmq-server state=started
 
 - name: declare exchanges
   rabbitmq_exchange: name={{ item }} type=fanout durable=yes
