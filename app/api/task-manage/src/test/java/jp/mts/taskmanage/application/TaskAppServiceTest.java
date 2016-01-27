@@ -11,7 +11,6 @@ import java.util.Optional;
 
 import jp.mts.base.domain.model.CompositeId;
 import jp.mts.libs.unittest.Dates;
-import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
@@ -28,11 +27,9 @@ import mockit.Injectable;
 import mockit.NonStrictExpectations;
 import mockit.Tested;
 
-import org.javalite.test.jspec.Expectation;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class TaskAppServiceTest {
 	
@@ -41,6 +38,17 @@ public class TaskAppServiceTest {
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
 
+	@Test
+	public void test_loadById() {
+		Task expected = new TaskFixture().get();
+		new Expectations() {{
+			taskRepository.findById(CompositeId.of(new GroupId("g01"), new TaskId("t01")));
+				result = Optional.of(expected);
+		}};
+
+		Task actual = taskAppService.loadById("g01", "t01");
+		assertThat(actual, is(expected));
+	}
 	@Test
 	public void test_findTasksByGroup() {
 		

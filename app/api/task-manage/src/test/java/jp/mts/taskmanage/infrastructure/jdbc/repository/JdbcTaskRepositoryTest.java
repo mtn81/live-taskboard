@@ -26,7 +26,28 @@ public class JdbcTaskRepositoryTest extends JdbcTestBase {
 	@Tested JdbcTaskRepository target = new JdbcTaskRepository();
 	
 	@Test
-	public void test() {
+	public void test_persistence() {
+		target.save(new TaskFixture("g01", "t01")
+			.setName("task01")
+			.setDeadline(Dates.date("2015/01/02"))
+			.setAssigned("m01")
+			.setMemo("memo1")
+			.get());
+		
+		Optional<Task> found = target.findById(
+				CompositeId.of(new GroupId("g01"), new TaskId("t01")));
+		
+		assertThat(found.isPresent(), is(true));
+		assertThat(found.get().taskId().value(), is("t01"));
+		assertThat(found.get().groupId().value(), is("g01"));
+		assertThat(found.get().name(), is("task01"));
+		assertThat(found.get().deadline(), is(Dates.date("2015/01/02")));
+		assertThat(found.get().assignedMemberId().value(), is("m01"));
+		assertThat(found.get().memo(), is("memo1"));
+	}
+	
+	@Test
+	public void test_findByGroupId() {
 		GroupId groupId = new GroupId("g01");
 		
 		target.save(new TaskFixture(groupId.value(), "t01")

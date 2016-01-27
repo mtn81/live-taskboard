@@ -27,6 +27,16 @@ export class TaskService {
     return this._tasks;
   }
 
+  loadDetail(groupId, taskId) {
+    return this.httpLoader.object(
+        `/api/task-manage/groups/${groupId}/tasks/${taskId}?detail`,
+        response => {
+          let task = response.content.data;
+          if(callback) callback(task);
+          return task;
+        });
+  }
+
   register(groupId, task) {
     this.http.call(http => {
       return http

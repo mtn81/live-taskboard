@@ -56,6 +56,7 @@ public class JdbcTaskRepository
 				new MemberId(taskModel.getString("assigned")),
 				taskModel.getDate("deadline")))
 			.setStatus(TaskStatus.valueOf(taskModel.getString("status")))
+			.setMemo(taskModel.getString("memo"))
 			.get();
 	}
 
@@ -66,7 +67,8 @@ public class JdbcTaskRepository
 				"group_id", task.groupId().value(),
 				"status", task.status().name(),
 				"name", task.name(),
-				"assigned", task.assignedMemberId().value());
+				"assigned", task.assignedMemberId().value(),
+				"memo", task.memo());
 		taskModel.setDate("deadline", task.deadline());
 	}
 	

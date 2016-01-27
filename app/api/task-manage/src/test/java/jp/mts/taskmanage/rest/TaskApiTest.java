@@ -11,6 +11,7 @@ import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.TaskFixture;
 import jp.mts.taskmanage.domain.model.TaskStatus;
+import jp.mts.taskmanage.rest.presentation.model.TaskDetailLoad;
 import jp.mts.taskmanage.rest.presentation.model.TaskList;
 import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
 import jp.mts.taskmanage.rest.presentation.model.TaskSave;
@@ -103,6 +104,22 @@ public class TaskApiTest {
 		RestResponse<TaskSave> response = target.modifyTask("g01", "t01", taskSave);
 		
 		assertThat(response.getData().getTaskId(), is("t01"));
+	}
+	
+	@Test
+	public void test_loadDetail() {
+		target.initialize();
+		
+		new Expectations() {{
+			taskAppService.loadById("g01", "t01");
+				result = new TaskFixture("g01", "t01").setMemo("memo").get();
+		}};
+		
+		RestResponse<TaskDetailLoad> response = target.loadTaskDetail("g01", "t01");
+		TaskDetailLoad actual = response.getData();
+		
+		assertThat(actual.getTaskId(), is("t01"));
+		assertThat(actual.getMemo(), is("memo"));
 	}
 
 	private TaskSave newTaskSave(

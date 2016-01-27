@@ -91,4 +91,9 @@ public class TaskAppService {
 		return task;
 	}
 
+	public Task loadById(String groupId, String taskId) {
+		return taskRepository.findById(CompositeId.of(
+				new GroupId(groupId), new TaskId(taskId))).get();
+	}
+
 }

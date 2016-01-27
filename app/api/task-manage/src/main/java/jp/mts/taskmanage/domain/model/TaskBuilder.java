@@ -26,6 +26,10 @@ public class TaskBuilder {
 		this.task.setAssignedMemberId(assigned);
 		return this;
 	}
+	public TaskBuilder setMemo(String memo) {
+		this.task.setMemo(memo);
+		return this;
+	}
 	
 	public Task get() {
 		return this.task;

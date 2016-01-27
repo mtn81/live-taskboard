@@ -26,6 +26,7 @@ export class TaskStatus {
   }
 
   showMemoEdit(task) {
+    this.events.publish('task-memo-edit.init', [ this.group.groupId, task.taskId ]);
     $(this.taskMemoEditModel).modal('show');
   }
 

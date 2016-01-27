@@ -10,8 +10,10 @@
   sudo: yes
   with_items:
     - livetaskboard/web
-    - livetaskboard/tm-db
     - livetaskboard/aa-db
+    - livetaskboard/tm-db
+    - livetaskboard/ws-db
+    - livetaskboard/mq
 
 - name: run containers
   docker:
@@ -26,5 +28,8 @@
   sudo: yes
   with_items:
     - { name: web,   port: "80:80" }
-    - { name: tm-db, port: "15432:5432" }
-    - { name: aa-db, port: "25432:5432" }
+    - { name: aa-db, port: "15432:5432" }
+    - { name: tm-db, port: "25432:5432" }
+    - { name: ws-db, port: "35432:5432" }
+    - { name: mq,    port: "5672:5672" }
+

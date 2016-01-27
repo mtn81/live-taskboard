@@ -11,6 +11,7 @@ public class Task extends DomainEntity<CompositeId>{
 	private String name;
 	private Date deadline;
 	private MemberId assignedMemberId;
+	private String memo;
 	
 	public Task(
 			GroupId groupId, 
@@ -43,6 +44,9 @@ public class Task extends DomainEntity<CompositeId>{
 	public MemberId assignedMemberId() {
 		return assignedMemberId;
 	}
+	public String memo() {
+		return memo;
+	}
 	
 	public void changeSummary(
 			String taskName, 
@@ -57,6 +61,10 @@ public class Task extends DomainEntity<CompositeId>{
 		
 		domainEventPublisher.publish(new TaskModified(this));
 	}
+
+	public void changeMemo(String memo) {
+		setMemo(memo);
+	}
 	
 	void setStatus(TaskStatus status) {
 		this.taskStatus = status;
@@ -69,6 +77,9 @@ public class Task extends DomainEntity<CompositeId>{
 	}
 	void setAssignedMemberId(MemberId assignedMemberId) {
 		this.assignedMemberId = assignedMemberId;
+	}
+	void setMemo(String memo) {
+		this.memo = memo;
 	}
 
 }

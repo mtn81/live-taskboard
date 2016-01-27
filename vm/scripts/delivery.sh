@@ -16,6 +16,7 @@ for command in $commands; do
       sudo docker build -t livetaskboard/web -f Dockerfile_web .
       sudo docker build -t livetaskboard/tm-db -f Dockerfile_tm-db .
       sudo docker build -t livetaskboard/aa-db -f Dockerfile_aa-db .
+      sudo docker build -t livetaskboard/ws-db -f Dockerfile_ws-db .
     ;;
 
     "build:webui" )

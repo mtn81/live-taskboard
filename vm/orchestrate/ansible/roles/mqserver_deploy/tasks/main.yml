@@ -1,0 +1,29 @@
+---
+
+- name: enable rabbitmq_management
+  rabbitmq_plugin: names=rabbitmq_management state=enabled
+
+- name: start rabbitmq-server
+  service: name=rabbitmq-server state=started
+
+- name: declare exchanges
+  rabbitmq_exchange: name={{ item }} type=fanout durable=yes
+  with_items:
+    - auth-access
+    - task-manage
+    - widget-store
+
+- name: declare queues
+  rabbitmq_queue: name={{ item }} durable=yes
+  with_items:
+    - auth-access
+    - task-manage
+    - widget-store
+
+- name: declare bindings
+  rabbitmq_binding: name={{ item.exchange }} destination={{ item.queue }} type=queue
+  with_items:
+    - { exchange: auth-access,  queue: auth-access }
+    - { exchange: auth-access,  queue: task-manage }
+    - { exchange: task-manage,  queue: task-manage }
+    - { exchange: widget-store, queue: widget-store }

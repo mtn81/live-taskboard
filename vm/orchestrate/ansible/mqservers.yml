@@ -1,0 +1,9 @@
+---
+
+- hosts: localhost
+  roles:
+    - { role: common,          tags: ['base_image'] }
+    - { role: mqserver,        tags: ['base_image'] }
+    - { role: mqserver_deploy, tags: ['deploy'] }
+
+

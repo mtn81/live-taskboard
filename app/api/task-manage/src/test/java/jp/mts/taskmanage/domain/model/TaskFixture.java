@@ -36,6 +36,10 @@ public class TaskFixture {
 		task.setAssignedMemberId(new MemberId(memberId));
 		return this;
 	}
+	public TaskFixture setMemo(String memo) {
+		task.setMemo(memo);
+		return this;
+	}
 	
 	
 
