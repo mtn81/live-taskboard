@@ -17,6 +17,7 @@ for command in $commands; do
       sudo docker build -t livetaskboard/tm-db -f Dockerfile_tm-db .
       sudo docker build -t livetaskboard/aa-db -f Dockerfile_aa-db .
       sudo docker build -t livetaskboard/ws-db -f Dockerfile_ws-db .
+      sudo docker build -t livetaskboard/mq -f Dockerfile_mq .
     ;;
 
     "build:webui" )
@@ -31,6 +32,14 @@ for command in $commands; do
       dest_dir=$ansible_dir/roles/webserver_deploy/files/build
       rm -fR $dest_dir/*
       cp -r export/* $dest_dir
+    ;;
+
+    "dev:clean" )
+      cd $orchestrate_dir/ansible
+      set +e
+      sudo pkill consul
+      sudo docker rm -f `sudo docker ps -aq`
+      set -e
     ;;
 
     "run:base" )

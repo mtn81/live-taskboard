@@ -6,13 +6,13 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://192.168.77.11:35432/widget-store
+    url: jdbc:postgresql://192.168.77.10:35432/widget-store
     username: app
     password: pass
     driver-class-name: org.postgresql.Driver
     
 rabbitmq:
-  host: 192.168.77.11
-  username: guest
-  password: guest
+  host: 192.168.77.10
+  username: app 
+  password: pass
   exchange: widget-store 

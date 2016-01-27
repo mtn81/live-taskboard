@@ -1,14 +1,9 @@
 package jp.mts.base.config;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -54,38 +49,38 @@ public class MqConfig {
     }
 	
     //TODO ミドルのセットアップとして行う
-	@Bean
-	AmqpAdmin amqpAdmin(){
-		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
-
-		rabbitAdmin.deleteExchange("auth-access");
-		rabbitAdmin.deleteQueue("auth-access");
-		rabbitAdmin.deleteExchange("task-manage");
-		rabbitAdmin.deleteQueue("task-manage");
-		rabbitAdmin.deleteExchange("widget-store");
-		rabbitAdmin.deleteQueue("widget-store");
-		
-		Queue aa_queue = new Queue("auth-access", true);
-		FanoutExchange aa_exchange = new FanoutExchange("auth-access", true, false);
-		rabbitAdmin.declareQueue(aa_queue);
-		rabbitAdmin.declareExchange(aa_exchange);
-
-		Queue tm_queue = new Queue("task-manage", true);
-		FanoutExchange tm_exchange = new FanoutExchange("task-manage", true, false);
-		rabbitAdmin.declareQueue(tm_queue);
-		rabbitAdmin.declareExchange(tm_exchange);
-
-		Queue wm_queue = new Queue("widget-store", true);
-		FanoutExchange wm_exchange = new FanoutExchange("widget-store", true, false);
-		rabbitAdmin.declareQueue(wm_queue);
-		rabbitAdmin.declareExchange(wm_exchange);
-
-		rabbitAdmin.declareBinding(BindingBuilder.bind(aa_queue).to(aa_exchange));
-		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(aa_exchange));
-		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(tm_exchange));
-		rabbitAdmin.declareBinding(BindingBuilder.bind(wm_queue).to(wm_exchange));
-		
-		return rabbitAdmin;
-	}
+//	@Bean
+//	AmqpAdmin amqpAdmin(){
+//		RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory());
+//
+//		rabbitAdmin.deleteExchange("auth-access");
+//		rabbitAdmin.deleteQueue("auth-access");
+//		rabbitAdmin.deleteExchange("task-manage");
+//		rabbitAdmin.deleteQueue("task-manage");
+//		rabbitAdmin.deleteExchange("widget-store");
+//		rabbitAdmin.deleteQueue("widget-store");
+//		
+//		Queue aa_queue = new Queue("auth-access", true);
+//		FanoutExchange aa_exchange = new FanoutExchange("auth-access", true, false);
+//		rabbitAdmin.declareQueue(aa_queue);
+//		rabbitAdmin.declareExchange(aa_exchange);
+//
+//		Queue tm_queue = new Queue("task-manage", true);
+//		FanoutExchange tm_exchange = new FanoutExchange("task-manage", true, false);
+//		rabbitAdmin.declareQueue(tm_queue);
+//		rabbitAdmin.declareExchange(tm_exchange);
+//
+//		Queue wm_queue = new Queue("widget-store", true);
+//		FanoutExchange wm_exchange = new FanoutExchange("widget-store", true, false);
+//		rabbitAdmin.declareQueue(wm_queue);
+//		rabbitAdmin.declareExchange(wm_exchange);
+//
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(aa_queue).to(aa_exchange));
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(aa_exchange));
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(tm_queue).to(tm_exchange));
+//		rabbitAdmin.declareBinding(BindingBuilder.bind(wm_queue).to(wm_exchange));
+//		
+//		return rabbitAdmin;
+//	}
 
 }

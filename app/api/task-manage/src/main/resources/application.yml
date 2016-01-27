@@ -6,15 +6,15 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://192.168.77.11:25432/task-manage
+    url: jdbc:postgresql://192.168.77.10:25432/task-manage
     username: app
     password: pass
     driver-class-name: org.postgresql.Driver
     
 rabbitmq:
-  host: 192.168.77.11
-  username: guest
-  password: guest
+  host: 192.168.77.10
+  username: app
+  password: pass
   exchange: task-manage 
 
 cooperation:
