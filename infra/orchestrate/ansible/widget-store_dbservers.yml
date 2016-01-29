@@ -1,8 +1,0 @@
----
-
-- hosts: widget-store_dbservers
-  roles:
-    - { role: widget-store_db, when: stage != 'develop', tags: ['base_image'] }
-    - widget-store_db_migrate
-
-

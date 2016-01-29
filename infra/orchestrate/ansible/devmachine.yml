@@ -1,7 +1,0 @@
----
-
-- hosts: devmachine
-  roles:
-    #- devtools
-    - docker_image_load
-
