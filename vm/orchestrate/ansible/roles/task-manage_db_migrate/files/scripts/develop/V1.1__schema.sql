@@ -45,6 +45,7 @@ create table tasks (
   name varchar(100) not null,
   deadline date,
   assigned varchar(100),
+  memo varchar(1000),
   constraint uc_tasks unique (task_id, group_id)
 );
 

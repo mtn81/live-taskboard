@@ -38,7 +38,8 @@ for command in $commands; do
       cd $orchestrate_dir/ansible
       set +e
       sudo pkill consul
-      sudo docker rm -f `sudo docker ps -aq`
+      sudo docker rm -f $(sudo docker ps -aq)
+      sudo docker rmi $(sudo docker images -f "dangling=true" -q)
       set -e
     ;;
 

@@ -9,3 +9,4 @@
     "handler": "cd /ansible && ansible-playbook auth-access_dbservers.yml -i inventories/develop -c local --tags migrate"
   }]
 }
+

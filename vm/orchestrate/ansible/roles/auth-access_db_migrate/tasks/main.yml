@@ -3,4 +3,5 @@
 - include: ../../../include/rdb_migrate.yml
   vars:
     script_dir: "{{ role_path }}/files/scripts/{{ stage }}"
+    db_name: auth-access
 

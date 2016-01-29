@@ -4,6 +4,13 @@
   service: name=postgresql state=restarted
   sudo: yes
 
+- name: wait for stating database
+  shell: su postgres -c "psql -c 'select 1' {{ db_name }}"
+  register: result
+  until: result.rc == 0
+  retries: 5
+  delay: 10
+
 - name: clear migration scripts
   command: rm -fR {{ flyway_home }}/sql
 
