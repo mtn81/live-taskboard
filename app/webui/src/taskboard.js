@@ -23,9 +23,18 @@ export class Taskboard {
   showTaskRegister(){
     $(this.taskRegisterModal).on('shown.bs.modal', () => {
       this.events.publish('init.task.register', this.group);
+      $(this.taskRegisterModal).unbind('shown.bs.modal');
     });
 
     $(this.taskRegisterModal).modal('show');
+  }
+
+  showMemoEdit(task) {
+    $(this.taskMemoEditModel).on('shown.bs.modal', () => {
+      this.events.publish('task-memo-edit.init', [ this.group.groupId, task ]);
+      $(this.taskMemoEditModel).unbind('shown.bs.modal');
+    });
+    $(this.taskMemoEditModel).modal('show');
   }
 
   fire(eventId, hideTarget){
@@ -45,6 +54,7 @@ export class Taskboard {
     this.events.subscribe('group.selected', group => {
       this.group = group;
     });
+
   }
 
   get isGroupSelected() {

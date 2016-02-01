@@ -49,3 +49,26 @@
     - { name: gulp, version: 3.9.0 }
     - { name: jspm, version: 0.16.9 }
 
+######################################
+# jdk
+######################################
+- name: check jdk already installed
+  shell: java -version 2>&1 | grep 'java version "1.8.*"'
+  register: is_java_installed
+  ignore_errors : yes
+
+- name: add apt repo (jdk)
+  apt_repository: repo='ppa:webupd8team/java'
+  sudo: yes
+  when: is_java_installed.rc != 0
+
+- name: setting for accepting licence (jdk)
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  sudo: yes
+  when: is_java_installed.rc != 0
+
+- name: install jdk
+  apt: name=oracle-java8-installer
+  sudo: yes
+  when: is_java_installed.rc != 0
+

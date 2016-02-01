@@ -25,10 +25,6 @@ export class TaskStatus {
     this.authContext = authContext;
   }
 
-  showMemoEdit(task) {
-    this.events.publish('task-memo-edit.init', [ this.group.groupId, task.taskId ]);
-    $(this.taskMemoEditModel).modal('show');
-  }
 
   removeTask(task) {
     bootbox.confirm('削除します。よろしいですか？', confirmation => {
@@ -93,19 +89,11 @@ export class TaskStatus {
     this.events.subscribe(TasksLoaded, () => {
       this.events.publish('task.loaded', this.group.groupId);
     });
-    this.events.subscribe('taskName.changed', args => {
-      const task = args[0];
-      if (this._hasTask(task)) {
-        task.taskName = args[1];
-        this.modifyTask(task);
-      }
-    });
-
   }
 
-  _hasTask(task) {
-    return !! _.find(this._tasks[this.status], (t) => {
-      return t.taskId === task.taskId;
+  _getTask(taskId) {
+    return _.find(this._tasks[this.status], (t) => {
+      return t.taskId === taskId;
     });
   }
 

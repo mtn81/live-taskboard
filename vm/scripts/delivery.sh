@@ -7,6 +7,7 @@ project_dir=$(dirname $(readlink -f $0))/../..
 orchestrate_dir=$project_dir/vm/orchestrate
 ansible_dir=$orchestrate_dir/ansible
 webui_dir=$project_dir/app/webui
+api_dir=$project_dir/app/api
 
 for command in $commands; do
   case "$command" in
@@ -32,6 +33,12 @@ for command in $commands; do
       dest_dir=$ansible_dir/roles/webserver_deploy/files/build
       rm -fR $dest_dir/*
       cp -r export/* $dest_dir
+    ;;
+
+    "build:api" )
+      cd $api_dir
+
+      ./gradlew build
     ;;
 
     "dev:clean" )
