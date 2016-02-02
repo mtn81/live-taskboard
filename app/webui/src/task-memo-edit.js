@@ -5,7 +5,7 @@ import {TaskService, TaskModified} from './task/task-service';
 
 @inject(EventAggregator, TaskService)
 export class TaskMemoEdit {
-  memo = '';
+  task = null
 
   constructor(eventAggregator, taskService){
     this.taskService = taskService;
@@ -13,8 +13,7 @@ export class TaskMemoEdit {
   }
 
   change() {
-    this.task.memo = this.memo;
-    this.taskService.modify(this.groupId, this.task);
+    this.taskService.modifyDetail(this.groupId, this.task);
     this.events.subscribe(TaskModified, () => {
       this.events.publish('task-memo-edit.change.success');
     });
@@ -23,9 +22,9 @@ export class TaskMemoEdit {
   attached() {
     this.events.subscribe('task-memo-edit.init', args => {
       this.groupId = args[0];
-      this.task = args[1];
-      this.taskService.loadDetail(this.groupId, this.task.taskId, task => {
-        this.memo = task.memo;
+      this.taskId = args[1];
+      this.taskService.loadDetail(this.groupId, this.taskId, task => {
+        this.task = task;
       });
     });
     this.events.subscribe('task-memo-edit.change', () => {

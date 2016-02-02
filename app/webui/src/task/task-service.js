@@ -29,7 +29,7 @@ export class TaskService {
 
   loadDetail(groupId, taskId, callback) {
     return this.httpLoader.object(
-        `/api/task-manage/groups/${groupId}/tasks/${taskId}?detail`,
+        `/api/task-manage/groups/${groupId}/tasks/${taskId}`,
         response => {
           let task = response.content.data;
           if(callback) callback(task);
@@ -51,6 +51,16 @@ export class TaskService {
     this.http.call(http => {
       return http
         .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}`, task)
+        .then(response => {
+          this.eventAggregator.publish(new TaskModified());
+        });
+    }, true);
+  }
+
+  modifyDetail(groupId, task) {
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}?detail`, task)
         .then(response => {
           this.eventAggregator.publish(new TaskModified());
         });

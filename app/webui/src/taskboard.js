@@ -21,19 +21,12 @@ export class Taskboard {
   }
 
   showTaskRegister(){
-    $(this.taskRegisterModal).on('shown.bs.modal', () => {
-      this.events.publish('init.task.register', this.group);
-      $(this.taskRegisterModal).unbind('shown.bs.modal');
-    });
-
+    this.events.publish('init.task.register', this.group);
     $(this.taskRegisterModal).modal('show');
   }
 
   showMemoEdit(task) {
-    $(this.taskMemoEditModel).on('shown.bs.modal', () => {
-      this.events.publish('task-memo-edit.init', [ this.group.groupId, task ]);
-      $(this.taskMemoEditModel).unbind('shown.bs.modal');
-    });
+    this.events.publish('task-memo-edit.init', [ this.group.groupId, task.taskId ]);
     $(this.taskMemoEditModel).modal('show');
   }
 

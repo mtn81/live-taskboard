@@ -91,6 +91,22 @@ public class TaskAppService {
 		return task;
 	}
 
+	public Task modifyTaskDetail(
+			String aGroupId, 
+			String aTaskId, 
+			String memo) {
+		
+		GroupId groupId = new GroupId(aGroupId);
+		TaskId taskId = new TaskId(aTaskId);
+
+		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
+		task.changeDetail(memo);
+		
+		taskRepository.save(task);
+
+		return task;
+	}
+
 	public Task loadById(String groupId, String taskId) {
 		return taskRepository.findById(CompositeId.of(
 				new GroupId(groupId), new TaskId(taskId))).get();

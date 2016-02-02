@@ -10,7 +10,7 @@ public class TaskTest {
 	@Test
 	public void test_memo() {
 		Task task = new TaskFixture().get();
-		task.changeMemo("memo1");
+		task.changeDetail("memo1");
 		assertThat(task.memo(), is("memo1"));
 	}
 

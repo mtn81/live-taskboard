@@ -62,7 +62,7 @@ public class Task extends DomainEntity<CompositeId>{
 		domainEventPublisher.publish(new TaskModified(this));
 	}
 
-	public void changeMemo(String memo) {
+	public void changeDetail(String memo) {
 		setMemo(memo);
 	}
 	
