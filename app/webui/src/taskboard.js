@@ -27,6 +27,12 @@ export class Taskboard {
 
   showMemoEdit(task) {
     this.events.publish('task-memo-edit.init', [ this.group.groupId, task.taskId ]);
+    this.events.subscribe('task-memo-edit.enable', payload => {
+      $(this.taskMemoEditModel).find('.btn-primary').removeAttr('disabled');
+    });
+    this.events.subscribe('task-memo-edit.disable', payload => {
+      $(this.taskMemoEditModel).find('.btn-primary').attr('disabled', true);
+    });
     $(this.taskMemoEditModel).modal('show');
   }
 

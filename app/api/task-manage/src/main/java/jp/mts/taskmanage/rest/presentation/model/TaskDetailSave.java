@@ -3,6 +3,8 @@ package jp.mts.taskmanage.rest.presentation.model;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.Task;
 
+import org.hibernate.validator.constraints.Length;
+
 public class TaskDetailSave {
 	
 	private static TaskAppService taskAppService;
@@ -12,6 +14,7 @@ public class TaskDetailSave {
 	}
 
 	// input
+	@Length(max=10)
 	private String memo;
 
 	public void setMemo(String memo) {
@@ -22,6 +25,7 @@ public class TaskDetailSave {
 	private Task task;
 
 	public String getTaskId() {
+		if(task == null) return null;
 		return task.taskId().value();
 	}
 	

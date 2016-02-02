@@ -1,7 +1,12 @@
 <template>
 
-<form>
-  <textarea rows="15" class="form-control" value.bind="task.memo"></textarea>
+<require from="./global-errors"></require>
+<require from="./form-validate"></require>
+
+<form formValid="validate.task.edit">
+  <div class="form-group">
+    <textarea rows="15" class="form-control" value.bind="memo"></textarea>
+  </div>
 </form>
 
 </template>

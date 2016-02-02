@@ -57,6 +57,19 @@ export class TaskService {
     }, true);
   }
 
+  validateDetail(groupId, task) {
+    this.http.call(http => {
+      return http
+        .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}?detail&validate`, task)
+        .then(response => {
+          this.eventAggregator.publish(new TaskValidationSuccess());
+        })
+        .catch(response => {
+          this.eventAggregator.publish(new TaskValidationError(new GlobalError(response.content.errors)));
+        });
+    }, true);
+  }
+
   modifyDetail(groupId, task) {
     this.http.call(http => {
       return http
@@ -113,3 +126,9 @@ export class TaskRegistered {}
 export class TaskModified {}
 export class TaskRemoved {}
 export class TasksLoaded {}
+export class TaskValidationSuccess {}
+export class TaskValidationError {
+  constructor(error){
+    this.error = error;
+  }
+}

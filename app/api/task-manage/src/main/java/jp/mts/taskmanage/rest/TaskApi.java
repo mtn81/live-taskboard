@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.rest;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.TaskAppService;
@@ -12,6 +13,7 @@ import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
 import jp.mts.taskmanage.rest.presentation.model.TaskSave;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,13 +82,28 @@ public class TaskApi {
 	@RequestMapping(
 			value="/groups/{groupId}/tasks/{taskId}", 
 			method=RequestMethod.PUT,
-			params="detail")
+			params={"detail", "!validate"})
 	public RestResponse<TaskDetailSave> modifyTaskDetail(
 			@PathVariable @GroupBelong String groupId, 
 			@PathVariable String taskId, 
-			@RequestBody TaskDetailSave taskDetailSave) {
+			@RequestBody @Valid TaskDetailSave taskDetailSave,
+			BindingResult result) {
 		
+		if (result.hasErrors()) return RestResponse.of(result);
 		taskDetailSave.update(groupId, taskId);
+		return RestResponse.of(taskDetailSave);
+	}
+	@RequestMapping(
+			value="/groups/{groupId}/tasks/{taskId}", 
+			method=RequestMethod.PUT,
+			params={"detail", "validate"})
+	public RestResponse<TaskDetailSave> validateTaskDetail(
+			@PathVariable @GroupBelong String groupId, 
+			@PathVariable String taskId, 
+			@RequestBody @Valid TaskDetailSave taskDetailSave,
+			BindingResult result) {
+
+		if (result.hasErrors()) return RestResponse.of(result);
 		return RestResponse.of(taskDetailSave);
 	}
 	
