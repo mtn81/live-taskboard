@@ -1,7 +1,6 @@
 package jp.mts.taskmanage.application;
 
 import static jp.mts.taskmanage.application.ErrorType.GROUP_REMOVE_DISABLED;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;

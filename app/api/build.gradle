@@ -81,9 +81,9 @@ subprojects {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     compile "org.springframework.boot:spring-boot-starter-aop"
-    compile("org.springframework.boot:spring-boot-starter-amqp")
-    compile("org.springframework.boot:spring-boot-starter-websocket")
-    compile("org.springframework.boot:spring-boot-starter-mail")
+    compile "org.springframework.boot:spring-boot-starter-amqp"
+    compile "org.springframework.boot:spring-boot-starter-websocket"
+    compile "org.springframework.boot:spring-boot-starter-mail"
     testCompile "org.springframework.boot:spring-boot-starter-test"
 
     compile "org.apache.commons:commons-lang3:3.4"
@@ -125,18 +125,31 @@ subprojects {
   }
 }
 
+project(':libs') {
+  mainClassName = "dummy"
+}
+project(':libs:unit-test') {
+  mainClassName = "dummy"
+}
 project(':libs:event') {
+  mainClassName = "dummy"
   dependencies {
     testCompile project(':libs:unit-test')
   }
 }
 project(':base') {
+  mainClassName = "dummy"
   dependencies {
     compile project(':libs:event')
+    testCompile project(':libs:unit-test')
   }
 }
 project(':ut-base') {
+  mainClassName = "dummy"
   dependencies {
+  	compile "org.jmockit:jmockit:1.17";
+  	compile "junit:junit:4.11"
+    compile "org.springframework.boot:spring-boot-starter-test"
     compile project(':libs:unit-test')
     compile project(':base')
   }
@@ -145,17 +158,20 @@ project(':auth-access') {
   dependencies {
     compile project(':libs:event'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
+    testRuntime files("../../../vm/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts")
   }
 }
 project(':task-manage') {
   dependencies {
     compile project(':libs:event'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
+    testRuntime files("../../../vm/orchestrate/ansible/roles/task-manage_db_migrate/files/scripts")
   }
 }
 project(':widget-store') {
   dependencies {
     compile project(':libs:event'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
+    testRuntime files("../../../vm/orchestrate/ansible/roles/widget-store_db_migrate/files/scripts")
   }
 }

@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 import jp.mts.base.domain.model.CompositeId;
+import jp.mts.base.domain.model.DomainEventPublisher;
+import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
+import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupFixture;
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.GroupRepository;
@@ -24,6 +27,7 @@ import jp.mts.taskmanage.domain.model.TaskRepository;
 import jp.mts.taskmanage.domain.model.TaskStatus;
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Tested;
 
@@ -37,6 +41,7 @@ public class TaskAppServiceTest {
 	@Injectable TaskRepository taskRepository;
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
+	@Mocked DomainEventPublisher domainEventPublisher;
 
 	@Test
 	public void test_loadById() {
@@ -105,13 +110,17 @@ public class TaskAppServiceTest {
 		GroupId groupId = new GroupId("g01");
 		TaskId taskId = new TaskId("t01");
 		Task task = new TaskFixture().get();
-		
+		Group group = new GroupFixture().get();
+
 		new Expectations() {{
+			groupRepository.findById(groupId);
+				result = Optional.of(group);
 			taskRepository.findById(of(groupId, taskId));
 				result = Optional.of(task);
 				
 			taskRepository.remove(task);
 		}};
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		
 		taskAppService.removeTask(groupId.value(), taskId.value());
 	}

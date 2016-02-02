@@ -12,6 +12,7 @@ import jp.mts.authaccess.domain.model.proper.ProperUserActivationFixture;
 import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
+import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
 import mockit.Expectations;
@@ -26,6 +27,7 @@ public class UserAppServiceTest {
 	@Tested UserAppService target = new UserAppService();
 	@Injectable ProperUserRepository userRepository;
 	@Injectable ProperAuthenticateService authenticateService;
+	@Mocked DomainEventPublisher domainEventPublisher;
 
 	@Test
 	public void test_register() {
@@ -67,6 +69,7 @@ public class UserAppServiceTest {
 			userRepository.save(user);
 		}};
 		DomainObject.setDomainCalendar(domainCalendar);
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		
 		ProperUser activatedUser = target.activateUser(activationId);
 

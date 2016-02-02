@@ -36,13 +36,6 @@ public class WidgetAppServiceTest {
 		
 		target.changeGraphic(widgetId, position, size);
 		
-		new Verifications() {{
-			Widget widget;
-			widgetRepository.save(widget = withCapture());
-			assertThat(widget.widgetId(), is(widgetId));
-			assertThat(widget.position(), is(position));
-			assertThat(widget.size(), is(size));
-		}};
 	}
 
 	

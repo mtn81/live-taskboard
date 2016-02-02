@@ -13,7 +13,7 @@ public class WidgetFixture {
 	public WidgetFixture(WidgetId widgetId, Position position, Size size) {
 		widget = new Widget(widgetId);
 		widget.setPosition(position);
-		widget.setPosition(position);
+		widget.setSize(size);
 	}
 	
 	public Widget get(){

@@ -24,7 +24,6 @@ export class TaskMemoEdit {
     this.task.memo = this.memo;
     this.taskService.validateDetail(this.groupId, this.task);
     this.events.subscribe(TaskValidationSuccess, () => {
-      this.events.publish('validate.task.edit.success');
       this.events.publish('task-memo-edit.enable');
     });
     this.events.subscribe(TaskValidationError, e => {

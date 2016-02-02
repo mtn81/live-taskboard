@@ -1,7 +1,7 @@
 package jp.mts.base.util;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 import java.util.Map;
 
@@ -16,7 +16,7 @@ public class MapUtilsTest {
 		assertThat(map.get("a"), is(1));
 		assertThat(map.get("b"), is(2));
 
-		assertThat(map.entrySet().stream().findFirst().get().getKey() , is("a"));
+		assertThat(map.entrySet().stream().findFirst().get().getKey() , is("b"));
 	}
 	@Test
 	public void test_empty() {

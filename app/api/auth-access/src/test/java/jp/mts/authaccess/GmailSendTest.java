@@ -19,7 +19,7 @@ public class GmailSendTest {
 
 	@Test
 	@Ignore
-	public void test() {
+	public void test_hoge() {
 		SpringApplication.run(GmailSendTest.class);
 	}
 	

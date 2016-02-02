@@ -37,11 +37,13 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 		
 		new MemberModel().set(
 				"member_id", "m01",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 		new MemberModel().set(
 				"member_id", "m99",
-				"name", "member99")
+				"name", "member99",
+				"type", "PROPER")
 			.saveIt();
 
 		new GroupModel().set(
@@ -115,15 +117,18 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 		
 		new MemberModel().set(
 				"member_id", "m01",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 		new MemberModel().set(
 				"member_id", "m02",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 		new MemberModel().set(
 				"member_id", "m99",
-				"name", "member99")
+				"name", "member99",
+				"type", "PROPER")
 			.saveIt();
 
 		new GroupModel().set(
@@ -211,15 +216,18 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 	public void test_searchRejected() {
 		new MemberModel().set(
 				"member_id", "m01",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 		new MemberModel().set(
 				"member_id", "m02",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 		new MemberModel().set(
 				"member_id", "m99",
-				"name", "member99")
+				"name", "member99",
+				"type", "PROPER")
 			.saveIt();
 
 		new GroupModel().set(
@@ -298,7 +306,8 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 	
 		new MemberModel().set(
 				"member_id", "m01",
-				"name", "member01")
+				"name", "member01",
+				"type", "PROPER")
 			.saveIt();
 
 		new GroupModel().set(

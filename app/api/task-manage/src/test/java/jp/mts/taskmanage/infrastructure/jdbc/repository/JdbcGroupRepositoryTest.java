@@ -45,20 +45,20 @@ public class JdbcGroupRepositoryTest extends JdbcTestBase {
 	public void test_remove() {
 		
 		//setup
-		Group group = new GroupFixture("g01").get();
+		Group group = new GroupFixture("g01a").get();
 		groupRepository.save(group);
 		
 		GroupMemberModel.createIt(
-				"group_id", "g01",
-				"member_id", "m01",
+				"group_id", "g01a",
+				"member_id", "m01a",
 				"admin", true);
 		
 		//exec
 		groupRepository.remove(group);
 		
 		//assert
-		Optional<Group> foundGroup = groupRepository.findById(new GroupId("g01"));
+		Optional<Group> foundGroup = groupRepository.findById(new GroupId("g01a"));
 		assertThat(foundGroup.isPresent(), is(false));
-		assertThat(GroupMemberModel.findFirst("group_id=?", "g01"), is(nullValue()));
+		assertThat(GroupMemberModel.findFirst("group_id=?", "g01a"), is(nullValue()));
 	}
 }

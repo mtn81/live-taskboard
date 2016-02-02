@@ -1,7 +1,5 @@
 package jp.mts.taskmanage.infrastructure.cooperation;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

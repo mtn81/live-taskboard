@@ -33,7 +33,7 @@ public class ProperAuthenticateServiceTest {
 			userPasswordEncriptinService.encrypt(userId, "pass");
 				result = "encryptedPass";
 			userRepository.findByAuthCredential(userId, "encryptedPass");
-				result = new ProperUserFixture().get();
+				result = new ProperUserFixture().setStatus(ProperUserStatus.ACTIVE).get();
 			authRepository.newAuthId();
 				result = authId;
 			authRepository.save((Auth)any);

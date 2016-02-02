@@ -22,10 +22,12 @@ public class JdbcGroupBelongingSearchQueryTest extends JdbcTestBase {
 
 		MemberModel.createIt(
 				"member_id", "m01",
-				"name", "member01");
+				"name", "member01",
+				"type", "PROPER");
 		MemberModel.createIt(
 				"member_id", "m02",
-				"name", "member02");
+				"name", "member02",
+				"type", "PROPER");
 		
 		GroupModel.createIt(
 			"group_id", "g01",
