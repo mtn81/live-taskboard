@@ -12,7 +12,9 @@ import jp.mts.libs.unittest.Dates;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcUserRepositoryTest extends JdbcTestBase {
 
 	JdbcProperUserRepository target;

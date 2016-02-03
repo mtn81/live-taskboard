@@ -10,7 +10,9 @@ import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
 import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcGroupJoinApplicationRepositoryTest extends JdbcTestBase {
 
 	@Test

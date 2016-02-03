@@ -12,12 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes=TestConfig.class)
@@ -42,6 +46,10 @@ public abstract class JdbcTestBase {
 					.addScript("classpath:test-schema.sql")
 					.build());
 		}
+		@Bean
+		public PlatformTransactionManager transactionManager() {
+			return new DataSourceTransactionManager(dataSource());
+		}
 	}
 	
 	public static class WithActiveJdbc extends ExternalResource {
@@ -55,14 +63,13 @@ public abstract class JdbcTestBase {
 		@Override
 		protected void before() throws Throwable {
 			System.setProperty("activejdbc.log", "");
-			Base.open(test.dataSource);
+			Base.attach(DataSourceUtils.getConnection(test.dataSource));
 		}
 
 		@Override
 		protected void after() {
 			Base.detach();
 		}
-		
 	}
 	
 }

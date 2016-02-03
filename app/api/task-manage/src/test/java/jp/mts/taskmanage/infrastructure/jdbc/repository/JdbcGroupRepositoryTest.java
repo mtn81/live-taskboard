@@ -13,7 +13,9 @@ import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcGroupRepositoryTest extends JdbcTestBase {
 	
 	JdbcGroupRepository groupRepository = new JdbcGroupRepository();

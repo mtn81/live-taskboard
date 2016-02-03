@@ -8,7 +8,9 @@ import jp.mts.widgetstore.domain.model.WidgetFixture;
 import jp.mts.widgetstore.domain.model.WidgetId;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcWidgetRepositoryTest extends JdbcTestBase {
 
 

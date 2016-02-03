@@ -19,7 +19,9 @@ import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 	
 	JdbcGroupJoinSearchQuery target = new JdbcGroupJoinSearchQuery();

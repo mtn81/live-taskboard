@@ -7,7 +7,9 @@ import jp.mts.authaccess.domain.model.AuthFixture;
 import jp.mts.base.unittest.JdbcTestBase;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcAuthRepositoryTest extends JdbcTestBase {
 
 	@Test

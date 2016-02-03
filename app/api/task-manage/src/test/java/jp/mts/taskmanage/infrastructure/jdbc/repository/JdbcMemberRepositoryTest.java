@@ -13,9 +13,11 @@ import jp.mts.taskmanage.domain.model.MemberFixture;
 import jp.mts.taskmanage.domain.model.MemberId;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.Sets;
 
+@Transactional
 public class JdbcMemberRepositoryTest extends JdbcTestBase {
 
 	JdbcMemberRepository memberRepository = new JdbcMemberRepository();

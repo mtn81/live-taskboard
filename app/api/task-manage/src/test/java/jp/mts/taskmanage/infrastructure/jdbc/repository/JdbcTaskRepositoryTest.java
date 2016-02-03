@@ -20,7 +20,9 @@ import jp.mts.taskmanage.domain.model.TaskId;
 import mockit.Tested;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcTaskRepositoryTest extends JdbcTestBase {
 
 	@Tested JdbcTaskRepository target = new JdbcTaskRepository();

@@ -12,7 +12,9 @@ import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
 
 import org.junit.Test;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class JdbcGroupBelongingSearchQueryTest extends JdbcTestBase {
 
 	private JdbcGroupBelongingSearchQuery target = new JdbcGroupBelongingSearchQuery();

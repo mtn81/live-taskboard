@@ -1,0 +1,9 @@
+---
+
+- hosts: localhost
+  roles:
+    - { tags: ['base_image'], role: common }
+    - { tags: ['base_image'], role: apiserver, api_name: task-manage }
+    - { tags: ['deploy'],     role: task-manage_api_deploy }
+
+
