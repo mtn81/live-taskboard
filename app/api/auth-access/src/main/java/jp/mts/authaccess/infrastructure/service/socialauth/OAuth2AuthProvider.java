@@ -68,7 +68,6 @@ abstract class OAuth2AuthProvider implements SocialAuthProvider {
 	@Override
 	public SocialUser loadSocialUser(String... authKeys) {
 		Assertions.assertNonNull(authKeys);
-		Assertions.assertTrue(authKeys.length == 1);
 		return loadSocialUser(authKeys[0]);
 	}
 

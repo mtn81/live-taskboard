@@ -7,6 +7,6 @@ public class Assertions {
 		if(arg == null) throw new IllegalArgumentException("must not be null");
 	}
 	public static void assertTrue(boolean isTrue) {
-		if(!isTrue) throw new IllegalArgumentException("must not be null");
+		if(!isTrue) throw new IllegalArgumentException("must be true");
 	}
 }

@@ -1,9 +1,35 @@
 <template>
 
+  <link rel="stylesheet" type="text/css" href="../styles/social-login.css">
+
   <main>
     <p class="text-center">
-    利用を開始しますか？
-    <button id="startAction" class="btn btn-default" click.delegate="confirmAuth()">はい</button>
+      利用を開始します
+    </p>
+    <form id="social-login">
+      <div class="form-group">
+        <label for="nickName">ニックネーム</label>
+        <div class="input-group">
+        <span class="input-group-addon">
+          <input type="checkbox"> 指定
+        </span>
+        <input type="text" id="nickName" class="form-control" value.bind="nickName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="mail">メール送信</label>
+        <input type="checkbox"> 利用する
+        <div class="input-group">
+        <span class="input-group-addon">
+          <input type="checkbox"> 指定
+        </span>
+        <input type="text" id="email" class="form-control" value.bind="email">
+        </div>
+      </div>
+    <form>
+
+    <p class="text-center">
+      <button id="startAction" class="btn btn-primary" click.delegate="confirmAuth()">開始</button>
     </p>
   </main>
 </template>
