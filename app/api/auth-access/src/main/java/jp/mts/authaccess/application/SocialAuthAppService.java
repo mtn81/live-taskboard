@@ -85,6 +85,16 @@ public class SocialAuthAppService {
 		callback.execute(auth, socialUser);
 	}
 	
+	
+	public SocialUser loadSocialUserInProcess(String processId) {
+		SocialAuthProcess socialAuthProcess 
+			= socialAuthProcessRepository.findById(new SocialAuthProcessId(processId)).get();
+		if (socialAuthProcess == null) {
+			throw new ApplicationException(ErrorType.SOCIAL_AUTH_FAILED);
+		}
+		return socialUserRepository.findById(socialAuthProcess.socialUserId()).get();
+	}
+	
 	@FunctionalInterface
 	public interface AuthenticateCallback {
 		void execute(Auth auth, SocialUser user);
@@ -107,4 +117,5 @@ public class SocialAuthAppService {
 		socialAuthProcessRepository.save(socialAuthProcess);
 		
 	}
+
 }

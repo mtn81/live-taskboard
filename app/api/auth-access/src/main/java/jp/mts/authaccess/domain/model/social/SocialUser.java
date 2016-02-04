@@ -42,4 +42,12 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 		return auth;
 	}
 
+	void setEmail(String email) {
+		this.email = email;
+	}
+
+	void setName(String name) {
+		this.name = name;
+	}
+
 }
