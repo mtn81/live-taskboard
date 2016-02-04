@@ -27,7 +27,7 @@ public class JdbcSocialUserRepository implements SocialUserRepository {
 				new SocialUserId(
 						UserType.valueOf(model.getString("type")), 
 						model.getString("social_id")), 
-				model.getString("emal"), 
+				model.getString("email"), 
 				model.getString("name"))
 		);
 	}

@@ -3,12 +3,13 @@ import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from './auth-context';
-import {HttpClientWrapper} from '../lib/http-client-wrapper';
+import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class AuthService {
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator);
+    this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext
   }
@@ -49,6 +50,16 @@ export class AuthService {
           this.eventAggregator.publish(new AuthSuccessed());
         });
     }, true);
+  }
+
+  loadSocialUser(callback) {
+    return this.httpLoader.object(
+        `/api/auth-access/social_user`,
+        response => {
+          const user = response.content.data;
+          if(callback) callback(user);
+          return user;
+        }, false);
   }
 
   logout(){

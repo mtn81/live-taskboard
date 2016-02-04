@@ -81,8 +81,8 @@ export class CachedHttpLoader {
     return this;
   }
 
-  object(url, responseResolver) {
-    if(!!this.authContext && !this.authContext.isAuthenticated()) return {};
+  object(url, responseResolver, requireAuth = true) {
+    if (requireAuth && !!this.authContext && !this.authContext.isAuthenticated()) return {};
     if (this.cache[url]) return this.cachedValue[url];
 
     if(!!this.authContext) {

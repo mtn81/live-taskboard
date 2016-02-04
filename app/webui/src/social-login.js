@@ -7,6 +7,12 @@ import {GlobalError} from 'global-error';
 
 @inject(Router, EventAggregator, AuthService)
 export class SocialLogin {
+  specifyName = false;
+  userName = '';
+  notifyEmail = true;
+  specifyEmail = false;
+  email = '';
+
   constructor(router, eventAggregator, authService) {
     this.router = router;
     this.authService = authService;
@@ -27,6 +33,13 @@ export class SocialLogin {
     }
     this.confirmAuth();
     return false;
+  }
+
+  activate() {
+    this.authService.loadSocialUser(user => {
+      this.userName = user.userName;
+      this.email = user.email;
+    });
   }
 
 }

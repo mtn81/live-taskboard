@@ -37,6 +37,7 @@ public class SocialAuthApi {
 		SocialAuthReject.setSocialAuthAppService(socialAuthAppService);
 		SocialAuthAccept.setSocialAuthAppService(socialAuthAppService);
 		SocialAuthConfirm.setSocialAuthAppService(socialAuthAppService);
+		SocialUserLoad.setSocialAuthAppService(socialAuthAppService);
 	}
 	
 	@RequestMapping(
