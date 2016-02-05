@@ -22,7 +22,9 @@ export class AuthService {
           password: password
         })
         .then(response => {
-          this.authContext.store(response.content.data);
+          let auth = response.content.data;
+          auth.isSocial = false;
+          this.authContext.store(auth);
           this.eventAggregator.publish(new AuthSuccessed());
         });
     }, true);
@@ -46,7 +48,9 @@ export class AuthService {
       return http
         .get('/api/auth-access/social_auth?confirm')
         .then(response => {
-          this.authContext.store(response.content.data);
+          let auth = response.content.data;
+          auth.isSocial = true;
+          this.authContext.store(auth);
           this.eventAggregator.publish(new AuthSuccessed());
         });
     }, true);

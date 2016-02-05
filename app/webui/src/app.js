@@ -34,7 +34,17 @@ export class App {
         name: 'activate',
         moduleId: 'activation',
         nav: false,
-        title: 'ログイン' },
+        title: '利用開始' },
+      { route: 'social_user',
+        name: 'social-user',
+        moduleId: 'social-user',
+        nav: false,
+        title: 'ユーザ' },
+      { route: 'user',
+        name: 'user',
+        moduleId: 'user',
+        nav: false,
+        title: 'ユーザ' },
       { route: 'taskboard',
         name: 'taskboard',
         moduleId: 'taskboard',
@@ -73,6 +83,14 @@ export class App {
   logout(){
     this.authService.logout();
     this.router.navigate('login');
+  }
+
+  goToUserPage(){
+    if(this.auth.isSocial) {
+      this.router.navigate('social_user');
+    } else {
+      this.router.navigate('user');
+    }
   }
 
 }

@@ -9,7 +9,8 @@
     <div show.one-way="isAuth">
     <menu class="menu"></menu>
     <p class="login-user-msg text-right">
-      こんにちは。<span class="login-user">${auth.userName}</span> さん。<br>
+      こんにちは。<a href="#" click.delegate="goToUserPage()"><span class="login-user">${auth.userName}</span></a> さん。
+      <br>
       <button id="logout" class="btn btn-default" click.delegate="logout()">ログアウト</button>
     </p>
     </div>
