@@ -38,7 +38,9 @@ for command in $commands; do
     "build:api" )
       cd $api_dir
 
-      ./gradlew build
+      #./gradlew build
+
+      cp task-manage/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
     ;;
 
     "dev:clean" )

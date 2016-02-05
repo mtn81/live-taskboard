@@ -1,1 +1,23 @@
 ---
+
+- name: copy app binary
+  copy: src={{ item }} dest=/usr/local/tm-api/ mode=0744
+  sudo: yes
+  with_items:
+    - build/app.jar
+
+- name: copy files
+  copy: src={{ item }} dest=/usr/local/tm-api/ mode=0644
+  sudo: yes
+  with_items:
+    - env/application.yml
+    - env/logback.xml
+
+- name: register service
+  file: src=/usr/local/tm-api/app.jar dest=/etc/init.d/tm-api state=link
+  sudo: yes
+
+- name: start service
+  service: name=tm-api state=restarted
+  sudo: yes
+

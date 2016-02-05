@@ -5,5 +5,5 @@ WORKDIR /ansible
 
 RUN ansible-playbook task-manage_apiservers.yml -c local -i inventories/local --tags "base_image"
 
-EXPOSE 5432
+EXPOSE 8080
 
