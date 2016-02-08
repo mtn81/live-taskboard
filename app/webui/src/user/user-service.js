@@ -2,13 +2,17 @@ import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-http-client';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
+import {AuthContext} from '../auth/auth-context';
+import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
 @inject(HttpClient, EventAggregator)
 export class UserService {
 
-  constructor(http, eventAggregator) {
+  constructor(http, eventAggregator, authContext) {
     this.http = http;
+    this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
+    this.authContext = authContext;
   }
 
   register(user) {
@@ -45,6 +49,26 @@ export class UserService {
         this.eventAggregator.publish(new GlobalError(response.content.errors));
       });
   }
+
+  loadSocialUser(callback) {
+    //return this.httpLoader.object(
+    //    `/api/auth-access/social_users/${authContext.getUserId()}`,
+    //    response => {
+    //      const user = response.content.data;
+    //      if(callback) callback(user);
+    //      return user;
+    //    });
+    return new Promise(resolve => {
+      resolve({
+        originalName: 'taro',
+        name: 'taro2',
+        originalEmail: 'hoge@test.jp',
+        email: 'hoge2@test.jp',
+        notifyEmail: true
+      });
+    }).then(user => callback(user));
+  }
+
 }
 export class UserRegistered {}
 export class UserRegisterValidationError {

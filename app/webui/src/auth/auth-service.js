@@ -56,16 +56,6 @@ export class AuthService {
     }, true);
   }
 
-  loadSocialUser(callback) {
-    return this.httpLoader.object(
-        `/api/auth-access/social_user`,
-        response => {
-          const user = response.content.data;
-          if(callback) callback(user);
-          return user;
-        }, false);
-  }
-
   logout(){
     if(!this.authContext.isAuthenticated()) {
       return;

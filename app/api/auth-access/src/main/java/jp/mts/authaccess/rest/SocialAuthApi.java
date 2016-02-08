@@ -11,7 +11,6 @@ import jp.mts.authaccess.rest.presentation.model.SocialAuthAccept;
 import jp.mts.authaccess.rest.presentation.model.SocialAuthConfirm;
 import jp.mts.authaccess.rest.presentation.model.SocialAuthReject;
 import jp.mts.authaccess.rest.presentation.model.SocialAuthStart;
-import jp.mts.authaccess.rest.presentation.model.SocialUserLoad;
 import jp.mts.base.rest.RestResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,6 @@ public class SocialAuthApi {
 		SocialAuthReject.setSocialAuthAppService(socialAuthAppService);
 		SocialAuthAccept.setSocialAuthAppService(socialAuthAppService);
 		SocialAuthConfirm.setSocialAuthAppService(socialAuthAppService);
-		SocialUserLoad.setSocialAuthAppService(socialAuthAppService);
 	}
 	
 	@RequestMapping(
@@ -98,16 +96,6 @@ public class SocialAuthApi {
 		return new ModelAndView("redirect:" 
 				+ socialAuthAccept.getClientUrl() 
 				+ "?first_use=" + socialAuthAccept.isFirstUse());
-	}
-	
-	@RequestMapping(
-		value="/social_user", 
-		method=RequestMethod.GET)
-	public RestResponse<SocialUserLoad> loadUser(
-		@CookieValue("auth_pid") String processId) {
-		SocialUserLoad socialUserLoad = new SocialUserLoad();
-		socialUserLoad.load(processId);
-		return RestResponse.of(socialUserLoad);
 	}
 	
 	@RequestMapping(
