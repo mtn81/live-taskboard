@@ -3,5 +3,4 @@
 - include: ../../../include/api_deploy.yml
   vars:
     file_root: "{{ role_path }}/files"
-    api_name: tm-api
-
+    api_name: aa-api

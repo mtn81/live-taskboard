@@ -4,6 +4,10 @@
   copy: src=build/ dest=/usr/share/nginx/html/
   sudo: yes
 
+- name: copy nginx files
+  copy: src=nginx_conf/ dest=/etc/nginx/
+  sudo: yes
+
 - name: start nginx
   service: name=nginx state=started
   sudo: yes

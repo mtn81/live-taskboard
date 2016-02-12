@@ -12,6 +12,11 @@ public class SocialUserId extends DomainId<List<Object>> implements UserId {
 
 	private static final long serialVersionUID = 1L;
 
+	public static SocialUserId fromIdValue(String idValue) {
+		String[] idValueParts = idValue.split("_", 2);
+		return new SocialUserId(UserType.valueOf(idValueParts[0]), idValueParts[1]);
+	}
+
 	public SocialUserId(UserType socialUserType, String socialId) {
 		super(Lists.<Object>newArrayList(socialUserType, socialId));
 	}

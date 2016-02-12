@@ -1,0 +1,9 @@
+FROM livetaskboard/base:latest
+
+ADD ansible /ansible
+WORKDIR /ansible
+
+RUN ansible-playbook auth-access_apiservers.yml -c local -i inventories/local --tags "base_image"
+
+EXPOSE 8080
+

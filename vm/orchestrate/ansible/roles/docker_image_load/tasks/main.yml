@@ -6,15 +6,17 @@
 - name: clean containers
   docker:
     state: absent
-    image: "{{ item }}"
+    image: "livetaskboard/{{ item }}"
   sudo: yes
   with_items:
-    - livetaskboard/web
-    - livetaskboard/aa-db
-    - livetaskboard/tm-db
-    - livetaskboard/ws-db
-    - livetaskboard/mq
-      #- livetaskboard/tm-api
+    - web
+    - aa-db
+    - tm-db
+    - ws-db
+    - mq
+    - aa-api
+    - tm-api
+    - ws-api
 
 - name: run containers
   docker:
@@ -34,5 +36,7 @@
     - { name: tm-db,  expose: [5432],       ports: ["25432:5432"] }
     - { name: ws-db,  expose: [5432],       ports: ["35432:5432"] }
     - { name: mq,     expose: [5672,15672], ports: ["5672:5672", "15672:15672"] }
-    # - { name: tm-api, expose: [8080],       ports: ["28080:8080"] }
+    - { name: aa-api, expose: [8080],       ports: ["18080:8080"] }
+    - { name: tm-api, expose: [8080],       ports: ["28080:8080"] }
+    - { name: ws-api, expose: [8080],       ports: ["38080:8080"] }
 

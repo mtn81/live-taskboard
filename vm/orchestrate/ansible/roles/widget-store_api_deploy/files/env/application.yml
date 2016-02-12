@@ -1,0 +1,18 @@
+server:
+  context-path: /widget-store
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://localhost:35432/widget-store
+    username: app
+    password: pass
+    driver-class-name: org.postgresql.Driver
+
+rabbitmq:
+  host: localhost
+  username: app
+  password: pass
+  exchange: widget-store

@@ -1,0 +1,11 @@
+{
+  "data_dir": "/tmp/consul",
+  "node_name": "ws-api",
+  "start_join": ["172.17.0.1"],
+  "log_level": "info",
+  "watches": [{
+    "type": "event",
+    "name": "deploy",
+    "handler": "cd /ansible && ansible-playbook widget-store_apiservers.yml -i inventories/develop -c local --tags deploy"
+  }]
+}

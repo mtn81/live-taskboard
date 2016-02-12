@@ -7,7 +7,10 @@ public class SocialUserFixture {
 	private SocialUser target;
 
 	public SocialUserFixture() {
-		this.target = new SocialUser(new SocialUserId(UserType.GOOGLE, "u01"), "social@test.jp", "taro");
+		this(new SocialUserId(UserType.GOOGLE, "u01"), "social@test.jp", "taro");
+	}
+	public SocialUserFixture(SocialUserId socialUserId, String email, String name) {
+		this.target = new SocialUser(socialUserId, email, name);
 	}
 	
 	public SocialUser get() {
@@ -21,6 +24,21 @@ public class SocialUserFixture {
 
 	public SocialUserFixture setEmail(String email) {
 		target.setEmail(email);
+		return this;
+	}
+
+	public SocialUserFixture setOriginalName(String originalName) {
+		target.setOriginalName(originalName);
+		return this;
+	}
+
+	public SocialUserFixture setOriginalEmail(String originalEmail) {
+		target.setOriginalEmail(originalEmail);
+		return this;
+	}
+
+	public SocialUserFixture setUseEmailNotification(boolean useEmailNotification) {
+		target.setUseEmailNotification(useEmailNotification);
 		return this;
 	}
 

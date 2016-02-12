@@ -4,6 +4,4 @@
   roles:
     - { tags: ['base_image'], role: common }
     - { tags: ['base_image'], role: apiserver }
-    - { tags: ['deploy'],     role: task-manage_api_deploy }
-
-
+    - { tags: ['deploy'],     role: auth-access_api_deploy }

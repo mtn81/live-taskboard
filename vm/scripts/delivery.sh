@@ -19,6 +19,7 @@ for command in $commands; do
       sudo docker build -t livetaskboard/aa-db -f Dockerfile_aa-db .
       sudo docker build -t livetaskboard/ws-db -f Dockerfile_ws-db .
       sudo docker build -t livetaskboard/mq -f Dockerfile_mq .
+      sudo docker build -t livetaskboard/tm-api -f Dockerfile_tm-api .
     ;;
 
     "build:webui" )
@@ -38,9 +39,11 @@ for command in $commands; do
     "build:api" )
       cd $api_dir
 
-      #./gradlew build
+      #./gradlew build -x test
 
+      cp auth-access/build/libs/auth-access-*.jar $ansible_dir/roles/auth-access_api_deploy/files/build/app.jar
       cp task-manage/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
+      cp widget-store/build/libs/widget-store-*.jar $ansible_dir/roles/widget-store_api_deploy/files/build/app.jar
     ;;
 
     "dev:clean" )
