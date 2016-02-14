@@ -6,7 +6,7 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://localhost:15432/auth-access
+    url: jdbc:postgresql://172.17.0.1:15432/auth-access
     username: app
     password: pass
     driver-class-name: org.postgresql.Driver
@@ -20,7 +20,7 @@ spring:
       mail.smtp.auth: true
 
 rabbitmq:
-  host: localhost
+  host: 172.17.0.1
   username: app
   password: pass
   exchange: auth-access

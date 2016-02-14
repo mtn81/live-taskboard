@@ -6,13 +6,16 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:postgresql://localhost:35432/widget-store
+    url: jdbc:postgresql://172.17.0.1:35432/widget-store
     username: app
     password: pass
     driver-class-name: org.postgresql.Driver
 
 rabbitmq:
-  host: localhost
+  host: 172.17.0.1
   username: app
   password: pass
   exchange: widget-store
+
+logging:
+  file: app.log

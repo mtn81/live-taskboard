@@ -39,7 +39,7 @@ for command in $commands; do
     "build:api" )
       cd $api_dir
 
-      #./gradlew build -x test
+      ./gradlew build -x test
 
       cp auth-access/build/libs/auth-access-*.jar $ansible_dir/roles/auth-access_api_deploy/files/build/app.jar
       cp task-manage/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
