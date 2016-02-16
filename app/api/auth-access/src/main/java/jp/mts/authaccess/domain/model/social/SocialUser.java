@@ -24,8 +24,6 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 		super(socialUserId);
 		this.originalEmail = email;
 		this.originalName = name;
-		this.email = email;
-		this.name = name;
 	}
 
 	@Override
@@ -34,11 +32,11 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 	}
 	@Override
 	public String email() {
-		return email;
+		return email == null ? originalEmail : email;
 	}
 	@Override
 	public String name() {
-		return name;
+		return name == null ? originalName : name;
 	}
 	
 	public String originalEmail() {

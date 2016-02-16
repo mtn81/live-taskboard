@@ -19,10 +19,6 @@ public class SocialUserLoad {
 		return user.name();
 	}
 
-	public void load(String userId) {
-		user = socialUserAppService.loadUser(userId);
-	}
-
 	public String getEmail() {
 		return user.email();
 	}
@@ -37,6 +33,11 @@ public class SocialUserLoad {
 
 	public boolean useEmailNotification() {
 		return user.useEmailNotification();
+	}
+
+	//process
+	public void load(String userId) {
+		user = socialUserAppService.loadUser(userId);
 	}
 
 

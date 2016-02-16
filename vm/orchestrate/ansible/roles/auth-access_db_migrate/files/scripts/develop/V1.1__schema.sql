@@ -23,8 +23,11 @@ create table users (
 
 create table social_users (
   user_id varchar(100) not null unique,
+  orig_email varchar(100),
+  orig_name varchar(100) not null,
   email varchar(100),
-  name varchar(100) not null,
+  name varchar(100),
+  notify_email boolean not null,
   social_id varchar(100) not null,
   type varchar(10) not null
 );

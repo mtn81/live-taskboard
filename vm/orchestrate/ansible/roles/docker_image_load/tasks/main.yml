@@ -9,14 +9,14 @@
     image: "livetaskboard/{{ item }}"
   sudo: yes
   with_items:
-    - web
     - aa-db
     - tm-db
     - ws-db
     - mq
-    - aa-api
-    - tm-api
-    - ws-api
+      #    - aa-api
+      #    - tm-api
+      #    - ws-api
+      #    - web
 
 - name: run containers
   docker:
@@ -31,12 +31,12 @@
     command: /usr/local/bin/consul agent -config-dir /etc/consul.d
   sudo: yes
   with_items:
-    - { name: web,    expose: [80],         ports: ["80:80"] }
     - { name: aa-db,  expose: [5432],       ports: ["15432:5432"] }
     - { name: tm-db,  expose: [5432],       ports: ["25432:5432"] }
     - { name: ws-db,  expose: [5432],       ports: ["35432:5432"] }
     - { name: mq,     expose: [5672,15672], ports: ["5672:5672", "15672:15672"] }
-    - { name: aa-api, expose: [8080],       ports: ["18080:8080"] }
-    - { name: tm-api, expose: [8080],       ports: ["28080:8080"] }
-    - { name: ws-api, expose: [8080],       ports: ["38080:8080"] }
+#    - { name: aa-api, expose: [8080],       ports: ["18080:8080"] }
+#    - { name: tm-api, expose: [8080],       ports: ["28080:8080"] }
+#    - { name: ws-api, expose: [8080],       ports: ["38080:8080"] }
+#    - { name: web,    expose: [80],         ports: ["80:80"] }
 
