@@ -18,12 +18,12 @@ public class SocialUserFixture {
 	}
 
 	public SocialUserFixture setName(String name) {
-		target.setName(name);
+		target.setCustomName(name);
 		return this;
 	}
 
 	public SocialUserFixture setEmail(String email) {
-		target.setEmail(email);
+		target.setCustomEmail(email);
 		return this;
 	}
 

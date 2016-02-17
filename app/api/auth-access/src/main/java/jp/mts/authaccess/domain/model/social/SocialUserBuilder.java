@@ -9,11 +9,11 @@ public class SocialUserBuilder {
 	}
 	
 	public SocialUserBuilder setName(String name) {
-		socialUser.setName(name);
+		socialUser.setCustomName(name);
 		return this;
 	}
 	public SocialUserBuilder setEmail(String email) {
-		socialUser.setEmail(email);
+		socialUser.setCustomEmail(email);
 		return this;
 	}
 	public SocialUserBuilder setUseEmailNotification(boolean useEmailNotification) {

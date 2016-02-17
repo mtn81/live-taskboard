@@ -5,7 +5,7 @@ import {GlobalError} from '../global-error';
 import {AuthContext} from '../auth/auth-context';
 import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 
-@inject(HttpClient, EventAggregator)
+@inject(HttpClient, EventAggregator, AuthContext)
 export class UserService {
 
   constructor(http, eventAggregator, authContext) {
@@ -51,22 +51,13 @@ export class UserService {
   }
 
   loadSocialUser(callback) {
-    //return this.httpLoader.object(
-    //    `/api/auth-access/social_users/${authContext.getUserId()}`,
-    //    response => {
-    //      const user = response.content.data;
-    //      if(callback) callback(user);
-    //      return user;
-    //    });
-    return new Promise(resolve => {
-      resolve({
-        originalName: 'taro',
-        name: 'taro2',
-        originalEmail: 'hoge@test.jp',
-        email: 'hoge2@test.jp',
-        notifyEmail: true
-      });
-    }).then(user => callback(user));
+    return this.httpLoader.object(
+        `/api/auth-access/social_users/${this.authContext.getUserId()}`,
+        response => {
+          const user = response.content.data;
+          if(callback) callback(user);
+          return user;
+        });
   }
 
 }

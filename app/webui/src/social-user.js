@@ -21,12 +21,12 @@ export class SocialUser {
 
   activate() {
     this.userService.loadSocialUser(user => {
-      this.userName = user.name;
+      this.specifyName = !!user.name;
+      this.userName = this.specifyName ? user.name : user.originalName;
       this.originalUserName = user.originalName;
-      this.specifyName = (this.userName !== this.originalUserName);
-      this.email = user.email;
+      this.specifyEmail = !!user.email;
+      this.email = this.specifyEmail ? user.email : user.originalEmail;
       this.originalEmail = user.originalEmail;
-      this.specifyEmail = (this.email !== this.originalEmail);
       this.notifyEmail = user.notifyEmail;
     });
   }

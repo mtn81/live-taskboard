@@ -12,8 +12,8 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 
 	private String originalEmail;
 	private String originalName;
-	private String email;
-	private String name;
+	private String customEmail;
+	private String customName;
 	private boolean useEmailNotification;
 
 	public SocialUser(
@@ -32,13 +32,19 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 	}
 	@Override
 	public String email() {
-		return email == null ? originalEmail : email;
+		return customEmail == null ? originalEmail : customEmail;
 	}
 	@Override
 	public String name() {
-		return name == null ? originalName : name;
+		return customName == null ? originalName : customName;
 	}
 	
+	public String customName() {
+		return customName;
+	}
+	public String customEmail() {
+		return customEmail;
+	}
 	public String originalEmail() {
 		return originalEmail;
 	}
@@ -56,11 +62,11 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 		return auth;
 	}
 
-	void setEmail(String email) {
-		this.email = email;
+	void setCustomEmail(String email) {
+		this.customEmail = email;
 	}
-	void setName(String name) {
-		this.name = name;
+	void setCustomName(String name) {
+		this.customName = name;
 	}
 	void setOriginalEmail(String originalEmail) {
 		this.originalEmail = originalEmail;

@@ -49,8 +49,8 @@ public class JdbcSocialUserRepository implements SocialUserRepository {
 				"user_id", socialUser.id().idValue(),
 				"orig_name", socialUser.originalName(),
 				"orig_email", socialUser.originalEmail(),
-				"email", socialUser.email(),
-				"name", socialUser.name(),
+				"email", socialUser.customEmail(),
+				"name", socialUser.customName(),
 				"notify_email", socialUser.useEmailNotification(),
 				"social_id", socialUser.id().socialId(),
 				"type", socialUser.id().userType().name())

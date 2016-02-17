@@ -16,11 +16,11 @@ public class SocialUserLoad {
 	private SocialUser user;
 
 	public String getName() {
-		return user.name();
+		return user.customName();
 	}
 
 	public String getEmail() {
-		return user.email();
+		return user.customEmail();
 	}
 
 	public String getOriginalName() {
