@@ -4,6 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
 import {AuthContext} from '../auth/auth-context';
+import {tmApi} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class MemberService {
@@ -17,7 +18,7 @@ export class MemberService {
 
   loadByGroup(groupId) {
     return this.httpLoader.list(
-      `/api/task-manage/groups/${groupId}/members/`,
+      tmApi(`/groups/${groupId}/members/`),
       response => {
         return response.content.data.members;
       });
@@ -28,7 +29,7 @@ export class MemberService {
 
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/groups/${groupId}/members/${member.memberId}`, { admin: true })
+        .put(tmApi(`/groups/${groupId}/members/${member.memberId}`), { admin: true })
         .then(response => {
           member.admin = true;
           this.eventAggregator.publish(new MemberRoleChanged());
@@ -40,7 +41,7 @@ export class MemberService {
 
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/groups/${groupId}/members/${member.memberId}`, { admin: false })
+        .put(tmApi(`/groups/${groupId}/members/${member.memberId}`), { admin: false })
         .then(response => {
           member.admin = false;
           this.eventAggregator.publish(new MemberChanged());
@@ -52,7 +53,7 @@ export class MemberService {
 
     this.http.call(http => {
       return http
-        .delete(`/api/task-manage/groups/${groupId}/members/${member.memberId}`)
+        .delete(tmApi(`/groups/${groupId}/members/${member.memberId}`))
         .then(response => {
           this.eventAggregator.publish(new MemberRemoved());
         });

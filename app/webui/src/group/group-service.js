@@ -6,6 +6,7 @@ import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {Stomp} from 'stomp-websocket';
 import {HttpClientWrapper, CachedHttpLoader, StompClient} from '../lib/http-client-wrapper';
+import {tmApi, tmWebSocket} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class GroupService {
@@ -13,7 +14,7 @@ export class GroupService {
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
-    this.stomp = new StompClient('ws://localhost:28080/task-manage/websocket/notify', authContext);
+    this.stomp = new StompClient(tmWebSocket('/notify'), authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
@@ -22,7 +23,7 @@ export class GroupService {
 
     this.http.call(http => {
       return http
-        .post(`/api/task-manage/members/${this.memberId()}/groups/`, group)
+        .post(tmApi(`/members/${this.memberId()}/groups/`), group)
         .then(response => {
           this.eventAggregator.publish(new GroupRegistered());
         })
@@ -32,7 +33,7 @@ export class GroupService {
   validate(group){
     this.http.call(http => {
       return http
-        .post(`/api/task-manage/members/${this.memberId()}/groups/?validate`, group)
+        .post(tmApi(`/members/${this.memberId()}/groups/?validate`), group)
         .then(response => {
           this.eventAggregator.publish(new GroupValidationSuccess());
         })
@@ -46,7 +47,7 @@ export class GroupService {
 
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`, group)
+        .put(tmApi(`/members/${this.memberId()}/groups/${group.groupId}`), group)
         .then(response => {
           this.eventAggregator.publish(new GroupModified());
         })
@@ -61,7 +62,7 @@ export class GroupService {
 
   groups() {
     return this.httpLoader.list(
-        `/api/task-manage/members/${this.memberId()}/groups/`,
+        tmApi(`/members/${this.memberId()}/groups/`),
         response => {
           return response.content.data.groups;
         });
@@ -69,7 +70,7 @@ export class GroupService {
 
   group(groupId, callback) {
     return this.httpLoader.object(
-        `/api/task-manage/members/${this.memberId()}/groups/${groupId}`,
+        tmApi(`/members/${this.memberId()}/groups/${groupId}`),
         response => {
           this.eventAggregator.publish(new GroupLoaded());
           let group = response.content.data;
@@ -82,7 +83,7 @@ export class GroupService {
     this.http.call(http => {
       group.removing = true;
       return http
-        .delete(`/api/task-manage/members/${this.memberId()}/groups/${group.groupId}`)
+        .delete(tmApi(`/members/${this.memberId()}/groups/${group.groupId}`))
         .then(response => {
           this.eventAggregator.publish(new GroupRemoved());
         });

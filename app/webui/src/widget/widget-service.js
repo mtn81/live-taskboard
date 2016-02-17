@@ -4,7 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from 'auth/auth-context';
 import {HttpClientWrapper, CachedHttpLoader, StompClient} from '../lib/http-client-wrapper';
-
+import {wsApi, wsWebSocket} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class WidgetService {
@@ -12,14 +12,14 @@ export class WidgetService {
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
-    this.stomp = new StompClient('ws://localhost:38080/widget-store/websocket/notify', authContext);
+    this.stomp = new StompClient(wsWebSocket('/notify'), authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
 
   loadAll(groupId, callback) {
     return this.httpLoader.list(
-      `/api/widget-store/categories/${groupId}/widgets/`,
+      wsApi(`/categories/${groupId}/widgets/`),
       response => {
         let widgets = response.content.data.widgets;
         callback(widgets);
@@ -30,7 +30,7 @@ export class WidgetService {
   save(widget) {
     this.http.call(http => {
       return http
-        .put(`/api/widget-store/categories/${widget.categoryId}/widgets/${widget.widgetId}`, widget)
+        .put(wsApi(`/categories/${widget.categoryId}/widgets/${widget.widgetId}`), widget)
         .then(response => {
         });
     }, true);

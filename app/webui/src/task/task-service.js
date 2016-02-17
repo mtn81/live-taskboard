@@ -4,6 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {HttpClientWrapper, CachedHttpLoader, StompClient} from '../lib/http-client-wrapper';
 import {AuthContext} from '../auth/auth-context';
+import {tmApi, tmWebSocket} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class TaskService {
@@ -12,14 +13,14 @@ export class TaskService {
   constructor(http, eventAggregator, authContext) {
     this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
-    this.stomp = new StompClient('ws://localhost:28080/task-manage/websocket/notify', authContext);
+    this.stomp = new StompClient(tmWebSocket('/notify'), authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
   }
 
   load(groupId) {
     this._tasks = this.httpLoader.object(
-      `/api/task-manage/groups/${groupId}/tasks/`,
+      tmApi(`/groups/${groupId}/tasks/`),
       response => {
         this.eventAggregator.publish(new TasksLoaded());
         return response.content.data;
@@ -29,7 +30,7 @@ export class TaskService {
 
   loadDetail(groupId, taskId, callback) {
     return this.httpLoader.object(
-        `/api/task-manage/groups/${groupId}/tasks/${taskId}`,
+        tmApi(`/groups/${groupId}/tasks/${taskId}`),
         response => {
           let task = response.content.data;
           if(callback) callback(task);
@@ -40,7 +41,7 @@ export class TaskService {
   register(groupId, task) {
     this.http.call(http => {
       return http
-        .post(`/api/task-manage/groups/${groupId}/tasks/`, task)
+        .post(tmApi(`/groups/${groupId}/tasks/`), task)
         .then(response => {
           this.eventAggregator.publish(new TaskRegistered());
         });
@@ -50,7 +51,7 @@ export class TaskService {
   modify(groupId, task) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}`, task)
+        .put(tmApi(`/groups/${groupId}/tasks/${task.taskId}`), task)
         .then(response => {
           this.eventAggregator.publish(new TaskModified());
         });
@@ -60,7 +61,7 @@ export class TaskService {
   validateDetail(groupId, task) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}?detail&validate`, task)
+        .put(tmApi(`/groups/${groupId}/tasks/${task.taskId}?detail&validate`), task)
         .then(response => {
           this.eventAggregator.publish(new TaskValidationSuccess());
         })
@@ -73,7 +74,7 @@ export class TaskService {
   modifyDetail(groupId, task) {
     this.http.call(http => {
       return http
-        .put(`/api/task-manage/groups/${groupId}/tasks/${task.taskId}?detail`, task)
+        .put(tmApi(`/groups/${groupId}/tasks/${task.taskId}?detail`), task)
         .then(response => {
           this.eventAggregator.publish(new TaskModified());
         });
@@ -83,7 +84,7 @@ export class TaskService {
   remove(groupId, taskId) {
     this.http.call(http => {
       return http
-        .delete(`/api/task-manage/groups/${groupId}/tasks/${taskId}`)
+        .delete(tmApi(`/groups/${groupId}/tasks/${taskId}`))
         .then(response => {
           this.eventAggregator.publish(new TaskRemoved());
         });

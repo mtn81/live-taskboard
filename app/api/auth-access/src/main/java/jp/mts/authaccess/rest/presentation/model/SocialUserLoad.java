@@ -31,7 +31,7 @@ public class SocialUserLoad {
 		return user.originalEmail();
 	}
 
-	public boolean useEmailNotification() {
+	public boolean isNotifyEmail() {
 		return user.useEmailNotification();
 	}
 

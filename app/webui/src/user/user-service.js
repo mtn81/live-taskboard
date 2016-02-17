@@ -4,6 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from '../auth/auth-context';
 import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
+import {aaApi} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class UserService {
@@ -18,7 +19,7 @@ export class UserService {
   register(user) {
 
     this.http
-      .post('/api/auth-access/users/', user)
+      .post(aaApi('/users/'), user)
       .then(response => {
         this.eventAggregator.publish(new UserRegistered());
       })
@@ -30,7 +31,7 @@ export class UserService {
   validate(user) {
 
     this.http
-      .post('/api/auth-access/users/validate', user)
+      .post(aaApi('/users/validate'), user)
       .then(response => {
         this.eventAggregator.publish(new UserRegisterValidationSuccess());
       })
@@ -41,7 +42,7 @@ export class UserService {
 
   activate(activationId) {
     this.http
-      .post('/api/auth-access/activate_user/', { activationId: activationId })
+      .post(aaApi('/activate_user/'), { activationId: activationId })
       .then(response => {
         this.eventAggregator.publish(new UserActivated());
       })
@@ -52,12 +53,16 @@ export class UserService {
 
   loadSocialUser(callback) {
     return this.httpLoader.object(
-        `/api/auth-access/social_users/${this.authContext.getUserId()}`,
+        aaApi(`/social_users/${this.authContext.getUserId()}`),
         response => {
           const user = response.content.data;
           if(callback) callback(user);
           return user;
         });
+  }
+  
+  saveSocialUser(user) {
+    console.log(user);
   }
 
 }

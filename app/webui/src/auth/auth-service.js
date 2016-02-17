@@ -4,6 +4,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {GlobalError} from '../global-error';
 import {AuthContext} from './auth-context';
 import {HttpClientWrapper, CachedHttpLoader} from '../lib/http-client-wrapper';
+import {aaApi} from '../lib/env-resolver';
 
 @inject(HttpClient, EventAggregator, AuthContext)
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
   authenticate(loginId, password){
     this.http.call(http => {
       return http
-        .post("/api/auth-access/auth/",{
+        .post(aaApi("/auth"), {
           id: loginId,
           password: password
         })
@@ -33,7 +34,7 @@ export class AuthService {
   startSocialLogin(socialSite, acceptUrl, rejectUrl) {
     this.http.call(http => {
       return http
-        .post(`/api/auth-access/social_auth/${socialSite}?start`, {
+        .post(aaApi(`/social_auth/${socialSite}?start`), {
           acceptClientUrl: acceptUrl,
           rejectClientUrl: rejectUrl
         })
@@ -46,7 +47,7 @@ export class AuthService {
   confirmSocialLogin() {
     this.http.call(http => {
       return http
-        .get('/api/auth-access/social_auth?confirm')
+        .get(aaApi('/social_auth?confirm'))
         .then(response => {
           let auth = response.content.data;
           auth.isSocial = true;
@@ -63,7 +64,7 @@ export class AuthService {
 
     this.http.call(http => {
       return http
-        .delete(`/api/auth-access/auth/${this.authContext.getAuthId()}`)
+        .delete(aaApi(`/auth/${this.authContext.getAuthId()}`))
         .then(response => {
           this.eventAggregator.publish(new LogoutSuccessed());
         });

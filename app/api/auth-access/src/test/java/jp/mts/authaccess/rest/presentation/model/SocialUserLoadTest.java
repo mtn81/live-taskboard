@@ -44,7 +44,7 @@ public class SocialUserLoadTest {
 		assertThat(target.getEmail(), is("social@test.jp"));
 		assertThat(target.getOriginalName(), is("ori_taro"));
 		assertThat(target.getOriginalEmail(), is("ori_social@test.jp"));
-		assertThat(target.useEmailNotification(), is(true));
+		assertThat(target.isNotifyEmail(), is(true));
 		
 	}
 
