@@ -1,14 +1,17 @@
 ---
 
 - name: copy builded modules
-  copy: src=build/ dest=/usr/share/nginx/html/
+  copy: src={{item}} dest=/usr/share/nginx/html/
   sudo: yes
+  with_items:
+    - build/
+    - env/
 
 - name: copy nginx files
   copy: src=nginx_conf/ dest=/etc/nginx/
   sudo: yes
 
 - name: start nginx
-  service: name=nginx state=started
+  service: name=nginx state=restarted
   sudo: yes
 
