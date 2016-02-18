@@ -10,7 +10,7 @@ import {aaApi} from '../lib/env-resolver';
 export class UserService {
 
   constructor(http, eventAggregator, authContext) {
-    this.http = http;
+    this.http = new HttpClientWrapper(http, eventAggregator).withAuth(authContext);
     this.httpLoader = new CachedHttpLoader(http, eventAggregator).withAuth(authContext);
     this.eventAggregator = eventAggregator;
     this.authContext = authContext;
@@ -18,37 +18,33 @@ export class UserService {
 
   register(user) {
 
-    this.http
-      .post(aaApi('/users/'), user)
-      .then(response => {
-        this.eventAggregator.publish(new UserRegistered());
-      })
-      .catch(response => {
-        this.eventAggregator.publish('user.register.failed', new GlobalError(response.content.errors));
-      });
+    this.http.call(http => {
+      return this.http
+        .post(aaApi('/users/'), user)
+        .then(response => {
+          this.eventAggregator.publish(new UserRegistered());
+        });
+    }, true);
   }
 
   validate(user) {
-
-    this.http
-      .post(aaApi('/users/validate'), user)
-      .then(response => {
-        this.eventAggregator.publish(new UserRegisterValidationSuccess());
-      })
-      .catch(response => {
-        this.eventAggregator.publish(new UserRegisterValidationError(new GlobalError(response.content.errors)));
-      });
+    this.http.call(http => {
+      return this.http
+        .post(aaApi('/users/validate'), user)
+        .then(response => {
+          this.eventAggregator.publish(new UserRegisterValidationSuccess());
+        });
+    }, true);
   }
 
   activate(activationId) {
-    this.http
-      .post(aaApi('/activate_user/'), { activationId: activationId })
-      .then(response => {
-        this.eventAggregator.publish(new UserActivated());
-      })
-      .catch(response => {
-        this.eventAggregator.publish(new GlobalError(response.content.errors));
-      });
+    this.http.call(http => {
+      return this.http
+        .post(aaApi('/activate_user/'), { activationId: activationId })
+        .then(response => {
+          this.eventAggregator.publish(new UserActivated());
+        });
+    }, true);
   }
 
   loadSocialUser(callback) {
@@ -60,9 +56,15 @@ export class UserService {
           return user;
         });
   }
-  
+
   saveSocialUser(user) {
-    console.log(user);
+    this.http.call(http => {
+      return http
+        .put(aaApi(`/social_users/${this.authContext.getUserId()}`), user)
+        .then(response => {
+          this.eventAggregator.publish(new SocialUserChanged());
+        });
+    }, true);
   }
 
 }
@@ -74,3 +76,4 @@ export class UserRegisterValidationError {
 }
 export class UserRegisterValidationSuccess {}
 export class UserActivated {}
+export class SocialUserChanged {}

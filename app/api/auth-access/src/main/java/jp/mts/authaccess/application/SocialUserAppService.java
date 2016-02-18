@@ -18,4 +18,13 @@ public class SocialUserAppService {
 				SocialUserId.fromIdValue(userId)).get();
 	}
 
+	public SocialUser saveUser(
+			String string, 
+			String string2, 
+			String string3,
+			boolean b) {
+		return null;
+		
+	}
+
 }

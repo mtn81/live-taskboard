@@ -3,9 +3,9 @@ livetaskboard.app = {};
 livetaskboard.app.webui = {};
 
 livetaskboard.app.webui.env = {
-  authAccessApiEndpoint: '/auth-access/api',
-  taskManageApiEndpoint: '/task-manage/api',
+  authAccessApiEndpoint: '/api/auth-access',
+  taskManageApiEndpoint: '/api/task-manage',
   taskManageWsEndpoint: 'ws://localhost:28080/task-manage/websocket',
-  widgetStoreApiEndpoint: '/widget-store/api',
+  widgetStoreApiEndpoint: '/api/widget-store',
   widgetStoreWsEndpoint: 'ws://localhost:38080/widget-store/websocket'
 };

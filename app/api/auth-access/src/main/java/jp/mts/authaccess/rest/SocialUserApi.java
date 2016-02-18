@@ -4,11 +4,12 @@ import javax.annotation.PostConstruct;
 
 import jp.mts.authaccess.application.SocialUserAppService;
 import jp.mts.authaccess.rest.presentation.model.SocialUserLoad;
+import jp.mts.authaccess.rest.presentation.model.SocialUserSave;
 import jp.mts.base.rest.RestResponse;
 
-import org.omg.CORBA.INITIALIZE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,17 @@ public class SocialUserApi {
 		SocialUserLoad socialUserLoad = new SocialUserLoad();
 		socialUserLoad.load(userId);
 		return RestResponse.of(socialUserLoad);
+	}
+
+	@RequestMapping(
+		value="/social_users/{userId}",
+		method=RequestMethod.PUT)
+	public RestResponse<SocialUserSave> save(
+			@PathVariable String userId, 
+			@RequestBody SocialUserSave socialUserSave) {
+
+		socialUserSave.save(userId);
+		return RestResponse.of(socialUserSave);
 	}
 
 
