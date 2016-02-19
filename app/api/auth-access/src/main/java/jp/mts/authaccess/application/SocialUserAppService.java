@@ -19,12 +19,14 @@ public class SocialUserAppService {
 	}
 
 	public SocialUser saveUser(
-			String string, 
-			String string2, 
-			String string3,
-			boolean b) {
-		return null;
-		
+			String userId, 
+			String name, 
+			String email,
+			boolean useEmailNotification) {
+		SocialUser socialUser = socialUserRepository.findById(SocialUserId.fromIdValue(userId)).get();
+		socialUser.changeAttributes(name, email, useEmailNotification);
+		socialUserRepository.save(socialUser);
+		return socialUser;
 	}
 
 }

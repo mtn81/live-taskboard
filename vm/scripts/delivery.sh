@@ -46,7 +46,7 @@ for command in $commands; do
       cp widget-store/build/libs/widget-store-*.jar $ansible_dir/roles/widget-store_api_deploy/files/build/app.jar
     ;;
 
-    "dev:clean" )
+    "clean" )
       cd $orchestrate_dir/ansible
       set +e
       sudo pkill consul
@@ -55,7 +55,16 @@ for command in $commands; do
       set -e
     ;;
 
-    "run:base" )
+    "run:dev" )
+      cd $orchestrate_dir/ansible
+      set +e
+      sudo pkill consul
+      set -e
+      consul agent -server -bootstrap-expect 1 -data-dir /tmp/consul -bind=172.17.0.1 &
+      ansible-playbook -i inventories/develop -c local --tags start_dev devmachine.yml
+    ;;
+
+    "run:all" )
       cd $orchestrate_dir/ansible
       set +e
       sudo pkill consul

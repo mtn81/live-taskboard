@@ -4,6 +4,7 @@ import jp.mts.authaccess.domain.model.Auth;
 import jp.mts.authaccess.domain.model.AuthId;
 import jp.mts.authaccess.domain.model.User;
 import jp.mts.authaccess.domain.model.UserAuthenticated;
+import jp.mts.authaccess.domain.model.UserChanged;
 import jp.mts.authaccess.domain.model.UserEntried;
 import jp.mts.authaccess.domain.model.UserId;
 import jp.mts.base.domain.model.DomainEntity;
@@ -24,6 +25,18 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 		super(socialUserId);
 		this.originalEmail = email;
 		this.originalName = name;
+	}
+
+	public void changeAttributes(
+		String name, 
+		String email,
+		boolean useEmailNotification) {
+		
+		setCustomName(name);
+		setCustomEmail(email);
+		setUseEmailNotification(useEmailNotification);
+		
+		domainEventPublisher.publish(new UserChanged(this));
 	}
 
 	@Override
@@ -51,6 +64,7 @@ public class SocialUser extends DomainEntity<SocialUserId> implements User {
 	public String originalName() {
 		return originalName;
 	}
+	@Override
 	public boolean useEmailNotification() {
 		return useEmailNotification;
 	}

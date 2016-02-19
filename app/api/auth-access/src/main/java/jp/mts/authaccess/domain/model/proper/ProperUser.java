@@ -73,4 +73,9 @@ public class ProperUser extends DomainEntity<ProperUserId> implements User {
 		this.name = name;
 	}
 
+	@Override
+	public boolean useEmailNotification() {
+		return true; //TODO
+	}
+
 }

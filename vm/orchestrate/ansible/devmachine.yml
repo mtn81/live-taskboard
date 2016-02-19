@@ -2,6 +2,7 @@
 
 - hosts: localhost
   roles:
-    - { role: common,            tags: ['setup'] }
-    - { role: devtools,          tags: ['setup'] }
-    - { role: docker_image_load, tags: ['start'] }
+    - { role: common,                              tags: ['setup'] }
+    - { role: devtools,                            tags: ['setup'] }
+    - { role: docker_image_load, all_image: true,  tags: ['start'] }
+    - { role: docker_image_load, all_image: false, tags: ['start_dev'] }
