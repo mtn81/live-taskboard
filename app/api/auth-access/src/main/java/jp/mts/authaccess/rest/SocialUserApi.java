@@ -24,13 +24,14 @@ public class SocialUserApi {
 	@PostConstruct
 	public void initialize() {
 		SocialUserLoad.setSocialAppService(socialUserAppService);
+		SocialUserSave.setSocialUserAppService(socialUserAppService);
 	}
 
 	@RequestMapping(
 		value="/social_users/{userId}", 
 		method=RequestMethod.GET)
 	public RestResponse<SocialUserLoad> loadSocialUser(
-			@PathVariable String userId) {
+			@PathVariable String userId) {//TODO check already logined
 		SocialUserLoad socialUserLoad = new SocialUserLoad();
 		socialUserLoad.load(userId);
 		return RestResponse.of(socialUserLoad);

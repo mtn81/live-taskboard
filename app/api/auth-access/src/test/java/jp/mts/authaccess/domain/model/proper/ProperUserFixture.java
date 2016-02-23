@@ -34,6 +34,10 @@ public class ProperUserFixture {
 		user.setStatus(status);
 		return this;
 	}
+	public ProperUserFixture setUseEmailNotification(boolean useEmailNotification) {
+		user.setUseEmailNotification(useEmailNotification);
+		return this;
+	}
 	
 	public ProperUser get(){
 		return user;

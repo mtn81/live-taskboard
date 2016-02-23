@@ -17,6 +17,7 @@ create table users (
   name varchar(100),
   password varchar(100),
   status varchar(10),
+  notify_email boolean not null,
   activation_id varchar(100) not null,
   activation_expire timestamp not null
 );

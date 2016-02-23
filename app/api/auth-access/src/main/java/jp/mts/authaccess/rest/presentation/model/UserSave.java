@@ -11,6 +11,13 @@ import org.hibernate.validator.constraints.NotBlank;
 @Confirm(field="password", confirmField="confirmPassword")
 public class UserSave {
 
+	//required services
+	private static UserAppService userAppService;
+	
+	public static void setUserAppService(UserAppService userAppService) {
+		UserSave.userAppService = userAppService;
+	}
+
 	//input
 	@NotBlank
 	private String userId;
@@ -52,7 +59,7 @@ public class UserSave {
 	}
 	
 	//process
-	public void create(UserAppService userAppService) {
+	public void create() {
 		
 		user = userAppService.register(
 				userId,
@@ -61,7 +68,7 @@ public class UserSave {
 				password);
 	}
 
-	public void validateForRegister(UserAppService userAppService) {
+	public void validateForRegister() {
 		userAppService.validateForRegister(userId);
 	}
 	

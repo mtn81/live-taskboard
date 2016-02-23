@@ -14,11 +14,14 @@ public class ProperUser extends DomainEntity<ProperUserId> implements User {
 	private String name;
 	private ProperUserStatus status;
 	private ProperUserActivation userActivation;
+	private boolean useEmailNotification;
 	
-	public ProperUser(ProperUserId id, 
-				String email, 
-				String encryptedPassword, 
-				String name) {
+	public ProperUser(
+			ProperUserId id, 
+			String email, 
+			String encryptedPassword, 
+			String name) {
+
 		super(id);
 		this.email = email;
 		this.encryptedPassword = encryptedPassword;
@@ -56,6 +59,10 @@ public class ProperUser extends DomainEntity<ProperUserId> implements User {
 	public ProperUserActivation userActivation() {
 		return userActivation;
 	}
+	@Override
+	public boolean useEmailNotification() {
+		return useEmailNotification;
+	}
 
 	void setStatus(ProperUserStatus status) {
 		this.status = status;
@@ -72,10 +79,10 @@ public class ProperUser extends DomainEntity<ProperUserId> implements User {
 	void setName(String name) {
 		this.name = name;
 	}
-
-	@Override
-	public boolean useEmailNotification() {
-		return true; //TODO
+	void setUseEmailNotification(boolean useEmailNotification) {
+		this.useEmailNotification = useEmailNotification;
 	}
+	
+
 
 }

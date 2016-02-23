@@ -1,6 +1,7 @@
 package jp.mts.authaccess.application;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
 import jp.mts.authaccess.domain.model.proper.ProperUser;
@@ -29,8 +30,8 @@ public class UserAppServiceTest {
 	@Injectable ProperAuthenticateService authenticateService;
 	@Mocked DomainEventPublisher domainEventPublisher;
 
-	@Test
-	public void test_register() {
+	@Test public void 
+	test_register() {
 
 		final ProperUser user = new ProperUserFixture().get();
 		new Expectations() {{
@@ -47,8 +48,8 @@ public class UserAppServiceTest {
 		assertThat(actual, is(user));
 	}
 
-	@Test
-	public void test_activateUser_success(
+	@Test public void 
+	test_activateUser_success(
 			@Mocked DomainCalendar domainCalendar) {
 		String userId = "u01";
 		String activationId = "activate01";
@@ -76,8 +77,8 @@ public class UserAppServiceTest {
 		assertThat(activatedUser.status(), is(ProperUserStatus.ACTIVE));
 	}
 
-	@Test
-	public void test_activateUser__no_activation_found() {
+	@Test public void 
+	test_activateUser__no_activation_found() {
 
 		new Expectations() {{
 			userRepository.findByActivationId(new ProperUserActivationId("activate01"));
@@ -91,8 +92,8 @@ public class UserAppServiceTest {
 		}
 	}
 		
-	@Test
-	public void test_activateUser__activation_expired(
+	@Test public void 
+	test_activateUser__activation_expired(
 			@Mocked DomainCalendar domainCalendar) {
 		
 		String userId = "u01";
@@ -119,5 +120,19 @@ public class UserAppServiceTest {
 		} catch (ApplicationException e) {
 			assertThat(e.hasErrorOf(ErrorType.ACTIVATION_EXPIRED), is(true));
 		}
+	}
+	
+	@Test public void
+	test_loadUserById() {
+		
+		ProperUser properUser = new ProperUserFixture().get();
+		new Expectations() {{
+			userRepository.findById(new ProperUserId("u01"));
+				result = properUser;
+		}};
+
+		ProperUser loaded = target.loadUserById("u01");
+		
+		assertThat(loaded, is(sameInstance(properUser)));
 	}
 }

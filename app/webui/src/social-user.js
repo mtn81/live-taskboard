@@ -2,7 +2,7 @@ import {inject} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {EventAggregatorWrapper} from './lib/event-aggregator-wrapper';
 import {GlobalError} from 'global-error';
-import {UserService} from './user/user-service';
+import {UserService, SocialUserChanged} from './user/user-service';
 
 @inject(EventAggregator, UserService)
 export class SocialUser {
@@ -25,6 +25,7 @@ export class SocialUser {
       email: this._email,
       notifyEmail: this.notifyEmail
     };
+    this.events.info(SocialUserChanged, 'ユーザ情報を変更しました。');
     this.userService.saveSocialUser(user);
   }
 

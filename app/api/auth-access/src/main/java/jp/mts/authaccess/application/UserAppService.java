@@ -56,4 +56,8 @@ public class UserAppService {
 		return user;
 	}
 
+	public ProperUser loadUserById(String userId) {
+		return userRepository.findById(new ProperUserId(userId));
+	}
+
 }

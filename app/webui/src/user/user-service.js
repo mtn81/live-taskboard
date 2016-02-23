@@ -47,6 +47,15 @@ export class UserService {
     }, true);
   }
 
+  loadUser(callback) {
+    return this.httpLoader.object(
+        aaApi(`/users/${this.authContext.getUserId()}`),
+        response => {
+          const user = response.content.data;
+          if(callback) callback(user);
+          return user;
+        });
+  }
   loadSocialUser(callback) {
     return this.httpLoader.object(
         aaApi(`/social_users/${this.authContext.getUserId()}`),

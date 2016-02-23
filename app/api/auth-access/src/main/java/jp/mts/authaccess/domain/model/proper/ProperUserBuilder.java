@@ -16,6 +16,10 @@ public class ProperUserBuilder {
 		user.setUserActivation(activation);
 		return this;
 	}
+	public ProperUserBuilder setUseEmailNotification(boolean useEmailNotification) {
+		user.setUseEmailNotification(useEmailNotification);
+		return this;
+	}
 	
 	public ProperUser get() {
 		return user;

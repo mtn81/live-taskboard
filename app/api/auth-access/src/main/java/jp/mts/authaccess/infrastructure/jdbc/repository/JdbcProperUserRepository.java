@@ -28,7 +28,8 @@ public class JdbcProperUserRepository implements ProperUserRepository {
 			"name", aUser.name(),
 			"password", aUser.encryptedPassword(),
 			"status", aUser.status().name(),
-			"activation_id", aUser.userActivation().id().value());
+			"activation_id", aUser.userActivation().id().value(),
+			"notify_email", aUser.useEmailNotification());
 		userModel.setTimestamp(
 			"activation_expire", aUser.userActivation().expireTime());
 		userModel.saveIt();
@@ -66,6 +67,7 @@ public class JdbcProperUserRepository implements ProperUserRepository {
 				new ProperUserActivation(
 					new ProperUserActivationId(userModel.getString("activation_id")), 
 					new Date(userModel.getTimestamp("activation_expire").getTime())))
+			.setUseEmailNotification(userModel.getBoolean("notify_email"))
 			.get();
 	}
 	

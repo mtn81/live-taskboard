@@ -2,16 +2,20 @@ package jp.mts.authaccess.rest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import jp.mts.authaccess.application.UserAppService;
+import jp.mts.authaccess.rest.presentation.model.UserLoad;
 import jp.mts.authaccess.rest.presentation.model.UserSave;
 import jp.mts.base.rest.RestResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,6 +25,20 @@ public class UsersApi {
 	@Autowired
 	private UserAppService userAppService;
 	
+	@PostConstruct
+	public void initialize() {
+		UserLoad.setUserAppService(userAppService);
+		UserSave.setUserAppService(userAppService);
+	}
+
+	@RequestMapping(value="/users/{userId}", method=RequestMethod.GET)
+	public RestResponse<UserLoad> loadUser(
+			@PathVariable String userId) { //TODO check already logined
+		UserLoad userLoad = new UserLoad();
+		userLoad.load(userId);
+		return RestResponse.of(userLoad);
+	}
+	
 	@RequestMapping(value="/users", method=POST)
 	public RestResponse<UserSave> register(
 			@RequestBody @Valid UserSave userSave,
@@ -28,7 +46,7 @@ public class UsersApi {
 		if(result.hasErrors()){
 			return RestResponse.of(result);
 		}
-		userSave.create(userAppService);
+		userSave.create();
 		return RestResponse.of(userSave);
 	}
 	
@@ -40,7 +58,8 @@ public class UsersApi {
 		if(result.hasErrors()){
 			return RestResponse.of(result);
 		}
-		userSave.validateForRegister(userAppService);
+		userSave.validateForRegister();
 		return RestResponse.empty();
 	}
+
 }
