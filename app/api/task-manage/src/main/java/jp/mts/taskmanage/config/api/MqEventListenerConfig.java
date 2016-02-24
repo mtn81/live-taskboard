@@ -25,7 +25,7 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 				taskNotifyWebSocketController);
 		SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
 		endpoint.setId("task-manage");
-		endpoint.setQueueNames("task-manage");
+		endpoint.setQueueNames("task-manage-api");
 		endpoint.setMessageListener(listener::process);
 		registrar.registerEndpoint(endpoint);
 	}

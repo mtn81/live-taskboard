@@ -30,7 +30,7 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 				memberJoinAcceptedEventHandler);
 		SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
 		endpoint.setId("task-manage");
-		endpoint.setQueueNames("task-manage");
+		endpoint.setQueueNames("task-manage-event");
 		endpoint.setMessageListener(listener::process);
 		registrar.registerEndpoint(endpoint);
 	}
