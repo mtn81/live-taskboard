@@ -7,7 +7,7 @@ configurations {
 }
 
 dependencies {
-  sqlScripts files('../../../infra/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts')
+  sqlScripts files('../../../vm/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts')
 }
 
 eclipse {

@@ -1,1 +1,1 @@
-include "libs:event", "libs:unit-test", "base", "ut-base", "auth-access", "task-manage", "widget-store"
+include "libs:event", "libs:unit-test", "base", "ut-base", "auth-access", "task-manage", "widget-store", "task-manage_event", "task-manage_api"

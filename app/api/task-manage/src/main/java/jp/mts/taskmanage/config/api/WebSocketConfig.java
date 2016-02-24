@@ -1,4 +1,4 @@
-package jp.mts.taskmanage;
+package jp.mts.taskmanage.config.api;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

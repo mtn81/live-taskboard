@@ -41,7 +41,7 @@ public class SocialUserApi {
 		value="/social_users/{userId}",
 		method=RequestMethod.PUT)
 	public RestResponse<SocialUserSave> save(
-			@PathVariable String userId, 
+			@PathVariable String userId, //TODO check already logined
 			@RequestBody SocialUserSave socialUserSave) {
 
 		socialUserSave.save(userId);

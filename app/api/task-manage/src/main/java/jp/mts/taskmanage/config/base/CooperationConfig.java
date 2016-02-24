@@ -1,4 +1,4 @@
-package jp.mts.taskmanage;
+package jp.mts.taskmanage.config.base;
 
 import jp.mts.taskmanage.infrastructure.cooperation.AuthApi;
 
