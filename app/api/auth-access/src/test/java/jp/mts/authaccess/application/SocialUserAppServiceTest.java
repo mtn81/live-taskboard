@@ -52,7 +52,7 @@ public class SocialUserAppServiceTest {
 			socialUserRepository.save(existSocialUser);
 		}};
 		
-		SocialUser savedUser = target.saveUser("GOOGLE_u01", "taro", "hoge@test.jp", true);
+		SocialUser savedUser = target.changeUserAttributes("GOOGLE_u01", "taro", "hoge@test.jp", true);
 		
 		assertThat(savedUser, is(sameInstance(existSocialUser)));
 		assertThat(savedUser.name(), is("taro"));

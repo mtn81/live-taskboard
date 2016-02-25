@@ -5,12 +5,12 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import jp.mts.authaccess.domain.model.proper.ProperAuthenticateService;
 import jp.mts.authaccess.domain.model.proper.ProperUser;
+import jp.mts.authaccess.domain.model.proper.ProperUserActivationFixture;
 import jp.mts.authaccess.domain.model.proper.ProperUserActivationId;
+import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.authaccess.domain.model.proper.ProperUserId;
 import jp.mts.authaccess.domain.model.proper.ProperUserRepository;
 import jp.mts.authaccess.domain.model.proper.ProperUserStatus;
-import jp.mts.authaccess.domain.model.proper.ProperUserActivationFixture;
-import jp.mts.authaccess.domain.model.proper.ProperUserFixture;
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainEventPublisher;
@@ -22,6 +22,8 @@ import mockit.Mocked;
 import mockit.Tested;
 
 import org.junit.Test;
+
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 public class UserAppServiceTest {
 
@@ -134,5 +136,28 @@ public class UserAppServiceTest {
 		ProperUser loaded = target.loadUserById("u01");
 		
 		assertThat(loaded, is(sameInstance(properUser)));
+	}
+	
+	@Test public void
+	test_changeUserAttributes() {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
+		
+		ProperUser properUser = new ProperUserFixture().get();
+		new Expectations() {{
+			userRepository.findById(new ProperUserId("u01"));
+				result = properUser;
+			userRepository.save(properUser);
+		}};
+		
+		ProperUser changedUser = target.changeUserAttributes(
+				"u01", 
+				"taro", 
+				"taro@test.jp", 
+				true);
+		
+		assertThat(changedUser.id().idValue(), is("u01"));
+		assertThat(changedUser.name(), is("taro"));
+		assertThat(changedUser.email(), is("taro@test.jp"));
+		assertThat(changedUser.useEmailNotification(), is(true));
 	}
 }

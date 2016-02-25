@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import jp.mts.authaccess.application.UserAppService;
 import jp.mts.authaccess.rest.presentation.model.UserLoad;
+import jp.mts.authaccess.rest.presentation.model.UserModify;
 import jp.mts.authaccess.rest.presentation.model.UserSave;
 import jp.mts.base.rest.RestResponse;
 
@@ -29,6 +30,7 @@ public class UsersApi {
 	public void initialize() {
 		UserLoad.setUserAppService(userAppService);
 		UserSave.setUserAppService(userAppService);
+		UserModify.setUserAppService(userAppService);
 	}
 
 	@RequestMapping(value="/users/{userId}", method=RequestMethod.GET)
@@ -37,6 +39,14 @@ public class UsersApi {
 		UserLoad userLoad = new UserLoad();
 		userLoad.load(userId);
 		return RestResponse.of(userLoad);
+	}
+
+	@RequestMapping(value="/users/{userId}", method=RequestMethod.PUT)
+	public RestResponse<UserModify> modifyUser(
+			@PathVariable String userId,
+			@RequestBody UserModify userModify) { //TODO check already logined
+		userModify.modify(userId);
+		return RestResponse.of(userModify);
 	}
 	
 	@RequestMapping(value="/users", method=POST)

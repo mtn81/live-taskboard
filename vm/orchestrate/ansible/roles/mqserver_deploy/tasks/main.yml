@@ -27,7 +27,8 @@
   rabbitmq_queue: name={{ item }} durable=yes
   with_items:
     - auth-access
-    - task-manage
+    - task-manage-api
+    - task-manage-event
     - widget-store
 
 - name: declare bindings
@@ -35,5 +36,7 @@
   with_items:
     - { exchange: auth-access,  queue: auth-access }
     - { exchange: auth-access,  queue: task-manage }
-    - { exchange: task-manage,  queue: task-manage }
+    - { exchange: task-manage,  queue: task-manage-api }
+    - { exchange: task-manage,  queue: task-manage-event }
     - { exchange: widget-store, queue: widget-store }
+

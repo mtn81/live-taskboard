@@ -60,4 +60,18 @@ public class UserAppService {
 		return userRepository.findById(new ProperUserId(userId));
 	}
 
+	public ProperUser changeUserAttributes(
+			String userId, 
+			String userName,
+			String email, 
+			boolean notifyEmail) {
+		
+		ProperUser properUser = userRepository.findById(new ProperUserId(userId));
+
+		properUser.changeAttributes(userName, email, notifyEmail);
+
+		userRepository.save(properUser);
+		return properUser;
+	}
+
 }

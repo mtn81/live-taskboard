@@ -66,12 +66,21 @@ export class UserService {
         });
   }
 
+  saveUser(user) {
+    this.http.call(http => {
+      return http
+        .put(aaApi(`/users/${this.authContext.getUserId()}`), user)
+        .then(response => {
+          this.eventAggregator.publish(new UserChanged());
+        });
+    }, true);
+  }
   saveSocialUser(user) {
     this.http.call(http => {
       return http
         .put(aaApi(`/social_users/${this.authContext.getUserId()}`), user)
         .then(response => {
-          this.eventAggregator.publish(new SocialUserChanged());
+          this.eventAggregator.publish(new UserChanged());
         });
     }, true);
   }
@@ -85,4 +94,4 @@ export class UserRegisterValidationError {
 }
 export class UserRegisterValidationSuccess {}
 export class UserActivated {}
-export class SocialUserChanged {}
+export class UserChanged {}

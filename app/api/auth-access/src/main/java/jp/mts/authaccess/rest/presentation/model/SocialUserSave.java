@@ -39,7 +39,7 @@ public class SocialUserSave {
 
 	//process
 	public void save(String userId) {
-		this.socialUser = socialUserAppService.saveUser(
+		this.socialUser = socialUserAppService.changeUserAttributes(
 				userId, userName, email, notifyEmail);
 	}
 	

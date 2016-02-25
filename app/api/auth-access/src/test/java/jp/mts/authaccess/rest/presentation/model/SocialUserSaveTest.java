@@ -27,7 +27,7 @@ public class SocialUserSaveTest {
 		target.setNotifyEmail(true);
 		
 		new Expectations() {{
-			socialUserAppService.saveUser("GOOGLE_u01", "taro", "hoge@test.jp", true);
+			socialUserAppService.changeUserAttributes("GOOGLE_u01", "taro", "hoge@test.jp", true);
 				result = new SocialUserFixture().get();
 		}};
 

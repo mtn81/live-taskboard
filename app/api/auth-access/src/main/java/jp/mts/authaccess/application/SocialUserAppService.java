@@ -18,7 +18,7 @@ public class SocialUserAppService {
 				SocialUserId.fromIdValue(userId)).get();
 	}
 
-	public SocialUser saveUser(
+	public SocialUser changeUserAttributes(
 			String userId, 
 			String name, 
 			String email,

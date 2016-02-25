@@ -1,6 +1,7 @@
 package jp.mts.authaccess.domain.model.proper;
 
 import jp.mts.authaccess.domain.model.User;
+import jp.mts.authaccess.domain.model.UserChanged;
 import jp.mts.authaccess.domain.model.UserEntried;
 import jp.mts.base.domain.model.DomainEntity;
 
@@ -30,6 +31,18 @@ public class ProperUser extends DomainEntity<ProperUserId> implements User {
 		this.userActivation = new ProperUserActivation(
 				new ProperUserActivationId(), 
 				DateUtils.addHours(calendar.systemDate(), 1));
+	}
+	
+	public void changeAttributes(
+		String name,
+		String email,
+		boolean useEmailNotification) {
+		
+		setName(name);
+		setEmail(email);
+		setUseEmailNotification(useEmailNotification);
+
+		domainEventPublisher.publish(new UserChanged(this));
 	}
 	
 	public boolean activate() {
