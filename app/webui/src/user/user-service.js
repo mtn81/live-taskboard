@@ -72,6 +72,7 @@ export class UserService {
         .put(aaApi(`/users/${this.authContext.getUserId()}`), user)
         .then(response => {
           this.eventAggregator.publish(new UserChanged());
+          this.authContext.changeUserName(user.userName);
         });
     }, true);
   }
@@ -81,6 +82,7 @@ export class UserService {
         .put(aaApi(`/social_users/${this.authContext.getUserId()}`), user)
         .then(response => {
           this.eventAggregator.publish(new UserChanged());
+          this.authContext.changeUserName(user.userName);
         });
     }, true);
   }

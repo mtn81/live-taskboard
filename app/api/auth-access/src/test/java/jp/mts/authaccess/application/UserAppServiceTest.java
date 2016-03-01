@@ -140,12 +140,11 @@ public class UserAppServiceTest {
 	
 	@Test public void
 	test_changeUserAttributes() {
-		DomainObject.setDomainEventPublisher(domainEventPublisher);
-		
 		ProperUser properUser = new ProperUserFixture().get();
-		new Expectations() {{
+		new Expectations(properUser) {{
 			userRepository.findById(new ProperUserId("u01"));
 				result = properUser;
+			properUser.changeAttributes("taro", "taro@test.jp", true);
 			userRepository.save(properUser);
 		}};
 		
@@ -155,9 +154,7 @@ public class UserAppServiceTest {
 				"taro@test.jp", 
 				true);
 		
-		assertThat(changedUser.id().idValue(), is("u01"));
-		assertThat(changedUser.name(), is("taro"));
-		assertThat(changedUser.email(), is("taro@test.jp"));
-		assertThat(changedUser.useEmailNotification(), is(true));
+		assertThat(changedUser, is(sameInstance(properUser)));
+		
 	}
 }

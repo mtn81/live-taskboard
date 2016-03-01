@@ -37,4 +37,10 @@ export class AuthContext {
   remove(){
     this.storage.removeItem('auth');
   }
+
+  changeUserName(userName){
+    let auth = this.getAuth();
+    auth.userName = userName;
+    this.store(auth);
+  }
 }

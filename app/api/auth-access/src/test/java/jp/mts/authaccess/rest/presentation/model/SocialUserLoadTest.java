@@ -26,9 +26,9 @@ public class SocialUserLoadTest {
 	public void test_load() {
 		
 		SocialUser socialUser = new SocialUserFixture()
-			.setName("taro")
+			.setCustomName("taro")
 			.setOriginalName("ori_taro")
-			.setEmail("social@test.jp")
+			.setCustomEmail("social@test.jp")
 			.setOriginalEmail("ori_social@test.jp")
 			.setUseEmailNotification(true)
 			.get();

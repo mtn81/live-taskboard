@@ -17,12 +17,12 @@ public class SocialUserFixture {
 		return target;
 	}
 
-	public SocialUserFixture setName(String name) {
+	public SocialUserFixture setCustomName(String name) {
 		target.setCustomName(name);
 		return this;
 	}
 
-	public SocialUserFixture setEmail(String email) {
+	public SocialUserFixture setCustomEmail(String email) {
 		target.setCustomEmail(email);
 		return this;
 	}

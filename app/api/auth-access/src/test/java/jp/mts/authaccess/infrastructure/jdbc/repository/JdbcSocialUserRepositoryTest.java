@@ -21,8 +21,8 @@ public class JdbcSocialUserRepositoryTest extends JdbcTestBase {
 		target.save(
 			new SocialUserFixture(
 					socialUserId, "test@test.jp", "taro")
-				.setEmail("test2@test.jp")
-				.setName("taro2")
+				.setCustomEmail("test2@test.jp")
+				.setCustomName("taro2")
 				.setUseEmailNotification(true)
 				.get());
 		

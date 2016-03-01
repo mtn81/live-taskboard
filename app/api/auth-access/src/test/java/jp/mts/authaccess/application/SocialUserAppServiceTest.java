@@ -1,24 +1,25 @@
 package jp.mts.authaccess.application;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
 
+import jp.mts.authaccess.domain.model.UserChanged;
 import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialUser;
 import jp.mts.authaccess.domain.model.social.SocialUserFixture;
 import jp.mts.authaccess.domain.model.social.SocialUserId;
 import jp.mts.authaccess.domain.model.social.SocialUserRepository;
+import jp.mts.base.domain.model.DomainEventPublisher;
+import jp.mts.base.domain.model.DomainObject;
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 
 import org.junit.Test;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 
 public class SocialUserAppServiceTest {
@@ -42,12 +43,15 @@ public class SocialUserAppServiceTest {
 	}
 
 	@Test public void 
-	test_saveUser() {
+	test_changeUserAttributes(@Mocked DomainEventPublisher domainEventPublisher) {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		SocialUser existSocialUser = new SocialUserFixture().get();
 		
-		new Expectations() {{
+		new Expectations(existSocialUser) {{
 			socialUserRepository.findById(new SocialUserId(UserType.GOOGLE, "u01"));
 				result = Optional.of(existSocialUser);
+				
+			existSocialUser.changeAttributes("taro", "hoge@test.jp", true);
 				
 			socialUserRepository.save(existSocialUser);
 		}};
@@ -55,9 +59,6 @@ public class SocialUserAppServiceTest {
 		SocialUser savedUser = target.changeUserAttributes("GOOGLE_u01", "taro", "hoge@test.jp", true);
 		
 		assertThat(savedUser, is(sameInstance(existSocialUser)));
-		assertThat(savedUser.name(), is("taro"));
-		assertThat(savedUser.email(), is("hoge@test.jp"));
-		assertThat(savedUser.useEmailNotification(), is(true));
 
 	}
 }
