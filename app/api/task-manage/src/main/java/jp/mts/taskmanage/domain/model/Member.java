@@ -172,4 +172,11 @@ public class Member extends DomainEntity<MemberId> {
 		SUCCESS, NOT_ADMIN_ERROR, OWNER_ERROR
 	}
 
+	public void changeAttributes(
+			String name, 
+			String email) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

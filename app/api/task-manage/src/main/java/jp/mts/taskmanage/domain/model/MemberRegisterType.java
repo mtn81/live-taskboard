@@ -3,5 +3,9 @@ package jp.mts.taskmanage.domain.model;
 public enum MemberRegisterType {
 
 	PROPER,
-	GOOGLE
+	GOOGLE,
+	FACEBOOK,
+	YAHOO,
+	TWITTER,
+	;
 }

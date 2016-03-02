@@ -1,6 +1,8 @@
 package jp.mts.taskmanage.application;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.Member;
@@ -30,6 +32,22 @@ public class MemberAppService {
 
 		Member newMember = new Member(new MemberId(memberId), name, memberRegisterType);
 		memberRepository.save(newMember);
+	}
+	
+	public void changeMember(
+			String memberId,
+			String name,
+			String email) {
+		
+		Optional<Member> foundMember 
+			= memberRepository.findById(new MemberId(memberId));
+		if(!foundMember.isPresent()) return;
+		
+		Member member = foundMember.get();
+		member.changeAttributes(name, email);
+		
+		memberRepository.save(member);
+		
 	}
 
 }

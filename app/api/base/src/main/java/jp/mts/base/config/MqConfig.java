@@ -1,5 +1,8 @@
 package jp.mts.base.config;
 
+import jp.mts.base.infrastructure.jdbc.JdbcMqEventProcessTracker;
+import jp.mts.libs.event.mq.MqEventProcessTracker;
+
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -46,6 +49,10 @@ public class MqConfig {
     			.maxAttempts(5)
     			.backOffOptions(1000, 2, 10000)
     			.build();
+    }
+    @Bean
+    public MqEventProcessTracker mqEventProcessTracker() {
+    	return new JdbcMqEventProcessTracker();
     }
 	
     //TODO ミドルのセットアップとして行う
