@@ -13,21 +13,21 @@ public interface MqEventProcessTracker {
 		
 		synchronized (syncObj) {
 			try {
-				if(startProcess(category, id, occurred)) return;
+				if(ignoreProcess(category, id, occurred)) return;
 				processor.process();
-				endProcess(category, id, occurred, true);
+				endProcess(category, id, occurred);
 			} catch (Exception e) {
-				endProcess(category, id, occurred, false);
-				throw e;
+				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	boolean startProcess(String category, String id, Date occurred);
-	void endProcess(String category, String id, Date occurred, boolean success);
+	boolean ignoreProcess(String category, String id, Date occurred);
+	void endProcess(String category, String id, Date occurred);
 	
 	@FunctionalInterface
 	interface Processor {
 		void process();
 	}
+	
 }

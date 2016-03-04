@@ -9,6 +9,7 @@ import jp.mts.base.domain.model.DomainEntity;
 
 public class Member extends DomainEntity<MemberId> {
 	private String name;
+	private String email;
 	private MemberRegisterType registerType;
 	private Set<GroupBelonging> groupBelongings = new HashSet<>();
 	
@@ -27,6 +28,10 @@ public class Member extends DomainEntity<MemberId> {
 	public String name() {
 		return name;
 	}
+	public String email() {
+		return email;
+	}
+
 	public MemberRegisterType registerType() {
 		return registerType;
 	}
@@ -147,6 +152,9 @@ public class Member extends DomainEntity<MemberId> {
 	void setName(String name) {
 		this.name = name;
 	}
+	void setEmail(String email) {
+		this.email = email;
+	}
 	void setGroupBelongings(Collection<GroupBelonging> groupBelongings) {
 		this.groupBelongings = new HashSet<>(groupBelongings);
 	}
@@ -175,8 +183,8 @@ public class Member extends DomainEntity<MemberId> {
 	public void changeAttributes(
 			String name, 
 			String email) {
-		// TODO Auto-generated method stub
-		
+		setName(name);
+		setEmail(email);
 	}
 
 }

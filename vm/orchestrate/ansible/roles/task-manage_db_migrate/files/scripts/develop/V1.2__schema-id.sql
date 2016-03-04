@@ -1,5 +1,6 @@
 alter table events add column id bigserial primary key;
 alter table event_processes add column id bigserial primary key;
+alter table event_tracks add column id bigserial primary key;
 alter table groups add column id serial primary key;
 alter table members add column id serial primary key;
 alter table groups_members add column id serial primary key;

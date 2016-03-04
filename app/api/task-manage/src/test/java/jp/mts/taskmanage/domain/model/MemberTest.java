@@ -12,8 +12,8 @@ public class MemberTest {
 	
 	@Mocked DomainEventPublisher domainEventPublisher;
 
-	@Test
-	public void test_createGroup() {
+	@Test public void 
+	test_createGroup() {
 		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		Member member = new MemberFixture().get();
 		GroupId groupId = new GroupId("g01");
@@ -24,7 +24,16 @@ public class MemberTest {
 		assertThat(newGroup.ownerMemberId(), is(member.memberId()));
 		assertThat(newGroup.name(), is("group name"));
 		assertThat(newGroup.description(), is("group creation"));
-
+	}
+	
+	@Test public void
+	test_changeAttributes() {
+		
+		Member member = new MemberFixture().get();
+		member.changeAttributes("new name", "new email");
+		
+		assertThat(member.name(), is("new name"));
+		assertThat(member.email(), is("new email"));
 	}
 
 }

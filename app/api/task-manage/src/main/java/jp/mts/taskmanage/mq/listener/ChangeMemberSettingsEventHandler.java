@@ -1,13 +1,11 @@
 package jp.mts.taskmanage.mq.listener;
 
-import static org.mockito.Matchers.booleanThat;
-
 import java.util.Date;
 
 import jp.mts.libs.event.eventstore.EventBody;
+import jp.mts.libs.event.mq.MqEventProcessTracker;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
-import jp.mts.libs.event.mq.MqEventProcessTracker;
 import jp.mts.taskmanage.application.MemberAppService;
 
 import org.springframework.beans.factory.annotation.Autowired;

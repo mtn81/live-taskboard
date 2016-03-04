@@ -101,10 +101,13 @@ public class JdbcMemberRepository
 
 	@Override
 	protected Member toDomain(MemberModel model) {
-		return new Member(
-				new MemberId(model.getString("member_id")),
-				model.getString("name"),
-				MemberRegisterType.valueOf(model.getString("type")));
+		return new MemberBuilder(
+				new Member(
+					new MemberId(model.getString("member_id")),
+					model.getString("name"),
+					MemberRegisterType.valueOf(model.getString("type"))))
+			.setEmail(model.getString("email"))
+			.get();
 	}
 
 	@Override
@@ -112,7 +115,8 @@ public class JdbcMemberRepository
 		model.set(
 			"member_id", entity.memberId().value(),
 			"name", entity.name(),
-			"type", entity.registerType().name());
+			"type", entity.registerType().name(),
+			"email", entity.email());
 	}
 
 	private void setGroupBelongings(MemberBuilder memberBuilder, List<GroupMemberModel> models) {

@@ -1,0 +1,17 @@
+---
+
+######################################
+# java 8
+######################################
+- name: add apt repo (jdk)
+  apt_repository: repo='ppa:webupd8team/java'
+  sudo: yes
+
+- name: setting for accepting licence (jdk)
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  sudo: yes
+
+- name: install jdk
+  apt: name=oracle-java8-installer
+  sudo: yes
+

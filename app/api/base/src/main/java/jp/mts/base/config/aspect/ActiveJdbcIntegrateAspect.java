@@ -21,7 +21,7 @@ public class ActiveJdbcIntegrateAspect {
 
 	@Around("jp.mts.base.config.aspect.AppArchitecture.repository() || " + 
 			"jp.mts.base.config.aspect.AppArchitecture.query() || " +
-			"jp.mts.base.config.aspect.AppArchitecture.eventStore()")
+			"jp.mts.base.config.aspect.AppArchitecture.event()")
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
 		Connection connection = DataSourceUtils.getConnection(dataSource);
 		try {

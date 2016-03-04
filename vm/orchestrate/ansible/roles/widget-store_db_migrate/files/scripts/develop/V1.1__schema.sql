@@ -10,6 +10,15 @@ create table event_processes (
   last_event_id integer
 );
 
+create table event_tracks (
+  category varchar(50),
+  key varchar(100),
+  occurred timestamp,
+  state varchar(10),
+
+  constraint uc_track_key unique (category, key)
+);
+
 create table widgets (
   category_id varchar(100) not null,
   widget_id varchar(100) not null,

@@ -16,6 +16,10 @@ public class MemberFixture {
 		member.setName(name);
 		return this;
 	}
+	public MemberFixture setEmail(String email) {
+		member.setEmail(email);
+		return this;
+	}
 	public MemberFixture addGroupBelonging(String groupId, boolean admin) {
 		member.addGroupBelonging(new GroupBelonging(new GroupId(groupId), admin));
 		return this;

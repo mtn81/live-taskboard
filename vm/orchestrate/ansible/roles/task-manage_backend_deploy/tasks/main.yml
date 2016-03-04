@@ -3,4 +3,5 @@
 - include: ../../../include/server_module_deploy.yml
   vars:
     file_root: "{{ role_path }}/files"
-    module_name: ws-api
+    module_name: tm-backend
+

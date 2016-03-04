@@ -25,6 +25,7 @@ public class JdbcMemberRepositoryTest extends JdbcTestBase {
 	@Test
 	public void test_persistence() {
 		Member member = new MemberFixture()
+			.setEmail("test@hoge.jp")
 			.addGroupBelonging("g01", true)
 			.get();
 
@@ -34,6 +35,7 @@ public class JdbcMemberRepositoryTest extends JdbcTestBase {
 		
 		assertThat(found.memberId().value(), is("m01"));
 		assertThat(found.name(), is("taro"));
+		assertThat(found.email(), is("test@hoge.jp"));
 		assertThat(found.groupBelongings(), 
 				is(Sets.newHashSet(new GroupBelonging(new GroupId("g01"), true))));
 	}

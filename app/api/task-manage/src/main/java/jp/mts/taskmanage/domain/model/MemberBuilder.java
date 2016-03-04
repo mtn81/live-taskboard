@@ -9,6 +9,11 @@ public class MemberBuilder {
 	public MemberBuilder(Member member) {
 		this.member = member;
 	}
+
+	public MemberBuilder setEmail(String email) {
+		member.setEmail(email);
+		return this;
+	}
 	
 	public MemberBuilder addGroupBelonging(GroupBelonging groupBelonging) {
 		member.addGroupBelonging(groupBelonging);
@@ -22,5 +27,6 @@ public class MemberBuilder {
 	public Member get() {
 		return member;
 	}
+
 	
 }

@@ -42,7 +42,7 @@ for command in $commands; do
       ./gradlew build -x test
 
       cp auth-access/build/libs/auth-access-*.jar $ansible_dir/roles/auth-access_api_deploy/files/build/app.jar
-      cp task-manage/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
+      cp task-manage_api/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
       cp widget-store/build/libs/widget-store-*.jar $ansible_dir/roles/widget-store_api_deploy/files/build/app.jar
     ;;
 

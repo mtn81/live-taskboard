@@ -19,7 +19,8 @@ public class AppArchitecture {
 	public void query() {}
 	
 	@Pointcut("execution(* jp.mts.libs.event.eventstore.EventStore.*(..)) || "
-			+ "execution(* jp.mts.libs.event.EventProcessRecord.*(..))")
-	public void eventStore() {}
+			+ "execution(* jp.mts.libs.event.EventProcessRecord.*(..)) || "
+			+ "execution(* jp.mts.libs.event.mq.MqEventProcessTracker.*(..))")
+	public void event() {}
 	
 }
