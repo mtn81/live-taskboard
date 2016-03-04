@@ -1,5 +1,6 @@
 package jp.mts.base.infrastructure.jdbc;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import jp.mts.base.infrastructure.jdbc.model.EventTrackModel;
@@ -14,7 +15,7 @@ public class JdbcMqEventProcessTracker implements MqEventProcessTracker {
 			Date occurred) {
 		
 		long count = EventTrackModel.count(
-				"category=? and key=? and occurred > ?", category, id, occurred);
+				"category=? and key=? and occurred > ?", category, id, new Timestamp(occurred.getTime()));
 		return count > 0;
 	}
 

@@ -3,7 +3,7 @@ package jp.mts.taskmanage.mq.listener;
 import java.util.Date;
 
 import jp.mts.libs.event.eventstore.EventBody;
-import jp.mts.libs.event.mq.MqEventProcessTracker;
+import jp.mts.libs.event.mq.MqEventProcessFilter;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
 import jp.mts.taskmanage.application.MemberAppService;
@@ -18,7 +18,7 @@ public class ChangeMemberSettingsEventHandler implements MqEventHandler {
 	@Autowired
 	private MemberAppService memberAppService;
 	@Autowired
-	private MqEventProcessTracker mqEventProcessTracker;
+	private MqEventProcessFilter mqEventProcessFilter;
 
 	@Override
 	public void handleEvent(
@@ -32,7 +32,7 @@ public class ChangeMemberSettingsEventHandler implements MqEventHandler {
 		String email = eventBody.asString("email");
 		boolean notifyEmail = eventBody.as(Boolean.class, "notifyEmail");
 
-		mqEventProcessTracker.processSync(
+		mqEventProcessFilter.processIfNewer(
 				"mts:authaccess/UserChanged", memberId, occurred, this,
 		() -> {
 			memberAppService.changeMember(

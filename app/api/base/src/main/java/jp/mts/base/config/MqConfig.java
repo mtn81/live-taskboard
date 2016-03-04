@@ -1,6 +1,7 @@
 package jp.mts.base.config;
 
 import jp.mts.base.infrastructure.jdbc.JdbcMqEventProcessTracker;
+import jp.mts.libs.event.mq.MqEventProcessFilter;
 import jp.mts.libs.event.mq.MqEventProcessTracker;
 
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
@@ -53,6 +54,10 @@ public class MqConfig {
     @Bean
     public MqEventProcessTracker mqEventProcessTracker() {
     	return new JdbcMqEventProcessTracker();
+    }
+    @Bean
+    public MqEventProcessFilter mqEventProcessFilter() {
+    	return new MqEventProcessFilter(mqEventProcessTracker());
     }
 	
     //TODO ミドルのセットアップとして行う
