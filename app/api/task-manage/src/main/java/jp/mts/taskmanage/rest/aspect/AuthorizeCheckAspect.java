@@ -1,9 +1,8 @@
 package jp.mts.taskmanage.rest.aspect;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
+import static jp.mts.base.util.AspectUtils.paramValueOf;
 import jp.mts.base.application.ApplicationException;
+import jp.mts.base.util.AspectUtils;
 import jp.mts.taskmanage.application.ErrorType;
 import jp.mts.taskmanage.rest.authorize.GroupAdmin;
 import jp.mts.taskmanage.rest.authorize.GroupBelong;
@@ -12,7 +11,6 @@ import jp.mts.taskmanage.rest.authorize.Me;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -43,24 +41,5 @@ public class AuthorizeCheckAspect {
 		return pjp.proceed();
 	}
 
-	private String paramValueOf(
-			ProceedingJoinPoint pjp, 
-			Class<? extends Annotation> annotationType) {
-		
-		MethodSignature signature = (MethodSignature) pjp.getSignature();
-		Method method = signature.getMethod();
-		Annotation[][] paramsAnnotations = method.getParameterAnnotations();
-
-		int paramIndex = -1;
-		for(int i=0; i < paramsAnnotations.length; i++) {
-			for(Annotation anno : paramsAnnotations[i]) {
-				if (anno.annotationType().equals(annotationType)) {
-					paramIndex = i;
-				}
-			};
-		};
-		return paramIndex >= 0 ? (String)pjp.getArgs()[paramIndex] : null;
-	}
-	
 	
 }

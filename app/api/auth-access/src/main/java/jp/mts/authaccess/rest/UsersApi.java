@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import jp.mts.authaccess.application.UserAppService;
+import jp.mts.authaccess.rest.aspect.Authenticated;
 import jp.mts.authaccess.rest.presentation.model.UserLoad;
 import jp.mts.authaccess.rest.presentation.model.UserModify;
 import jp.mts.authaccess.rest.presentation.model.UserSave;
@@ -35,7 +36,7 @@ public class UsersApi {
 
 	@RequestMapping(value="/users/{userId}", method=RequestMethod.GET)
 	public RestResponse<UserLoad> loadUser(
-			@PathVariable String userId) { //TODO check already logined
+			@Authenticated @PathVariable String userId) {
 		UserLoad userLoad = new UserLoad();
 		userLoad.load(userId);
 		return RestResponse.of(userLoad);
@@ -43,8 +44,8 @@ public class UsersApi {
 
 	@RequestMapping(value="/users/{userId}", method=RequestMethod.PUT)
 	public RestResponse<UserModify> modifyUser(
-			@PathVariable String userId,
-			@RequestBody UserModify userModify) { //TODO check already logined
+			@Authenticated @PathVariable String userId,
+			@RequestBody UserModify userModify) {
 		userModify.modify(userId);
 		return RestResponse.of(userModify);
 	}

@@ -3,6 +3,7 @@ package jp.mts.authaccess.rest;
 import javax.annotation.PostConstruct;
 
 import jp.mts.authaccess.application.SocialUserAppService;
+import jp.mts.authaccess.rest.aspect.Authenticated;
 import jp.mts.authaccess.rest.presentation.model.SocialUserLoad;
 import jp.mts.authaccess.rest.presentation.model.SocialUserSave;
 import jp.mts.base.rest.RestResponse;
@@ -31,7 +32,7 @@ public class SocialUserApi {
 		value="/social_users/{userId}", 
 		method=RequestMethod.GET)
 	public RestResponse<SocialUserLoad> loadSocialUser(
-			@PathVariable String userId) {//TODO check already logined
+			@Authenticated @PathVariable String userId) {
 		SocialUserLoad socialUserLoad = new SocialUserLoad();
 		socialUserLoad.load(userId);
 		return RestResponse.of(socialUserLoad);
@@ -41,12 +42,11 @@ public class SocialUserApi {
 		value="/social_users/{userId}",
 		method=RequestMethod.PUT)
 	public RestResponse<SocialUserSave> save(
-			@PathVariable String userId, //TODO check already logined
+			@Authenticated @PathVariable String userId,
 			@RequestBody SocialUserSave socialUserSave) {
 
 		socialUserSave.save(userId);
 		return RestResponse.of(socialUserSave);
 	}
-
 
 }
