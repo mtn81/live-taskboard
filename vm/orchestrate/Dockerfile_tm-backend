@@ -3,7 +3,5 @@ FROM livetaskboard/base:latest
 ADD ansible /ansible
 WORKDIR /ansible
 
-RUN ansible-playbook task-manage_bgservers.yml -c local -i inventories/local --tags "base_image"
-
-EXPOSE 8080
+RUN ansible-playbook task-manage_backendservers.yml -c local -i inventories/local --tags "base_image"
 

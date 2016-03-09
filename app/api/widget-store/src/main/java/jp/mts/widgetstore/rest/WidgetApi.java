@@ -2,6 +2,7 @@ package jp.mts.widgetstore.rest;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.widgetstore.application.WidgetAppService;
+import jp.mts.widgetstore.rest.aspect.Authorized;
 import jp.mts.widgetstore.rest.presentation.model.WidgetList;
 import jp.mts.widgetstore.rest.presentation.model.WidgetSave;
 
@@ -21,7 +22,7 @@ public class WidgetApi {
 	
 	@RequestMapping(value="/{widgetId}", method=RequestMethod.PUT)
 	public RestResponse<WidgetSave> save(
-			@PathVariable String categoryId, 
+			@Authorized @PathVariable String categoryId, 
 			@PathVariable String widgetId, 
 			@RequestBody WidgetSave widgetSave) {
 
@@ -32,7 +33,7 @@ public class WidgetApi {
 	
 	@RequestMapping(value="/", method=RequestMethod.GET)
 	public RestResponse<WidgetList> load(
-			@PathVariable String categoryId) {
+			@Authorized @PathVariable String categoryId) {
 		
 		WidgetList widgetList = new WidgetList();
 		widgetList.loadByCategory(categoryId, widgetAppService);
