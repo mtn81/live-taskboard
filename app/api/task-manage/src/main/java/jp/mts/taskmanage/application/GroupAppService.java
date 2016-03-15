@@ -70,6 +70,10 @@ public class GroupAppService {
 		return null; 
 	}
 	
+	public Group findById(String groupId) {
+		return groupRepository.findById(new GroupId(groupId)).get();
+	}
+	
 	public void entryGroup(String groupId, String memberId, boolean admin) {
 		Member member = memberRepository.findById(new MemberId(memberId)).get();
 		Group group = groupRepository.findById(new GroupId(groupId)).get();

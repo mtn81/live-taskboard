@@ -16,3 +16,6 @@ rabbitmq:
   username: app 
   password: pass
   exchange: widget-store 
+  
+cooperation:
+  task-manage-url: http://localhost:28080/task-manage/api

@@ -12,6 +12,7 @@ import jp.mts.widgetstore.application.AuthorizationAppService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,15 +23,16 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Order(1)
 public class AuthenticationCheckAspect {
 
+	@Autowired
 	private AuthorizationAppService authorizationAppService;
 	
 	@Around("jp.mts.base.config.aspect.AppArchitecture.restApi()")
 	public Object checkAuthenticated(ProceedingJoinPoint pjp) throws Throwable {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
 		String authId = requestAttributes.getRequest().getHeader("X-AuthAccess-AuthId");
-		String groupId = AspectUtils.paramValueOf(pjp, Authorized.class);
+		String categoryId = AspectUtils.paramValueOf(pjp, Authorized.class);
 
-		if(authorizationAppService.isAccesible(authId, groupId)) {
+		if(authorizationAppService.isAccesible(authId, categoryId)) {
 			return pjp.proceed();
 		} else {
 			requestAttributes.getResponse().setStatus(HttpServletResponse.SC_FORBIDDEN);

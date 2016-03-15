@@ -7,7 +7,9 @@ import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
+import jp.mts.taskmanage.rest.authorize.GroupBelong;
 import jp.mts.taskmanage.rest.authorize.Me;
+import jp.mts.taskmanage.rest.presentation.model.GroupIdLoad;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupLoad;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;
@@ -39,6 +41,7 @@ public class GroupApi {
 		GroupSearch.setGroupJoinSearchQuery(groupJoinSearchQuery);
 		GroupList.setGroupBelongingSearchQuery(groupBelongingSearchQuery);
 		GroupLoad.setGroupBelongingSearchQuery(groupBelongingSearchQuery);
+		GroupIdLoad.setGroupAppService(groupAppService);
 	}
 
 	@RequestMapping(
@@ -94,6 +97,15 @@ public class GroupApi {
 		return RestResponse.of(groupRemove);
 	}
 	
+	@RequestMapping(
+			value="/groups/{groupId}", 
+			method=RequestMethod.GET)
+	public RestResponse<GroupIdLoad> loadGroup(
+			@PathVariable @GroupBelong String groupId) {
+		GroupIdLoad groupLoad = new GroupIdLoad();
+		groupLoad.load(groupId);
+		return RestResponse.of(groupLoad);
+	}
 	@RequestMapping(
 			value="/members/{memberId}/groups/{groupId}", 
 			method=RequestMethod.GET)
