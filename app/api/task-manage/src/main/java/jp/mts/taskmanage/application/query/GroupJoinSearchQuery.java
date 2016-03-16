@@ -16,16 +16,19 @@ public interface GroupJoinSearchQuery {
 		private String groupId;
 		private String groupName;
 		private String ownerName;
+		private String ownerType;
 		private String description;
 
 		public NotJoinAppliedWithNameResult(
 				String groupId, 
 				String groupName, 
 				String ownerName,
+				String ownerType,
 				String description) {
 			this.groupId = groupId;
 			this.groupName = groupName;
 			this.ownerName = ownerName;
+			this.ownerType = ownerType;
 			this.description = description;
 		}
 
@@ -38,6 +41,9 @@ public interface GroupJoinSearchQuery {
 		public String getOwnerName() {
 			return ownerName;
 		}
+		public String getOwnerType() {
+			return ownerType;
+		}
 		public String getDescription() {
 			return description;
 		}
@@ -48,6 +54,7 @@ public interface GroupJoinSearchQuery {
 		public String groupId;
 		public String groupName;
 		public String ownerName;
+		public String ownerType;
 		public Date joinApplied;
 		public GroupJoinApplicationStatus joinApplicationStatus;
 
@@ -56,12 +63,14 @@ public interface GroupJoinSearchQuery {
 				String groupId, 
 				String groupName, 
 				String ownerName,
+				String ownerType,
 				Date joinApplied,
 				GroupJoinApplicationStatus joinApplicationStatus) {
 			this.joinApplicationId = joinApplicationId;
 			this.groupId = groupId;
 			this.groupName = groupName;
 			this.ownerName = ownerName;
+			this.ownerType = ownerType;
 			this.joinApplied = joinApplied;
 			this.joinApplicationStatus = joinApplicationStatus;
 		}
@@ -72,6 +81,7 @@ public interface GroupJoinSearchQuery {
 		public String groupId;
 		public String groupName;
 		public String applicantId;
+		public String applicantType;
 		public String applicantName;
 		public Date joinApplied;
 
@@ -80,6 +90,7 @@ public interface GroupJoinSearchQuery {
 				String groupId, 
 				String groupName, 
 				String applicantId, 
+				String applicantType, 
 				String applicantName,
 				Date joinApplied) {
 			super();
@@ -87,6 +98,7 @@ public interface GroupJoinSearchQuery {
 			this.groupId = groupId;
 			this.groupName = groupName;
 			this.applicantId = applicantId;
+			this.applicantType = applicantType;
 			this.applicantName = applicantName;
 			this.joinApplied = joinApplied;
 		}

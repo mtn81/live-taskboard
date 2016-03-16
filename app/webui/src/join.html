@@ -1,4 +1,5 @@
 <template>
+  <require from="./member-name"></require>
   <link rel="stylesheet" type="text/css" href="../styles/join.css">
 
   <main>
@@ -23,7 +24,9 @@
             <tr repeat.for="group of notAppliedGroups">
               <td>${group.groupName}</td>
               <td>${group.description}</td>
-              <td>${group.owner}</td>
+              <td><member-name
+                    name.bind='group.owner'
+                    type.bind='group-type'></member-name></td>
               <td>
                 <button class="btn btn-primary" type="button"
                   click.delegate="$parent.applyJoin(group)"
@@ -50,7 +53,9 @@
           <tbody>
             <tr repeat.for="group of appliedGroups">
               <td>${group.groupName}</td>
-              <td>${group.owner}</td>
+              <td><member-name
+                    name.bind='group.owner'
+                    type.bind='group-type'></member-name></td>
               <td>${group.joinApplied | dateFormat}</td>
               <td>
                 <span show.bind="group.joinApplicationStatus == 'APPLIED'">

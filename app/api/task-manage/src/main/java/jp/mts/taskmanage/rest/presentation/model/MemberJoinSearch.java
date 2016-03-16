@@ -31,7 +31,8 @@ public class MemberJoinSearch {
 			this.result = result;
 		}
 		
-		public String getMemberId() { return result.applicantId; }
+		public String getMemberType() { return result.applicantType; }
+		public String getMemberName() { return result.applicantName; }
 		public String getGroupId() { return result.groupId; }
 		public String getGroupName() { return result.groupName; }
 		public Date getApplied() { return result.joinApplied; }

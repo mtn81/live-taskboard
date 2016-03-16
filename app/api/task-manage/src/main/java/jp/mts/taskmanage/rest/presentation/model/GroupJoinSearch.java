@@ -44,6 +44,9 @@ public class GroupJoinSearch {
 		public String getOwner(){
 			return groupSearchResult.ownerName;
 		}
+		public String getOwnerType(){
+			return groupSearchResult.ownerType;
+		}
 		public Date getJoinApplied(){
 			return groupSearchResult.joinApplied;
 		}

@@ -22,6 +22,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 					+   "g.group_id as group_id, "
 					+   "g.name as group_name, "
 					+   "m.name as owner_name, " 
+					+   "m.name as owner_type, " 
 					+   "gj.applied_time as applied_time, "
 					+   "gj.status as applied_status, "
 					+   "gj.application_id as application_id " 
@@ -42,6 +43,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
 						(String)record.get("owner_name"),
+						(String)record.get("owner_type"),
 						record.get("applied_time") == null ? null : new Date(((Timestamp)record.get("applied_time")).getTime()),
 						record.get("applied_status") == null ? null : GroupJoinApplicationStatus.valueOf((String)record.get("applied_status"))) 
 		);
@@ -55,6 +57,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				+   "g.group_id as group_id, "
 				+   "g.name as group_name, "
 				+   "m.name as owner_name, "
+				+   "m.type as owner_type, "
 				+   "g.description as description "
 				+ "from "
 				+   "groups g "
@@ -92,6 +95,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
 						(String)record.get("owner_name"),
+						(String)record.get("owner_type"),
 						(String)record.get("description"))
 		);
 	}
@@ -113,6 +117,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				+ "g.group_id as group_id, "
 				+ "g.name as group_name, "
 				+ "gj.applicant_id as applicant_id, "
+				+ "m.type as applicant_type, "
 				+ "m.name as applicant_name, "
 				+ "gj.applied_time as applied_time, "
 				+ "gj.status as applied_status, "
@@ -142,6 +147,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
 						(String)record.get("applicant_id"),
+						(String)record.get("applicant_type"),
 						(String)record.get("applicant_name"),
 						record.get("applied_time") == null ? null : new Date(((Timestamp)record.get("applied_time")).getTime()))
 		);
