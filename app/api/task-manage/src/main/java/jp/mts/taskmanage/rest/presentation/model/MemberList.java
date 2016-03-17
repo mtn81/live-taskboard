@@ -43,6 +43,9 @@ public class MemberList {
 		public String getMemberId() {
 			return member.memberId().value();
 		}
+		public String getType() {
+			return member.registerType().name();
+		}
 
 		public String getName() {
 			return member.name();

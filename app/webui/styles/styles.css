@@ -189,9 +189,9 @@ div.au-stagger {
 }
 .page-header .login-user-msg {
   position: absolute;
-  left: 80%;
+  left: 70%;
+  width: 300px;
   margin-top: 10px;
-  margin-right: 10px;
 }
 .clearfix {
   margin: 0;

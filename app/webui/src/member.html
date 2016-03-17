@@ -1,4 +1,5 @@
 <template>
+  <require from="./member-name"></require>
   <link rel="stylesheet" type="text/css" href="../styles/member.css">
 
   <main>
@@ -6,15 +7,15 @@
     <table class="table table-striped member-list">
       <thead>
         <tr>
-          <th>ID</th>
           <th>名前</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr repeat.for="member of members">
-          <td>${member.memberId}</td>
-          <td>${member.name}</td>
+          <td><member-name
+                type.bind="member.type"
+                name.bind="member.name"></member-name></td>
           <td>
             <label class="radio-inline">
               <input type="radio" name="roles_${$index}" value="NORMAL"

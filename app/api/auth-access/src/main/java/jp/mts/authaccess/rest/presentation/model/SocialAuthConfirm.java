@@ -27,6 +27,9 @@ public class SocialAuthConfirm {
 	public String getUserName() {
 		return socialUser.name();
 	}
+	public String getUserType() {
+		return auth.userId().userType().name();
+	}
 	
 	//process
 	public void confirm(String processId) {

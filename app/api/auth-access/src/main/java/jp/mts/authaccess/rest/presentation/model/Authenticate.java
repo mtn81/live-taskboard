@@ -30,6 +30,9 @@ public class Authenticate {
 	public String getUserName(){
 		return user.name();
 	}
+	public String getUserType() {
+		return auth.userId().userType().name();
+	}
 	
 	//process
 	public void authenticate(AuthAppService authAppService) {

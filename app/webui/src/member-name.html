@@ -7,8 +7,28 @@
   background-repeat: no-repeat;
   padding-left: 20px;
 }
+.member-name-yahoo {
+  background-image: url(images/yahoo-icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+.member-name-facebook {
+  background-image: url(images/facebook-icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+.member-name-twitter {
+  background-image: url(images/twitter-icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+.member-name-other {
+}
 </style>
 
-<span class="member-name-google">${name}</span>
+<span class="member-name-${memberType}">${name}</span>
 
 </template>
