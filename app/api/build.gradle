@@ -156,13 +156,26 @@ project(':ut-base') {
   }
 }
 project(':auth-access') {
-  springBoot {
-    executable = true
-  }
   dependencies {
     compile project(':libs:event'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts")
+  }
+}
+project(':auth-access_api') {
+  springBoot {
+    executable = true
+  }
+  dependencies {
+    compile project(':libs:event'), project(':base'), project(':auth-access')
+  }
+}
+project(':auth-access_backend') {
+  springBoot {
+    executable = true
+  }
+  dependencies {
+    compile project(':libs:event'), project(':base'), project(':auth-access')
   }
 }
 project(':task-manage') {
@@ -180,7 +193,7 @@ project(':task-manage_api') {
     compile project(':libs:event'), project(':base'), project(':task-manage')
   }
 }
-project(':task-manage_event') {
+project(':task-manage_backend') {
   springBoot {
     executable = true
   }
@@ -189,12 +202,25 @@ project(':task-manage_event') {
   }
 }
 project(':widget-store') {
-  springBoot {
-    executable = true
-  }
   dependencies {
     compile project(':libs:event'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/widget-store_db_migrate/files/scripts")
+  }
+}
+project(':widget-store_api') {
+  springBoot {
+    executable = true
+  }
+  dependencies {
+    compile project(':libs:event'), project(':base'), project(':widget-store')
+  }
+}
+project(':widget-store_backend') {
+  springBoot {
+    executable = true
+  }
+  dependencies {
+    compile project(':libs:event'), project(':base'), project(':widget-store')
   }
 }

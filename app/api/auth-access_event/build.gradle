@@ -1,3 +1,0 @@
-jar {
-  baseName = 'auth-access_event'
-}

@@ -20,10 +20,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 		"jp.mts.taskmanage.application",
 		"jp.mts.taskmanage.mq.listener",
 	})
-public class EventHandlerTask {
+public class BackendTask {
 
 	public static void main(String[] args) {
-		SpringApplication springApplication = new SpringApplication(EventHandlerTask.class);
+		SpringApplication springApplication = new SpringApplication(BackendTask.class);
 		springApplication.setWebEnvironment(false);
 		springApplication.run(args);
 	}

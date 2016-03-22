@@ -7,7 +7,7 @@ configurations {
 }
 
 dependencies {
-  sqlScripts files('../../../infra/orchestrate/ansible/roles/task-manage_db_migrate/files/scripts')
+  sqlScripts files('../../../vm/orchestrate/ansible/roles/task-manage_db_migrate/files/scripts')
 }
 
 eclipse {

@@ -1,4 +1,4 @@
-package jp.mts.authaccess;
+package jp.mts.authaccess.config.base;
 
 import jp.mts.authaccess.domain.model.AuthRepository;
 import jp.mts.authaccess.domain.model.proper.PasswordEncriptionService;

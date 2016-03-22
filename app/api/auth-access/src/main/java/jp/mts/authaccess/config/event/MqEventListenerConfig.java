@@ -1,4 +1,4 @@
-package jp.mts.authaccess;
+package jp.mts.authaccess.config.event;
 
 import jp.mts.authaccess.mq.listener.UserRegisteredEventHandler;
 import jp.mts.libs.event.mq.MqEventListener;

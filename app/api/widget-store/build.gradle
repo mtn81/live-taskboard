@@ -7,7 +7,7 @@ configurations {
 }
 
 dependencies {
-  sqlScripts files('../../../infra/orchestrate/ansible/roles/widget-store_db_migrate/files/scripts')
+  sqlScripts files('../../../vm/orchestrate/ansible/roles/widget-store_db_migrate/files/scripts')
 }
 
 eclipse {
