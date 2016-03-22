@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {GlobalError} from '../global-error';
+import {GlobalError} from './global-error';
 
 export class HttpClientWrapper {
   keyLoading = {};

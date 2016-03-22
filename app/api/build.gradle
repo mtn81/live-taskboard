@@ -127,26 +127,26 @@ subprojects {
 }
 
 project(':libs') {
-  //mainClassName = "dummy"
+  mainClassName = "dummy"
 }
 project(':libs:unit-test') {
-  //mainClassName = "dummy"
+  mainClassName = "dummy"
 }
 project(':libs:event') {
-  //mainClassName = "dummy"
+  mainClassName = "dummy"
   dependencies {
     testCompile project(':libs:unit-test')
   }
 }
 project(':base') {
-  //mainClassName = "dummy"
+  mainClassName = "dummy"
   dependencies {
     compile project(':libs:event')
     testCompile project(':libs:unit-test')
   }
 }
 project(':ut-base') {
-  //mainClassName = "dummy"
+  mainClassName = "dummy"
   dependencies {
   	compile "org.jmockit:jmockit:1.17";
   	compile "junit:junit:4.11"

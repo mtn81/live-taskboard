@@ -1,0 +1,33 @@
+<template>
+
+  <link rel="stylesheet" type="text/css" href="/dist/views/social-user/social-user.css">
+
+  <form id="social-settings">
+    <div class="form-group">
+      <label for="userName">名前</label>
+      <div class="input-group">
+        <span class="input-group-addon">
+          <input type="checkbox" checked.bind="specifyName"> 指定
+        </span>
+        <input type="text" id="userName" class="form-control"
+          value.bind="userName" disabled="${ specifyName ? '' : 'disabled' }">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="mail">メール通知</label>
+      <input type="checkbox" checked.bind="notifyEmail"> 利用する
+      <div class="input-group" show.bind="notifyEmail">
+        <span class="input-group-addon">
+          <input type="checkbox" checked.bind="specifyEmail"> 指定
+        </span>
+        <input type="text" id="email" class="form-control"
+          value.bind="email" disabled="${specifyEmail ? '' : 'disabled'}">
+      </div>
+    </div>
+
+    <p class="text-center">
+    <button class="btn btn-primary" click.delegate="modifyUser()">変更</button>
+    </p>
+  <form>
+
+</template>

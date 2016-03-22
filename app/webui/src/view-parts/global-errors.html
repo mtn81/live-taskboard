@@ -1,0 +1,17 @@
+<template>
+
+<link rel="stylesheet" type="text/css" href="/dist/view-parts/global.css">
+
+<div ref="messageContainer" class="global-msgs alert alert-danger alert-dismissible" >
+  <button click.delegate="close()" type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <ul class="global-errors">
+    <li repeat.for="error of errors">
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      ${error.message}
+    </li>
+  </ul>
+</div>
+
+</template>

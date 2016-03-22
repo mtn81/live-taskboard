@@ -1,0 +1,43 @@
+<template>
+  <require from="../../view-parts/member-name"></require>
+  <link rel="stylesheet" type="text/css" href="/dist/views/member/member.css">
+
+  <main>
+    <h4>メンバーを管理</h4>
+    <table class="table table-striped member-list">
+      <thead>
+        <tr>
+          <th>名前</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr repeat.for="member of members">
+          <td><member-name
+                type.bind="member.type"
+                name.bind="member.name"></member-name></td>
+          <td>
+            <label class="radio-inline">
+              <input type="radio" name="roles_${$index}" value="NORMAL"
+                disabled="${group.admin ? '' : 'disabled' }"
+                checked.one-way="member.admin ? 'ADMIN' : 'NORMAL'"
+                click.delegate="changeToNormal(member)">一般
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="roles_${$index}" value="ADMIN"
+                disabled="${group.admin ? '' : 'disabled' }"
+                checked.one-way="member.admin ? 'ADMIN' : 'NORMAL'"
+                click.delegate="changeToAdmin(member)">管理者
+            </label>
+            <button class="btn btn-danger remove-member-btn" type="button"
+              disabled="${member.removed || !group.admin ? 'disabled' : '' }"
+              click.delegate="removeMember(member)">
+              削除
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+</template>

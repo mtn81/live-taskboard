@@ -24,4 +24,5 @@ domain:
   member-auth-expiration-minutes: 30
 
 logging:
-  file: app.log
+  file: /var/log/app.log
+

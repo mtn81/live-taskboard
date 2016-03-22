@@ -1,0 +1,17 @@
+<template>
+
+<link rel="stylesheet" type="text/css" href="/dist/view-parts/global.css">
+
+<div ref="messageContainer" class="global-msgs alert alert-info alert-dismissible" >
+  <button click.delegate="close()" type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <ul class="global-infos">
+    <li repeat.for="info of infos">
+      <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+      ${info.message}
+    </li>
+  </ul>
+</div>
+
+</template>

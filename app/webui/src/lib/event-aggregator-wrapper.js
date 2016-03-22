@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import {GlobalInfo} from '../global-info';
+import {GlobalInfo} from './global-info';
 
 export class EventAggregatorWrapper {
 

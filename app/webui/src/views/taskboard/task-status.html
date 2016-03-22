@@ -1,0 +1,58 @@
+<template>
+
+  <require from="../../view-parts/widget"></require>
+  <require from="../../view-parts/droppable"></require>
+  <require from="../../view-parts/editable-text"></require>
+
+  <div class="taskstatus panel panel-default" style="display:inline-block"
+    widget.bind="{ widgetId: 'taskstatus-' + status, freeOnDrag: true}"
+    droppable.bind="{ acceptableSelector: '.task', callback: changeStatus.bind(vm) }"
+    style="z-index:1">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        ${status}
+      </h3>
+      <p class="panel-actions text-right">
+        <content select="botton"></content>
+      </p>
+    </div>
+    <div class="panel-body">
+      <div repeat.for="task of tasks" class="task panel panel-default"
+        widget.bind="{ widgetId: task.taskId, freeOnDrag: false}"
+        style="z-index: 100">
+        <div class.bind="'panel-heading ' + $parent.deadlineCss(task.deadline)">
+          <strong>
+            <editable-text key.bind="task" event="taskName.changed">${task.taskName}</editable-text>
+          </strong>
+          <span class="task-actions">
+            <button type="button" class="btn btn-default" click.delegate="$parent.$parent.showMemoEdit(task)">
+              <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="btn btn-default" click.delegate="$parent.removeTask(task)">
+              <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"
+                click.delegate="$parent.removeTask(task)"></span>
+            </button>
+          </span>
+        </div>
+        <div class="panel-body">
+          <ul>
+            <li>
+              <select
+                value.bind="task.assigned"
+                class.bind="'form-control ' + ($parent.assigned(task.assigned) ? 'assigned' : '')"
+                change.delegate="$parent.modifyTask(task)">
+                <option repeat.for="member of members" value.bind="member.memberId">${member.name}</option>
+              </select>
+            </li>
+            <li>
+              <input type="date" id="deadline" class="form-control"
+                  value.bind="task.deadline" change.delegate="$parent.modifyTask(task)">
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</template>

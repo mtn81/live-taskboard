@@ -1,0 +1,18 @@
+<template>
+
+<require from="../../view-parts/global-errors"></require>
+<require from="../../view-parts/form-validate"></require>
+
+<global-errors event.bind="{ event: 'validate.group.register.error', excludeField: true }"></global-errors>
+
+<form formValid="validate.group.register">
+  <div class="form-group">
+    <label for="groupName">グループ名</label>
+    <input type="text" id="groupName" class="form-control" value.bind="name">
+  </div>
+  <div class="form-group">
+    <label for="groupDescription">説明</label>
+    <textarea rows="5" id="groupDescription" class="form-control" value.bind="description"></textarea>
+  </div>
+</form>
+</template>

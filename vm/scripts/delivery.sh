@@ -36,13 +36,14 @@ for command in $commands; do
       cp -r export/* $dest_dir
     ;;
 
-    "build:api" )
+    "build:servers" )
       cd $api_dir
 
-      ./gradlew build -x test
+      #./gradlew build -x test
 
       cp auth-access/build/libs/auth-access-*.jar $ansible_dir/roles/auth-access_api_deploy/files/build/app.jar
-      cp task-manage_api/build/libs/task-manage-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
+      cp task-manage_api/build/libs/task-manage_api-*.jar $ansible_dir/roles/task-manage_api_deploy/files/build/app.jar
+      cp task-manage_event/build/libs/task-manage_event-*.jar $ansible_dir/roles/task-manage_backend_deploy/files/build/app.jar
       cp widget-store/build/libs/widget-store-*.jar $ansible_dir/roles/widget-store_api_deploy/files/build/app.jar
     ;;
 

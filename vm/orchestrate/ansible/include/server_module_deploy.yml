@@ -1,13 +1,15 @@
 ---
 
+- debug: msg="{{file_root}}"
+
 - name: copy app binary
-  copy: src={{ item }} dest=/usr/local/{{module_name}}/ mode=0744
+  copy: src={{item}} dest=/usr/local/{{module_name}}/ mode=0744
   sudo: yes
   with_items:
-    - "{{ file_root }}/build/app.jar"
+    - "{{file_root}}/build/app.jar"
 
 - name: copy env files
-  copy: src={{ file_root }}/env/ dest=/usr/local/{{module_name}}/ mode=0644
+  copy: src={{file_root}}/env/ dest=/usr/local/{{module_name}}/ mode=0644
   sudo: yes
 
 - name: register service
