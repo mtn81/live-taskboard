@@ -1,0 +1,42 @@
+server:
+  context-path: /auth-access
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:postgresql://172.17.0.1:15432/auth-access
+    username: app
+    password: pass
+    driver-class-name: org.postgresql.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: live.taskboard.jp@gmail.com
+    password:
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.smtp.auth: true
+
+rabbitmq:
+  host: 172.17.0.1
+  username: app
+  password: pass
+  exchange: auth-access
+
+social:
+  google-app-id: 992563238212-ff6k6vor5i3bkq6d8p8k0j44m0tmufhd.apps.googleusercontent.com
+  google-app-secret: LxzUP-U-aTalQYfk5_ttEBWB
+  yahoo-app-id: dj0zaiZpPTkxTWh3Q01vRUVhOSZzPWNvbnN1bWVyc2VjcmV0Jng9NzI-
+  yahoo-app-secret: 3e1d1ba52cd60e21fcb865c7156f7bf0bb26d3df
+  facebook-app-Id: 737148613086693
+  facebook-app-secret: b80d5f99609f5e8c65500608d19ec46e
+  twitter-app-id: Z3OkrqKvW7OWAKLudkncQpwZe
+  twitter-app-secret: 4P4WkAiWA1GMWc196YUTTS746BeedCCi3PBTDO8vTHWiUIRvdR
+  social-login-redirect: http://localhost:9000/api/auth-access/social_auth?accept
+  social-login-oauth1-redirect: http://localhost:9000/api/auth-access/social_auth/oauth1?accept
+
+logging:
+  file: /var/log/app.log
+

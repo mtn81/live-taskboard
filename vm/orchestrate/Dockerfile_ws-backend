@@ -1,0 +1,7 @@
+FROM livetaskboard/base:latest
+
+ADD ansible /ansible
+WORKDIR /ansible
+
+RUN ansible-playbook widget-store_backendservers.yml -c local -i inventories/local --tags "base_image"
+
