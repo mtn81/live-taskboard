@@ -1,4 +1,4 @@
-package jp.mts.widgetstore;
+package jp.mts.widgetstore.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,11 +10,16 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @ComponentScan(
 	basePackages={
 		"jp.mts.base.config", 
-		"jp.mts.widgetstore"
+		"jp.mts.widgetstore.config.base",
+		"jp.mts.widgetstore.config.api",
+		"jp.mts.widgetstore.infrastructure",
+		"jp.mts.widgetstore.application",
+		"jp.mts.widgetstore.rest",
+		"jp.mts.widgetstore.websocket"
 	})
-public class RestApiServer {
+public class ApiServer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RestApiServer.class, args);
+		SpringApplication.run(ApiServer.class, args);
 	}
 }

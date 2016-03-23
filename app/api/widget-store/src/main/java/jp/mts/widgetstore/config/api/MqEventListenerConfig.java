@@ -1,4 +1,4 @@
-package jp.mts.widgetstore;
+package jp.mts.widgetstore.config.api;
 
 import jp.mts.libs.event.mq.MqEventListener;
 import jp.mts.widgetstore.websocket.WidgetChangeNotifyWebSocketController;

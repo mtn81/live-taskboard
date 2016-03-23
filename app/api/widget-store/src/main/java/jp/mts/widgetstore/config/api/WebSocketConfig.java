@@ -1,4 +1,4 @@
-package jp.mts.widgetstore;
+package jp.mts.widgetstore.config.api;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

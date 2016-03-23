@@ -1,4 +1,4 @@
-package jp.mts.widgetstore;
+package jp.mts.widgetstore.config.base;
 
 import jp.mts.widgetstore.infrastructure.cooperation.TaskManageApi;
 
