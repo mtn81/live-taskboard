@@ -2,7 +2,6 @@
 
 - hosts: localhost
   roles:
-    - { tags: ['base_image'], role: common }
     - { tags: ['base_image'], role: apiserver }
     - { tags: ['deploy'],     role: widget-store_api_deploy }
 

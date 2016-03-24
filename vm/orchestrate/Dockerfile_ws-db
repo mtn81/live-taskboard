@@ -5,5 +5,3 @@ WORKDIR /ansible
 
 RUN ansible-playbook widget-store_dbservers.yml -c local -i inventories/local --tags "base_image"
 
-EXPOSE 5432
-

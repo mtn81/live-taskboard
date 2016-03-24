@@ -32,7 +32,7 @@
     volumes:
       - "{{orchestrate_base}}/consul/{{item.name}}:/etc/consul.d:ro"
       - "{{orchestrate_base}}/ansible:/ansible:ro"
-    command: /usr/local/bin/consul agent -config-dir /etc/consul.d
+    command: "--join-ip=172.17.0.1"
   sudo: yes
   when: "{{all_image}} or {{item.dev}}"
   with_items:

@@ -1,0 +1,5 @@
+---
+
+- hosts: localhost
+  roles:
+    - { tags: ['base_image'], role: common }

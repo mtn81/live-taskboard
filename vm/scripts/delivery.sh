@@ -14,12 +14,14 @@ for command in $commands; do
 
     "build:images" )
       cd $orchestrate_dir
-      sudo docker build -t livetaskboard/web -f Dockerfile_web .
-      sudo docker build -t livetaskboard/tm-db -f Dockerfile_tm-db .
-      sudo docker build -t livetaskboard/aa-db -f Dockerfile_aa-db .
-      sudo docker build -t livetaskboard/ws-db -f Dockerfile_ws-db .
-      sudo docker build -t livetaskboard/mq -f Dockerfile_mq .
-      sudo docker build -t livetaskboard/tm-api -f Dockerfile_tm-api .
+      for n in \
+        base \
+        tm-db tm-api tm-backend \
+        aa-db aa-api aa-backend \
+        ws-db ws-api ws-backend \
+        mq web; do
+        sudo docker build -t livetaskboard/$n -f Dockerfile_$n .
+      done
     ;;
 
     "build:webui" )

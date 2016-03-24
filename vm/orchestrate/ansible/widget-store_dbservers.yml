@@ -2,7 +2,6 @@
 
 - hosts: localhost
   roles:
-    - { tags: ['base_image'], role: common }
     - { tags: ['base_image'], role: rdb, db_name: widget-store }
     - { tags: ['migrate'],    role: widget-store_db_migrate }
 

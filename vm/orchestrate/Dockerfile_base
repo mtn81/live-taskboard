@@ -5,3 +5,12 @@
 
 FROM ansible/ubuntu14.04-ansible:latest
 
+ADD ansible /ansible
+ADD consul /consul
+
+WORKDIR /ansible
+RUN ansible-playbook base_image.yml -c local -i inventories/local --tags "base_image"
+RUN chmod u+x /consul/exec-consul.sh
+
+ENTRYPOINT ["/consul/exec-consul.sh"]
+CMD ["--join-ip=172.17.0.1"]

@@ -2,7 +2,6 @@
 
 - hosts: localhost
   roles:
-    - { tags: ['base_image'], role: common }
     - { tags: ['base_image'], role: backendserver }
     - { tags: ['deploy'],     role: auth-access_backend_deploy }
 
