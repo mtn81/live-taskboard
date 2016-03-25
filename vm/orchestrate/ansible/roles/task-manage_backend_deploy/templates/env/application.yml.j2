@@ -1,0 +1,27 @@
+server:
+  context-path: /task-manage
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: "jdbc:postgresql://{{tm_db_host | consul}}:5432/task-manage"
+    username: app
+    password: pass
+    driver-class-name: org.postgresql.Driver
+
+rabbitmq:
+  host: "{{mq_host | consul}}"
+  username: app
+  password: pass
+  exchange: task-manage
+
+cooperation:
+  auth-access-url: "http://{{aa_api_host | consul}}:8080/auth-access/api"
+
+domain:
+  member-auth-expiration-minutes: 30
+
+logging:
+  file: /var/log/app.log

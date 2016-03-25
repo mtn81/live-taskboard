@@ -3,4 +3,9 @@
 
 [all:vars]
 stage=develop
-
+aa_db_host=aa-db
+tm_db_host=tm-db
+mq_host=mq
+aa_api_host=aa-api
+web_host=web
+ws_db_host=ws_db

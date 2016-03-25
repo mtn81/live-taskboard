@@ -1,15 +1,20 @@
 ---
 
-- debug: msg="{{file_root}}"
+- debug: msg="{{role_path}}"
+- debug: msg="{{tm_db_host | consul}}"
 
 - name: copy app binary
   copy: src={{item}} dest=/usr/local/{{module_name}}/ mode=0744
   sudo: yes
   with_items:
-    - "{{file_root}}/build/app.jar"
+    - "{{role_path}}/files/build/app.jar"
 
 - name: copy env files
-  copy: src={{file_root}}/env/ dest=/usr/local/{{module_name}}/ mode=0644
+  copy: src={{role_path}}/files/env/ dest=/usr/local/{{module_name}}/ mode=0644
+  sudo: yes
+
+- name: copy env templates
+  template: src={{role_path}}/templates/env/application.yml.j2 dest=/usr/local/{{module_name}}/application.yml mode=0644
   sudo: yes
 
 - name: register service

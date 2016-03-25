@@ -2,6 +2,5 @@
 
 - include: ../../../include/server_module_deploy.yml
   vars:
-    file_root: "{{ role_path }}/files"
     module_name: tm-api
 

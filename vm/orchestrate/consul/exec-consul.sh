@@ -16,10 +16,9 @@ case "$1" in
   ;;
 esac
 
-echo "join_addr is $join_addr"
+this_ip=$(ip addr show eth0 | grep 'inet ' | awk '{print $2}' | sed -e 's/\/.*//')
 
-this_ip=$(ip addr show eth0 | grep 'inet ' | awk '{print $2}')
-[[ $this_ip =~ ^(.*)/(.*)$ ]] && this_ip=${BASH_REMATCH[1]}
+echo "(this_ip, join_addr) = ($this_ip, $join_addr)"
 
 /usr/local/bin/consul agent \
   -config-dir /etc/consul.d \
