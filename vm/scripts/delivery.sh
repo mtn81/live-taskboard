@@ -9,19 +9,30 @@ ansible_dir=$orchestrate_dir/ansible
 webui_dir=$project_dir/app/webui
 api_dir=$project_dir/app/api
 
+function build_images () {
+  cd $orchestrate_dir
+  for n in $@; do
+    sudo docker build -t livetaskboard/$n -f Dockerfile_$n .
+  done
+}
+
 for command in $commands; do
   case "$command" in
 
+    build:images=* )
+      docker_images=($(echo $command | sed -e 's/build\:images\=//' | sed -e 's/\,/ /'))
+      build_images ${docker_images[@]}
+    ;;
+
     "build:images" )
-      cd $orchestrate_dir
-      for n in \
-        base \
-        tm-db tm-api tm-backend \
-        aa-db aa-api aa-backend \
-        ws-db ws-api ws-backend \
-        mq web; do
-        sudo docker build -t livetaskboard/$n -f Dockerfile_$n .
-      done
+      docker_images=( \
+        "base" \
+        "tm-db" "tm-api" "tm-backend" \
+        "aa-db" "aa-api" "aa-backend" \
+        "ws-db" "ws-api" "ws-backend" \
+        "mq" "web" \
+      )
+      build_images ${docker_images[@]}
     ;;
 
     "build:webui" )

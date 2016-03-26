@@ -11,6 +11,9 @@
   retries: 5
   delay: 10
 
+- name: setup flyway conf
+  template: src={{ flyway_conf_template }} dest={{ flyway_home }}/conf/flyway.conf
+
 - name: clear migration scripts
   command: rm -fR {{ flyway_home }}/sql
 

@@ -65,19 +65,3 @@
   sudo: yes
   sudo_user: postgres
 
-- name: check flyway already installed
-  stat: path={{ flyway_home }}
-  register: flyway_stat
-
-- name: copy flyway cli
-  copy: src=flyway/flyway-commandline-3.2.1-linux-x64.tar.gz
-        dest=~/flyway.tar.gz
-  when: not flyway_stat.stat.exists
-
-- name: expand flyway
-  shell: cd ~ && tar zxvf ~/flyway.tar.gz
-  when: not flyway_stat.stat.exists
-
-- name: copy flyway conf
-  template: src=flyway/flyway.conf dest={{ flyway_home }}/conf
-

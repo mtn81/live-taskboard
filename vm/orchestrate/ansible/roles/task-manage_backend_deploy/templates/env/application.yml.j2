@@ -18,7 +18,7 @@ rabbitmq:
   exchange: task-manage
 
 cooperation:
-  auth-access-url: "http://{{aa_api_host | consul}}:8080/auth-access/api"
+  auth-access-url: "http://{{web_host | consul}}/api/auth-access"
 
 domain:
   member-auth-expiration-minutes: 30

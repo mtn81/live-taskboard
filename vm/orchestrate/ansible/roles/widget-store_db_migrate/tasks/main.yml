@@ -3,5 +3,6 @@
 - include: ../../../include/rdb_migrate.yml
   vars:
     script_dir: "{{ role_path }}/files/scripts/{{ stage }}"
+    flyway_conf_template: "{{ role_path }}/templates/flyway/flyway.conf.j2"
     db_name: widget-store
 
