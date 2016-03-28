@@ -80,10 +80,15 @@ public class Member extends DomainEntity<MemberId> {
 	public GroupJoinApplication applyJoinTo(
 			GroupJoinApplicationId applicationId, Group group) {
 
-		return new GroupJoinApplication(
+		GroupJoinApplication newJoinApplication = new GroupJoinApplication(
 				applicationId, 
 				group.groupId(), 
 				memberId());
+		
+		domainEventPublisher.publish(
+				new GroupJoinApplicated(newJoinApplication));
+		
+		return newJoinApplication;
 	}
 	public boolean cancel(GroupJoinApplication application) {
 		if(!memberId().equals(application.applicationMemberId())) {
