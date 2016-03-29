@@ -37,7 +37,12 @@ public class MqEventListener {
 		handlers.forEach(handler -> {
 			if(isEventTypeHandled(eventType, handler)){
 				logger.debug("event proccess: eventId={}, eventType={}", eventId, eventType);
-				handler.handleEvent(eventId, publisherId, occurred, eventBody);
+				try {
+					handler.handleEvent(eventId, publisherId, occurred, eventBody);
+				} catch (Exception e) {
+					logger.error("event process failed:", e);
+					throw e;
+				}
 			}
 		});
 	}

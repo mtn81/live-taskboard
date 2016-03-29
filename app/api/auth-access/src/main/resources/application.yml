@@ -36,3 +36,6 @@ social:
   twitter-app-secret: 4P4WkAiWA1GMWc196YUTTS746BeedCCi3PBTDO8vTHWiUIRvdR
   social-login-redirect: http://localhost:9000/api/auth-access/social_auth?accept
   social-login-oauth1-redirect: http://localhost:9000/api/auth-access/social_auth/oauth1?accept
+  
+mail:
+  site-base-url: http://localhost:9000/

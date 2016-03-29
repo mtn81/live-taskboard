@@ -1,0 +1,6 @@
+LiveTaskboad からのお知らせです。
+
+${view.applicant} さんが ${view.group} に参加申請をしています。
+
+サイトにログインして確認してください。
+${view.siteBaseUrl}

@@ -19,3 +19,6 @@ rabbitmq:
   
 cooperation:
   task-manage-url: http://localhost:28080/task-manage/api
+  
+mail:
+  site-base-url: http://localhost:9000/

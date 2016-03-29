@@ -4,6 +4,7 @@ import jp.mts.libs.event.mq.MqEventListener;
 import jp.mts.taskmanage.mq.listener.ChangeMemberSettingsEventHandler;
 import jp.mts.taskmanage.mq.listener.CreateMemberEventHandler;
 import jp.mts.taskmanage.mq.listener.GroupCreatedEventHandler;
+import jp.mts.taskmanage.mq.listener.GroupJoinApplicatedEventHandler;
 import jp.mts.taskmanage.mq.listener.MemberJoinAcceptedEventHandler;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListenerConfigurer;
@@ -23,6 +24,8 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 	private MemberJoinAcceptedEventHandler memberJoinAcceptedEventHandler;
 	@Autowired
 	private ChangeMemberSettingsEventHandler changeMemberSettingsEventHandler;
+	@Autowired
+	private GroupJoinApplicatedEventHandler groupJoinApplicatedEventHandler;
 	
 	@Override
 	public void configureRabbitListeners(RabbitListenerEndpointRegistrar registrar) {
@@ -30,7 +33,8 @@ public class MqEventListenerConfig implements RabbitListenerConfigurer {
 				memberCreatedEventHandler,
 				groupCreatedEventHandler,
 				memberJoinAcceptedEventHandler,
-				changeMemberSettingsEventHandler);
+				changeMemberSettingsEventHandler,
+				groupJoinApplicatedEventHandler);
 		SimpleRabbitListenerEndpoint endpoint = new SimpleRabbitListenerEndpoint();
 		endpoint.setId("task-manage");
 		endpoint.setQueueNames("task-manage-event");

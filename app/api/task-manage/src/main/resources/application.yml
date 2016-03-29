@@ -10,6 +10,14 @@ spring:
     username: app
     password: pass
     driver-class-name: org.postgresql.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: live.taskboard.jp@gmail.com
+    password: 
+    properties:
+      mail.smtp.starttls.enable: true
+      mail.smtp.auth: true
     
 rabbitmq:
   host: 192.168.77.10
@@ -22,3 +30,6 @@ cooperation:
  
 domain:
   member-auth-expiration-minutes: 30
+  
+mail:
+  site-base-url: http://localhost:9000/

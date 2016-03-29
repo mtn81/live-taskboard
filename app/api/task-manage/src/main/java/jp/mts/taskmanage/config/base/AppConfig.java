@@ -6,6 +6,7 @@ import jp.mts.base.lib.mail.MailTemplate;
 import jp.mts.taskmanage.application.query.MemberAuthorizationQuery;
 import jp.mts.taskmanage.rest.aspect.MemberContext;
 
+import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +18,19 @@ public class AppConfig {
 	@Autowired
 	private MemberAuthorizationQuery memberAuthorizationQuery;
 
+	@Autowired
+	@Qualifier("mail")
+	private VelocityEngine velocityEngine;
+
 	@PostConstruct
 	public void initDomain() {
 		MemberContext.setMemberAuthorizationQuery(memberAuthorizationQuery);
 	}
 	
 	@Bean
-	@Qualifier("GroupJoinApplied")
+	@Qualifier("groupJoinApplied")
 	public MailTemplate groupJoinApplicatedMailTemplate() {
-		return new MailTemplate(""); //TODO
+		return new MailTemplate("group_join_applied.vm", velocityEngine);
 	}
 	
 }
