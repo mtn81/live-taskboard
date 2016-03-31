@@ -41,15 +41,16 @@ public class Group extends DomainEntity<GroupId>{
 		}
 		
 		application.accept();
-		domainEventPublisher.publish(
-				new MemberJoinAccepted(application.applicationMemberId(), application.groupId()));
+		domainEventPublisher.publish(new GroupJoinAccepted(application));
 		return true;
 	}
+
 	public boolean reject(GroupJoinApplication application){
 		if(!groupId().equals(application.groupId())){
 			return false;
 		}
 		application.reject();
+		domainEventPublisher.publish(new GroupJoinRejected(application));
 		return true;
 	}
 	

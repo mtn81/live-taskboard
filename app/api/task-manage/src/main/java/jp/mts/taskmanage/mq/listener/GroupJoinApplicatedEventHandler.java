@@ -8,21 +8,16 @@ import jp.mts.base.lib.mail.MailTemplate;
 import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
-import jp.mts.libs.unittest.Maps;
+import jp.mts.taskmanage.application.GroupAppService;
+import jp.mts.taskmanage.application.MemberAppService;
 import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberBuilder;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.MemberRegisterType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
 
 @Component
 @MqEventHandlerConfig(targetEventTypes="mts:taskmanage/GroupJoinApplicated")
@@ -34,6 +29,11 @@ public class GroupJoinApplicatedEventHandler implements MqEventHandler {
 	@Autowired
 	@Qualifier("groupJoinApplied")
 	private MailTemplate mailTemplate;
+	
+	@Autowired
+	private MemberAppService memberAppService;
+	@Autowired
+	private GroupAppService groupAppService;
 
 	@Override
 	public void handleEvent(
@@ -45,24 +45,25 @@ public class GroupJoinApplicatedEventHandler implements MqEventHandler {
 		String applicantId = eventBody.asString("applicantId");
 		String groupId = eventBody.asString("groupId");
 		
-//TODO
-		List<Member> groupAdminMembers = Lists.newArrayList(
-				new MemberBuilder(new Member(new MemberId("m01"), "ライブ太郎", MemberRegisterType.GOOGLE)).setEmail("nantsuka2011@gmail.com").get());
-		Member applicantMember = new Member(new MemberId("m01"), "ライブ太郎", MemberRegisterType.GOOGLE);
-		Group applicatedGroup = new Group(new GroupId("g01"), null, "グループ０１", "");
-		
+		List<Member> groupAdminMembers = memberAppService.findAdminMembersInGroup(groupId);
+		Member applicantMember = memberAppService.findById(applicantId);
+		Group applicatedGroup = groupAppService.findById(groupId);
 
+		String[] emails = toEmails(groupAdminMembers);
+		if (emails.length == 0) return;
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(toEmails(groupAdminMembers));
+		mailMessage.setTo(emails);
+		mailMessage.setSubject(mailTemplate.getSubject());
 		mailMessage.setText(mailTemplate.build(new MailView(applicatedGroup, applicantMember)));
 		javaMailSender.send(mailMessage);
 	}
 
 	private String[] toEmails(List<Member> members) {
 		return members.stream()
+				.filter(m -> m.emailNotificationEnabled())
 				.map(m -> m.email())
 				.collect(Collectors.toList())
-				.toArray(new String[members.size()]);
+				.toArray(new String[0]);
 	}
 	
 	public static class MailView extends jp.mts.base.lib.mail.MailView {

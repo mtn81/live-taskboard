@@ -24,6 +24,9 @@ public class MqEventListener {
 	public MqEventListener(MqEventHandler... handlers) {
 		this.handlers = Arrays.asList(handlers);
 	}
+	public MqEventListener(List<MqEventHandler> handlers) {
+		this.handlers = handlers;
+	}
 
 	public void process(Message message) {
 		

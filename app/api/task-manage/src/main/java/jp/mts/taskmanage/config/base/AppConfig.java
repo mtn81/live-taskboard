@@ -30,7 +30,17 @@ public class AppConfig {
 	@Bean
 	@Qualifier("groupJoinApplied")
 	public MailTemplate groupJoinApplicatedMailTemplate() {
-		return new MailTemplate("group_join_applied.vm", velocityEngine);
+		return new MailTemplate("group_join_applied.vm", "参加申請のお知らせ", velocityEngine);
+	}
+	@Bean
+	@Qualifier("groupJoinAccepted")
+	public MailTemplate groupJoinAccepteddMailTemplate() {
+		return new MailTemplate("group_join_accepted.vm", "参加申請が受け入れられました", velocityEngine);
+	}
+	@Bean
+	@Qualifier("groupJoinRejected")
+	public MailTemplate groupJoinRejecteddMailTemplate() {
+		return new MailTemplate("group_join_rejected.vm", "参加申請が拒否されした", velocityEngine);
 	}
 	
 }

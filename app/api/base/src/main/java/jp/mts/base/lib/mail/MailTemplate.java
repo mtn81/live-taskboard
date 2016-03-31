@@ -11,9 +11,14 @@ public class MailTemplate {
 
 	private VelocityEngine velocityEngine;
 	private String templateResourceName;
+	private String subject;
 	
-	public MailTemplate(String templateResourceName, VelocityEngine velocityEngine) {
+	public MailTemplate(
+			String templateResourceName, 
+			String subject, 
+			VelocityEngine velocityEngine) {
 		this.templateResourceName = templateResourceName;
+		this.subject = subject;
 		this.velocityEngine = velocityEngine;
 	}
 	
@@ -23,6 +28,10 @@ public class MailTemplate {
 				templateResourceName, 
 				"UTF-8", 
 				Maps.map("view", view));
+	}
+	
+	public String getSubject() { 
+		return "[LiveTaskboard]" + subject; 
 	}
 
 }

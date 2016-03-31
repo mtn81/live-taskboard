@@ -14,7 +14,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: live.taskboard.jp@gmail.com
-    password: 
+    password: nji)0okm
     properties:
       mail.smtp.starttls.enable: true
       mail.smtp.auth: true

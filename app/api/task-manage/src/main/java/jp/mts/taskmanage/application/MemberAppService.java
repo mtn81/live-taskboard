@@ -1,8 +1,8 @@
 package jp.mts.taskmanage.application;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.domain.model.GroupId;
 import jp.mts.taskmanage.domain.model.Member;
@@ -21,8 +21,18 @@ public class MemberAppService {
 	@Autowired
 	private MemberRepository memberRepository;
 
+	public Member findById(String memberId) {
+		return memberRepository.findById(new MemberId(memberId)).get();
+	}
 	public List<Member> findMembersInGroup(String groupId) {
 		return memberRepository.findByGroupId(new GroupId(groupId));
+	}
+	public List<Member> findAdminMembersInGroup(String groupIdStr) {
+		GroupId groupId = new GroupId(groupIdStr);
+		return memberRepository.findByGroupId(groupId)
+				.stream()
+				.filter(member -> member.belongsAsAdmin(groupId))
+				.collect(Collectors.toList());
 	}
 	
 	public void registerMember(

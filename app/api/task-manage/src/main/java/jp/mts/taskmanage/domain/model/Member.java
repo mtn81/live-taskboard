@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import jp.mts.base.domain.model.DomainEntity;
 
 
@@ -97,23 +99,6 @@ public class Member extends DomainEntity<MemberId> {
 		application.cancel();
 		return true;
 	}
-	public boolean reject(GroupJoinApplication application){
-		if(!belongsAsAdmin(application.groupId())){
-			return false;
-		}
-		application.reject();
-		return true;
-	}
-	public boolean accept(GroupJoinApplication application) {
-		if(!belongsAsAdmin(application.groupId())){
-			return false;
-		}
-		
-		application.accept();
-		domainEventPublisher.publish(
-				new MemberJoinAccepted(application.applicationMemberId(), application.groupId()));
-		return true;
-	}
 	public boolean belongsAsAdmin(GroupId groupId) {
 		return groupBelongings.stream().anyMatch(belonging -> {
 			return belonging.groupId().equals(groupId)
@@ -153,6 +138,17 @@ public class Member extends DomainEntity<MemberId> {
 		domainEventPublisher.publish(new GroupRemoved());
 		return true;
 	}
+
+	public void changeAttributes(
+			String name, 
+			String email) {
+		setName(name);
+		setEmail(email);
+	}
+	
+	public boolean emailNotificationEnabled() {
+		return !StringUtils.isEmpty(email);
+	}
 	
 	void setName(String name) {
 		this.name = name;
@@ -185,11 +181,5 @@ public class Member extends DomainEntity<MemberId> {
 		SUCCESS, NOT_ADMIN_ERROR, OWNER_ERROR
 	}
 
-	public void changeAttributes(
-			String name, 
-			String email) {
-		setName(name);
-		setEmail(email);
-	}
 
 }
