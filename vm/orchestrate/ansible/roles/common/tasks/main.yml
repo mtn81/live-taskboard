@@ -11,5 +11,5 @@
   sudo: yes
 
 - name: install consul template
-  unarchive: src=consul_0.6.3_linux_amd64.zip dest=/usr/local/bin
+  unarchive: src=consul-template_0.14.0_linux_amd64.zip dest=/usr/local/bin
   sudo: yes

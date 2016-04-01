@@ -39,7 +39,7 @@ export class HttpClientWrapper {
         this._setLoading(nosync, syncKey, false);
 
         let errors;
-        if (response.content.errors) {
+        if (response.content && response.content.errors) {
           errors = response.content.errors;
         } else if (_.isString(response.content) && response.content.includes('ECONNREFUSED')) {
           errors = [{ message: 'サーバに接続できませんでした。'}];
@@ -105,7 +105,7 @@ export class CachedHttpLoader {
         this.cache[url] = false;
 
         let errors;
-        if (!!response.content || response.content.errors) {
+        if (response.content && response.content.errors) {
           errors = response.content.errors;
         } else if (_.isString(response.content) && response.content.includes('ECONNREFUSED')) {
           errors = [{ message: 'サーバに接続できませんでした。'}];
@@ -143,7 +143,7 @@ export class CachedHttpLoader {
         this.cache[url] = false;
 
         let errors;
-        if (response.content.errors) {
+        if (response.content && response.content.errors) {
           errors = response.content.errors;
         } else if (_.isString(response.content) && response.content.includes('ECONNREFUSED')) {
           errors = [{ message: 'サーバに接続できませんでした。'}];

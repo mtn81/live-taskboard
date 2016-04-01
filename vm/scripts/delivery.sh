@@ -9,7 +9,7 @@ ansible_dir=$orchestrate_dir/ansible
 webui_dir=$project_dir/app/webui
 api_dir=$project_dir/app/api
 
-function build_images () {
+build_images () {
   cd $orchestrate_dir
   for n in $@; do
     sudo docker build -t livetaskboard/$n -f Dockerfile_$n .
