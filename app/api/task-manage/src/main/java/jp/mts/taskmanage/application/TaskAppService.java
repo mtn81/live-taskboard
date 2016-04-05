@@ -37,7 +37,10 @@ public class TaskAppService {
 	}
 
 	public Task registerTask(
-			String aGroupId, String taskName, String assigned, Date deadline) {
+			String aGroupId, 
+			String taskName, 
+			String assigned, 
+			Date deadline) {
 		
 		GroupId groupId = new GroupId(aGroupId);
 		Optional<Group> group = groupRepository.findById(groupId);
@@ -68,6 +71,7 @@ public class TaskAppService {
 	}
 
 	public Task modifyTask(
+			String modifierMemberId,
 			String aGroupId, 
 			String aTaskId, 
 			String taskName,
@@ -80,11 +84,14 @@ public class TaskAppService {
 
 		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
 		Member member = memberRepository.findById(new MemberId(assigned)).get();
+		Member modifier = memberRepository.findById(new MemberId(modifierMemberId)).get();
+		
 		task.changeSummary(
 				taskName, 
 				member, 
 				deadline,
-				status);
+				status,
+				modifier);
 		
 		taskRepository.save(task);
 
@@ -92,6 +99,7 @@ public class TaskAppService {
 	}
 
 	public Task modifyTaskDetail(
+			String modifierMemberId,
 			String aGroupId, 
 			String aTaskId, 
 			String memo) {
@@ -100,7 +108,8 @@ public class TaskAppService {
 		TaskId taskId = new TaskId(aTaskId);
 
 		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
-		task.changeDetail(memo);
+		Member modifier = memberRepository.findById(new MemberId(modifierMemberId)).get();
+		task.changeDetail(memo, modifier );
 		
 		taskRepository.save(task);
 

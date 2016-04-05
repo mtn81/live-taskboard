@@ -2,7 +2,6 @@ package jp.mts.taskmanage.rest.aspect;
 
 import static jp.mts.base.util.AspectUtils.paramValueOf;
 import jp.mts.base.application.ApplicationException;
-import jp.mts.base.util.AspectUtils;
 import jp.mts.taskmanage.application.ErrorType;
 import jp.mts.taskmanage.rest.authorize.GroupAdmin;
 import jp.mts.taskmanage.rest.authorize.GroupBelong;

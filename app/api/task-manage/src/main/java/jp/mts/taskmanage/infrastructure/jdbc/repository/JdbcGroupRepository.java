@@ -1,10 +1,7 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import jp.mts.base.infrastructure.jdbc.SqlInClause;
 import jp.mts.base.infrastructure.jdbc.repository.AbstractSimpleJdbcDomainRepository;
 import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.GroupId;
@@ -14,8 +11,6 @@ import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 
 import org.springframework.stereotype.Repository;
-
-import com.google.common.collect.Lists;
 
 @Repository
 public class JdbcGroupRepository 

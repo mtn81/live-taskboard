@@ -8,10 +8,10 @@ import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 import jp.mts.taskmanage.rest.authorize.GroupAdmin;
 import jp.mts.taskmanage.rest.authorize.Me;
+import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinCancel;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinSearch;
-import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
 import jp.mts.taskmanage.rest.presentation.model.MemberJoinSearch;
 
 import org.springframework.beans.factory.annotation.Autowired;

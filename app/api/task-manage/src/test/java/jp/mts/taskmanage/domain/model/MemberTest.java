@@ -1,14 +1,11 @@
 package jp.mts.taskmanage.domain.model;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import jp.mts.base.domain.model.DomainEvent;
+import static org.junit.Assert.assertThat;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
-import mockit.Expectations;
 import mockit.Mocked;
 import mockit.Verifications;
-import mockit.internal.expectations.argumentMatching.CaptureMatcher;
 
 import org.junit.Test;
 

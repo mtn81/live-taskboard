@@ -15,7 +15,6 @@ import jp.mts.taskmanage.domain.model.Member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
@@ -49,21 +48,18 @@ public class GroupJoinApplicatedEventHandler implements MqEventHandler {
 		Member applicantMember = memberAppService.findById(applicantId);
 		Group applicatedGroup = groupAppService.findById(groupId);
 
-		String[] emails = toEmails(groupAdminMembers);
-		if (emails.length == 0) return;
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(emails);
-		mailMessage.setSubject(mailTemplate.getSubject());
-		mailMessage.setText(mailTemplate.build(new MailView(applicatedGroup, applicantMember)));
-		javaMailSender.send(mailMessage);
+		List<String> emails = toEmails(groupAdminMembers);
+		if (emails.size() == 0) return;
+
+		javaMailSender.send(mailTemplate.createMessage(
+				emails, new MailView(applicatedGroup, applicantMember)));
 	}
 
-	private String[] toEmails(List<Member> members) {
+	private List<String> toEmails(List<Member> members) {
 		return members.stream()
 				.filter(m -> m.emailNotificationEnabled())
 				.map(m -> m.email())
-				.collect(Collectors.toList())
-				.toArray(new String[0]);
+				.collect(Collectors.toList());
 	}
 	
 	public static class MailView extends jp.mts.base.lib.mail.MailView {

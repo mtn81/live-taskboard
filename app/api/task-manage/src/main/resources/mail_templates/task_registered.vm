@@ -3,7 +3,7 @@ LiveTaskboad からのお知らせです。
 以下のタスクが割り当てられました。
 --
 タスク： ${view.task}
-期限： ${view.deadLine}
+期限： ${view.deadline}
 備考： ${view.memo}
 --
 

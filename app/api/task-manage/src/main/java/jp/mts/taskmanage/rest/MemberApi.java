@@ -8,8 +8,8 @@ import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.MemberAppService;
 import jp.mts.taskmanage.rest.authorize.GroupAdmin;
 import jp.mts.taskmanage.rest.authorize.GroupBelong;
-import jp.mts.taskmanage.rest.presentation.model.MemberList;
 import jp.mts.taskmanage.rest.presentation.model.MemberChange;
+import jp.mts.taskmanage.rest.presentation.model.MemberList;
 import jp.mts.taskmanage.rest.presentation.model.MemberRemove;
 
 import org.springframework.beans.factory.annotation.Autowired;

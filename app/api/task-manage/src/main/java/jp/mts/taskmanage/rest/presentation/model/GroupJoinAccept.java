@@ -1,7 +1,5 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;
 

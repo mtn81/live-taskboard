@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.DomainCalendar;
+import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.domain.model.Group;
@@ -37,6 +38,7 @@ public class GroupJoinAppServiceTest {
 	@Injectable MemberRepository memberRepository;
 	@Injectable GroupJoinApplicationRepository groupJoinRepository;
 	@Mocked DomainCalendar domainCalendar;
+	@Mocked DomainEventPublisher domainEventPublisher;
 	
 	@Before
 	public void setup() {
@@ -45,6 +47,7 @@ public class GroupJoinAppServiceTest {
 	
 	@Test
 	public void test_applyJoin() {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		
 		GroupJoinApplication groupJoinApplication = new GroupJoinApplicationFixture("a01", "g01", "m01").get();
 		new Expectations() {{
@@ -71,6 +74,7 @@ public class GroupJoinAppServiceTest {
 	
 	@Test
 	public void test_rejectJoin() {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		
 		GroupJoinApplication application = new GroupJoinApplicationFixture("a01", "g01", "m02").get();
 		Group group = new GroupFixture("g01").get();

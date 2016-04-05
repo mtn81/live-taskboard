@@ -11,7 +11,6 @@ import jp.mts.taskmanage.domain.model.Group;
 import jp.mts.taskmanage.domain.model.Member;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
 abstract class AbstractGroupJoinHandledEventHandler implements MqEventHandler {
@@ -48,11 +47,8 @@ abstract class AbstractGroupJoinHandledEventHandler implements MqEventHandler {
 
 		if(!member.emailNotificationEnabled()) return;
 		
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setTo(member.email());
-		mailMessage.setSubject(mailTemplate.getSubject());
-		mailMessage.setText(mailTemplate.build(new MailView(group)));
-		javaMailSender.send(mailMessage);
+		javaMailSender.send(mailTemplate.createMessage(
+				member.email(), new MailView(group)));
 	}
 	
 	public static class MailView extends jp.mts.base.lib.mail.MailView {

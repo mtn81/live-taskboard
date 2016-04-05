@@ -5,6 +5,7 @@ import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.TaskAppService;
+import jp.mts.taskmanage.rest.aspect.MemberContext;
 import jp.mts.taskmanage.rest.authorize.GroupBelong;
 import jp.mts.taskmanage.rest.presentation.model.TaskDetailLoad;
 import jp.mts.taskmanage.rest.presentation.model.TaskDetailSave;
@@ -75,7 +76,7 @@ public class TaskApi {
 			@PathVariable String taskId, 
 			@RequestBody TaskSave taskSave) {
 		
-		taskSave.update(groupId, taskId, taskAppService);
+		taskSave.update(MemberContext.memberId(), groupId, taskId, taskAppService);
 		return RestResponse.of(taskSave);
 	}
 
@@ -90,7 +91,7 @@ public class TaskApi {
 			BindingResult result) {
 		
 		if (result.hasErrors()) return RestResponse.of(result);
-		taskDetailSave.update(groupId, taskId);
+		taskDetailSave.update(MemberContext.memberId(), groupId, taskId);
 		return RestResponse.of(taskDetailSave);
 	}
 	@RequestMapping(

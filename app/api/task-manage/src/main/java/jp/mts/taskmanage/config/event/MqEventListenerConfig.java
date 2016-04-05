@@ -7,6 +7,8 @@ import jp.mts.taskmanage.mq.listener.GroupCreatedEventHandler;
 import jp.mts.taskmanage.mq.listener.GroupJoinAcceptedEventHandler;
 import jp.mts.taskmanage.mq.listener.GroupJoinApplicatedEventHandler;
 import jp.mts.taskmanage.mq.listener.GroupJoinRejectedEventHandler;
+import jp.mts.taskmanage.mq.listener.TaskModifiedEventHandler;
+import jp.mts.taskmanage.mq.listener.TaskRegisteredEventHandler;
 
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +22,9 @@ import org.springframework.context.annotation.Configuration;
 		ChangeMemberSettingsEventHandler.class,
 		GroupJoinApplicatedEventHandler.class,
 		GroupJoinAcceptedEventHandler.class,
-		GroupJoinRejectedEventHandler.class, 
+		GroupJoinRejectedEventHandler.class,
+		TaskRegisteredEventHandler.class,
+		TaskModifiedEventHandler.class
 	}
 )
 @Configuration

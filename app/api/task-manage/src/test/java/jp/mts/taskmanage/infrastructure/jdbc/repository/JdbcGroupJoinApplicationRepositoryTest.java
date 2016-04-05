@@ -1,7 +1,7 @@
 package jp.mts.taskmanage.infrastructure.jdbc.repository;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.domain.model.GroupJoinApplication;

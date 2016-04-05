@@ -11,12 +11,14 @@ import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.TaskAppService;
 import jp.mts.taskmanage.domain.model.TaskFixture;
 import jp.mts.taskmanage.domain.model.TaskStatus;
+import jp.mts.taskmanage.rest.aspect.MemberContext;
 import jp.mts.taskmanage.rest.presentation.model.TaskDetailLoad;
 import jp.mts.taskmanage.rest.presentation.model.TaskList;
 import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
 import jp.mts.taskmanage.rest.presentation.model.TaskSave;
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 
 import org.junit.Test;
@@ -92,11 +94,13 @@ public class TaskApiTest {
 	}
 	
 	@Test
-	public void test_modifyTask() {
+	public void test_modifyTask(@Mocked MemberContext memberContext) {
 		
 		new Expectations() {{
+			MemberContext.memberId();
+				result = "m00";
 			taskAppService.modifyTask(
-					"g01", "t01", "task-A", "m01", Dates.date("2015/09/01"), TaskStatus.TODO);
+					"m00", "g01", "t01", "task-A", "m01", Dates.date("2015/09/01"), TaskStatus.TODO);
 				result = new TaskFixture("t01").get();
 		}};
 		

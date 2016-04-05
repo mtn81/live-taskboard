@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.mts.base.domain.model.DomainEntity;
+
+import org.apache.commons.lang3.StringUtils;
 
 
 public class Member extends DomainEntity<MemberId> {

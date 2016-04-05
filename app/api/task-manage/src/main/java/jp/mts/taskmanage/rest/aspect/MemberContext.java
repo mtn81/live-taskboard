@@ -16,6 +16,9 @@ public class MemberContext {
 		}
 	};
 
+	public static String memberId() {
+		return value.get().memberId;
+	}
 	public static boolean hasMemberId(String memberId) {
 		return value.get().memberId.equals(memberId);
 	}

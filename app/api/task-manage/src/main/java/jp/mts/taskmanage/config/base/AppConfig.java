@@ -47,5 +47,10 @@ public class AppConfig {
 	public MailTemplate taskRegisteredMailTemplate() {
 		return new MailTemplate("task_registered.vm", "タスクが割り当てられました", velocityEngine);
 	}
+	@Bean
+	@Qualifier("taskModified")
+	public MailTemplate taskModifiedMailTemplate() {
+		return new MailTemplate("task_modified.vm", "タスクが編集されました", velocityEngine);
+	}
 	
 }

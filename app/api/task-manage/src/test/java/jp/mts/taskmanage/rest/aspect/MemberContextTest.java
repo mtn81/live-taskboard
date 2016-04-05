@@ -1,7 +1,7 @@
 package jp.mts.taskmanage.rest.aspect;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import jp.mts.libs.unittest.Maps;
 import jp.mts.taskmanage.application.query.MemberAuthorizationQuery;
 import mockit.Expectations;

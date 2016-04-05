@@ -52,18 +52,23 @@ public class Task extends DomainEntity<CompositeId>{
 			String taskName, 
 			Member assignedMember, 
 			Date deadline,
-			TaskStatus status) {
+			TaskStatus status,
+			Member modifier) {
 		
 		setName(taskName);
 		setAssignedMemberId(assignedMember.memberId());
 		setDeadline(deadline);
 		setStatus(status);
 		
-		domainEventPublisher.publish(new TaskModified(this));
+		domainEventPublisher.publish(new TaskModified(this, modifier));
 	}
 
-	public void changeDetail(String memo) {
+	public void changeDetail(
+			String memo,
+			Member modifier) {
+
 		setMemo(memo);
+		domainEventPublisher.publish(new TaskModified(this, modifier));
 	}
 	
 	void setStatus(TaskStatus status) {

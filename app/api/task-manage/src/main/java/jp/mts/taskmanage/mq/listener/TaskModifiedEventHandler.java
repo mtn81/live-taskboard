@@ -19,8 +19,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
-@MqEventHandlerConfig(targetEventTypes="mts:taskmanage/TaskRegistered")
-public class TaskRegisteredEventHandler implements MqEventHandler {
+@MqEventHandlerConfig(targetEventTypes="mts:taskmanage/TaskModified")
+public class TaskModifiedEventHandler implements MqEventHandler {
 
 	@Autowired
 	private TaskAppService taskAppService;
@@ -28,7 +28,7 @@ public class TaskRegisteredEventHandler implements MqEventHandler {
 	private MemberAppService memberAppService;
 	@Autowired
 	private JavaMailSender javaMailSender;
-	@Autowired @Qualifier("taskRegistered")
+	@Autowired @Qualifier("taskModified")
 	private MailTemplate mailTemplate;
 
 	@Override
@@ -41,6 +41,9 @@ public class TaskRegisteredEventHandler implements MqEventHandler {
 		String groupId = eventBody.asString("groupId");
 		String taskId = eventBody.asString("taskId");
 		String assignedMemberId = eventBody.asString("assigned");
+		String modifierMemberId = eventBody.asString("modifier");
+		
+		if(assignedMemberId.equals(modifierMemberId)) return;
 		
 		Task task = taskAppService.loadById(groupId, taskId);
 		Member assigned = memberAppService.findById(assignedMemberId);

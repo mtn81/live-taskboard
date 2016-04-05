@@ -127,7 +127,9 @@ public class TaskAppServiceTest {
 	
 	@Test
 	public void test_modifyTask() {
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		
+		MemberId modifierMemberId = new MemberId("m00");
 		MemberId memberId = new MemberId("m01");
 		GroupId groupId = new GroupId("g01");
 		TaskId taskId = new TaskId("t01");
@@ -139,6 +141,9 @@ public class TaskAppServiceTest {
 			memberRepository.findById(memberId);
 				result = Optional.of(new MemberFixture(memberId.value()).get()); 
 				times=1;
+			memberRepository.findById(modifierMemberId);
+				result = Optional.of(new MemberFixture(modifierMemberId.value()).get()); 
+				times=1;
 		}};
 		new Expectations() {{
 			taskRepository.findById(of(groupId, taskId));
@@ -147,7 +152,7 @@ public class TaskAppServiceTest {
 		}};
 		
 		Task modifiedTask = taskAppService.modifyTask(
-				groupId.value(), taskId.value(), taskName, memberId.value(), deadline, status);
+				modifierMemberId.value(), groupId.value(), taskId.value(), taskName, memberId.value(), deadline, status);
 		
 		assertThat(modifiedTask, is(notNullValue()));
 		assertThat(modifiedTask.taskId(), is(taskId));

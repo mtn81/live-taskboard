@@ -43,12 +43,19 @@ public class TaskSave {
 				groupId, taskName, assigned, deadline);
 	}
 	public void update(
+			String modifierMemberId,
 			String groupId, 
 			String taskId,
 			TaskAppService taskAppService) {
 		
 		task = taskAppService.modifyTask(
-				groupId, taskId, taskName, assigned, deadline, TaskStatus.valueOf(status.toUpperCase()));
+				modifierMemberId,
+				groupId, 
+				taskId, 
+				taskName, 
+				assigned, 
+				deadline, 
+				TaskStatus.valueOf(status.toUpperCase()));
 	}
 
 }

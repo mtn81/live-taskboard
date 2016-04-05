@@ -14,7 +14,7 @@ public class TaskDetailSave {
 	}
 
 	// input
-	@Length(max=10)
+	@Length(max=1000)
 	private String memo;
 
 	public void setMemo(String memo) {
@@ -31,11 +31,12 @@ public class TaskDetailSave {
 	
 	// proccess
 	public void update(
+			String modifierMemberId,
 			String groupId, 
 			String taskId) {
 		
 		task = taskAppService.modifyTaskDetail(
-				groupId, taskId, memo);
+				modifierMemberId, groupId, taskId, memo);
 	}
 
 }
