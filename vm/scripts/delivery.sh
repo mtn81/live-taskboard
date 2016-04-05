@@ -52,7 +52,7 @@ for command in $commands; do
     "build:servers" )
       cd $api_dir
 
-      # ./gradlew build -x test
+      ./gradlew build -x test
 
       cp auth-access_api/build/libs/auth-access_api-*.jar $ansible_dir/roles/auth-access_api_deploy/files/build/app.jar
       cp auth-access_backend/build/libs/auth-access_backend-*.jar $ansible_dir/roles/auth-access_backend_deploy/files/build/app.jar

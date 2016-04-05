@@ -1,7 +1,7 @@
-package jp.mts.authaccess.rest;
+package jp.mts.widgetstore.rest;
 
-import jp.mts.authaccess.rest.presentation.model.StatusGet;
 import jp.mts.base.rest.RestResponse;
+import jp.mts.widgetstore.rest.presentation.model.StatusGet;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
