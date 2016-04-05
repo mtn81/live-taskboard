@@ -94,4 +94,6 @@ public class MemberTest {
 		
 		assertThat(actual, is(false));
 	}
+	
+	
 }
