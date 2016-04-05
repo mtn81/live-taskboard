@@ -6,7 +6,7 @@ import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
 import jp.mts.taskmanage.application.MemberAppService;
-import jp.mts.taskmanage.domain.model.MemberRegisterType;
+import jp.mts.taskmanage.domain.model.member.MemberRegisterType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -7,8 +7,8 @@ import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.MemberAppService;
-import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.Member;
+import jp.mts.taskmanage.domain.model.group.Group;
+import jp.mts.taskmanage.domain.model.member.Member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;

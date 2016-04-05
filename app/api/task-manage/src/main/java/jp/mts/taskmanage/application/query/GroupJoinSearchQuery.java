@@ -3,7 +3,7 @@ package jp.mts.taskmanage.application.query;
 import java.util.Date;
 import java.util.List;
 
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 
 public interface GroupJoinSearchQuery {
 

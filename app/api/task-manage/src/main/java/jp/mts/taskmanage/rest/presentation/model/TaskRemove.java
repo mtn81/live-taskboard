@@ -1,7 +1,7 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
 import jp.mts.taskmanage.application.TaskAppService;
-import jp.mts.taskmanage.domain.model.Task;
+import jp.mts.taskmanage.domain.model.task.Task;
 
 public class TaskRemove {
 	

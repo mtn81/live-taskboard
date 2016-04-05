@@ -6,11 +6,11 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import jp.mts.base.unittest.JdbcTestBase;
-import jp.mts.taskmanage.domain.model.GroupBelonging;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberFixture;
-import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.GroupBelonging;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.member.MemberFixture;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;

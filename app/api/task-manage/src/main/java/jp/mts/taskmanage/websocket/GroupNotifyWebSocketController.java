@@ -6,7 +6,7 @@ import jp.mts.libs.event.eventstore.EventBody;
 import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
 import jp.mts.taskmanage.application.GroupAppService;
-import jp.mts.taskmanage.domain.model.Group;
+import jp.mts.taskmanage.domain.model.group.Group;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

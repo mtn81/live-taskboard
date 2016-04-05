@@ -1,8 +1,8 @@
 package jp.mts.taskmanage.infrastructure.cooperation;
 
 
-import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.auth.MemberAuth;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 
 import org.json.JSONObject;
 

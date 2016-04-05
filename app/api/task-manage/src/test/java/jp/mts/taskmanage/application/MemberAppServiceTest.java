@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberFixture;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.MemberRepository;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.member.MemberFixture;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.member.MemberRepository;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;

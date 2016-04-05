@@ -5,8 +5,8 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 
 import jp.mts.taskmanage.application.MemberAppService;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.Member;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.Member;
 
 public class MemberList {
 	

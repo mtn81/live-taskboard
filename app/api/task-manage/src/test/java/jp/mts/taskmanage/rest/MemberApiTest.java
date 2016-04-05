@@ -8,7 +8,7 @@ import java.util.List;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.MemberAppService;
-import jp.mts.taskmanage.domain.model.MemberFixture;
+import jp.mts.taskmanage.domain.model.member.MemberFixture;
 import jp.mts.taskmanage.rest.presentation.model.MemberList;
 import jp.mts.taskmanage.rest.presentation.model.MemberList.MemberView;
 import mockit.Expectations;

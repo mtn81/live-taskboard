@@ -4,13 +4,13 @@ import java.sql.Date;
 import java.util.UUID;
 
 import jp.mts.base.infrastructure.jdbc.repository.AbstractSimpleJdbcDomainRepository;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationBuilder;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
-import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationBuilder;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 
 import org.springframework.stereotype.Repository;

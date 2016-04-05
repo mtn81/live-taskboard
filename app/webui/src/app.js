@@ -1,5 +1,5 @@
 import {inject} from 'aurelia-framework';
-import {Router} from 'aurelia-router';
+import {Router, Redirect} from 'aurelia-router';
 import {HttpClient} from 'aurelia-http-client';
 import {AuthContext} from './services/auth/auth-context';
 import {AuthService} from './services/auth/auth-service';

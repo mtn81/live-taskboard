@@ -10,11 +10,11 @@ import java.util.Optional;
 import jp.mts.base.domain.model.CompositeId;
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.Task;
-import jp.mts.taskmanage.domain.model.TaskFixture;
-import jp.mts.taskmanage.domain.model.TaskId;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.task.Task;
+import jp.mts.taskmanage.domain.model.task.TaskFixture;
+import jp.mts.taskmanage.domain.model.task.TaskId;
 import mockit.Tested;
 
 import org.junit.Test;

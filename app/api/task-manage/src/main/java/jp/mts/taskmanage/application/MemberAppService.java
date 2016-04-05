@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.MemberRegisterType;
-import jp.mts.taskmanage.domain.model.MemberRepository;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.member.MemberRegisterType;
+import jp.mts.taskmanage.domain.model.member.MemberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

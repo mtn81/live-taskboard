@@ -6,16 +6,16 @@ import java.util.Optional;
 
 import jp.mts.base.application.ApplicationException;
 import jp.mts.base.domain.model.CompositeId;
-import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupRepository;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.MemberRepository;
-import jp.mts.taskmanage.domain.model.Task;
-import jp.mts.taskmanage.domain.model.TaskId;
-import jp.mts.taskmanage.domain.model.TaskRepository;
-import jp.mts.taskmanage.domain.model.TaskStatus;
+import jp.mts.taskmanage.domain.model.group.Group;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.group.GroupRepository;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.member.MemberRepository;
+import jp.mts.taskmanage.domain.model.task.Task;
+import jp.mts.taskmanage.domain.model.task.TaskId;
+import jp.mts.taskmanage.domain.model.task.TaskRepository;
+import jp.mts.taskmanage.domain.model.task.TaskStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

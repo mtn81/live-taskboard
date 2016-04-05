@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import mockit.Expectations;

@@ -1,0 +1,9 @@
+---
+
+- name: add apt repo (redis)
+  apt_repository: repo='ppa:chris-lea/redis-server' validate_certs=no
+  sudo: yes
+
+- name: install redis
+  apt: name=redis-server update_cache=yes
+  sudo: yes

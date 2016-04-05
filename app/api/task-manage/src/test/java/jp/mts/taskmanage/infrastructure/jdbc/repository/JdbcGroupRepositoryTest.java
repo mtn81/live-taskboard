@@ -7,9 +7,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import java.util.Optional;
 
 import jp.mts.base.unittest.JdbcTestBase;
-import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupFixture;
-import jp.mts.taskmanage.domain.model.GroupId;
+import jp.mts.taskmanage.domain.model.group.Group;
+import jp.mts.taskmanage.domain.model.group.GroupFixture;
+import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 
 import org.junit.Test;

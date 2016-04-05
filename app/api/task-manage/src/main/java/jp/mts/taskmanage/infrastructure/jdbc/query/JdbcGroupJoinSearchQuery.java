@@ -6,7 +6,7 @@ import java.util.List;
 
 import jp.mts.base.util.ListUtils;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 
 import org.javalite.activejdbc.Base;
 import org.springframework.stereotype.Repository;

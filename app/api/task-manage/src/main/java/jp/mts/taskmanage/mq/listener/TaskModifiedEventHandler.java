@@ -9,8 +9,8 @@ import jp.mts.libs.event.mq.MqEventHandler;
 import jp.mts.libs.event.mq.MqEventHandlerConfig;
 import jp.mts.taskmanage.application.MemberAppService;
 import jp.mts.taskmanage.application.TaskAppService;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.Task;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.task.Task;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

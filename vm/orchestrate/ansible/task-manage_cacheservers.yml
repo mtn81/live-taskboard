@@ -1,0 +1,8 @@
+---
+
+- hosts: localhost
+  roles:
+    - { tags: ['base_image'], role: cacheserver }
+    #- { tags: ['deploy'],     role: task-manage_cache_deploy }
+
+

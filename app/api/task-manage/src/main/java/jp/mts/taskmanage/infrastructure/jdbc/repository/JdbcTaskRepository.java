@@ -3,13 +3,13 @@ package jp.mts.taskmanage.infrastructure.jdbc.repository;
 import java.util.List;
 
 import jp.mts.base.infrastructure.jdbc.repository.AbstractCompositeIdJdbcDomainRepository;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.Task;
-import jp.mts.taskmanage.domain.model.TaskBuilder;
-import jp.mts.taskmanage.domain.model.TaskId;
-import jp.mts.taskmanage.domain.model.TaskRepository;
-import jp.mts.taskmanage.domain.model.TaskStatus;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.task.Task;
+import jp.mts.taskmanage.domain.model.task.TaskBuilder;
+import jp.mts.taskmanage.domain.model.task.TaskId;
+import jp.mts.taskmanage.domain.model.task.TaskRepository;
+import jp.mts.taskmanage.domain.model.task.TaskStatus;
 import jp.mts.taskmanage.infrastructure.jdbc.model.TaskIdGeneratorModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.TaskModel;
 

@@ -11,7 +11,7 @@ import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByAdminResult;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByApplicantResult;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.NotJoinAppliedWithNameResult;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;

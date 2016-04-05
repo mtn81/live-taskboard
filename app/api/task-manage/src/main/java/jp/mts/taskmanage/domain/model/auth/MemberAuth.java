@@ -3,7 +3,7 @@ package jp.mts.taskmanage.domain.model.auth;
 import java.util.Date;
 
 import jp.mts.base.domain.model.DomainObject;
-import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 
 import org.apache.commons.lang3.time.DateUtils;
 

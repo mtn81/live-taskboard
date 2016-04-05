@@ -1,6 +1,6 @@
 package jp.mts.taskmanage.websocket;
 
-import jp.mts.taskmanage.domain.model.Group;
+import jp.mts.taskmanage.domain.model.group.Group;
 
 public class GroupAvailableNotification {
 	

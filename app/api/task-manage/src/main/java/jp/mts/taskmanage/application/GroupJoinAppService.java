@@ -6,15 +6,15 @@ import static jp.mts.taskmanage.application.ErrorType.CANNOT_ACCEPT_JOIN;
 import java.util.Optional;
 
 import jp.mts.base.application.ApplicationException;
-import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationRepository;
-import jp.mts.taskmanage.domain.model.GroupRepository;
-import jp.mts.taskmanage.domain.model.Member;
-import jp.mts.taskmanage.domain.model.MemberId;
-import jp.mts.taskmanage.domain.model.MemberRepository;
+import jp.mts.taskmanage.domain.model.group.Group;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.group.GroupRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.member.Member;
+import jp.mts.taskmanage.domain.model.member.MemberId;
+import jp.mts.taskmanage.domain.model.member.MemberRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

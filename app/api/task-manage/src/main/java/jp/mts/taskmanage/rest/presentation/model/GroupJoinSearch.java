@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 
 public class GroupJoinSearch {
 	

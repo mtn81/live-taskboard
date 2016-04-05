@@ -6,9 +6,9 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
 
-import jp.mts.taskmanage.domain.model.MemberId;
 import jp.mts.taskmanage.domain.model.auth.MemberAuth;
 import jp.mts.taskmanage.domain.model.auth.MemberAuthService;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;

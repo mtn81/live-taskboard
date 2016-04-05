@@ -3,10 +3,10 @@ package jp.mts.taskmanage.infrastructure.jdbc.repository;
 import java.util.UUID;
 
 import jp.mts.base.infrastructure.jdbc.repository.AbstractSimpleJdbcDomainRepository;
-import jp.mts.taskmanage.domain.model.Group;
-import jp.mts.taskmanage.domain.model.GroupId;
-import jp.mts.taskmanage.domain.model.GroupRepository;
-import jp.mts.taskmanage.domain.model.MemberId;
+import jp.mts.taskmanage.domain.model.group.Group;
+import jp.mts.taskmanage.domain.model.group.GroupId;
+import jp.mts.taskmanage.domain.model.group.GroupRepository;
+import jp.mts.taskmanage.domain.model.member.MemberId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 

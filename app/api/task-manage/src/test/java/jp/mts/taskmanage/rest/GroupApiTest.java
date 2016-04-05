@@ -11,7 +11,7 @@ import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.GroupFixture;
+import jp.mts.taskmanage.domain.model.group.GroupFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
 import jp.mts.taskmanage.rest.presentation.model.GroupList.GroupView;
 import jp.mts.taskmanage.rest.presentation.model.GroupRemove;

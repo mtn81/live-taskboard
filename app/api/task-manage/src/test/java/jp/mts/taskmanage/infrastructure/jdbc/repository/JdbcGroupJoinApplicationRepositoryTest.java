@@ -4,10 +4,10 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
-import jp.mts.taskmanage.domain.model.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationFixture;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,8 +3,8 @@ package jp.mts.taskmanage.rest.presentation.model;
 import java.util.Date;
 
 import jp.mts.taskmanage.application.TaskAppService;
-import jp.mts.taskmanage.domain.model.Task;
-import jp.mts.taskmanage.domain.model.TaskStatus;
+import jp.mts.taskmanage.domain.model.task.Task;
+import jp.mts.taskmanage.domain.model.task.TaskStatus;
 
 public class TaskSave {
 
