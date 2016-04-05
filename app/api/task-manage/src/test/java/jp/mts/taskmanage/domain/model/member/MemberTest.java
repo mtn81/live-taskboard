@@ -10,7 +10,6 @@ import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicated;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.member.Member;
 import mockit.Mocked;
 import mockit.Verifications;
 
@@ -70,4 +69,29 @@ public class MemberTest {
 		}};
 	}
 
+	@Test public void
+	test_group_can_be_removed_by_admin() {
+		//setup
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
+
+		Group group =  new GroupFixture("g01").get();
+		Member member = new MemberFixture().addGroupBelonging("g01", true).get();
+		
+		boolean actual = member.remove(group);
+		
+		assertThat(actual, is(true));
+	}
+	
+	@Test public void
+	test_group_cannot_be_removed_by_normal() {
+		//setup
+		DomainObject.setDomainEventPublisher(domainEventPublisher);
+
+		Group group =  new GroupFixture("g01").get();
+		Member member = new MemberFixture().addGroupBelonging("g01", false).get();
+		
+		boolean actual = member.remove(group);
+		
+		assertThat(actual, is(false));
+	}
 }
