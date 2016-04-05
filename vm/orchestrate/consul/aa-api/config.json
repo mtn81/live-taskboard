@@ -2,9 +2,20 @@
   "data_dir": "/tmp/consul",
   "node_name": "aa-api",
   "log_level": "info",
+
   "watches": [{
     "type": "event",
     "name": "deploy",
     "handler": "cd /ansible && ansible-playbook auth-access_apiservers.yml -i inventories/develop -c local --tags deploy"
-  }]
+  }],
+
+  "service": {
+    "name": "auth-access-api",
+    "port": 8080,
+    "check": {
+      "script": "curl http://127.0.0.1:8080/auth-access/api/status >/dev/null 2>&1",
+      "interval": "15s",
+      "timeout": "5s"
+    }
+  }
 }

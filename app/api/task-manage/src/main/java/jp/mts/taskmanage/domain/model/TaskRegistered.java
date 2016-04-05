@@ -6,18 +6,19 @@ import jp.mts.base.domain.model.DomainEventConfig;
 @DomainEventConfig(eventType="mts:taskmanage/TaskRegistered")
 public class TaskRegistered extends DomainEvent {
 	
-	public TaskId taskId;
-	public GroupId groupId;
+	private Task task;
 
 	public TaskRegistered(Task task) {
-		this.taskId = task.taskId();
-		this.groupId = task.groupId();
+		this.task = task;
 	}
 	
 	public String getTaskId() {
-		return taskId.value();
+		return task.taskId().value();
 	}
 	public String getGroupId() {
-		return groupId.value();
+		return task.groupId().value();
+	}
+	public String getAssigned() {
+		return task.assignedMemberId().value();
 	}
 }

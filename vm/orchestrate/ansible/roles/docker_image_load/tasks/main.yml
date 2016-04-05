@@ -43,7 +43,7 @@
     - { name: aa-api,     dev: false, expose: [8080],       ports: ["18080:8080"] }
     - { name: tm-api,     dev: false, expose: [8080],       ports: ["28080:8080"] }
     - { name: ws-api,     dev: false, expose: [8080],       ports: ["38080:8080"] }
-    - { name: web,        dev: false, expose: [80],         ports: ["80:80"] }
     - { name: tm-backend, dev: false, expose: [],           ports: [] }
     - { name: aa-backend, dev: false, expose: [],           ports: [] }
+    - { name: web,        dev: false, expose: [80],         ports: ["80:80"] }
 

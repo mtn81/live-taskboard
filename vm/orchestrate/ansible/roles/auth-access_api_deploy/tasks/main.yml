@@ -2,4 +2,4 @@
 
 - include: ../../../include/server_module_deploy.yml
   vars:
-    api_name: aa-api
+    module_name: aa-api

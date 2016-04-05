@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.annotation.PostConstruct;
 
 import jp.mts.base.lib.mail.MailView;
-import jp.mts.libs.unittest.Maps;
+import jp.mts.base.util.MapUtils;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
@@ -33,10 +33,9 @@ public class MailConfig {
 	public VelocityEngine mailVelocityEngine() throws VelocityException, IOException {
 		VelocityEngineFactoryBean factory = new VelocityEngineFactoryBean();
 		factory.setResourceLoaderPath("classpath:mail_templates");
-		factory.setVelocityPropertiesMap(new Maps()
-			.e("input.encoding", "UTF-8")
-			.e("output.encoding", "UTF-8")
-			.get());
+		factory.setVelocityPropertiesMap(MapUtils.pairs(
+			"input.encoding", "UTF-8",
+			"output.encoding", "UTF-8"));
 		return factory.createVelocityEngine();
 	}
 

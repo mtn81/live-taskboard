@@ -1,0 +1,11 @@
+LiveTaskboad からのお知らせです。
+
+担当のタスク ${view.task} が変更されました。
+--
+期限： ${view.deadLine}
+備考： ${view.memo}
+ステータス： ${view.status}
+--
+
+サイトにログインして確認してください。
+${view.siteBaseUrl}

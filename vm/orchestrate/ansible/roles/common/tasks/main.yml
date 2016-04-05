@@ -5,6 +5,7 @@
   sudo: yes
   with_items:
     - unzip
+    - curl
 
 - name: install consul
   unarchive: src=consul_0.6.3_linux_amd64.zip dest=/usr/local/bin

@@ -1,0 +1,11 @@
+LiveTaskboad からのお知らせです。
+
+以下のタスクが割り当てられました。
+--
+タスク： ${view.task}
+期限： ${view.deadLine}
+備考： ${view.memo}
+--
+
+サイトにログインして確認してください。
+${view.siteBaseUrl}

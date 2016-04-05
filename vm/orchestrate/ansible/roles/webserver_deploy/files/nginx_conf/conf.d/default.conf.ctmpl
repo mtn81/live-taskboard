@@ -1,3 +1,7 @@
+upstream auth-access-api { {{range service "auth-access-api"}}
+  server {{.Address}}:{{.Port}};{{end}}
+}
+
 server {
     listen       80;
     server_name  localhost;
@@ -8,23 +12,23 @@ server {
     }
 
     location /api/auth-access/ {
-        proxy_pass http://{{aa_api_host}}:8080/auth-access/api/;
+        proxy_pass http://auth-access-api/auth-access/api/;
     }
     location /api/task-manage/ {
-        proxy_pass http://{{tm_api_host}}:8080/task-manage/api/;
+        proxy_pass http://172.17.0.1:28080/task-manage/api/;
     }
     location /api/widget-store/ {
-        proxy_pass http://{{ws_api_host}}:8080/widget-store/api/;
+        proxy_pass http://172.17.0.1:38080/widget-store/api/;
     }
     location /ws/task-manage/ {
-        proxy_pass http://{{tm_api_host}}:8080/task-manage/websocket/;
+        proxy_pass http://172.17.0.1:28080/task-manage/websocket/;
 
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
     }
     location /ws/widget-store/ {
-        proxy_pass http://{{ws_api_host}}:8080/widget-store/websocket/;
+        proxy_pass http://172.17.0.1:38080/widget-store/websocket/;
 
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;

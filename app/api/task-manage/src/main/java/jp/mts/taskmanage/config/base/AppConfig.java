@@ -42,5 +42,10 @@ public class AppConfig {
 	public MailTemplate groupJoinRejecteddMailTemplate() {
 		return new MailTemplate("group_join_rejected.vm", "参加申請が拒否されした", velocityEngine);
 	}
+	@Bean
+	@Qualifier("taskRegistered")
+	public MailTemplate taskRegisteredMailTemplate() {
+		return new MailTemplate("task_registered.vm", "タスクが割り当てられました", velocityEngine);
+	}
 	
 }

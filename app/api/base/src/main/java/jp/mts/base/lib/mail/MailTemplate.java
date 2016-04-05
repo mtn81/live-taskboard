@@ -2,7 +2,7 @@ package jp.mts.base.lib.mail;
 
 import java.util.Map;
 
-import jp.mts.libs.unittest.Maps;
+import jp.mts.base.util.MapUtils;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -27,7 +27,7 @@ public class MailTemplate {
 				velocityEngine, 
 				templateResourceName, 
 				"UTF-8", 
-				Maps.map("view", view));
+				MapUtils.pairs("view", view));
 	}
 	
 	public String getSubject() { 

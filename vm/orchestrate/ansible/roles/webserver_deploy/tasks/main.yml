@@ -8,10 +8,24 @@
     - env/
 
 - name: copy nginx files
-  copy: src=nginx_conf/ dest=/etc/nginx/
+  copy: src=nginx_conf/conf.d/default.conf.ctmpl dest=/tmp/default.conf.ctmpl
   sudo: yes
 
 - name: start nginx
   service: name=nginx state=restarted
+  sudo: yes
+  ignore_errors: yes
+
+  # consul-templateがエラー終了しないように、-templateのコマンドは正常終了させる
+- name: start consul-template
+  shell: |
+    nohup \
+      /usr/local/bin/consul-template \
+        -consul '127.0.0.1:8500' \
+        -template '/tmp/default.conf.ctmpl:/etc/nginx/conf.d/default.conf:service nginx restart || true' \
+        -retry 30s \
+        -log-level debug \
+      > ~/consul-template.log 2>&1 \
+    &
   sudo: yes
 
