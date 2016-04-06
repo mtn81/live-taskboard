@@ -99,6 +99,7 @@ subprojects {
     compile "org.msgpack:jackson-dataformat-msgpack:0.7.0-p5"
 	  compile 'com.google.guava:guava:18.0'
     compile 'io.jsonwebtoken:jjwt:0.6.0'
+    compile 'biz.paluch.redis:lettuce:4.1.1.Final'
   }
 
   sourceSets.test.compileClasspath = configurations.testMock + sourceSets.test.compileClasspath
@@ -139,10 +140,16 @@ project(':libs:event') {
     testCompile project(':libs:unit-test')
   }
 }
+project(':libs:cache') {
+  mainClassName = "dummy"
+  dependencies {
+    testCompile project(':libs:unit-test')
+  }
+}
 project(':base') {
   mainClassName = "dummy"
   dependencies {
-    compile project(':libs:event')
+    compile project(':libs:event'), project(':libs:cache')
     testCompile project(':libs:unit-test')
   }
 }
@@ -158,7 +165,7 @@ project(':ut-base') {
 }
 project(':auth-access') {
   dependencies {
-    compile project(':libs:event'), project(':base')
+    compile project(':libs:event'), project(':libs:cache'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/auth-access_db_migrate/files/scripts")
   }
@@ -168,7 +175,7 @@ project(':auth-access_api') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':auth-access')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':auth-access')
   }
 }
 project(':auth-access_backend') {
@@ -176,12 +183,12 @@ project(':auth-access_backend') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':auth-access')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':auth-access')
   }
 }
 project(':task-manage') {
   dependencies {
-    compile project(':libs:event'), project(':base')
+    compile project(':libs:event'), project(':libs:cache'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/task-manage_db_migrate/files/scripts")
   }
@@ -191,7 +198,7 @@ project(':task-manage_api') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':task-manage')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':task-manage')
   }
 }
 project(':task-manage_backend') {
@@ -199,12 +206,12 @@ project(':task-manage_backend') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':task-manage')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':task-manage')
   }
 }
 project(':widget-store') {
   dependencies {
-    compile project(':libs:event'), project(':base')
+    compile project(':libs:event'), project(':libs:cache'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/widget-store_db_migrate/files/scripts")
   }
@@ -214,7 +221,7 @@ project(':widget-store_api') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':widget-store')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':widget-store')
   }
 }
 project(':widget-store_backend') {
@@ -222,6 +229,6 @@ project(':widget-store_backend') {
     executable = true
   }
   dependencies {
-    compile project(':libs:event'), project(':base'), project(':widget-store')
+    compile project(':libs:event'), project(':libs:cache'), project(':base'), project(':widget-store')
   }
 }

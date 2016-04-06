@@ -7,8 +7,8 @@ public class Maps {
 	
 	private Map<String, Object> value = new HashMap<>(); 
 	
-	public static Map<String, Object> map(String key, Object value) {
-		return new Maps().e(key, value).get();
+	public static <T> Map<String, T> map(String key, Object value) {
+		return (Map<String, T>)new Maps().e(key, value).get();
 	}
 	public Maps e(String key, Object value){
 		this.value.put(key, value);
