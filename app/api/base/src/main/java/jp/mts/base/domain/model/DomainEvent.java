@@ -2,7 +2,7 @@ package jp.mts.base.domain.model;
 
 import java.util.Date;
 
-import jp.mts.base.config.aspect.ClientContext;
+import jp.mts.base.aspect.ClientContext;
 import jp.mts.libs.event.Event;
 import jp.mts.libs.event.EventDelegateType;
 

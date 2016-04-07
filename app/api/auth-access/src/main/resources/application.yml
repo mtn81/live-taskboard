@@ -39,3 +39,7 @@ social:
   
 mail:
   site-base-url: http://localhost:9000/
+ 
+redis:
+  host: 192.168.77.10
+  port: 6379

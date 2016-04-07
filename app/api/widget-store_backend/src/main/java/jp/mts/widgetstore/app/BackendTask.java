@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(
 	basePackages={
 		"jp.mts.base.config", 
+		"jp.mts.base.aspect", 
 		"jp.mts.widgetstore.config.base",
 		"jp.mts.widgetstore.config.event",
 		"jp.mts.widgetstore.infrastructure",

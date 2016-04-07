@@ -6,25 +6,22 @@ import static org.junit.Assert.assertThat;
 import java.util.Map;
 
 import jp.mts.libs.unittest.Maps;
-import mockit.Expectations;
-import mockit.Mocked;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.lambdaworks.redis.RedisClient;
-import com.lambdaworks.redis.api.StatefulRedisConnection;
-import com.lambdaworks.redis.api.sync.RedisCommands;
 
-public class RedisCacheMapTest {
+@Ignore
+public class RedisCacheMapIntegrationTest {
 	
-	@Mocked RedisClient redisClient;
-	@Mocked StatefulRedisConnection<String, String> connection;
-	@Mocked RedisCommands<String, String> commands;
 	RedisCacheMap<TestKey, TestValue> target;
 	
 	@Before
 	public void setup() {
+		RedisClient redisClient = new RedisClient("192.168.77.10");
+
 		target = new RedisCacheMap<TestKey, TestValue>(
 				redisClient, "test", 
 				new RedisCacheMap.Encoder<String, TestKey>() {
@@ -52,24 +49,16 @@ public class RedisCacheMapTest {
 	@Test
 	public void test() {
 		
-		new Expectations() {{
-			commands.hmset("test:k01", Maps.map("name", "v01"));
-			commands.hmset("test:k02", Maps.map("name", "v02"));
-			commands.hgetall("test:k01");
-				result = Maps.map("name", "v01");
-			commands.hgetall("test:k02");
-				result = Maps.map("name", "v02");
-			commands.hgetall("test:k03");
-				result = null;
-		}};
-		
-		
 		target.put(new TestKey("k01"), new TestValue("v01"));
 		target.put(new TestKey("k02"), new TestValue("v02"));
+		target.put(new TestKey("k03"), new TestValue("v03"));
+		
+		target.remove(new TestKey("k03"));
 
 		assertThat(target.get(new TestKey("k01")).get().value, is("v01"));
 		assertThat(target.get(new TestKey("k02")).get().value, is("v02"));
 		assertThat(target.get(new TestKey("k03")).isPresent(), is(false));
+		assertThat(target.get(new TestKey("k04")).isPresent(), is(false));
 
 	}
 	

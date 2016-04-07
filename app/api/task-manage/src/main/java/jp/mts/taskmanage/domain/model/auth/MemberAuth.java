@@ -14,8 +14,8 @@ public class MemberAuth extends DomainObject {
 	private Date expireTime;
 
 	public MemberAuth(MemberId memberId) {
-		this.memberId = memberId;
-		this.expireTime = DateUtils.addMinutes(calendar.systemDate(), expirationMinutes);
+		setMemberId(memberId);
+		setExpireTime(DateUtils.addMinutes(calendar.systemDate(), expirationMinutes));
 	}
 	
 	public MemberId memberId() {
@@ -30,9 +30,16 @@ public class MemberAuth extends DomainObject {
 	public MemberAuth expireExtended() {
 		return new MemberAuth(memberId);
 	}
-
+	
 	public static void setExpirationMinutes(int expirationMinutes) {
 		MemberAuth.expirationMinutes = expirationMinutes;
+	}
+
+	void setMemberId(MemberId memberId) {
+		this.memberId = memberId;
+	}
+	void setExpireTime(Date expireTime) {
+		this.expireTime = expireTime;
 	}
 	
 }

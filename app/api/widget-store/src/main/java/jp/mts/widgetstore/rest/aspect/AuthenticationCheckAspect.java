@@ -26,7 +26,7 @@ public class AuthenticationCheckAspect {
 	@Autowired
 	private AuthorizationAppService authorizationAppService;
 	
-	@Around("jp.mts.base.config.aspect.AppArchitecture.restApi()")
+	@Around("jp.mts.base.aspect.AppArchitecture.restApi()")
 	public Object checkAuthenticated(ProceedingJoinPoint pjp) throws Throwable {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
 		String authId = requestAttributes.getRequest().getHeader("X-AuthAccess-AuthId");

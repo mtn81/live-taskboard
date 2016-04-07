@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class AuthorizeCheckAspect {
 
 	
-	@Around("jp.mts.base.config.aspect.AppArchitecture.restApi()")
+	@Around("jp.mts.base.aspect.AppArchitecture.restApi()")
 	public Object checkAuthenticated(ProceedingJoinPoint pjp) throws Throwable {
 		
 		String memberId = paramValueOf(pjp, Me.class);

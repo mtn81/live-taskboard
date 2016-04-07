@@ -1,4 +1,4 @@
-package jp.mts.base.config.aspect;
+package jp.mts.base.aspect;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 public class ClientContextAspect {
 
-	@Around("jp.mts.base.config.aspect.AppArchitecture.restApi()")
+	@Around("jp.mts.base.aspect.AppArchitecture.restApi()")
 	public Object checkAuthenticated(ProceedingJoinPoint pjp) throws Throwable {
 		ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
 		String clientId = requestAttributes.getRequest().getHeader("X-ClientId");

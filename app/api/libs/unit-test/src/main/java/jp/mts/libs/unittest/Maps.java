@@ -15,7 +15,7 @@ public class Maps {
 		return this;
 	}
 	
-	public Map<String, Object> get() {
-		return value;
+	public <T> Map<String, T> get() {
+		return (Map<String, T>)value;
 	}
 }

@@ -1,9 +1,12 @@
 package jp.mts.authaccess.app;
 
+import jp.mts.base.config.MailConfig;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -14,6 +17,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @ComponentScan(
 	basePackages={
 		"jp.mts.base.config", 
+		"jp.mts.base.aspect", 
 		"jp.mts.authaccess.config.base",
 		"jp.mts.authaccess.config.event",
 		"jp.mts.authaccess.infrastructure",

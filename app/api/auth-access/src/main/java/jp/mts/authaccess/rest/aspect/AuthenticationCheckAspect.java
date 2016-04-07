@@ -24,7 +24,7 @@ public class AuthenticationCheckAspect {
 	private AuthAppService authAppService;
 		
 
-	@Around("jp.mts.base.config.aspect.AppArchitecture.restApi()")
+	@Around("jp.mts.base.aspect.AppArchitecture.restApi()")
 	public Object checkAuthenticated(ProceedingJoinPoint pjp) throws Throwable {
 		String userId = AspectUtils.paramValueOf(pjp, Authenticated.class);
 		if (userId == null) {

@@ -1,4 +1,4 @@
-package jp.mts.base.config.aspect;
+package jp.mts.base.aspect;
 
 import jp.mts.base.domain.model.DomainEvent;
 import jp.mts.base.domain.model.DomainEventPublisher;
@@ -19,7 +19,7 @@ public class EventDelegateAspect {
 	@Autowired
 	private EventService eventService;
 	
-	@Around("jp.mts.base.config.aspect.AppArchitecture.appService()")
+	@Around("jp.mts.base.aspect.AppArchitecture.appService()")
 	public Object subscribeEvent(ProceedingJoinPoint pjp) throws Throwable {
 		domainEventPublisher.initialize();
 		domainEventPublisher.register(DomainEvent.class, eventService::delegate);

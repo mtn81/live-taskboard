@@ -1,4 +1,4 @@
-package jp.mts.base.config.aspect;
+package jp.mts.base.aspect;
 
 public class ClientContext {
 

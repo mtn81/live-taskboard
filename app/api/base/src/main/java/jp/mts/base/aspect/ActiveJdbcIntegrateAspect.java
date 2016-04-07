@@ -1,4 +1,4 @@
-package jp.mts.base.config.aspect;
+package jp.mts.base.aspect;
 
 import java.sql.Connection;
 
@@ -19,9 +19,9 @@ public class ActiveJdbcIntegrateAspect {
 	@Autowired
 	private DataSource dataSource;
 
-	@Around("jp.mts.base.config.aspect.AppArchitecture.repository() || " + 
-			"jp.mts.base.config.aspect.AppArchitecture.query() || " +
-			"jp.mts.base.config.aspect.AppArchitecture.event()")
+	@Around("jp.mts.base.aspect.AppArchitecture.repository() || " + 
+			"jp.mts.base.aspect.AppArchitecture.query() || " +
+			"jp.mts.base.aspect.AppArchitecture.event()")
 	public Object attachDb(ProceedingJoinPoint pjp) throws Throwable {
 		Connection connection = DataSourceUtils.getConnection(dataSource);
 		try {
