@@ -1,0 +1,10 @@
+---
+
+- name: copy conf
+  copy: src=redis.conf dest=/etc/redis/redis.conf
+  sudo: yes
+
+- name: start redis
+  shell: pkill redis-server ; redis-server /etc/redis/redis.conf
+  sudo: yes
+

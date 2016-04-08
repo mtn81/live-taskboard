@@ -8,6 +8,6 @@ flyway_home=~/flyway-3.2.1
 
 aa_db_host=aa-db
 tm_db_host=tm-db
-ws_db_host=ws_db
+ws_db_host=ws-db
 mq_host=mq
 web_host=web

@@ -1,0 +1,12 @@
+{
+  "data_dir": "/tmp/consul",
+  "node_name": "tm-cache",
+  "log_level": "info",
+
+  "watches": [{
+    "type": "event",
+    "name": "deploy",
+    "handler": "cd /ansible && ansible-playbook task-manage_cacheservers.yml -i inventories/develop -c local --tags deploy"
+  }]
+
+}

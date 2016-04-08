@@ -63,3 +63,4 @@ export class MemberService {
 
 export class MemberChanged {}
 export class MemberRemoved {}
+export class MemberRoleChanged {}

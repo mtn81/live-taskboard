@@ -95,13 +95,23 @@ export class TaskService {
     var task = this._taskOf(taskId);
     if(!task || task.status === status) return;
 
-    task.status = status;
+    this._changeStatus(task, status);
     this.modify(groupId, task);
   }
 
   watchTaskChange(groupId, callback) {
     this.stomp.subscribe(`/topic/${groupId}/task_changed`, taskChange => {
       callback(taskChange, this.authContext.hasClientId(taskChange.clientId));
+    });
+  }
+
+  _changeStatus(task, newStatus){
+    const oldStatus = task.status;
+    task.status = newStatus;
+
+    this._tasks[newStatus].push(task);
+    this._tasks[oldStatus].some((t, i) => {
+      if(t === task) this._tasks[oldStatus].splice(i, 1);
     });
   }
 
