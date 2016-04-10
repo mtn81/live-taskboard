@@ -61,4 +61,6 @@ main {
 .task-memo-editor {
   width: 90%;
 }
-
+.task-menu {
+  margin-left: 20px;
+}

@@ -1,8 +1,15 @@
 ---
 
-- include: ../../../include/rdb_migrate.yml
-  vars:
-    script_dir: "{{ role_path }}/files/scripts/{{ stage }}"
-    flyway_conf_template: "{{ role_path }}/templates/flyway/flyway.conf.j2"
-    db_name: task-manage
+# - include: ../../../include/rdb_migrate.yml
+#   vars:
+#     script_dir: "{{ role_path }}/files/scripts/{{ stage }}"
+#     flyway_conf_template: "{{ role_path }}/templates/flyway/flyway.conf.j2"
+#     db_name: task-manage
 
+- name: copy elasticsearch conf
+  copy: src=elasticsearch/elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
+  sudo: yes
+
+- name: start elasticsearch
+  service: name=elasticsearch state=started
+  sudo: yes

@@ -4,8 +4,13 @@
   <link rel="stylesheet" type="text/css" href="/dist/views/taskboard/taskboard.css">
 
   <main>
-
     <div class="taskbord" show.bind="isGroupSelected">
+
+      <div class="btn-group task-menu">
+        <button type="button" class="btn btn-default">フィルタ</button>
+        <button type="button" class="btn btn-default">カテゴリ作成</button>
+      </div>
+
       <div class="row">
         <div class="col-md-4" >
           <task-status status="todo">

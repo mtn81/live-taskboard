@@ -1,0 +1,33 @@
+---
+
+######################################
+# java 8
+######################################
+- name: add apt repo (jdk)
+  apt_repository: repo='ppa:webupd8team/java'
+  sudo: yes
+
+- name: setting for accepting licence (jdk)
+  shell: echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+  sudo: yes
+
+- name: install jdk
+  apt: name=oracle-java8-installer
+  sudo: yes
+
+
+######################################
+# elastic search
+######################################
+- name: add apt key (elastic search)
+  apt_key: url=https://packages.elastic.co/GPG-KEY-elasticsearch state=present
+  sudo: yes
+
+- name: add apt repo (elastic search)
+  apt_repository: repo='deb http://packages.elastic.co/elasticsearch/2.x/debian stable main'
+  sudo: yes
+
+- name: install elastic search
+  apt: name=elasticsearch update_cache=yes
+  sudo: yes
+

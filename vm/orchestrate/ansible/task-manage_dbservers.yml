@@ -2,8 +2,9 @@
 
 - hosts: localhost
   roles:
-    - { tags: ['base_image'], role: rdb, db_name: task-manage }
-    - { tags: ['base_image'], role: rdb_migrator }
+    #- { tags: ['base_image'], role: rdb, db_name: task-manage }
+    #- { tags: ['base_image'], role: rdb_migrator }
     - { tags: ['migrate'],    role: task-manage_db_migrate }
+    - { tags: ['base_image'], role: elastic_search }
 
 
