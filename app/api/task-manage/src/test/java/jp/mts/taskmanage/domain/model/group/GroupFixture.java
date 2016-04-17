@@ -20,6 +20,14 @@ public class GroupFixture {
 				"task group01", 
 				"this is a test group");
 	}
+	public GroupFixture setName(String name) {
+		group.setName(name);
+		return this;
+	}
+	public GroupFixture setDescription(String description) {
+		group.setDescription(description);
+		return this;
+	}
 	
 	public Group get(){
 		return group;

@@ -20,7 +20,7 @@ import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
 import org.springframework.stereotype.Repository;
 
 
-@Repository
+//@Repository
 public class JdbcMemberRepository
 	extends AbstractSimpleJdbcDomainRepository<MemberId, Member, MemberModel> 
 	implements MemberRepository  {

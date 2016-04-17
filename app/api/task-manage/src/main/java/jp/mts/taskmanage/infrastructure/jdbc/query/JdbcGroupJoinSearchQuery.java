@@ -11,7 +11,7 @@ import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 import org.javalite.activejdbc.Base;
 import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 	
 	@Override

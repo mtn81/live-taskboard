@@ -37,3 +37,7 @@ mail:
 redis:
   host: 192.168.77.10
   port: 6379
+ 
+elasticsearch:
+  transport-end-points:
+    - 192.168.77.10:9300

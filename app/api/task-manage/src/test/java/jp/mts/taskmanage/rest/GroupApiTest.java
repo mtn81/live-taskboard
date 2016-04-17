@@ -10,6 +10,7 @@ import java.util.List;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
+import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.GroupSummary;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
 import jp.mts.taskmanage.domain.model.group.GroupFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupList;
@@ -56,8 +57,8 @@ public class GroupApiTest {
 		new Expectations() {{
 			groupBelongingSearchQuery.byMember("m01");
 				result = newArrayList(
-						new GroupBelongingSearchQuery.ByMemberResult("g01", "group01", "", true),
-						new GroupBelongingSearchQuery.ByMemberResult("g02", "group02", "", false));
+						new GroupSummary("g01", "group01", true),
+						new GroupSummary("g02", "group02", false));
 		}};
 
 		RestResponse<GroupList> response = target.listBelongingGroups("m01");

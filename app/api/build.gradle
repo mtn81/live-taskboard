@@ -100,6 +100,7 @@ subprojects {
 	  compile 'com.google.guava:guava:18.0'
     compile 'io.jsonwebtoken:jjwt:0.6.0'
     compile 'biz.paluch.redis:lettuce:4.1.1.Final'
+    compile 'org.elasticsearch:elasticsearch:2.3.1'
   }
 
   sourceSets.test.compileClasspath = configurations.testMock + sourceSets.test.compileClasspath
@@ -191,6 +192,7 @@ project(':task-manage') {
     compile project(':libs:event'), project(':libs:cache'), project(':base')
     testCompile project(':libs:unit-test'), project(':ut-base')
     testRuntime files("../../../vm/orchestrate/ansible/roles/task-manage_db_migrate/files/scripts")
+    testRuntime files("../../../vm/orchestrate/ansible/roles/task-manage_db_migrate/files/elasticsearch/scripts/setup")
   }
 }
 project(':task-manage_api') {

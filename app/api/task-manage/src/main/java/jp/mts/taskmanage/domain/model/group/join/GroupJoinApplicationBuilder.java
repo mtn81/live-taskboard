@@ -1,6 +1,7 @@
 package jp.mts.taskmanage.domain.model.group.join;
 
-import java.sql.Date;
+import java.util.Date;
+
 
 public class GroupJoinApplicationBuilder {
 

@@ -2,8 +2,8 @@ package jp.mts.taskmanage.rest.aspect;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import jp.mts.libs.unittest.Maps;
-import jp.mts.taskmanage.application.query.MemberAuthorizationQuery;
+import jp.mts.taskmanage.application.MemberAppService;
+import jp.mts.taskmanage.domain.model.member.MemberFixture;
 import mockit.Expectations;
 import mockit.Mocked;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
 
 public class MemberContextTest {
 
-	@Mocked MemberAuthorizationQuery memberAuthorizationQuery;
+	@Mocked MemberAppService memberAppService;
 	
 	@Test
 	public void test_hasMemerId() {
@@ -25,11 +25,14 @@ public class MemberContextTest {
 
 	@Test
 	public void test_isGroupAdmin() {
-		MemberContext.setMemberAuthorizationQuery(memberAuthorizationQuery);
+		MemberContext.setMemberAppService(memberAppService);
 		
 		new Expectations() {{
-			memberAuthorizationQuery.belongingByMember("m01");
-				result = new Maps().e("g01", true).e("g02", false).get();
+			memberAppService.findById("m01");
+				result = new MemberFixture("m01")
+						.addGroupBelonging("g01", true)
+						.addGroupBelonging("g02", false)
+						.get();
 				times = 1; //enable cache
 		}};
 		
@@ -40,11 +43,14 @@ public class MemberContextTest {
 	}
 	@Test
 	public void test_belongsGroup() {
-		MemberContext.setMemberAuthorizationQuery(memberAuthorizationQuery);
+		MemberContext.setMemberAppService(memberAppService);
 		
 		new Expectations() {{
-			memberAuthorizationQuery.belongingByMember("m01");
-				result = new Maps().e("g01", true).e("g02", false).get();
+			memberAppService.findById("m01");
+				result = new MemberFixture("m01")
+						.addGroupBelonging("g01", true)
+						.addGroupBelonging("g02", false)
+						.get();
 				times = 1; //enable cache
 		}};
 		

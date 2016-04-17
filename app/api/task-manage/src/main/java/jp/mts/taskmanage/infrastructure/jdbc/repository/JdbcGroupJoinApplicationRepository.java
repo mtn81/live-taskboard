@@ -13,9 +13,7 @@ import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.domain.model.member.MemberId;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 
-import org.springframework.stereotype.Repository;
-
-@Repository
+//@Repository
 public class JdbcGroupJoinApplicationRepository 
 	extends AbstractSimpleJdbcDomainRepository<
 		GroupJoinApplicationId, 

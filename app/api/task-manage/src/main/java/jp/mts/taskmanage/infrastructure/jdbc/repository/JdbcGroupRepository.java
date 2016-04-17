@@ -12,7 +12,7 @@ import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
+//@Repository
 public class JdbcGroupRepository 
 	extends AbstractSimpleJdbcDomainRepository<
 		GroupId,

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
-import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.ByMemberResult;
+import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.GroupSummary;
 
 public class GroupList {
 	
@@ -17,7 +17,7 @@ public class GroupList {
 	}
 
 	//output
-	private List<ByMemberResult> groups;
+	private List<GroupSummary> groups;
 
 	public List<GroupView> getGroups(){
 		List<GroupView> groupViews = groups.stream().map(
@@ -26,9 +26,9 @@ public class GroupList {
 	}
 
 	public static class GroupView {
-		private ByMemberResult group;
+		private GroupSummary group;
 		
-		public GroupView(ByMemberResult group) {
+		public GroupView(GroupSummary group) {
 			this.group = group;
 		}
 

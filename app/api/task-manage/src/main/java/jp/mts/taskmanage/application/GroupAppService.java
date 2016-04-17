@@ -62,13 +62,19 @@ public class GroupAppService {
 		groupRepository.remove(targetGroup);
 	}
 
-	public Group findBelongingGroup(String groupId, String memberId) {
+	public void findBelongingGroup(
+			String groupId, 
+			String memberId, 
+			FindBelongingGroupCallBack callback) {
+		
 		Member member = memberRepository.findById(new MemberId(memberId)).get();
-		if (member.belongsTo(new GroupId(groupId))) {
-			return groupRepository.findById(new GroupId(groupId)).get();
+		GroupId groupId2 = new GroupId(groupId);
+		if (member.belongsTo(groupId2)) {
+			Group group = groupRepository.findById(groupId2).get();
+			callback.execute(group, member.belongsAsAdmin(groupId2));
 		}
-		return null; 
 	}
+	
 	
 	public Group findById(String groupId) {
 		return groupRepository.findById(new GroupId(groupId)).get();
@@ -109,4 +115,8 @@ public class GroupAppService {
 	}
 
 	
+	@FunctionalInterface
+	public interface FindBelongingGroupCallBack {
+		void execute(Group group, boolean isAdmin);
+	}
 }

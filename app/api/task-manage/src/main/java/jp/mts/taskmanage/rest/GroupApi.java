@@ -40,7 +40,7 @@ public class GroupApi {
 	public void initialize() {
 		GroupSearch.setGroupJoinSearchQuery(groupJoinSearchQuery);
 		GroupList.setGroupBelongingSearchQuery(groupBelongingSearchQuery);
-		GroupLoad.setGroupBelongingSearchQuery(groupBelongingSearchQuery);
+		GroupLoad.setGroupAppService(groupAppService);
 		GroupIdLoad.setGroupAppService(groupAppService);
 	}
 

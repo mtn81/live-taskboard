@@ -27,11 +27,10 @@ public class GroupNotifyWebSocketController implements MqEventHandler {
 		String groupId = eventBody.asString("groupId");
 		String memberId = eventBody.asString("memberId");
 		
-		Group group = groupAppService.findBelongingGroup(groupId, memberId);
-		if (group != null) {
+		groupAppService.findBelongingGroup(groupId, memberId, (group, isAdmin) -> {
 			simpMessagingTemplate.convertAndSend(
 				"/topic/" + memberId + "/group_available", 
 				new GroupAvailableNotification(group));
-		}
+		});
 	}
 }

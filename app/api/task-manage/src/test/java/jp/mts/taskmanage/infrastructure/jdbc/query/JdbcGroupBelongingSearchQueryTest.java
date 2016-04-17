@@ -6,7 +6,7 @@ import static org.junit.Assert.assertThat;
 import java.util.List;
 
 import jp.mts.base.unittest.JdbcTestBase;
-import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.ByMemberResult;
+import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.GroupSummary;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.MemberModel;
@@ -60,7 +60,7 @@ public class JdbcGroupBelongingSearchQueryTest extends JdbcTestBase {
 			"member_id", "m02",
 			"admin", true);
 
-		List<ByMemberResult> results = target.byMember("m01");
+		List<GroupSummary> results = target.byMember("m01");
 		
 		assertThat(results.size(), is(2));
 		assertThat(results.get(0).groupId, is("g01"));

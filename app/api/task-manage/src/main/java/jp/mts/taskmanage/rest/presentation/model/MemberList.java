@@ -21,7 +21,7 @@ public class MemberList {
 	private String groupId;
 
 	public void findByGroupId(String groupId) {
-		members = memberAppService.findMembersInGroup(groupId);
+		this.members = memberAppService.findMembersInGroup(groupId);
 		this.groupId = groupId;
 	}
 

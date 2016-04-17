@@ -1,35 +1,39 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
+import jp.mts.taskmanage.application.GroupAppService;
 import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery;
-import jp.mts.taskmanage.application.query.GroupBelongingSearchQuery.ByMemberResult;
+import jp.mts.taskmanage.domain.model.group.Group;
 
 public class GroupLoad {
 	
 	//required services
-	private static GroupBelongingSearchQuery groupBelongingSearchQuery;
+	private static GroupAppService groupAppService;
 	
-	public static void setGroupBelongingSearchQuery(
-			GroupBelongingSearchQuery groupBelongingSearchQuery) {
-		GroupLoad.groupBelongingSearchQuery = groupBelongingSearchQuery;
+	public static void setGroupAppService(GroupAppService groupAppService) {
+		GroupLoad.groupAppService = groupAppService;
 	}
 
 	//output
-	private ByMemberResult result;
+	private Group result;
+	private boolean isAdmin;
 	
 	public String getGroupId() {
-		return result.groupId;
+		return result.groupId().value();
 	}
 	public String getName() {
-		return result.groupName;
+		return result.name();
 	}
 	public String getDescription() {
-		return result.description;
+		return result.description();
 	}
 	public boolean isAdmin() {
-		return result.isAdmin;
+		return isAdmin;
 	}
 
 	public void loadBelongingGroup(String memberId, String groupId) {
-		result = groupBelongingSearchQuery.byMember(memberId, groupId);
+		groupAppService.findBelongingGroup(groupId, memberId, (group, isAdmin) -> {
+			this.result = group;
+			this.isAdmin = isAdmin;
+		});
 	}
 }
