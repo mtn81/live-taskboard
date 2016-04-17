@@ -33,8 +33,8 @@ public class GroupOwnerSynchronizer extends AbstractElasticSearchAccessor {
 			.setSource(MapUtils.pairs(
 				"member_id", group.ownerMemberId().value(),
 				"member_name", member.get("name"),
-				"member_type", member.get("type"),
-				"group_name", group.name()))
+				"member_type", member.get("type")))
+			.setParent(group.id().value())
 			.get();
 	}
 	

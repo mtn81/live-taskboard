@@ -25,13 +25,14 @@ curl -XPUT "http://$es_host:9200/task-manage" -d '
       }
     },
     "v_group_owner": {
+      "_parent": { "type": "group" },
       "properties": {
         "member_id": { "type": "string", "index": "not_analyzed" },
         "member_type": { "type": "string", "index": "not_analyzed" }
       }
     },
     "group_join": {
-      "_parent": { "type": "v_group_owner" },
+      "_parent": { "type": "group" },
       "properties": {
         "application_id": { "type": "string", "index": "not_analyzed" },
         "group_id": { "type": "string", "index": "not_analyzed" },

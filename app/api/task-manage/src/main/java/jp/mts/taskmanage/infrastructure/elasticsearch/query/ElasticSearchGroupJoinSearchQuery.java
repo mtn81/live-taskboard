@@ -4,9 +4,11 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchAccessor;
@@ -18,8 +20,11 @@ import org.elasticsearch.index.query.HasParentQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.support.QueryInnerHitBuilder;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
+
+import com.google.common.collect.Lists;
 
 @Service
 public class ElasticSearchGroupJoinSearchQuery 
@@ -33,33 +38,41 @@ public class ElasticSearchGroupJoinSearchQuery
 	@Override
 	public List<ByApplicantResult> byApplicant(String memberId) {
 		
-		SearchHits hits = prepareSearch()
+		SearchHits hits = prepareSearch("group")
 			.setQuery(constantScoreQuery(
 				boolQuery()
-					.must(termQuery("applicant_id", memberId))
-					.mustNot(termQuery("status", "CANCELLED"))
-					.should(hasParentQuery("v_group_owner", matchAllQuery())
-						.innerHit(new QueryInnerHitBuilder()))
+					.must(hasChildQuery("group_join", constantScoreQuery(
+						boolQuery()
+							.must(termQuery("applicant_id", memberId))
+							.mustNot(termQuery("status", "CANCELLED"))
+					)).innerHit(new QueryInnerHitBuilder()))
+					.should(hasChildQuery("v_group_owner", constantScoreQuery(
+						matchAllQuery())
+					).innerHit(new QueryInnerHitBuilder()))
 			))
-			.addSort("applied_time", SortOrder.ASC)
 			.get()
 			.getHits();
-		
-		if (hits.getTotalHits() <= 0) return new ArrayList<>();
 
-		return toList(hits, hit -> {
-			Map<String, Object> groupOwner 
-				= toObject(hit.getInnerHits().get("v_group_owner"), h -> h.getSource()).get();
-			Map<String, Object> join = hit.getSource();
-			return new ByApplicantResult(
-					hit.getId(),
-					(String)join.get("group_id"), 
-					(String)groupOwner.get("group_name"), 
-					(String)groupOwner.get("member_name"), 
-					(String)groupOwner.get("member_type"), 
-					dateTime((String)join.get("applied_time")), 
-					GroupJoinApplicationStatus.valueOf((String)join.get("status")));
-		});
+		if (hits.getTotalHits() <= 0) return Lists.newArrayList();
+
+		return Arrays.stream(hits.getHits())
+			.<ByApplicantResult>flatMap(ghit -> {
+				Map<String, Object> group = ghit.getSource();
+				Map<String, Object> groupOwner = toObject(ghit.getInnerHits().get("v_group_owner"), h -> h.getSource()).get();
+				return Arrays.stream(ghit.getInnerHits().get("group_join").getHits()).map(jhit -> {
+					Map<String, Object> join = jhit.getSource();
+					return new ByApplicantResult(
+							jhit.getId(),
+							(String)join.get("group_id"), 
+							(String)group.get("name"), 
+							(String)groupOwner.get("member_name"), 
+							(String)groupOwner.get("member_type"), 
+							dateTime((String)join.get("applied_time")), 
+							GroupJoinApplicationStatus.valueOf((String)join.get("status")));
+				});
+			})
+			.sorted((j1, j2) -> j1.joinApplied.compareTo(j2.joinApplied))
+			.collect(Collectors.toList());
 	}
 
 	@Override
