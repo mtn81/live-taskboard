@@ -19,15 +19,24 @@ public class ElasticSearchGroupRepository
 	extends AbstractElasticSearchRepository
 	implements GroupRepository {
 	
-	private GroupOwnerSynchronizer groupOwnerSynchronizer;
+	private GroupBelongingViewSynchronizer groupBelongingViewSynchronizer;
+	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
+	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
+	private GroupSearchViewSynchronizer groupSearchViewSynchronizer;
 	
 	@Autowired
 	public ElasticSearchGroupRepository(
-		GroupOwnerSynchronizer groupOwnerSynchronizer,
+		GroupBelongingViewSynchronizer groupBelongingViewSynchronizer,
+		GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer,
+		GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer,
+		GroupSearchViewSynchronizer groupSearchViewSynchronizer,
 		TransportClient transportClient) {
 
 		super("task-manage", "group", transportClient);
-		this.groupOwnerSynchronizer = groupOwnerSynchronizer;
+		this.groupBelongingViewSynchronizer = groupBelongingViewSynchronizer;
+		this.groupJoinByApplicantViewSynchronizer = groupJoinByApplicantViewSynchronizer;
+		this.groupJoinToAdminViewSynchronizer = groupJoinToAdminViewSynchronizer;
+		this.groupSearchViewSynchronizer = groupSearchViewSynchronizer;
 	}
 
 	@Override
@@ -49,7 +58,11 @@ public class ElasticSearchGroupRepository
 			"name", gp.name(),
 			"description", gp.description())
 		);
-		groupOwnerSynchronizer.syncOnGroupChanged(group);
+		
+		groupBelongingViewSynchronizer.syncFrom(group);
+		groupJoinByApplicantViewSynchronizer.syncFrom(group);
+		groupJoinToAdminViewSynchronizer.syncFrom(group);
+		groupSearchViewSynchronizer.syncFrom(group);
 	}
 
 	@Override

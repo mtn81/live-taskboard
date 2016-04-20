@@ -28,8 +28,6 @@ public class ElasticSearchGroupJoinApplicationRepositoryTest extends TaskManageE
 			.setApplied(Dates.dateShortTime("2016/01/02 12:00"))
 			.get());
 		
-		await(1);
-
 		GroupJoinApplication found = target.findById(new GroupJoinApplicationId("a01")).get();
 		
 		assertThat(found.id().value(), is("a01"));

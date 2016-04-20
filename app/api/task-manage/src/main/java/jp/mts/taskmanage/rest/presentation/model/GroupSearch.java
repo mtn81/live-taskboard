@@ -14,7 +14,7 @@ public class GroupSearch {
 	}
 
 	//output
-	private List<GroupJoinSearchQuery.NotJoinAppliedWithNameResult> groupSearchResults;
+	private List<GroupJoinSearchQuery.AppliableGroupResult> groupSearchResults;
 	
 	public List<GroupView> getGroups() {
 		return groupSearchResults.stream()
@@ -24,9 +24,9 @@ public class GroupSearch {
 
 	public static class GroupView {
 
-		private GroupJoinSearchQuery.NotJoinAppliedWithNameResult groupSearchResult;
+		private GroupJoinSearchQuery.AppliableGroupResult groupSearchResult;
 		
-		public GroupView(GroupJoinSearchQuery.NotJoinAppliedWithNameResult groupSearchResult) {
+		public GroupView(GroupJoinSearchQuery.AppliableGroupResult groupSearchResult) {
 			this.groupSearchResult = groupSearchResult;
 		}
 
@@ -51,7 +51,7 @@ public class GroupSearch {
 	public void searchNotJoinAppliedGroupsByName(
 			String memberId, String groupName) {
 
-		this.groupSearchResults = groupJoinSearchQuery.notJoinAppliedWithName(memberId, groupName);
+		this.groupSearchResults = groupJoinSearchQuery.appliableGroups(memberId, groupName);
 	}
 
 

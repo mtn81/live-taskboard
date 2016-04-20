@@ -29,4 +29,10 @@ public class ListUtils {
 		return source.stream()
 				.map(mapper).collect(Collectors.toList());
 	}
+	public static <T> List<T> appended(List<T> src, T... append) {
+		List<T> result = src == null ? Lists.newArrayList() : Lists.newArrayList(src);
+		List<T> appends = append== null ? Lists.newArrayList() : Lists.newArrayList(append);
+		result.addAll(appends);
+		return result;
+	}
 }

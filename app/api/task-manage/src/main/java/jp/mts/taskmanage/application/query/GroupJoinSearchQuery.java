@@ -10,16 +10,16 @@ public interface GroupJoinSearchQuery {
 	List<ByApplicantResult> byApplicant(String memberId);
 	List<ByAdminResult> acceptableByAdmin(String memberId);
 	List<ByAdminResult> rejectedByAdmin(String memberId);
-	List<NotJoinAppliedWithNameResult> notJoinAppliedWithName(String memberId, String groupName);
+	List<AppliableGroupResult> appliableGroups(String memberId, String groupName);
 	
-	public static class NotJoinAppliedWithNameResult {
+	public static class AppliableGroupResult {
 		private String groupId;
 		private String groupName;
 		private String ownerName;
 		private String ownerType;
 		private String description;
 
-		public NotJoinAppliedWithNameResult(
+		public AppliableGroupResult(
 				String groupId, 
 				String groupName, 
 				String ownerName,

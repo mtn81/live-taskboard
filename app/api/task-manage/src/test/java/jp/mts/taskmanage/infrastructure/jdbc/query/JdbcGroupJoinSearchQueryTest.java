@@ -10,7 +10,7 @@ import jp.mts.base.unittest.JdbcTestBase;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByAdminResult;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByApplicantResult;
-import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.NotJoinAppliedWithNameResult;
+import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.AppliableGroupResult;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupJoinModel;
 import jp.mts.taskmanage.infrastructure.jdbc.model.GroupMemberModel;
@@ -346,7 +346,7 @@ public class JdbcGroupJoinSearchQueryTest extends JdbcTestBase {
 				"applied_time", Timestamp.valueOf("2015-11-01 12:00:00"))
 			.saveIt();
 
-		List<NotJoinAppliedWithNameResult> results = target.notJoinAppliedWithName("m99", "グループ");
+		List<AppliableGroupResult> results = target.appliableGroups("m99", "グループ");
 		
 		assertThat(results.size(), is(1));
 		assertThat(results.get(0).getGroupId(), is("g04"));

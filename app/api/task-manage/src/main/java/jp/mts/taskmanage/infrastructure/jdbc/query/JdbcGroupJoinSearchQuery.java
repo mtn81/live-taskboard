@@ -50,7 +50,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 	}
 	
 	@Override
-	public List<NotJoinAppliedWithNameResult> notJoinAppliedWithName(String memberId, String groupName) {
+	public List<AppliableGroupResult> appliableGroups(String memberId, String groupName) {
 		return ListUtils.convert(
 			Base.findAll(
 				  "select "
@@ -91,7 +91,7 @@ public class JdbcGroupJoinSearchQuery implements GroupJoinSearchQuery {
 				memberId,
 				memberId)
 			,
-			record -> new NotJoinAppliedWithNameResult(
+			record -> new AppliableGroupResult(
 						(String)record.get("group_id"), 
 						(String)record.get("group_name"), 
 						(String)record.get("owner_name"),

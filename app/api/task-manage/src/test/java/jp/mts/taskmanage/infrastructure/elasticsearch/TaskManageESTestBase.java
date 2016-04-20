@@ -6,8 +6,10 @@ import jp.mts.taskmanage.infrastructure.elasticsearch.query.ElasticSearchGroupJo
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupJoinApplicationRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchMemberRepository;
-import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupBelongingSynchronizer;
-import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupOwnerSynchronizer;
+import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupBelongingViewSynchronizer;
+import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupJoinByApplicantViewSynchronizer;
+import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupJoinToAdminViewSynchronizer;
+import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupSearchViewSynchronizer;
 
 import org.junit.Rule;
 
@@ -18,20 +20,29 @@ public abstract class TaskManageESTestBase extends ElasticSearchTestBase {
 	
 	protected ElasticSearchMemberRepository memberRepository() {
 		return new ElasticSearchMemberRepository(
-				new GroupBelongingSynchronizer(transportClient()),
-				new GroupOwnerSynchronizer(transportClient()),
+				new GroupBelongingViewSynchronizer(transportClient()),
+				new GroupJoinByApplicantViewSynchronizer(transportClient()),
+				new GroupJoinToAdminViewSynchronizer(transportClient()),
+				new GroupSearchViewSynchronizer(transportClient()),
 				transportClient());
 	}
 	protected ElasticSearchGroupRepository groupRepository() {
 		return new ElasticSearchGroupRepository(
-				new GroupOwnerSynchronizer(transportClient()),
+				new GroupBelongingViewSynchronizer(transportClient()),
+				new GroupJoinByApplicantViewSynchronizer(transportClient()),
+				new GroupJoinToAdminViewSynchronizer(transportClient()),
+				new GroupSearchViewSynchronizer(transportClient()),
 				transportClient());
 	}
 	protected ElasticSearchGroupBelongingSearchQuery groupBelongingSearchQuery() {
 		return new ElasticSearchGroupBelongingSearchQuery(transportClient());
 	}
 	protected ElasticSearchGroupJoinApplicationRepository groupJoinApplicationRepository() {
-		return new ElasticSearchGroupJoinApplicationRepository(transportClient());
+		return new ElasticSearchGroupJoinApplicationRepository(
+				new GroupJoinByApplicantViewSynchronizer(transportClient()),
+				new GroupJoinToAdminViewSynchronizer(transportClient()),
+				new GroupSearchViewSynchronizer(transportClient()),
+				transportClient());
 	}
 	protected ElasticSearchGroupJoinSearchQuery groupJoinSearchQuery() {
 		return new ElasticSearchGroupJoinSearchQuery(transportClient());

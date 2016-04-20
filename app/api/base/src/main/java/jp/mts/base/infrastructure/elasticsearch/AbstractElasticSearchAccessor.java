@@ -29,8 +29,8 @@ public class AbstractElasticSearchAccessor {
 	
 	protected TransportClient transportClient;
 	
-	private String index;
-	private String type;
+	protected String index;
+	protected String type;
 
 	protected AbstractElasticSearchAccessor(
 			String index, String type, TransportClient transportClient) {
@@ -48,6 +48,9 @@ public class AbstractElasticSearchAccessor {
 	protected GetRequestBuilder prepareGet(String type, String id) {
 		return transportClient.prepareGet(index, type, id);
 	}
+	protected IndexRequestBuilder prepareIndex(String type, String id) {
+		return transportClient.prepareIndex(index, type, id);
+	}
 	protected IndexRequestBuilder prepareIndex(String id) {
 		return transportClient.prepareIndex(index, type, id);
 	}
@@ -55,6 +58,9 @@ public class AbstractElasticSearchAccessor {
 		return transportClient.prepareDelete(index, type, id);
 	}
 	protected UpdateRequestBuilder prepareUpdate(String type, String id) {
+		return transportClient.prepareUpdate(index, type, id);
+	}
+	protected UpdateRequestBuilder prepareUpdate(String id) {
 		return transportClient.prepareUpdate(index, type, id);
 	}
 	protected SearchRequestBuilder prepareSearch() {
@@ -102,6 +108,16 @@ public class AbstractElasticSearchAccessor {
 			.map(mapper::apply)
 			.collect(Collectors.toList());
 	}
+	protected <T> List<T> toList(
+			SearchHits hits, 
+			SearchHitMapper<T> mapper){
+
+		if(hits.getTotalHits() <= 0) return Lists.newArrayList();
+
+		return Arrays.stream(hits.getHits())
+			.map(hit -> mapper.map(hit, hit.getSource()))
+			.collect(Collectors.toList());
+	}
 	protected <T> Optional<T> toObject(
 			SearchHits hits, 
 			Function<SearchHit, T> mapper){
@@ -120,5 +136,9 @@ public class AbstractElasticSearchAccessor {
 		return DateUtils.format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	}
 
+	@FunctionalInterface
+	public interface SearchHitMapper<T> {
+		T map(SearchHit hit, Map<String, Object> source);
+	}
 
 }

@@ -30,17 +30,23 @@ public class ElasticSearchMemberRepository
 	extends AbstractElasticSearchRepository
 	implements MemberRepository {
 	
-	private GroupBelongingSynchronizer groupBelongingSynchronizer;
-	private GroupOwnerSynchronizer groupOwnerSynchronizer;
+	private GroupBelongingViewSynchronizer groupBelongingViewSynchronizer;
+	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
+	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
+	private GroupSearchViewSynchronizer groupSearchViewSynchronizer;
 
 	@Autowired
 	public ElasticSearchMemberRepository(
-			GroupBelongingSynchronizer groupBelongingSynchronizer,
-			GroupOwnerSynchronizer groupOwnerSynchronizer,
+			GroupBelongingViewSynchronizer groupBelongingSynchronizer,
+			GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer,
+			GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer,
+			GroupSearchViewSynchronizer groupSearchViewSynchronizer,
 			TransportClient transportClient) {
 		super("task-manage", "member", transportClient);
-		this.groupBelongingSynchronizer = groupBelongingSynchronizer;
-		this.groupOwnerSynchronizer = groupOwnerSynchronizer;
+		this.groupBelongingViewSynchronizer = groupBelongingSynchronizer;
+		this.groupJoinByApplicantViewSynchronizer = groupJoinByApplicantViewSynchronizer;
+		this.groupJoinToAdminViewSynchronizer = groupJoinToAdminViewSynchronizer;
+		this.groupSearchViewSynchronizer = groupSearchViewSynchronizer;
 	}
 
 	@Override
@@ -60,8 +66,11 @@ public class ElasticSearchMemberRepository
 									"group_id", gb.groupId().value(),
 									"admin", gb.isAdmin()))
 		));
-		groupBelongingSynchronizer.syncOnMemberChanged(member);
-		groupOwnerSynchronizer.syncOnMemberChanged(member);
+
+		groupBelongingViewSynchronizer.syncFrom(member);
+		groupJoinByApplicantViewSynchronizer.syncFrom(member);
+		groupJoinToAdminViewSynchronizer.syncFrom(member);
+		groupSearchViewSynchronizer.syncFrom(member);
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public class ElasticSearchGroupBelongingSearchQueryTest extends TaskManageESTest
 			.setName("group2")
 			.get());
 		groupRepository.save(new GroupFixture("g03")
-			.setName("group2")
+			.setName("group3")
 			.get());
 		
 		memberRepository.save(new MemberFixture("m01")
@@ -51,6 +51,12 @@ public class ElasticSearchGroupBelongingSearchQueryTest extends TaskManageESTest
 		List<GroupSummary> groupSummaries = target.byMember("m01");
 		
 		assertThat(groupSummaries.size(), is(2));
+		assertThat(groupSummaries.get(0).groupId, is("g01"));
+		assertThat(groupSummaries.get(0).groupName, is("group1"));
+		assertThat(groupSummaries.get(0).isAdmin, is(true));
+		assertThat(groupSummaries.get(1).groupId, is("g02"));
+		assertThat(groupSummaries.get(1).groupName, is("group2"));
+		assertThat(groupSummaries.get(1).isAdmin, is(false));
 	}
 
 }

@@ -1,10 +1,12 @@
 package elasticsearch;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static jp.mts.base.util.MapUtils.pairs;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.hasChildQuery;
 import static org.elasticsearch.index.query.QueryBuilders.hasParentQuery;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.nestedQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.net.InetAddress;
@@ -22,8 +24,11 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.support.QueryInnerHitBuilder;
+import org.elasticsearch.search.fetch.innerhits.InnerHitsBuilder;
+import org.elasticsearch.search.fetch.innerhits.InnerHitsBuilder.InnerHit;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.Test;
 
@@ -75,6 +80,52 @@ public class TransportClientTest {
 	
 
 	@Test public void 
+	test_nested() throws UnknownHostException, InterruptedException, ExecutionException {
+		TransportClient client = TransportClient.builder().build()
+			.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.77.10"), 9300));
+		
+		if(client.admin().indices().exists(new IndicesExistsRequest("test")).get().isExists()){
+			client.admin().indices().prepareDelete("test").get();
+		}
+		client.admin().indices().prepareCreate("test")
+				.addMapping("parent", pairs(
+					"properties", pairs(
+						"childs", pairs("type", "nested")
+					)
+				))
+				.get();
+		
+		
+		client.prepareIndex("test", "parent", "p01")
+			.setSource(pairs(
+				"name", "taro",
+				"childs", newArrayList(
+						pairs("name", "c01", "age", 10),
+						pairs("name", "c02", "age", 15))
+			)).get();
+		client.prepareIndex("test", "parent", "p02")
+			.setSource(pairs(
+				"name", "jiro",
+				"childs", newArrayList(
+						pairs("name", "c03", "age", 20),
+						pairs("name", "c04", "age", 25))
+			)).get();
+		
+		Thread.sleep(1000);
+		
+		client.prepareSearch("test").setTypes("parent")
+			//.setQuery(matchAllQuery())
+			.setQuery(nestedQuery("childs", boolQuery()
+					.must(termQuery("childs.age", 20))
+					.must(termQuery("childs.name", "c04"))))
+			.get()
+			.getHits()
+			.forEach(hit -> {
+				System.out.println(hit.getSource());
+			});
+	}
+
+	@Test public void 
 	test_parent_child() throws UnknownHostException, InterruptedException, ExecutionException {
 		TransportClient client = TransportClient.builder().build()
 			.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.77.10"), 9300));
@@ -86,6 +137,7 @@ public class TransportClientTest {
 				.addMapping("parent", new HashMap<>())
 				.addMapping("child", pairs("_parent", pairs("type", "parent")))
 				.addMapping("child2", pairs("_parent", pairs("type", "parent")))
+				.addMapping("child3", pairs("_parent", pairs("type", "child")))
 				.get();
 		
 		client.prepareIndex("test", "parent", "p01")
@@ -107,6 +159,12 @@ public class TransportClientTest {
 		client.prepareIndex("test", "child2", "cc02")
 			.setSource(pairs("name", "baz", "age", 30))
 			.setParent("p01").get();
+
+		client.prepareIndex("test", "child3", "ccc01")
+			.setSource(pairs("name", "piyo", "age", 20))
+			.setParent("c01")
+			.setRouting("p01")
+			.get();
 		
 		Thread.sleep(1000);
 		
@@ -144,7 +202,10 @@ public class TransportClientTest {
 		client.prepareSearch("test")
 			.setTypes("parent")
 			.setQuery(boolQuery()
-				.must(hasChildQuery("child", termQuery("age", 20)).innerHit(new QueryInnerHitBuilder()))
+				.must(hasChildQuery("child", boolQuery()
+						.must(termQuery("age", 20))
+						.must(hasChildQuery("child3", matchAllQuery()).innerHit(new QueryInnerHitBuilder()))
+					  ).innerHit(new QueryInnerHitBuilder()))
 				.should(hasChildQuery("child2", matchAllQuery()).innerHit(new QueryInnerHitBuilder()))
 			)
 			.get()
@@ -153,6 +214,9 @@ public class TransportClientTest {
 				System.out.println(hit.getSource());
 				hit.getInnerHits().get("child").forEach(chit -> {
 					System.out.println("c1  " + chit.getSource());
+					chit.getInnerHits().get("child3").forEach(c3hit -> {
+						System.out.println("c3    " + c3hit.getSource());
+					});
 				});
 				hit.getInnerHits().get("child2").forEach(chit -> {
 					System.out.println("c2  " + chit.getSource());

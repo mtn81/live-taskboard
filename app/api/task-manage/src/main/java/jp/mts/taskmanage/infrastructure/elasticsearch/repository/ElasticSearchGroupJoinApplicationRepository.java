@@ -21,15 +21,27 @@ import org.springframework.stereotype.Repository;
 public class ElasticSearchGroupJoinApplicationRepository 
 	extends AbstractElasticSearchRepository
 	implements GroupJoinApplicationRepository {
+	
+	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
+	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
+	private GroupSearchViewSynchronizer groupSearchViewSynchronizer;
 
 	@Autowired
-	public ElasticSearchGroupJoinApplicationRepository(TransportClient transportClient) {
+	public ElasticSearchGroupJoinApplicationRepository(
+			GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer,
+			GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer,
+			GroupSearchViewSynchronizer groupSearchViewSynchronizer,
+			TransportClient transportClient) {
+
 		super("task-manage", "group_join", transportClient);
+		this.groupJoinByApplicantViewSynchronizer = groupJoinByApplicantViewSynchronizer;
+		this.groupJoinToAdminViewSynchronizer = groupJoinToAdminViewSynchronizer;
+		this.groupSearchViewSynchronizer = groupSearchViewSynchronizer;
 	}
 
 	@Override
 	public Optional<GroupJoinApplication> findById(GroupJoinApplicationId id) {
-		return searchDomainById(id.value(), source -> {
+		return getDomain(id.value(), source -> {
 			return new GroupJoinApplicationBuilder(
 				new GroupJoinApplication(
 						new GroupJoinApplicationId((String)source.get("application_id")), 
@@ -43,7 +55,7 @@ public class ElasticSearchGroupJoinApplicationRepository
 
 	@Override
 	public void save(GroupJoinApplication groupJoin) {
-		save(groupJoin.id().value(), groupJoin, groupJoin.groupId().value(),
+		save(groupJoin.id().value(), groupJoin, 
 			gj -> MapUtils.pairs(
 				"application_id", gj.id().value(),
 				"group_id", gj.groupId().value(),
@@ -51,6 +63,10 @@ public class ElasticSearchGroupJoinApplicationRepository
 				"status", gj.status().name(),
 				"applied_time", dateTime(gj.applied()))
 		);
+
+		this.groupJoinByApplicantViewSynchronizer.syncFrom(groupJoin);
+		this.groupJoinToAdminViewSynchronizer.syncFrom(groupJoin);
+		this.groupSearchViewSynchronizer.syncFrom(groupJoin);
 	}
 
 	@Override
