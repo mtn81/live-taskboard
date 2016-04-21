@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import jp.mts.base.domain.model.DomainCalendar;
 import jp.mts.base.domain.model.DomainObject;
+import jp.mts.libs.cache.RedisCacheMap;
 import jp.mts.libs.unittest.Dates;
 import jp.mts.taskmanage.domain.model.auth.MemberAuth;
 import jp.mts.taskmanage.domain.model.member.MemberId;
@@ -25,12 +26,14 @@ public class AuthAccessMemberAuthServiceTest {
 	@Mocked AuthAccessConverter authAccessConverter;
 	@Mocked JSONObject responseBody;
 	@Mocked DomainCalendar domainCalendar;
+	@Mocked RedisCacheMap<String, MemberAuth> cache;
 	
 	@Before
 	public void setup() {
 		target = new AuthAccessMemberAuthService();
 		Deencapsulation.setField(target, authApi);
 		Deencapsulation.setField(target, authAccessConverter);
+		Deencapsulation.setField(target, cache);
 		DomainObject.setDomainCalendar(domainCalendar);
 		MemberAuth.setExpirationMinutes(60);
 		new Expectations() {{
@@ -43,6 +46,8 @@ public class AuthAccessMemberAuthServiceTest {
 	public void test_loadAuthApiResultWhenCacheNotFound() {
 		MemberAuth memberAuth = new MemberAuth(new MemberId("m01"));
 		new Expectations() {{
+			cache.get("a01");
+				result = Optional.empty();
 			authApi.loadAuth("a01");
 				result = responseBody;
 			authAccessConverter.toMemberAuth(responseBody);
@@ -58,6 +63,8 @@ public class AuthAccessMemberAuthServiceTest {
 		MemberAuth memberAuth = new MemberAuth(new MemberId("m01"));
 		
 		new Expectations() {{
+			cache.get("a01");
+				result = Optional.empty();
 			authApi.loadAuth("a01");
 				result = responseBody;
 				times = 1;
@@ -70,6 +77,8 @@ public class AuthAccessMemberAuthServiceTest {
 		assertThat(apiCallResult.get().expireTime(), is(Dates.dateTime("2015/10/01 13:00:00.000")));
 
 		new Expectations() {{
+			cache.get("a01");
+				result = Optional.of(memberAuth);
 			domainCalendar.systemDate();
 				result = Dates.dateTime("2015/10/01 14:00:00.000");
 			authApi.removeAuth("a01");
@@ -84,6 +93,8 @@ public class AuthAccessMemberAuthServiceTest {
 		MemberAuth memberAuth = new MemberAuth(new MemberId("m01"));
 		
 		new Expectations() {{
+			cache.get("a01");
+				result = Optional.empty();
 			authApi.loadAuth("a01");
 				result = responseBody;
 				times = 1;
@@ -96,6 +107,8 @@ public class AuthAccessMemberAuthServiceTest {
 		assertThat(apiCallResult.get().expireTime(), is(Dates.dateTime("2015/10/01 13:00:00.000")));
 
 		new Expectations() {{
+			cache.get("a01");
+				result = Optional.of(memberAuth);
 			domainCalendar.systemDate();
 				result = Dates.dateTime("2015/10/01 12:30:00.000");
 		}};
