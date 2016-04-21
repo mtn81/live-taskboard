@@ -152,12 +152,13 @@ public class ElasticSearchGroupJoinSearchQueryTest extends TaskManageESTestBase 
 		groupRepository.save(new GroupFixture("g03", "m01").setName("テスト グループ3").get());
 		groupRepository.save(new GroupFixture("g04", "m01").setName("テスト グループ4").get());
 		groupRepository.save(new GroupFixture("g05", "m02").setName("ほげ").get());
+
+		await(1);
 		
 		memberRepository.save(new MemberFixture("m99").setName("searcher").addGroupBelonging("g03", true).get());
-
 		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a01", "g04", "m99").get());
 
-		await(3);
+		await(1);
 		
 		List<AppliableGroupResult> found = target.appliableGroups("m99", "テスト");
 		

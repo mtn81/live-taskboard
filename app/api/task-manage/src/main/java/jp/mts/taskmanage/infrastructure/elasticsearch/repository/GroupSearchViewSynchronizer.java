@@ -1,11 +1,13 @@
 package jp.mts.taskmanage.infrastructure.elasticsearch.repository;
 
+import static org.apache.commons.collections.CollectionUtils.union;
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.constantScoreQuery;
 import static org.elasticsearch.index.query.QueryBuilders.nestedQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +20,9 @@ import jp.mts.taskmanage.domain.model.member.Member;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +39,7 @@ public class GroupSearchViewSynchronizer extends AbstractElasticSearchAccessor {
 	public void syncFrom(Group group) {
 		
 		Map<String, Object> ownerMember = prepareGet("member", group.ownerMemberId().value()).get().getSource();
+
 		List<String> applicants = toList(
 			prepareSearch("group_join")
 				.setQuery(constantScoreQuery(
@@ -42,6 +47,7 @@ public class GroupSearchViewSynchronizer extends AbstractElasticSearchAccessor {
 						.must(termQuery("group_id", group.id().value()))
 						.mustNot(termsQuery("status", "CANCELLED", "ACCEPTED"))
 				))
+				.setVersion(true)
 				.get().getHits(), 
 			(hit, source) -> (String)source.get("applicant_id")
 		);
@@ -62,40 +68,73 @@ public class GroupSearchViewSynchronizer extends AbstractElasticSearchAccessor {
 				"group_name", group.name(),
 				"group_description", group.description(),
 				"owner_id", group.ownerMemberId().value(),
-				"owner_name", (String)ownerMember.get("name"),
-				"owner_type", (String)ownerMember.get("type"),
+				"owner_name", ownerMember == null ? "" : (String)ownerMember.get("name"),
+				"owner_type", ownerMember == null ? "" : (String)ownerMember.get("type"),
 				"applicants", applicants,
 				"members", members
 			)
 			.get();
+		
+		//TODO verify owner name and applicants and members unchanged
 	}
+	@SuppressWarnings("unchecked")
 	public void syncFrom(Member member) {
 		
 		BulkRequestBuilder bulkRequestBuilder = transportClient.prepareBulk();
-		prepareSearch()
-			.setQuery(constantScoreQuery(
-				termQuery("owner_id", member.id().value())
-			))
-			.get().getHits()
-			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"owner_name", member.name(),
-					"owner_type", member.registerType()
-				));
-			});
-		prepareSearch()
-			.setQuery(constantScoreQuery(
-				boolQuery()
-					.should(termsQuery("group_id", ListUtils.convert(member.groupBelongings(), gb -> gb.groupId().value())))
-					.should(termQuery("members", member.id().value()))
-			))
-			.get().getHits()
-			.forEach(hit -> {
-				String groupId = hit.getId();
-				List<String> memberIds = (List<String>)hit.getSource().get("members");
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"members", mergedMemberIds(groupId, memberIds, member)
-				));
+
+		Map<String, SearchHit> ownerHits = toIdMap(
+			prepareSearch()
+				.setQuery(constantScoreQuery(
+					termQuery("owner_id", member.id().value())
+				))
+				.setVersion(true)
+				.get().getHits(),
+			hit -> hit);
+		Map<String, SearchHit> belongingHits = toIdMap(
+			prepareSearch()
+				.setQuery(constantScoreQuery(
+					boolQuery()
+						.should(termsQuery("group_id", ListUtils.convert(member.groupBelongings(), gb -> gb.groupId().value())))
+						.should(termQuery("members", member.id().value()))
+				))
+				.setVersion(true)
+				.get().getHits(),
+			hit -> hit);
+		
+		//同じドキュメントをversion付きでbulk更新すると競合するので、マージしておく
+		((Collection<String>)union(ownerHits.keySet(), belongingHits.keySet()))
+			.forEach((String id) -> {
+				SearchHit ownerHit = ownerHits.get(id);
+				SearchHit belongingHit = belongingHits.get(id);
+				UpdateRequest updateRequest = updateRequest(id);
+				
+				if (ownerHit != null && belongingHit != null) {
+
+					String groupId = belongingHit.getId();
+					List<String> memberIds = (List<String>)belongingHit.getSource().get("members");
+					updateRequest.doc(
+						"owner_name", member.name(),
+						"owner_type", member.registerType(),
+						"members", mergedMemberIds(groupId, memberIds, member)
+					).version(ownerHit.getVersion());
+
+				} else if(ownerHit != null) {
+
+					updateRequest.doc(
+						"owner_name", member.name(),
+						"owner_type", member.registerType()
+					).version(ownerHit.getVersion());
+
+				} else if(belongingHit != null) {
+
+					String groupId = belongingHit.getId();
+					List<String> memberIds = (List<String>)belongingHit.getSource().get("members");
+					updateRequest.doc(
+						"members", mergedMemberIds(groupId, memberIds, member)
+					).version(belongingHit.getVersion());
+				}
+				
+				bulkRequestBuilder.add(updateRequest);
 			});
 		
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;
@@ -108,7 +147,10 @@ public class GroupSearchViewSynchronizer extends AbstractElasticSearchAccessor {
 
 		if (!applicantIds.contains(groupJoin.applicationMemberId().value())) {
 			prepareUpdate(groupJoin.groupId().value())
-				.setDoc("applicants", ListUtils.appended(applicantIds, groupJoin.applicationMemberId().value()))
+				.setDoc(
+					"applicants", ListUtils.appended(applicantIds, groupJoin.applicationMemberId().value())
+				)
+				.setVersion(getResponse.getVersion())
 				.get();
 		}
 	}

@@ -32,6 +32,7 @@ public class GroupJoinToAdminViewSynchronizer extends AbstractElasticSearchAcces
 	public void syncFrom(GroupJoinApplication groupJoin) {
 
 		Map<String, Object> group = prepareGet("group", groupJoin.groupId().value()).get().getSource();
+		if(group == null) return;
 		Map<String, Object> applicant = prepareGet("member", groupJoin.applicationMemberId().value()).get().getSource();
 
 		List<String> adminMembers = toList( 
@@ -55,10 +56,12 @@ public class GroupJoinToAdminViewSynchronizer extends AbstractElasticSearchAcces
 				"group_id", groupJoin.groupId().value(),
 				"group_name", group.get("name") ,
 				"applicant_id", groupJoin.applicationMemberId().value(),
-				"applicant_type", applicant.get("name"),
-				"applicant_name", applicant.get("type"),
+				"applicant_type", applicant == null ? "" : applicant.get("name"),
+				"applicant_name", applicant == null ? "" : applicant.get("type"),
 				"admin_members", adminMembers)
 			.get();
+		
+		//TODO verify groupName and adminMembers unchanged
 	}
 	public void syncFrom(Group group) {
 		
@@ -67,11 +70,17 @@ public class GroupJoinToAdminViewSynchronizer extends AbstractElasticSearchAcces
 			.setQuery(constantScoreQuery(
 				termQuery("group_id", group.id().value())
 			))
+			.setVersion(true)
 			.get()
 			.getHits()
 			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"group_name", group.name()));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(
+							"group_name", group.name()
+						)
+						.version(hit.getVersion())
+				);
 			});
 
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;
@@ -84,26 +93,38 @@ public class GroupJoinToAdminViewSynchronizer extends AbstractElasticSearchAcces
 			.setQuery(constantScoreQuery(
 				termQuery("applicant_id", member.id().value())
 			))
+			.setVersion(true)
 			.get()
 			.getHits()
 			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"applicant_name", member.name(),
-					"applicant_type", member.registerType().name()));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(
+							"applicant_name", member.name(),
+							"applicant_type", member.registerType().name()
+						)
+						.version(hit.getVersion())
+				);
 			});
 
 		prepareSearch()
 			.setQuery(constantScoreQuery(
 				termQuery("admin_members", member.id().value())
 			))
+			.setVersion(true)
 			.get()
 			.getHits()
 			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"admin_members", mergedAdminMembers(
-							(String)hit.getSource().get("groupId"),
-							(List<String>)hit.getSource().get("admin_members"),
-							member)));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(
+							"admin_members", mergedAdminMembers(
+									(String)hit.getSource().get("groupId"),
+									(List<String>)hit.getSource().get("admin_members"),
+									member)
+						)
+						.version(hit.getVersion())
+				);
 			});
 
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;

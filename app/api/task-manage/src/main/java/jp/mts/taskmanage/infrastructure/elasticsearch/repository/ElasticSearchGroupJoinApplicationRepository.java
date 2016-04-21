@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchRepository;
+import jp.mts.base.infrastructure.elasticsearch.ElasticSearchActionAssurer;
 import jp.mts.base.util.MapUtils;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
@@ -25,6 +26,7 @@ public class ElasticSearchGroupJoinApplicationRepository
 	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
 	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
 	private GroupSearchViewSynchronizer groupSearchViewSynchronizer;
+	private ElasticSearchActionAssurer elasticSearchActionAssurer;
 
 	@Autowired
 	public ElasticSearchGroupJoinApplicationRepository(
@@ -37,6 +39,7 @@ public class ElasticSearchGroupJoinApplicationRepository
 		this.groupJoinByApplicantViewSynchronizer = groupJoinByApplicantViewSynchronizer;
 		this.groupJoinToAdminViewSynchronizer = groupJoinToAdminViewSynchronizer;
 		this.groupSearchViewSynchronizer = groupSearchViewSynchronizer;
+		this.elasticSearchActionAssurer = new ElasticSearchActionAssurer("task-manage", 5, transportClient);
 	}
 
 	@Override
@@ -64,9 +67,11 @@ public class ElasticSearchGroupJoinApplicationRepository
 				"applied_time", dateTime(gj.applied()))
 		);
 
-		this.groupJoinByApplicantViewSynchronizer.syncFrom(groupJoin);
-		this.groupJoinToAdminViewSynchronizer.syncFrom(groupJoin);
-		this.groupSearchViewSynchronizer.syncFrom(groupJoin);
+		elasticSearchActionAssurer.ensureAction("group_join_save_sync_" + groupJoin.id().value(), () -> {
+			this.groupJoinByApplicantViewSynchronizer.syncFrom(groupJoin);
+			this.groupJoinToAdminViewSynchronizer.syncFrom(groupJoin);
+			this.groupSearchViewSynchronizer.syncFrom(groupJoin);
+		});
 	}
 
 	@Override

@@ -37,8 +37,6 @@ public class ElasticSearchGroupRepositoryTest extends TaskManageESTestBase {
 		assertThat(group.ownerMemberId().value(), is("m01"));
 		assertThat(group.name(), is("test group"));
 		assertThat(group.description(), is("group description"));
-		
-		assertThat(target.findById(new GroupId("g02")).isPresent(), is(false));
 	}
 
 }

@@ -30,12 +30,18 @@ public class GroupJoinByApplicantViewSynchronizer extends AbstractElasticSearchA
 			.setQuery(constantScoreQuery(
 				termQuery("owner_id", member.id().value())
 			))
+			.setVersion(true)
 			.get()
 			.getHits()
 			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"owner_type", member.registerType().name(),
-					"owner_name", member.name()));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(
+							"owner_type", member.registerType().name(),
+							"owner_name", member.name()
+						)
+						.version(hit.getVersion())
+				);
 			});
 
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;
@@ -48,11 +54,17 @@ public class GroupJoinByApplicantViewSynchronizer extends AbstractElasticSearchA
 			.setQuery(constantScoreQuery(
 				termQuery("group_id", group.id().value())
 			))
+			.setVersion(true)
 			.get()
 			.getHits()
 			.forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId()).doc(
-					"group_name", group.name()));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(
+							"group_name", group.name()
+						)
+						.version(hit.getVersion())
+				);
 			});
 
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;
@@ -61,6 +73,8 @@ public class GroupJoinByApplicantViewSynchronizer extends AbstractElasticSearchA
 	public void syncFrom(GroupJoinApplication groupJoin) {
 		
 		Map<String, Object> group = prepareGet("group", groupJoin.groupId().value()).get().getSource();
+		if (group == null) return;
+
 		Map<String, Object> groupOwner = prepareGet("member", (String)group.get("owner_member_id")).get().getSource();
 		
 		prepareIndex(groupJoin.id().value())
@@ -72,9 +86,11 @@ public class GroupJoinByApplicantViewSynchronizer extends AbstractElasticSearchA
 				"group_id", groupJoin.groupId().value(),
 				"group_name", group.get("name") ,
 				"owner_id", group.get("owner_member_id"),
-				"owner_name", groupOwner.get("name"),
-				"owner_type", groupOwner.get("type"))
+				"owner_name", groupOwner == null ? "" : groupOwner.get("name"),
+				"owner_type", groupOwner == null ? "" : groupOwner.get("type"))
 			.get();
+		
+		//TODO verify group and member unchanged
 	}
 
 }

@@ -98,6 +98,15 @@ public class AbstractElasticSearchAccessor {
 		return Arrays.stream(hits.getHits())
 			.collect(Collectors.toMap(keyMapper, valueMapper));
 	}
+	protected <V> Map<String, V> toIdMap(
+			SearchHits hits, 
+			Function<SearchHit, V> mapper){
+
+		if(hits.getTotalHits() <= 0) return Maps.newHashMap();
+
+		return Arrays.stream(hits.getHits())
+			.collect(Collectors.toMap(hit -> hit.getId(), mapper::apply));
+	}
 	protected <T> List<T> toList(
 			SearchHits hits, 
 			Function<SearchHit, T> mapper){

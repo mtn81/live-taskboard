@@ -83,7 +83,7 @@ public abstract class ElasticSearchTestBase {
 			if(bulkRequestBuilder.numberOfActions() <= 0) return;
 			bulkRequestBuilder.get();
 			
-			testTarget.await(1);
+			testTarget.await(2);
 		}
 
 		@Override

@@ -24,16 +24,15 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.support.QueryInnerHitBuilder;
-import org.elasticsearch.search.fetch.innerhits.InnerHitsBuilder;
-import org.elasticsearch.search.fetch.innerhits.InnerHitsBuilder.InnerHit;
 import org.elasticsearch.search.sort.SortOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+@Ignore
 public class TransportClientTest {
 	
 	@Test public void 
@@ -244,5 +243,39 @@ public class TransportClientTest {
 					System.out.println("c2  " + c2hit.getSource());
 				});
 			});
+	}
+	@Test public void 
+	test_lock() throws UnknownHostException {
+		
+		TransportClient client = TransportClient.builder().build()
+			.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("192.168.77.10"), 9300));
+		
+		try{
+		client.prepareUpdate("test", "person", "p01")
+			.setDoc("name", "taro")
+			.get();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+
+		IndexResponse indexResponse = client.prepareIndex("test", "person", "p01")
+			.setSource("name", "taro")
+			.get();
+		client.prepareUpdate("test", "person", "p01")
+			.setDoc("name", "jiro")
+			.setVersion(indexResponse.getVersion())
+			.get();
+		
+		try{
+		IndexResponse indexResponse2 = client.prepareIndex("test", "person", "p02")
+			.setSource("name", "taro")
+			.get();
+		client.prepareUpdate("test", "person", "p02")
+			.setDoc("name", "jiro")
+			.setVersion(indexResponse2.getVersion() - 1)
+			.get();
+		}catch(Exception e) {
+			System.out.println(e);
+		}
 	}
 }

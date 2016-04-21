@@ -68,7 +68,7 @@ public class ElasticSearchMemberRepositoryTest extends TaskManageESTestBase {
 		target.save(jiro);
 		target.save(saburo);
 
-		try { Thread.sleep(1000); } catch (InterruptedException e) {}; //wait indexing
+		await(1);
 		
 		List<Member> found = target.findByGroupId(new GroupId("g01"));
 		assertThat(found.size(), is(2));

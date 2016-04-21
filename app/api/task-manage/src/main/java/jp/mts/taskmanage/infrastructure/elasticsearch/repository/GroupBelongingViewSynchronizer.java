@@ -37,7 +37,7 @@ public class GroupBelongingViewSynchronizer extends AbstractElasticSearchAccesso
 		MultiGetResponse multiGetResponse = multiGetRequestBuilder.get();
 		multiGetResponse.forEach(item -> {
 			Map<String, Object> group = item.getResponse().getSource();
-			groupNames.put(item.getId(), (String)group.get("name"));
+			if(group != null) groupNames.put(item.getId(), (String)group.get("name"));
 		});
 
 
@@ -51,16 +51,20 @@ public class GroupBelongingViewSynchronizer extends AbstractElasticSearchAccesso
 				bulkRequestBuilder.add(deleteRequest(hit.getId()));
 			});
 		member.groupBelongings().forEach(gb -> {
-			bulkRequestBuilder.add(indexRequest()
-				.id(member.id().value() + "@" + gb.groupId().value())
-				.source(MapUtils.pairs(
-					"member_id", member.id().value(),
-					"group_id", gb.groupId().value(),
-					"group_name", groupNames.get(gb.groupId().value()),
-					"admin", gb.isAdmin())
-				));
+			bulkRequestBuilder.add(
+				indexRequest()
+					.id(member.id().value() + "@" + gb.groupId().value())
+					.source(MapUtils.pairs(
+						"member_id", member.id().value(),
+						"group_id", gb.groupId().value(),
+						"group_name", groupNames.get(gb.groupId().value()),
+						"admin", gb.isAdmin())
+					)
+			);
 		});
 		bulkRequestBuilder.get();
+		
+		//TODO verify group names unchanged
 	}
 
 	public void syncFrom(Group group) {
@@ -70,10 +74,13 @@ public class GroupBelongingViewSynchronizer extends AbstractElasticSearchAccesso
 			.setQuery(constantScoreQuery(
 				termQuery("group_id", group.id().value())	
 			))
+			.setVersion(true)
 			.get()
 			.getHits().forEach(hit -> {
-				bulkRequestBuilder.add(updateRequest(hit.getId())
-						.doc(MapUtils.pairs("group_name", group.name())));
+				bulkRequestBuilder.add(
+					updateRequest(hit.getId())
+						.doc(MapUtils.pairs("group_name", group.name()))
+						.version(hit.getVersion()));
 			});
 		
 		if(bulkRequestBuilder.numberOfActions() <= 0) return;

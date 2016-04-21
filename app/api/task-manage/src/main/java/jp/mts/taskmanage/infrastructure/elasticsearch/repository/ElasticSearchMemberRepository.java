@@ -1,5 +1,6 @@
 package jp.mts.taskmanage.infrastructure.elasticsearch.repository;
 
+import static org.elasticsearch.index.query.QueryBuilders.*;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchRepository;
+import jp.mts.base.infrastructure.elasticsearch.ElasticSearchActionAssurer;
 import jp.mts.base.util.ListUtils;
 import jp.mts.base.util.MapUtils;
 import jp.mts.taskmanage.domain.model.group.GroupId;
@@ -21,6 +23,8 @@ import jp.mts.taskmanage.domain.model.member.MemberRepository;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,6 +38,7 @@ public class ElasticSearchMemberRepository
 	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
 	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
 	private GroupSearchViewSynchronizer groupSearchViewSynchronizer;
+	private ElasticSearchActionAssurer elasticSearchActionAssurer;
 
 	@Autowired
 	public ElasticSearchMemberRepository(
@@ -47,6 +52,7 @@ public class ElasticSearchMemberRepository
 		this.groupJoinByApplicantViewSynchronizer = groupJoinByApplicantViewSynchronizer;
 		this.groupJoinToAdminViewSynchronizer = groupJoinToAdminViewSynchronizer;
 		this.groupSearchViewSynchronizer = groupSearchViewSynchronizer;
+		this.elasticSearchActionAssurer = new ElasticSearchActionAssurer("task-manage", 5, transportClient);
 	}
 
 	@Override
@@ -67,10 +73,12 @@ public class ElasticSearchMemberRepository
 									"admin", gb.isAdmin()))
 		));
 
-		groupBelongingViewSynchronizer.syncFrom(member);
-		groupJoinByApplicantViewSynchronizer.syncFrom(member);
-		groupJoinToAdminViewSynchronizer.syncFrom(member);
-		groupSearchViewSynchronizer.syncFrom(member);
+		elasticSearchActionAssurer.ensureAction("member_save_sync_" + member.id().value() , () -> {
+			groupBelongingViewSynchronizer.syncFrom(member);
+			groupJoinByApplicantViewSynchronizer.syncFrom(member);
+			groupJoinToAdminViewSynchronizer.syncFrom(member);
+			groupSearchViewSynchronizer.syncFrom(member);
+		});
 	}
 
 	@Override
@@ -81,7 +89,11 @@ public class ElasticSearchMemberRepository
 	@Override
 	public List<Member> findByGroupId(GroupId groupId) {
 		SearchResponse searchResponse = prepareSearch()
-			.setQuery(termQuery("belongings.group_id", groupId.value()))
+			.setQuery(constantScoreQuery(
+				nestedQuery("belongings", 
+					termQuery("belongings.group_id", groupId.value())
+				)
+			))
 			.addSort("name", SortOrder.ASC)
 			.get();
 		
