@@ -1,6 +1,5 @@
 package jp.mts.taskmanage.application;
 
-import static jp.mts.base.domain.model.CompositeId.of;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -9,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import jp.mts.base.domain.model.CompositeId;
 import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.libs.unittest.Dates;
@@ -47,7 +45,7 @@ public class TaskAppServiceTest {
 	public void test_loadById() {
 		Task expected = new TaskFixture().get();
 		new Expectations() {{
-			taskRepository.findById(CompositeId.of(new GroupId("g01"), new TaskId("t01")));
+			taskRepository.findById(new GroupId("g01"), new TaskId("t01"));
 				result = Optional.of(expected);
 		}};
 
@@ -115,7 +113,7 @@ public class TaskAppServiceTest {
 		new Expectations() {{
 			groupRepository.findById(groupId);
 				result = Optional.of(group);
-			taskRepository.findById(of(groupId, taskId));
+			taskRepository.findById(groupId, taskId);
 				result = Optional.of(task);
 				
 			taskRepository.remove(task);
@@ -146,7 +144,7 @@ public class TaskAppServiceTest {
 				times=1;
 		}};
 		new Expectations() {{
-			taskRepository.findById(of(groupId, taskId));
+			taskRepository.findById(groupId, taskId);
 				result = Optional.of(new TaskFixture(groupId.value(), taskId.value()).get());
 			taskRepository.save((Task)any);
 		}};

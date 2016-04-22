@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchAccessor;
 import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
 import jp.mts.taskmanage.domain.model.member.Member;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -29,7 +29,7 @@ public class GroupJoinToAdminViewSynchronizer extends AbstractElasticSearchAcces
 		super("task-manage", "view_group_join_to_admin", transportClient);
 	}
 	
-	public void syncFrom(GroupJoinApplication groupJoin) {
+	public void syncFrom(GroupJoin groupJoin) {
 
 		Map<String, Object> group = prepareGet("group", groupJoin.groupId().value()).get().getSource();
 		if(group == null) return;

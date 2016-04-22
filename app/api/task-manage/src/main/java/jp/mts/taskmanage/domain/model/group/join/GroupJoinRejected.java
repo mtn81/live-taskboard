@@ -6,8 +6,8 @@ import jp.mts.base.domain.model.DomainEventConfig;
 @DomainEventConfig(eventType="mts:taskmanage/GroupJoinRejected")
 public class GroupJoinRejected extends DomainEvent {
 	
-	private GroupJoinApplication joinApplication;
-	public GroupJoinRejected(GroupJoinApplication joinApplication) {
+	private GroupJoin joinApplication;
+	public GroupJoinRejected(GroupJoin joinApplication) {
 		this.joinApplication = joinApplication;
 	}
 

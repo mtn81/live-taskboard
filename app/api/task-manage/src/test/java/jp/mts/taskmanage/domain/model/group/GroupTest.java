@@ -6,8 +6,8 @@ import jp.mts.base.domain.model.DomainEventPublisher;
 import jp.mts.base.domain.model.DomainObject;
 import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinAccepted;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinFixture;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinRejected;
 import mockit.Mocked;
 import mockit.Verifications;
@@ -22,7 +22,7 @@ public class GroupTest {
 		//setup
 		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		Group target = new GroupFixture("g01").get();
-		GroupJoinApplication application = new GroupJoinApplicationFixture("g01", "m01").get();
+		GroupJoin application = new GroupJoinFixture("g01", "m01").get();
 		
 		//execute
 		boolean actual = target.accept(application);
@@ -42,7 +42,7 @@ public class GroupTest {
 	@Test public void 
 	test_acceptJoin__fail_for_another_group_join() {
 		Group target = new GroupFixture("g02").get();
-		GroupJoinApplication application = new GroupJoinApplicationFixture("g01", "m01").get();
+		GroupJoin application = new GroupJoinFixture("g01", "m01").get();
 		
 		boolean actual = target.accept(application);
 		
@@ -53,7 +53,7 @@ public class GroupTest {
 	test_rejectJoin__success_for_same_group_join() {
 		DomainObject.setDomainEventPublisher(domainEventPublisher);
 		Group target = new GroupFixture("g01").get();
-		GroupJoinApplication application = new GroupJoinApplicationFixture("g01", "m01").get();
+		GroupJoin application = new GroupJoinFixture("g01", "m01").get();
 		
 		boolean actual = target.reject(application);
 
@@ -71,7 +71,7 @@ public class GroupTest {
 	@Test public void 
 	test_rejectJoin__fail_for_another_group_join() {
 		Group target = new GroupFixture("g02").get();
-		GroupJoinApplication application = new GroupJoinApplicationFixture("g01", "m01").get();
+		GroupJoin application = new GroupJoinFixture("g01", "m01").get();
 		
 		boolean actual = target.reject(application);
 

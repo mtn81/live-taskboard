@@ -2,9 +2,9 @@ package jp.mts.taskmanage.domain.model.group.join;
 
 import jp.mts.base.domain.model.DomainId;
 
-public class GroupJoinApplicationId extends DomainId<String> {
+public class GroupJoinId extends DomainId<String> {
 	
-	public GroupJoinApplicationId(String value) {
+	public GroupJoinId(String value) {
 		super(value);
 	}
 }

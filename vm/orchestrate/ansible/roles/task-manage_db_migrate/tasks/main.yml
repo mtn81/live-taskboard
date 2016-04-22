@@ -26,6 +26,9 @@
   sudo: yes
 
 - name: execute setup script
-  shell: /work/elasticsearch/scripts/setup/create_index.sh "{{tm_db_host | consul}}"
+  shell: "/work/elasticsearch/scripts/{{ item }} {{tm_db_host | consul}}"
   sudo: yes
+  with_items:
+    - setup/create_index.sh
+    - develop/test-data.sh
 

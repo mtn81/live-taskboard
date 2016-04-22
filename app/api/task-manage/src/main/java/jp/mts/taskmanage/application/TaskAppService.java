@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import jp.mts.base.application.ApplicationException;
-import jp.mts.base.domain.model.CompositeId;
 import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.GroupRepository;
@@ -58,8 +57,7 @@ public class TaskAppService {
 	public Task removeTask(String groupId, String taskId) {
 		
 		Group group = groupRepository.findById(new GroupId(groupId)).get();
-		Task task = taskRepository.findById(
-				CompositeId.of(new GroupId(groupId), new TaskId(taskId))).get();
+		Task task = taskRepository.findById(new GroupId(groupId), new TaskId(taskId)).get();
 		
 		if(!group.removeTask(task)){
 			throw new ApplicationException(ErrorType.NOT_AUTHORIZED);
@@ -82,7 +80,7 @@ public class TaskAppService {
 		GroupId groupId = new GroupId(aGroupId);
 		TaskId taskId = new TaskId(aTaskId);
 
-		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
+		Task task = taskRepository.findById(groupId, taskId).get();
 		Member member = memberRepository.findById(new MemberId(assigned)).get();
 		Member modifier = memberRepository.findById(new MemberId(modifierMemberId)).get();
 		
@@ -107,7 +105,7 @@ public class TaskAppService {
 		GroupId groupId = new GroupId(aGroupId);
 		TaskId taskId = new TaskId(aTaskId);
 
-		Task task = taskRepository.findById(CompositeId.of(groupId, taskId)).get();
+		Task task = taskRepository.findById(groupId, taskId).get();
 		Member modifier = memberRepository.findById(new MemberId(modifierMemberId)).get();
 		task.changeDetail(memo, modifier );
 		
@@ -117,8 +115,7 @@ public class TaskAppService {
 	}
 
 	public Task loadById(String groupId, String taskId) {
-		return taskRepository.findById(CompositeId.of(
-				new GroupId(groupId), new TaskId(taskId))).get();
+		return taskRepository.findById(new GroupId(groupId), new TaskId(taskId)).get();
 	}
 
 }

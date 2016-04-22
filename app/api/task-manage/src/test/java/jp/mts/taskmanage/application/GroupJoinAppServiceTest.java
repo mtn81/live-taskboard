@@ -11,10 +11,10 @@ import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupFixture;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.GroupRepository;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinRepository;
 import jp.mts.taskmanage.domain.model.member.Member;
 import jp.mts.taskmanage.domain.model.member.MemberFixture;
 import jp.mts.taskmanage.domain.model.member.MemberId;
@@ -31,14 +31,14 @@ public class GroupJoinAppServiceTest {
 	@Tested GroupJoinAppService target = new GroupJoinAppService();
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
-	@Injectable GroupJoinApplicationRepository groupJoinRepository;
+	@Injectable GroupJoinRepository groupJoinRepository;
 	
 	@Test public void 
 	test_applyJoin() {
 		Group group = new GroupFixture().get();
 		Member member = new MemberFixture().get();
-		GroupJoinApplicationId applicationId = new GroupJoinApplicationId("a01");
-		GroupJoinApplication groupJoinApplication = new GroupJoinApplicationFixture().get();
+		GroupJoinId applicationId = new GroupJoinId("a01");
+		GroupJoin groupJoinApplication = new GroupJoinFixture().get();
 
 		new Expectations(member) {{
 			memberRepository.findById(new MemberId("m01"));
@@ -55,7 +55,7 @@ public class GroupJoinAppServiceTest {
 			groupJoinRepository.save(groupJoinApplication);
 		}};
 		
-		GroupJoinApplication actual = target.applyJoin("g01", "m01");
+		GroupJoin actual = target.applyJoin("g01", "m01");
 		
 		assertThat(actual, is(sameInstance(groupJoinApplication)));
 	}
@@ -63,10 +63,10 @@ public class GroupJoinAppServiceTest {
 	@Test public void 
 	test_rejectJoin__join_rejected() {
 
-		GroupJoinApplication application = new GroupJoinApplicationFixture().get();
+		GroupJoin application = new GroupJoinFixture().get();
 		Group group = new GroupFixture().get();
 		new Expectations(group) {{
-			groupJoinRepository.findById(new GroupJoinApplicationId("a01"));
+			groupJoinRepository.findById(new GroupJoinId("a01"));
 				result = Optional.of(application);
 			groupRepository.findById(new GroupId("g01"));
 				result = Optional.of(group);
@@ -77,17 +77,17 @@ public class GroupJoinAppServiceTest {
 			groupJoinRepository.save(application);
 		}};
 		
-		GroupJoinApplication actual = target.rejectJoin("g01", "a01");
+		GroupJoin actual = target.rejectJoin("g01", "a01");
 
 		assertThat(actual, is(sameInstance(application)));
 	}
 	@Test public void 
 	test_rejectJoin__join_not_rejected() {
 		
-		GroupJoinApplication application = new GroupJoinApplicationFixture().get();
+		GroupJoin application = new GroupJoinFixture().get();
 		Group group = new GroupFixture().get();
 		new Expectations(group) {{
-			groupJoinRepository.findById(new GroupJoinApplicationId("a01"));
+			groupJoinRepository.findById(new GroupJoinId("a01"));
 				result = Optional.of(application);
 			groupRepository.findById(new GroupId("g02"));
 				result = Optional.of(group);

@@ -9,8 +9,8 @@ import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.AppliableGroupRe
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByAdminResult;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery.ByApplicantResult;
 import jp.mts.taskmanage.domain.model.group.GroupFixture;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinStatus;
 import jp.mts.taskmanage.domain.model.member.MemberFixture;
 import jp.mts.taskmanage.infrastructure.elasticsearch.TaskManageESTestBase;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupJoinApplicationRepository;
@@ -47,20 +47,20 @@ public class ElasticSearchGroupJoinSearchQueryTest extends TaskManageESTestBase 
 		groupRepository.save(new GroupFixture("g02", "m02").setName("group02").get());
 		groupRepository.save(new GroupFixture("g03", "m02").setName("group03").get());
 		
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a99", "g03", "m03")
-			.setStatus(GroupJoinApplicationStatus.REJECTED)
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a99", "g03", "m03")
+			.setStatus(GroupJoinStatus.REJECTED)
 			.get());
 
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a01", "g01", "m03")
-			.setStatus(GroupJoinApplicationStatus.ACCEPTED)
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a01", "g01", "m03")
+			.setStatus(GroupJoinStatus.ACCEPTED)
 			.get());
 
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a02", "g02", "m03")
-			.setStatus(GroupJoinApplicationStatus.CANCELLED)
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a02", "g02", "m03")
+			.setStatus(GroupJoinStatus.CANCELLED)
 			.get());
 
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a03", "g03", "m04")
-			.setStatus(GroupJoinApplicationStatus.ACCEPTED)
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a03", "g03", "m04")
+			.setStatus(GroupJoinStatus.ACCEPTED)
 			.get());
 
 		await(1);
@@ -72,14 +72,14 @@ public class ElasticSearchGroupJoinSearchQueryTest extends TaskManageESTestBase 
 		assertThat(found.get(0).groupId, is("g03"));
 		assertThat(found.get(0).groupName, is("group03"));
 		assertThat(found.get(0).joinApplicationId, is("a99"));
-		assertThat(found.get(0).joinApplicationStatus, is(GroupJoinApplicationStatus.REJECTED));
+		assertThat(found.get(0).joinApplicationStatus, is(GroupJoinStatus.REJECTED));
 		assertThat(found.get(0).ownerName, is("owner02"));
 		assertThat(found.get(0).ownerType, is("PROPER"));
 
 		assertThat(found.get(1).groupId, is("g01"));
 		assertThat(found.get(1).groupName, is("group01"));
 		assertThat(found.get(1).joinApplicationId, is("a01"));
-		assertThat(found.get(1).joinApplicationStatus, is(GroupJoinApplicationStatus.ACCEPTED));
+		assertThat(found.get(1).joinApplicationStatus, is(GroupJoinStatus.ACCEPTED));
 		assertThat(found.get(1).ownerName, is("owner01"));
 		assertThat(found.get(1).ownerType, is("PROPER"));
 
@@ -106,12 +106,12 @@ public class ElasticSearchGroupJoinSearchQueryTest extends TaskManageESTestBase 
 		
 		await(1);
 		
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a01", "g01", "m02").get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a02", "g02", "m02").get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a03", "g03", "m02").get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a04", "g04", "m02").get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a05", "g05", "m02").get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a06", "g01", "m03").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a01", "g01", "m02").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a02", "g02", "m02").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a03", "g03", "m02").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a04", "g04", "m02").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a05", "g05", "m02").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a06", "g01", "m03").get());
 		
 		await(1);
 		
@@ -156,7 +156,7 @@ public class ElasticSearchGroupJoinSearchQueryTest extends TaskManageESTestBase 
 		await(1);
 		
 		memberRepository.save(new MemberFixture("m99").setName("searcher").addGroupBelonging("g03", true).get());
-		groupJoinApplicationRepository.save(new GroupJoinApplicationFixture("a01", "g04", "m99").get());
+		groupJoinApplicationRepository.save(new GroupJoinFixture("a01", "g04", "m99").get());
 
 		await(1);
 		

@@ -8,8 +8,8 @@ import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupFixture;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicated;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinId;
 import mockit.Mocked;
 import mockit.Verifications;
 
@@ -48,12 +48,12 @@ public class MemberTest {
 		//setup
 		DomainObject.setDomainEventPublisher(domainEventPublisher);
 
-		GroupJoinApplicationId applicationId = new GroupJoinApplicationId("a01");
+		GroupJoinId applicationId = new GroupJoinId("a01");
 		Group group =  new GroupFixture().get();
 		Member member = new MemberFixture().get();
 		
 		//execute
-		GroupJoinApplication actual = member.applyJoinTo(applicationId, group);
+		GroupJoin actual = member.applyJoinTo(applicationId, group);
 		
 		//verify
 		assertThat(actual.applicationMemberId(), is(member.memberId()));

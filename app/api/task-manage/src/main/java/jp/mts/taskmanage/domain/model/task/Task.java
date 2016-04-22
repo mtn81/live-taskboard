@@ -2,14 +2,14 @@ package jp.mts.taskmanage.domain.model.task;
 
 import java.util.Date;
 
-import jp.mts.base.domain.model.CompositeId;
 import jp.mts.base.domain.model.DomainEntity;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.member.Member;
 import jp.mts.taskmanage.domain.model.member.MemberId;
 
-public class Task extends DomainEntity<CompositeId>{
+public class Task extends DomainEntity<TaskId>{
 
+	private GroupId groupId;
 	private TaskStatus taskStatus;
 	private String name;
 	private Date deadline;
@@ -22,7 +22,8 @@ public class Task extends DomainEntity<CompositeId>{
 			String name, 
 			MemberId assignedMemberId, 
 			Date deadline) {
-		super(CompositeId.of(groupId, taskId));
+		super(taskId);
+		this.groupId = groupId;
 		this.taskStatus = TaskStatus.TODO; 
 		this.name = name;
 		this.assignedMemberId = assignedMemberId;
@@ -30,10 +31,10 @@ public class Task extends DomainEntity<CompositeId>{
 	}
 
 	public GroupId groupId(){
-		return (GroupId)id().value().get(0);
+		return groupId;
 	}
 	public TaskId taskId(){
-		return (TaskId)id().value().get(1);
+		return id();
 	}
 	public TaskStatus status() {
 		return taskStatus;

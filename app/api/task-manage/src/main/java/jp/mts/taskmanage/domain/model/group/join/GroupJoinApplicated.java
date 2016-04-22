@@ -6,9 +6,9 @@ import jp.mts.base.domain.model.DomainEventConfig;
 @DomainEventConfig(eventType="mts:taskmanage/GroupJoinApplicated")
 public class GroupJoinApplicated extends DomainEvent {
 
-	private GroupJoinApplication groupJoinApplication;
+	private GroupJoin groupJoinApplication;
 
-	public GroupJoinApplicated(GroupJoinApplication groupJoinApplication) {
+	public GroupJoinApplicated(GroupJoin groupJoinApplication) {
 		this.groupJoinApplication = groupJoinApplication;
 	}
 	public String getGroupId() {

@@ -1,12 +1,14 @@
 package jp.mts.taskmanage.domain.model.member;
 
 import java.util.List;
+import java.util.Optional;
 
-import jp.mts.base.domain.model.DomainRepository;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 
-public interface MemberRepository extends DomainRepository<MemberId, Member>{
+public interface MemberRepository {
 	
-	public List<Member> findByGroupId(GroupId groupId);
+	List<Member> findByGroupId(GroupId groupId);
+	Optional<Member> findById(MemberId id);
+	void save(Member member);
 
 }

@@ -15,7 +15,7 @@ import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchAccessor;
 import jp.mts.base.util.ListUtils;
 import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
 import jp.mts.taskmanage.domain.model.member.Member;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
@@ -141,7 +141,7 @@ public class GroupSearchViewSynchronizer extends AbstractElasticSearchAccessor {
 		bulkRequestBuilder.get();
 	}
 	
-	public void syncFrom(GroupJoinApplication groupJoin) {
+	public void syncFrom(GroupJoin groupJoin) {
 		GetResponse getResponse = prepareGet(groupJoin.groupId().value()).get();
 		List<String> applicantIds = (List<String>)getResponse.getSource().get("applicants");
 

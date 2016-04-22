@@ -57,6 +57,9 @@ public class AbstractElasticSearchAccessor {
 	protected DeleteRequestBuilder prepareDelete(String id) {
 		return transportClient.prepareDelete(index, type, id);
 	}
+	protected UpdateRequestBuilder prepareUpdate(String index, String type, String id) {
+		return transportClient.prepareUpdate(index, type, id);
+	}
 	protected UpdateRequestBuilder prepareUpdate(String type, String id) {
 		return transportClient.prepareUpdate(index, type, id);
 	}
@@ -143,6 +146,12 @@ public class AbstractElasticSearchAccessor {
 	}
 	protected String dateTime(Date date) {
 		return DateUtils.format(date, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	}
+	protected Date date(String property) {
+		return DateUtils.parse(property, "yyyy-MM-dd");
+	}
+	protected String date(Date date) {
+		return DateUtils.format(date, "yyyy-MM-dd");
 	}
 
 	@FunctionalInterface

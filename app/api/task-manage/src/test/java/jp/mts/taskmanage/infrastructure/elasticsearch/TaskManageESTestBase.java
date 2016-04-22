@@ -6,6 +6,7 @@ import jp.mts.taskmanage.infrastructure.elasticsearch.query.ElasticSearchGroupJo
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupJoinApplicationRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchMemberRepository;
+import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchTaskRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupBelongingViewSynchronizer;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupJoinByApplicantViewSynchronizer;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.GroupJoinToAdminViewSynchronizer;
@@ -16,7 +17,7 @@ import org.junit.Rule;
 public abstract class TaskManageESTestBase extends ElasticSearchTestBase {
 
 	@Rule 
-	public ESClean esClean = new ESClean("task-manage", this);
+	public ESClean esClean = new ESClean(this, "task-manage", "sequence");
 	
 	protected ElasticSearchMemberRepository memberRepository() {
 		return new ElasticSearchMemberRepository(
@@ -47,4 +48,7 @@ public abstract class TaskManageESTestBase extends ElasticSearchTestBase {
 	protected ElasticSearchGroupJoinSearchQuery groupJoinSearchQuery() {
 		return new ElasticSearchGroupJoinSearchQuery(transportClient());
 	}
+	protected ElasticSearchTaskRepository elasticSearchTaskRepository() {
+		return new ElasticSearchTaskRepository(transportClient());
+	} 
 }

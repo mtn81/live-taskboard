@@ -15,7 +15,7 @@ import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupFixture;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.GroupRepository;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinRepository;
 import jp.mts.taskmanage.domain.model.member.Member;
 import jp.mts.taskmanage.domain.model.member.MemberFixture;
 import jp.mts.taskmanage.domain.model.member.MemberId;
@@ -33,7 +33,7 @@ public class GroupAppServiceTest {
 	@Tested GroupAppService target = new GroupAppService();
 	@Injectable GroupRepository groupRepository;
 	@Injectable MemberRepository memberRepository;
-	@Injectable GroupJoinApplicationRepository groupJoinRepository;
+	@Injectable GroupJoinRepository groupJoinRepository;
 	@Mocked DomainEventPublisher domainEventPublisher;
 	@Mocked DomainCalendar domainCalendar;
 	

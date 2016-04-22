@@ -1,10 +1,10 @@
 package jp.mts.taskmanage.domain.model.group;
 
-import jp.mts.base.domain.model.DomainRepository;
+import java.util.Optional;
 
-
-public interface GroupRepository 
-	extends DomainRepository<GroupId, Group>{
-
+public interface GroupRepository {
 	GroupId newGroupId();
+	Optional<Group> findById(GroupId id);
+	void save(Group group);
+	void remove(Group group);
 }

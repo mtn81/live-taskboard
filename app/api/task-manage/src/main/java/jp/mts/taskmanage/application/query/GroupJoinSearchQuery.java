@@ -3,7 +3,7 @@ package jp.mts.taskmanage.application.query;
 import java.util.Date;
 import java.util.List;
 
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinStatus;
 
 public interface GroupJoinSearchQuery {
 
@@ -56,7 +56,7 @@ public interface GroupJoinSearchQuery {
 		public String ownerName;
 		public String ownerType;
 		public Date joinApplied;
-		public GroupJoinApplicationStatus joinApplicationStatus;
+		public GroupJoinStatus joinApplicationStatus;
 
 		public ByApplicantResult(
 				String joinApplicationId,
@@ -65,7 +65,7 @@ public interface GroupJoinSearchQuery {
 				String ownerName,
 				String ownerType,
 				Date joinApplied,
-				GroupJoinApplicationStatus joinApplicationStatus) {
+				GroupJoinStatus joinApplicationStatus) {
 			this.joinApplicationId = joinApplicationId;
 			this.groupId = groupId;
 			this.groupName = groupName;

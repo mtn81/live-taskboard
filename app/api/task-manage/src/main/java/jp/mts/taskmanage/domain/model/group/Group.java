@@ -4,7 +4,7 @@ import java.util.Date;
 
 import jp.mts.base.domain.model.DomainEntity;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinAccepted;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinRejected;
 import jp.mts.taskmanage.domain.model.member.Member;
 import jp.mts.taskmanage.domain.model.member.MemberId;
@@ -44,7 +44,7 @@ public class Group extends DomainEntity<GroupId>{
 		setDescription(description);
 	}
 	
-	public boolean accept(GroupJoinApplication application) {
+	public boolean accept(GroupJoin application) {
 		if(!groupId().equals(application.groupId())){
 			return false;
 		}
@@ -54,7 +54,7 @@ public class Group extends DomainEntity<GroupId>{
 		return true;
 	}
 
-	public boolean reject(GroupJoinApplication application){
+	public boolean reject(GroupJoin application){
 		if(!groupId().equals(application.groupId())){
 			return false;
 		}

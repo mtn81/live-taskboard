@@ -10,8 +10,8 @@ import jp.mts.taskmanage.domain.model.group.GroupCreated;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.GroupRemoved;
 import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicated;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinId;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -86,10 +86,10 @@ public class Member extends DomainEntity<MemberId> {
 	}
 	
 	
-	public GroupJoinApplication applyJoinTo(
-			GroupJoinApplicationId applicationId, Group group) {
+	public GroupJoin applyJoinTo(
+			GroupJoinId applicationId, Group group) {
 
-		GroupJoinApplication newJoinApplication = new GroupJoinApplication(
+		GroupJoin newJoinApplication = new GroupJoin(
 				applicationId, 
 				group.groupId(), 
 				memberId());
@@ -99,7 +99,7 @@ public class Member extends DomainEntity<MemberId> {
 		
 		return newJoinApplication;
 	}
-	public boolean cancel(GroupJoinApplication application) {
+	public boolean cancel(GroupJoin application) {
 		if(!memberId().equals(application.applicationMemberId())) {
 			return false;
 		}

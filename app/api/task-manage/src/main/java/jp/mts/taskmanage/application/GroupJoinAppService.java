@@ -9,9 +9,9 @@ import jp.mts.base.application.ApplicationException;
 import jp.mts.taskmanage.domain.model.group.Group;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.group.GroupRepository;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinRepository;
 import jp.mts.taskmanage.domain.model.member.Member;
 import jp.mts.taskmanage.domain.model.member.MemberId;
 import jp.mts.taskmanage.domain.model.member.MemberRepository;
@@ -29,10 +29,10 @@ public class GroupJoinAppService {
 	@Autowired
 	private MemberRepository memberRepository;
 	@Autowired
-	private GroupJoinApplicationRepository groupJoinRepository;
+	private GroupJoinRepository groupJoinRepository;
 
 
-	public GroupJoinApplication applyJoin(String groupId, String applicantMemberId) {
+	public GroupJoin applyJoin(String groupId, String applicantMemberId) {
 		
 		Optional<Member> member = memberRepository.findById(new MemberId(applicantMemberId));
 		assertTrue(member.isPresent(), ErrorType.MEMBER_NOT_EXIST);
@@ -40,7 +40,7 @@ public class GroupJoinAppService {
 		Optional<Group> group = groupRepository.findById(new GroupId(groupId));
 		assertTrue(group != null, ErrorType.GROUP_NOT_EXIST);
 		
-		GroupJoinApplication application 
+		GroupJoin application 
 			= member.get().applyJoinTo(groupJoinRepository.newId(), group.get());
 
 		groupJoinRepository.save(application);
@@ -53,8 +53,8 @@ public class GroupJoinAppService {
 		
 		Member member = memberRepository.findById(new MemberId(applicantMemberId)).get();
 
-		GroupJoinApplication application 
-			= groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		GroupJoin application 
+			= groupJoinRepository.findById(new GroupJoinId(joinApplicationId)).get();
 		
 		if(!member.cancel(application)){
 			throw new ApplicationException(CANNOT_ACCEPT_JOIN);
@@ -63,10 +63,10 @@ public class GroupJoinAppService {
 		groupJoinRepository.save(application);
 	}
 
-	public GroupJoinApplication acceptJoin(
+	public GroupJoin acceptJoin(
 			String groupId, String joinApplicationId) {
 
-		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		GroupJoin application = groupJoinRepository.findById(new GroupJoinId(joinApplicationId)).get();
 		Group group = groupRepository.findById(new GroupId(groupId)).get();
 
 		if(!group.accept(application)) {
@@ -76,10 +76,10 @@ public class GroupJoinAppService {
 		groupJoinRepository.save(application);
 		return application;
 	}
-	public GroupJoinApplication rejectJoin(
+	public GroupJoin rejectJoin(
 			String groupId, String joinApplicationId) {
 		
-		GroupJoinApplication application = groupJoinRepository.findById(new GroupJoinApplicationId(joinApplicationId)).get();
+		GroupJoin application = groupJoinRepository.findById(new GroupJoinId(joinApplicationId)).get();
 		Group group = groupRepository.findById(new GroupId(groupId)).get();
 
 		if(!group.reject(application)) {

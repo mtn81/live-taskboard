@@ -7,22 +7,22 @@ import jp.mts.base.domain.model.DomainEntity;
 import jp.mts.taskmanage.domain.model.group.GroupId;
 import jp.mts.taskmanage.domain.model.member.MemberId;
 
-public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
+public class GroupJoin extends DomainEntity<GroupJoinId> {
 
 	private GroupId groupId;
 	private MemberId applicantMemberId;
-	private GroupJoinApplicationStatus status;
+	private GroupJoinStatus status;
 	private Date applied;
 
-	public GroupJoinApplication(
-			GroupJoinApplicationId id,
+	public GroupJoin(
+			GroupJoinId id,
 			GroupId groupId, 
 			MemberId applicantMemberId) {
 
 		super(id);
 		this.groupId = groupId;
 		this.applicantMemberId = applicantMemberId;
-		this.status = GroupJoinApplicationStatus.APPLIED;
+		this.status = GroupJoinStatus.APPLIED;
 		this.applied = calendar.systemDate();
 	}
 	
@@ -32,24 +32,24 @@ public class GroupJoinApplication extends DomainEntity<GroupJoinApplicationId> {
 	public MemberId applicationMemberId() {
 		return applicantMemberId;
 	}
-	public GroupJoinApplicationStatus status() {
+	public GroupJoinStatus status() {
 		return status;
 	}
 	public Date applied() {
 		return applied;
 	}
 	public void cancel() {
-		setStatus(GroupJoinApplicationStatus.CANCELLED);
+		setStatus(GroupJoinStatus.CANCELLED);
 	}
 	public void reject() {
-		setStatus(GroupJoinApplicationStatus.REJECTED);
+		setStatus(GroupJoinStatus.REJECTED);
 	}
 	public void accept() {
-		setStatus(GroupJoinApplicationStatus.ACCEPTED);
+		setStatus(GroupJoinStatus.ACCEPTED);
 	}
 
 	
-	void setStatus(GroupJoinApplicationStatus status) {
+	void setStatus(GroupJoinStatus status) {
 		this.status = status;
 	}
 	void setApplied(Date applied) {

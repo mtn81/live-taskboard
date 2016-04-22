@@ -7,11 +7,11 @@ import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchRepository;
 import jp.mts.base.infrastructure.elasticsearch.ElasticSearchActionAssurer;
 import jp.mts.base.util.MapUtils;
 import jp.mts.taskmanage.domain.model.group.GroupId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationBuilder;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationId;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationRepository;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinBuilder;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinId;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinRepository;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinStatus;
 import jp.mts.taskmanage.domain.model.member.MemberId;
 
 import org.elasticsearch.client.transport.TransportClient;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ElasticSearchGroupJoinApplicationRepository 
 	extends AbstractElasticSearchRepository
-	implements GroupJoinApplicationRepository {
+	implements GroupJoinRepository {
 	
 	private GroupJoinByApplicantViewSynchronizer groupJoinByApplicantViewSynchronizer;
 	private GroupJoinToAdminViewSynchronizer groupJoinToAdminViewSynchronizer;
@@ -43,21 +43,21 @@ public class ElasticSearchGroupJoinApplicationRepository
 	}
 
 	@Override
-	public Optional<GroupJoinApplication> findById(GroupJoinApplicationId id) {
+	public Optional<GroupJoin> findById(GroupJoinId id) {
 		return getDomain(id.value(), source -> {
-			return new GroupJoinApplicationBuilder(
-				new GroupJoinApplication(
-						new GroupJoinApplicationId((String)source.get("application_id")), 
+			return new GroupJoinBuilder(
+				new GroupJoin(
+						new GroupJoinId((String)source.get("application_id")), 
 						new GroupId((String)source.get("group_id")), 
 						new MemberId((String)source.get("applicant_id"))))
-				.setStatus(GroupJoinApplicationStatus.valueOf((String)source.get("status")))
+				.setStatus(GroupJoinStatus.valueOf((String)source.get("status")))
 				.setApplied(dateTime((String)source.get("applied_time")))
 				.get();
 		});
 	}
 
 	@Override
-	public void save(GroupJoinApplication groupJoin) {
+	public void save(GroupJoin groupJoin) {
 		save(groupJoin.id().value(), groupJoin, 
 			gj -> MapUtils.pairs(
 				"application_id", gj.id().value(),
@@ -74,14 +74,10 @@ public class ElasticSearchGroupJoinApplicationRepository
 		});
 	}
 
-	@Override
-	public void remove(GroupJoinApplication entity) {
-		delete(entity.id().value());
-	}
 
 	@Override
-	public GroupJoinApplicationId newId() {
-		return new GroupJoinApplicationId(UUID.randomUUID().toString());
+	public GroupJoinId newId() {
+		return new GroupJoinId(UUID.randomUUID().toString());
 	}
 
 }

@@ -1,6 +1,6 @@
 package jp.mts.taskmanage.domain.model.group.join;
 
-public enum GroupJoinApplicationStatus {
+public enum GroupJoinStatus {
 
 	APPLIED,
 	ACCEPTED,

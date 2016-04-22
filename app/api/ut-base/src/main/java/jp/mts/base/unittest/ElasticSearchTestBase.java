@@ -55,11 +55,11 @@ public abstract class ElasticSearchTestBase {
 	}
 
 	public static class ESClean extends ExternalResource {
-		private String index;
+		private String[] indices;
 		private ElasticSearchTestBase testTarget;
 		
-		public ESClean(String index, ElasticSearchTestBase testTarget) {
-			this.index = index;
+		public ESClean(ElasticSearchTestBase testTarget, String... indices) {
+			this.indices = indices;
 			this.testTarget = testTarget;
 		}
 
@@ -67,7 +67,7 @@ public abstract class ElasticSearchTestBase {
 		protected void before() throws Throwable {
 			TransportClient transportClient = testTarget.transportClient;
 			BulkRequestBuilder bulkRequestBuilder = transportClient.prepareBulk();
-			SearchHits hits = transportClient.prepareSearch(index)
+			SearchHits hits = transportClient.prepareSearch(indices)
 				.setQuery(matchAllQuery())
 				.get()
 				.getHits();

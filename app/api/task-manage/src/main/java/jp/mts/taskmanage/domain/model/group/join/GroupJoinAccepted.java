@@ -6,9 +6,9 @@ import jp.mts.base.domain.model.DomainEventConfig;
 @DomainEventConfig(eventType="mts:taskmanage/GroupJoinAccepted")
 public class GroupJoinAccepted extends DomainEvent {
 	
-	private GroupJoinApplication joinApplication;
+	private GroupJoin joinApplication;
 
-	public GroupJoinAccepted(GroupJoinApplication joinApplication) {
+	public GroupJoinAccepted(GroupJoin joinApplication) {
 		this.joinApplication = joinApplication;
 	}
 

@@ -5,7 +5,7 @@ import static org.junit.Assert.assertThat;
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.GroupJoinAppService;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationFixture;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinFixture;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinAccept;
 import jp.mts.taskmanage.rest.presentation.model.GroupJoinApply;
 import mockit.Expectations;
@@ -30,7 +30,7 @@ public class GroupJoinApiTest {
 		
 		new Expectations() {{
 			groupJoinAppService.applyJoin(groupId, applicantMemberId);
-				result = new GroupJoinApplicationFixture(groupId,applicantMemberId).get();
+				result = new GroupJoinFixture(groupId,applicantMemberId).get();
 		}};
 		
 		GroupJoinApply groupJoinApply = new GroupJoinApply();
@@ -46,7 +46,7 @@ public class GroupJoinApiTest {
 		
 		new Expectations() {{
 			groupJoinAppService.rejectJoin("g01", "a01");
-				result = new GroupJoinApplicationFixture("g01", "a01").get();
+				result = new GroupJoinFixture("g01", "a01").get();
 		}};
 		
 		RestResponse<GroupJoinAccept> response = target.reject("g01", "a01");

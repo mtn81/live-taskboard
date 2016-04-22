@@ -1,7 +1,7 @@
 package jp.mts.taskmanage.rest.presentation.model;
 
 import jp.mts.taskmanage.application.GroupJoinAppService;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplication;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoin;
 
 public class GroupJoinAccept {
 
@@ -16,7 +16,7 @@ public class GroupJoinAccept {
 	//input
 
 	//output
-	private GroupJoinApplication groupJoinApplication;
+	private GroupJoin groupJoinApplication;
 	
 	public String getJoinId() {
 		return groupJoinApplication.id().value();

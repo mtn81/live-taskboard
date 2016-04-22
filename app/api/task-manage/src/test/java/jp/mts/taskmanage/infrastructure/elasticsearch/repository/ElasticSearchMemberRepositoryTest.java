@@ -41,11 +41,6 @@ public class ElasticSearchMemberRepositoryTest extends TaskManageESTestBase {
 		assertThat(found.email(), is("taro@test.jp"));
 		assertThat(found.belongsAsAdmin(new GroupId("g01")), is(true));
 		assertThat(found.belongsTo(new GroupId("g02")), is(false));
-		
-		target.remove(found);
-		
-		Optional<Member> notExists = target.findById(new MemberId("m01"));
-		assertThat(notExists.isPresent(), is(false));
 	}
 
 	@Test public void 

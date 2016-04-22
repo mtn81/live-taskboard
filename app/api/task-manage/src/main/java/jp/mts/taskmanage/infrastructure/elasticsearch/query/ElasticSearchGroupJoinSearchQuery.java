@@ -9,12 +9,13 @@ import java.util.List;
 
 import jp.mts.base.infrastructure.elasticsearch.AbstractElasticSearchAccessor;
 import jp.mts.taskmanage.application.query.GroupJoinSearchQuery;
-import jp.mts.taskmanage.domain.model.group.join.GroupJoinApplicationStatus;
+import jp.mts.taskmanage.domain.model.group.join.GroupJoinStatus;
 
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.SortOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -24,6 +25,7 @@ public class ElasticSearchGroupJoinSearchQuery
 	extends AbstractElasticSearchAccessor
 	implements GroupJoinSearchQuery {
 
+	@Autowired
 	public ElasticSearchGroupJoinSearchQuery(TransportClient transportClient) {
 		super("task-manage", transportClient);
 	}
@@ -51,17 +53,17 @@ public class ElasticSearchGroupJoinSearchQuery
 					(String)join.get("owner_name"), 
 					(String)join.get("owner_type"), 
 					dateTime((String)join.get("applied_time")), 
-					GroupJoinApplicationStatus.valueOf((String)join.get("status"))));
+					GroupJoinStatus.valueOf((String)join.get("status"))));
 	}
 
 	@Override
 	public List<ByAdminResult> acceptableByAdmin(String memberId) {
-		return byAdmin(memberId, GroupJoinApplicationStatus.APPLIED);
+		return byAdmin(memberId, GroupJoinStatus.APPLIED);
 	}
 
 	@Override
 	public List<ByAdminResult> rejectedByAdmin(String memberId) {
-		return byAdmin(memberId, GroupJoinApplicationStatus.REJECTED);
+		return byAdmin(memberId, GroupJoinStatus.REJECTED);
 	}
 	
 	@Override
@@ -88,7 +90,7 @@ public class ElasticSearchGroupJoinSearchQuery
 		);
 	}
 
-	private List<ByAdminResult> byAdmin(String memberId, GroupJoinApplicationStatus status) {
+	private List<ByAdminResult> byAdmin(String memberId, GroupJoinStatus status) {
 
 		SearchHits hits = prepareSearch("view_group_join_to_admin")
 			.setQuery(constantScoreQuery(

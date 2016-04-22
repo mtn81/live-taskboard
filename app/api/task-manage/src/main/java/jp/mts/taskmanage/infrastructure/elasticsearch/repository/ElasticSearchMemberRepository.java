@@ -82,11 +82,6 @@ public class ElasticSearchMemberRepository
 	}
 
 	@Override
-	public void remove(Member member) {
-		delete(member.id().value());
-	}
-
-	@Override
 	public List<Member> findByGroupId(GroupId groupId) {
 		SearchResponse searchResponse = prepareSearch()
 			.setQuery(constantScoreQuery(
