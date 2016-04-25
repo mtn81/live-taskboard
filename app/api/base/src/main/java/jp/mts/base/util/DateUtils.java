@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 public final class DateUtils {
 
 	public static String format(Date date, String pattern) {
-		if(date == null) return "";
+		if(date == null) return null;
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		return format.format(date);
 	}

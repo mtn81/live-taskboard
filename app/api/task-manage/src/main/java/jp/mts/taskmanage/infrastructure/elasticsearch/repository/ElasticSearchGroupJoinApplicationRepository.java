@@ -72,6 +72,8 @@ public class ElasticSearchGroupJoinApplicationRepository
 			this.groupJoinToAdminViewSynchronizer.syncFrom(groupJoin);
 			this.groupSearchViewSynchronizer.syncFrom(groupJoin);
 		});
+		
+		await();
 	}
 
 

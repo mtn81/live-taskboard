@@ -79,6 +79,8 @@ public class ElasticSearchMemberRepository
 			groupJoinToAdminViewSynchronizer.syncFrom(member);
 			groupSearchViewSynchronizer.syncFrom(member);
 		});
+		
+		await();
 	}
 
 	@Override

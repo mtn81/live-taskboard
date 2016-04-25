@@ -132,10 +132,10 @@ public class GroupApi {
 			method=RequestMethod.GET)
 	public RestResponse<GroupSearch> searchNotAppliedGroups(
 			@PathVariable("applicantId") @Me String applicantId,
-			@RequestParam("groupName") String groupName) {
+			@RequestParam("q") String query) {
 		
 		GroupSearch groupSearch = new GroupSearch();
-		groupSearch.searchNotJoinAppliedGroupsByName(applicantId, groupName);
+		groupSearch.searchNotJoinAppliedGroupsByName(applicantId, query);
 		return RestResponse.of(groupSearch);
 	}
 	

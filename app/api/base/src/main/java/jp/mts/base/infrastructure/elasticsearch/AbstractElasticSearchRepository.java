@@ -60,5 +60,11 @@ public class AbstractElasticSearchRepository extends AbstractElasticSearchAccess
 			.setParent(parent)
 			.get();
 	}
+	protected void await() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+	}
 	
 }

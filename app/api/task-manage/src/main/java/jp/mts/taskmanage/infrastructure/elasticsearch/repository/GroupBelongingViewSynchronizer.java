@@ -26,19 +26,19 @@ public class GroupBelongingViewSynchronizer extends AbstractElasticSearchAccesso
 	}
 	
 	public void syncFrom(Member member) {
-		if (member.groupBelongings().isEmpty()) return; 
-		
 
 		Map<String, String> groupNames = new HashMap<>();
-		MultiGetRequestBuilder multiGetRequestBuilder = transportClient.prepareMultiGet();
-		member.groupBelongings().forEach(gb -> {
-			multiGetRequestBuilder.add(index, "group", gb.groupId().value());
-		});
-		MultiGetResponse multiGetResponse = multiGetRequestBuilder.get();
-		multiGetResponse.forEach(item -> {
-			Map<String, Object> group = item.getResponse().getSource();
-			if(group != null) groupNames.put(item.getId(), (String)group.get("name"));
-		});
+		if (!member.groupBelongings().isEmpty()) {
+			MultiGetRequestBuilder multiGetRequestBuilder = transportClient.prepareMultiGet();
+			member.groupBelongings().forEach(gb -> {
+				multiGetRequestBuilder.add(index, "group", gb.groupId().value());
+			});
+			MultiGetResponse multiGetResponse = multiGetRequestBuilder.get();
+			multiGetResponse.forEach(item -> {
+				Map<String, Object> group = item.getResponse().getSource();
+				if(group != null) groupNames.put(item.getId(), (String)group.get("name"));
+			});
+		}
 
 
 		BulkRequestBuilder bulkRequestBuilder = transportClient.prepareBulk();

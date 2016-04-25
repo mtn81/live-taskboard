@@ -57,6 +57,8 @@ public class ElasticSearchTaskRepository
 				"deadline", date(task.deadline())
 			)
 			.get();
+		
+		await();
 	}
 
 	@Override

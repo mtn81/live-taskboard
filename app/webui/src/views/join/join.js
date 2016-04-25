@@ -16,7 +16,7 @@ export class Join {
   }
 
   searchNotAppliedGroup() {
-    this.notAppliedGroups = this.groupJoinService.searchNotAppliedByName(this.groupName);
+    this.notAppliedGroups = this.groupJoinService.searchNotAppliedByName(this.query);
     this.notAppliedGroupsSearched = true;
   }
 

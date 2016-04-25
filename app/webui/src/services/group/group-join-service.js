@@ -17,9 +17,9 @@ export class GroupJoinService {
     this.authContext = authContext;
   }
 
-  searchNotAppliedByName(groupName) {
+  searchNotAppliedByName(query) {
     return this.httpLoader.list(
-      `/api/task-manage/members/${this.memberId()}/not_join_applied_groups/search?groupName=${groupName}`,
+      `/api/task-manage/members/${this.memberId()}/not_join_applied_groups/search?q=${query}`,
       response => {
         return response.content.data.groups;
       });

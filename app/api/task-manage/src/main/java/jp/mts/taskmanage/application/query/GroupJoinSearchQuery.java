@@ -10,7 +10,7 @@ public interface GroupJoinSearchQuery {
 	List<ByApplicantResult> byApplicant(String memberId);
 	List<ByAdminResult> acceptableByAdmin(String memberId);
 	List<ByAdminResult> rejectedByAdmin(String memberId);
-	List<AppliableGroupResult> appliableGroups(String memberId, String groupName);
+	List<AppliableGroupResult> appliableGroups(String memberId, String query);
 	
 	public static class AppliableGroupResult {
 		private String groupId;

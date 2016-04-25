@@ -49,9 +49,9 @@ public class GroupSearch {
 
 	//process
 	public void searchNotJoinAppliedGroupsByName(
-			String memberId, String groupName) {
+			String memberId, String query) {
 
-		this.groupSearchResults = groupJoinSearchQuery.appliableGroups(memberId, groupName);
+		this.groupSearchResults = groupJoinSearchQuery.appliableGroups(memberId, query);
 	}
 
 

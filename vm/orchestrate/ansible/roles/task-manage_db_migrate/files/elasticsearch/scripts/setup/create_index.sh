@@ -4,7 +4,12 @@ set -eux
 
 es_host=$1
 
-curl -XPUT "http://localhost:9200/sequence" -d '
+set +e
+curl -XDELETE "http://$es_host:9200/sequence"
+curl -XDELETE "http://$es_host:9200/task-manage"
+set +e
+
+curl -XPUT "http://$es_host:9200/sequence" -d '
 {
   "settings": {
     "number_of_shards": 1,

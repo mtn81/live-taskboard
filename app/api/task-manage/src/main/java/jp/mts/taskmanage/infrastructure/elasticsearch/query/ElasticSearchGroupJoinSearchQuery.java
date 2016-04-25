@@ -68,15 +68,16 @@ public class ElasticSearchGroupJoinSearchQuery
 	
 	@Override
 	public List<AppliableGroupResult> appliableGroups(
-			String memberId, String groupName) {
+			String memberId, String query) {
 		
 		return toList(
 			prepareSearch("view_group_search")
 				.setQuery(
 					boolQuery()
-						.must(matchQuery("group_name", groupName))
 						.mustNot(termQuery("applicants", memberId))
 						.mustNot(termQuery("members", memberId))
+						.should(matchQuery("group_name", query))
+						.should(matchQuery("group_description", query))
 				)
 				.get().getHits(),
 			(hit, group) -> {

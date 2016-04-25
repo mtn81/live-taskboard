@@ -89,7 +89,7 @@ public class GroupApiTest {
 	}
 	
 	@Test
-	public void test_searchGroupsByName() {
+	public void test_searchNotAppliedGroups() {
 		target.initialize();
 
 		new Expectations() {{
