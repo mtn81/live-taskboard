@@ -64,3 +64,14 @@ main {
 .task-menu {
   margin-left: 20px;
 }
+#task-filter {
+  width: 50%;
+  position: relative;
+  left: 20px;
+}
+#task-filter ul {
+  list-style-type: none;
+}
+#task-filter ul li {
+  margin-bottom: 5px;
+}

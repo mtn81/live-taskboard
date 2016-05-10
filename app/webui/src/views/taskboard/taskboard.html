@@ -7,8 +7,8 @@
     <div class="taskbord" show.bind="isGroupSelected">
 
       <div class="btn-group task-menu">
-        <button type="button" class="btn btn-default">フィルタ</button>
-        <button type="button" class="btn btn-default">カテゴリ作成</button>
+        <button type="button" class="btn btn-default" click.delegate="showTaskFilter()">フィルタ</button>
+        <button type="button" class="btn btn-default" disabled="true">カテゴリ作成</button>
       </div>
 
       <div class="row">
@@ -69,6 +69,32 @@
       </div>
   </div>
   </div>
+  </div>
+
+
+  <div id="task-filter" ref="taskFilterPanel" class="panel panel-primary collapse">
+    <div class="panel-body">
+      <ul class="form-inline">
+        <li>担当 &nbsp;
+          <select ref="membersSelect"
+            data-width="fit"
+            data-selected-text-format="count > 3"
+            title="全員"
+            change.delegate="searchTasks()"
+            multiple>
+            <option repeat.for="member of members" value.bind="member.memberId">${member.name}</option>
+          </select>
+          &nbsp; を含む
+        </li>
+        <li>
+          キーワード &nbsp;
+          <input type="text" class="form-control"
+            value.bind="searchKeyword"
+            change.delegate="searchTasks()">
+          &nbsp; を含む
+        </li>
+      </ul>
+    </div>
   </div>
 
 </template>

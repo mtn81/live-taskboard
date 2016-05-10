@@ -6,6 +6,9 @@ $.widget.bridge('uitooltip', $.ui.tooltip);
 import 'bootstrap';
 import 'bootstrap/css/bootstrap.css!';
 
+import 'bootstrap-select/js/bootstrap-select';
+import 'bootstrap-select/css/bootstrap-select.css!';
+
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()

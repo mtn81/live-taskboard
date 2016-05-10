@@ -52,21 +52,6 @@ public class TaskAppServiceTest {
 		Task actual = taskAppService.loadById("g01", "t01");
 		assertThat(actual, is(expected));
 	}
-	@Test
-	public void test_findTasksByGroup() {
-		
-		GroupId groupId = new GroupId("g01");
-		Task task = new TaskFixture().get();
-		new Expectations() {{
-			taskRepository.findByGroupId(groupId);
-				result = Lists.newArrayList(task);
-		}};
-
-		List<Task> tasks = taskAppService.findTasksByGroup(groupId.value());
-		
-		assertThat(tasks.size(), is(1));
-		assertThat(tasks.get(0), is(task));
-	}
 	
 	@Test
 	public void test_registerTask() {

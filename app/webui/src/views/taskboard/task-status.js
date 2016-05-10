@@ -34,8 +34,9 @@ export class TaskStatus {
     });
   }
 
-  loadTasks() {
-    this._tasks = this.taskService.load(this.group.groupId);
+  searchTasks(condition) {
+    condition = condition || {};
+    this._tasks = this.taskService.search(this.group.groupId, condition);
   }
 
   modifyTask(task) {
@@ -79,12 +80,15 @@ export class TaskStatus {
       this.group = group;
       this.members = this.memberService.loadByGroup(group.groupId);
       this.taskService.watchTaskChange(this.group.groupId, (taskChange, self) => {
-        if(!self) this.loadTasks();
+        if(!self) this.searchTasks();
       });
-      this.loadTasks();
+      this.searchTasks();
     });
-    this.events.subscribe2(['task-register.register.success', TaskRemoved], () => {
-      this.loadTasks();
+    this.events.subscribe2(['task-register.register.success', TaskRemoved, ''], () => {
+      this.searchTasks();
+    });
+    this.events.subscribe('task.search', condition => {
+      this.searchTasks(condition);
     });
     this.events.subscribe(TasksLoaded, () => {
       this.events.publish('task.loaded', this.group.groupId);

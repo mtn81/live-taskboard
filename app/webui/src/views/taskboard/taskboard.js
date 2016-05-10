@@ -1,3 +1,4 @@
+import _ from 'underscore';
 import 'components/jqueryui';
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
@@ -5,19 +6,22 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {AuthContext} from '../../services/auth/auth-context';
 import {EventAggregatorWrapper} from '../../lib/event-aggregator-wrapper';
 import {TaskService} from '../../services/task/task-service';
+import {MemberService} from '../../services/member/member-service';
 import {TaskStatusAttached} from './task-status';
 import {TaskRegisterAttached} from '../task-register/task-register';
 
-@inject(Router, AuthContext, EventAggregator, TaskService)
+@inject(Router, AuthContext, EventAggregator, MemberService)
 export class Taskboard {
 
   group = null;
+  members = [];
+  searchKeyword = '';
 
-  constructor(router, authContext, eventAggregator, taskService){
+  constructor(router, authContext, eventAggregator, memberService){
     this.router = router;
     this.authContext = authContext;
     this.events = new EventAggregatorWrapper(this, eventAggregator);
-    this.taskService = taskService;
+    this.memberService = memberService;
   }
 
   showTaskRegister(){
@@ -34,6 +38,22 @@ export class Taskboard {
       $(this.taskMemoEditModel).find('.btn-primary').attr('disabled', true);
     });
     $(this.taskMemoEditModel).modal('show');
+  }
+
+  showTaskFilter() {
+    $(this.membersSelect).selectpicker();
+    $(this.taskFilterPanel).collapse('toggle');
+    this.members = this.memberService.loadByGroup(this.group.groupId, () => {
+      _.delay(() => $(this.membersSelect).selectpicker('refresh'), 500);
+    });
+  }
+
+  searchTasks() {
+    const selectMemberIds = $(this.membersSelect).val();
+    this.events.publish('task.search', {
+      keyword: this.searchKeyword,
+      members: selectMemberIds ? selectMemberIds.join() : ''
+    });
   }
 
   fire(eventId, hideTarget){

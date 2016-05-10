@@ -5,13 +5,14 @@ import javax.validation.Valid;
 
 import jp.mts.base.rest.RestResponse;
 import jp.mts.taskmanage.application.TaskAppService;
+import jp.mts.taskmanage.application.query.TaskSearchQuery;
 import jp.mts.taskmanage.rest.aspect.MemberContext;
 import jp.mts.taskmanage.rest.authorize.GroupBelong;
 import jp.mts.taskmanage.rest.presentation.model.TaskDetailLoad;
 import jp.mts.taskmanage.rest.presentation.model.TaskDetailSave;
-import jp.mts.taskmanage.rest.presentation.model.TaskList;
 import jp.mts.taskmanage.rest.presentation.model.TaskRemove;
 import jp.mts.taskmanage.rest.presentation.model.TaskSave;
+import jp.mts.taskmanage.rest.presentation.model.TaskSearch;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -27,22 +29,27 @@ public class TaskApi {
 
 	@Autowired
 	private TaskAppService taskAppService;
+	@Autowired
+	private TaskSearchQuery taskSearchQuery;
 	
 	@PostConstruct
 	public void initialize(){
+		TaskSearch.setTaskSearchQuery(taskSearchQuery);
 		TaskDetailLoad.setTaskAppService(taskAppService);
 		TaskDetailSave.setTaskAppService(taskAppService);
 	}
 
 	@RequestMapping(
-			value="/groups/{groupId}/tasks/", 
+			value="/groups/{groupId}/tasks/search", 
 			method=RequestMethod.GET)
-	public RestResponse<TaskList> loadTasksInGroup(
-			@PathVariable("groupId") @GroupBelong String groupId) {
+	public RestResponse<TaskSearch> searchTasksInGroup(
+			@PathVariable("groupId") @GroupBelong String groupId,
+			@RequestParam("keyword") String keyword,
+			@RequestParam("members") String members) {
 		
-		TaskList taskList = new TaskList();
-		taskList.loadTasks(groupId, taskAppService);
-		return RestResponse.of(taskList);
+		TaskSearch taskSearch = new TaskSearch();
+		taskSearch.searchTasks(groupId, keyword, members);
+		return RestResponse.of(taskSearch);
 	}
 	@RequestMapping(
 			value="/groups/{groupId}/tasks/{taskId}", 

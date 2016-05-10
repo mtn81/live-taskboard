@@ -1,6 +1,7 @@
 package jp.mts.base.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,13 @@ public class ListUtils {
 			map.get(keyValue).add(e);
 		});
 		return map;
+	}
+	public static <S, T> List<T> convert(S[] source, Function<S, T> mapper) {
+		if (source == null || source.length == 0) 
+			return Lists.newArrayList();
+
+		return Arrays.stream(source)
+				.map(mapper).collect(Collectors.toList());
 	}
 	public static <S, T> List<T> convert(Collection<S> source, Function<S, T> mapper) {
 		if (source == null || source.isEmpty()) 

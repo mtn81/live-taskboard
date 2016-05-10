@@ -18,9 +18,9 @@ export class TaskService {
     this.authContext = authContext;
   }
 
-  load(groupId) {
+  search(groupId, condition) {
     this._tasks = this.httpLoader.object(
-      tmApi(`/groups/${groupId}/tasks/`),
+      tmApi(`/groups/${groupId}/tasks/search?keyword=${condition.keyword}&members=${condition.members}`),
       response => {
         this.eventAggregator.publish(new TasksLoaded());
         return response.content.data;

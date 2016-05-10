@@ -16,10 +16,11 @@ export class MemberService {
     this.eventAggregator = eventAggregator;
   }
 
-  loadByGroup(groupId) {
+  loadByGroup(groupId, callback) {
     return this.httpLoader.list(
       tmApi(`/groups/${groupId}/members/`),
       response => {
+        if (callback) callback();
         return response.content.data.members;
       });
   }

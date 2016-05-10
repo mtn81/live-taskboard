@@ -31,10 +31,6 @@ public class TaskAppService {
 	@Autowired
 	private MemberRepository memberRepository;
 
-	public List<Task> findTasksByGroup(String groupId) {
-		return taskRepository.findByGroupId(new GroupId(groupId));
-	}
-
 	public Task registerTask(
 			String aGroupId, 
 			String taskName, 

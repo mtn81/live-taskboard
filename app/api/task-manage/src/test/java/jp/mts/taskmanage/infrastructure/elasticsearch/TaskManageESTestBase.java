@@ -3,6 +3,7 @@ package jp.mts.taskmanage.infrastructure.elasticsearch;
 import jp.mts.base.unittest.ElasticSearchTestBase;
 import jp.mts.taskmanage.infrastructure.elasticsearch.query.ElasticSearchGroupBelongingSearchQuery;
 import jp.mts.taskmanage.infrastructure.elasticsearch.query.ElasticSearchGroupJoinSearchQuery;
+import jp.mts.taskmanage.infrastructure.elasticsearch.query.ElasticSearchTaskSearchQuery;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupJoinApplicationRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchGroupRepository;
 import jp.mts.taskmanage.infrastructure.elasticsearch.repository.ElasticSearchMemberRepository;
@@ -48,7 +49,13 @@ public abstract class TaskManageESTestBase extends ElasticSearchTestBase {
 	protected ElasticSearchGroupJoinSearchQuery groupJoinSearchQuery() {
 		return new ElasticSearchGroupJoinSearchQuery(transportClient());
 	}
+	protected ElasticSearchTaskSearchQuery taskSearchQuery() {
+		return new ElasticSearchTaskSearchQuery(transportClient());
+	}
 	protected ElasticSearchTaskRepository elasticSearchTaskRepository() {
 		return new ElasticSearchTaskRepository(transportClient());
 	} 
+	protected ElasticSearchTaskRepository taskRepository() {
+		return new ElasticSearchTaskRepository(transportClient());
+	}
 }

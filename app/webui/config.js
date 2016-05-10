@@ -21,6 +21,7 @@ System.config({
     "components/jqueryui": "github:components/jqueryui@1.11.4",
     "css": "github:systemjs/plugin-css@0.1.19",
     "aurelia-http-client": "npm:aurelia-http-client@1.0.0-beta.1.0.1",
+    "bootstrap-select": "github:silviomoreto/bootstrap-select@1.10.0",
     
     
     "aurelia-animator-css": "npm:aurelia-animator-css@1.0.0-beta.1.0.3",
