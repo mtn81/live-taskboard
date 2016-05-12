@@ -58,6 +58,12 @@ main {
   position: relative;
   top: -3px;
 }
+.task-opt-actions {
+  position: relative;
+  top: -30px;
+  right: -80px;
+  float: right;
+}
 .task-memo-editor {
   width: 90%;
 }
@@ -68,10 +74,18 @@ main {
   width: 50%;
   position: relative;
   left: 20px;
+  z-index: 500;
 }
 #task-filter ul {
   list-style-type: none;
 }
 #task-filter ul li {
   margin-bottom: 5px;
+}
+.popover {
+  width: 300px;
+  z-index: 500;
+}
+.popover-content {
+  margin: 10px;
 }

@@ -33,6 +33,13 @@
                 click.delegate="$parent.removeTask(task)"></span>
             </button>
           </span>
+          <span class="task-opt-actions">
+            <button type="button" class="btn btn-default"
+              show.bind="!!task.hilightMemo"
+              data-toggle="popover" data-content="${task.hilightMemo}">
+              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+          </span>
         </div>
         <div class="panel-body">
           <ul>

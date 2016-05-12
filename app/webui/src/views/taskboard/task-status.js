@@ -66,6 +66,10 @@ export class TaskStatus {
     return assignedMemberId === this.authContext.getUserId();
   }
 
+  showHilightMemo(btn, task) {
+    $(btn).popover({content: 'hogehogehoge'});
+  }
+
   get tasks() {
     return this._tasks[this.status] || [];
   }
@@ -93,6 +97,8 @@ export class TaskStatus {
     this.events.subscribe(TasksLoaded, () => {
       this.events.publish('task.loaded', this.group.groupId);
     });
+
+    $('body').popover({ selector: '[data-toggle=popover]' });
   }
 
   _getTask(taskId) {

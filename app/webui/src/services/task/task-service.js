@@ -19,8 +19,10 @@ export class TaskService {
   }
 
   search(groupId, condition) {
+    const keyword = condition.keyword || '';
+    const members = condition.members || '';
     this._tasks = this.httpLoader.object(
-      tmApi(`/groups/${groupId}/tasks/search?keyword=${condition.keyword}&members=${condition.members}`),
+      tmApi(`/groups/${groupId}/tasks/search?keyword=${keyword}&members=${members}`),
       response => {
         this.eventAggregator.publish(new TasksLoaded());
         return response.content.data;

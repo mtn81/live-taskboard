@@ -5,7 +5,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import jp.mts.base.domain.model.DomainEventPublisher;
@@ -30,8 +29,6 @@ import mockit.NonStrictExpectations;
 import mockit.Tested;
 
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 public class TaskAppServiceTest {
 	
