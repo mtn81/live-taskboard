@@ -1,6 +1,7 @@
 package jp.mts.widgetstore.application;
 
 import java.util.List;
+import java.util.Optional;
 
 import jp.mts.widgetstore.domain.model.Position;
 import jp.mts.widgetstore.domain.model.Size;
@@ -20,10 +21,8 @@ public class WidgetAppService {
 	private WidgetRepository widgetRepository;
 
 	public void changeGraphic(WidgetId widgetId, Position position, Size size) {
-		Widget widget = widgetRepository.findById(widgetId);
-		if (widget == null) {
-			widget = new Widget(widgetId);
-		}
+		Optional<Widget> found = widgetRepository.findById(widgetId);
+		Widget widget = found.isPresent() ? found.get() : new Widget(widgetId);
 		
 		widget.change(position, size);
 		

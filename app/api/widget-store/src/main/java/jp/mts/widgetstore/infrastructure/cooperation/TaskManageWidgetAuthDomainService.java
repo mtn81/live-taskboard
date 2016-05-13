@@ -43,6 +43,5 @@ public class TaskManageWidgetAuthDomainService extends DomainObject implements W
 		if(!authMap.containsKey(key)) return true;
 		return calendar.systemDate().after(DateUtils.addMinutes(authMap.get(key), 5));
 	}
-	
 
 }

@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.annotation.PostConstruct;
-
 import jp.mts.authaccess.domain.model.UserType;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcess;
 import jp.mts.authaccess.domain.model.social.SocialAuthProcessBuilder;
@@ -23,14 +21,11 @@ import com.lambdaworks.redis.RedisClient;
 @Repository
 public class RedisSocialAuthProcessRepository implements SocialAuthProcessRepository {
 	
-	@Autowired
-	private RedisClient redisClient;
-	
 	private RedisCacheMap<SocialAuthProcessId, SocialAuthProcess> redisCacheMap;
-	
-	@PostConstruct
-	public void initialize() {
-		redisCacheMap = new RedisCacheMap<SocialAuthProcessId, SocialAuthProcess>(
+
+	@Autowired
+	public RedisSocialAuthProcessRepository(RedisClient redisClient) {
+		this.redisCacheMap = new RedisCacheMap<SocialAuthProcessId, SocialAuthProcess>(
 				redisClient, "social_auth_process",
 				new SocialAuthProcessIdKeyEncoder(),
 				new SocialAuthProcessValueEncoder());

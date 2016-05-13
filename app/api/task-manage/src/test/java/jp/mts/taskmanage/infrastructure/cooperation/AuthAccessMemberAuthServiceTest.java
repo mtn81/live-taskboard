@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lambdaworks.redis.RedisClient;
+
 public class AuthAccessMemberAuthServiceTest {
 
 	AuthAccessMemberAuthService target;
@@ -27,11 +29,11 @@ public class AuthAccessMemberAuthServiceTest {
 	@Mocked JSONObject responseBody;
 	@Mocked DomainCalendar domainCalendar;
 	@Mocked RedisCacheMap<String, MemberAuth> cache;
+	@Mocked RedisClient client;
 	
 	@Before
 	public void setup() {
-		target = new AuthAccessMemberAuthService();
-		Deencapsulation.setField(target, authApi);
+		target = new AuthAccessMemberAuthService(authApi, client);
 		Deencapsulation.setField(target, authAccessConverter);
 		Deencapsulation.setField(target, cache);
 		DomainObject.setDomainCalendar(domainCalendar);

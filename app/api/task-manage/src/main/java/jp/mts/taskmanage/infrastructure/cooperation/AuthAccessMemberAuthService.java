@@ -25,14 +25,12 @@ public class AuthAccessMemberAuthService implements MemberAuthService {
 	private AuthAccessConverter authAccessConverter = new AuthAccessConverter();
 	private RedisCacheMap<String, MemberAuth> cache;
 
-	@Autowired
 	private AuthApi authApi;
-	@Autowired
-	private RedisClient redisClient;
 	
-	@PostConstruct
-	public void initialize() {
-		cache = RedisCacheMap.simpleKeyCache(
+	@Autowired
+	public AuthAccessMemberAuthService(AuthApi authApi, RedisClient redisClient) {
+		this.authApi = authApi;
+		this.cache = RedisCacheMap.simpleKeyCache(
 				redisClient, "auth", new MemberAuthValueEncoder());
 	}
 	
