@@ -19,7 +19,7 @@ export class UserService {
   register(user) {
 
     this.http.call(http => {
-      return this.http
+      return http
         .post(aaApi('/users/'), user)
         .then(response => {
           this.eventAggregator.publish(new UserRegistered());
@@ -29,17 +29,20 @@ export class UserService {
 
   validate(user) {
     this.http.call(http => {
-      return this.http
+      return http
         .post(aaApi('/users/validate'), user)
         .then(response => {
           this.eventAggregator.publish(new UserRegisterValidationSuccess());
+        })
+        .catch(response => {
+          this.eventAggregator.publish(new UserRegisterValidationError(new GlobalError(response.content.errors)));
         });
     }, true);
   }
 
   activate(activationId) {
     this.http.call(http => {
-      return this.http
+      return http
         .post(aaApi('/activate_user/'), { activationId: activationId })
         .then(response => {
           this.eventAggregator.publish(new UserActivated());

@@ -18,9 +18,7 @@ export class HttpClientWrapper {
   call(httpCall, nosync, syncKey) {
     if(this._isLoading(nosync, syncKey)) return;
 
-    if(!!this.authContext) {
-      if (!this.authContext.isAuthenticated()) return;
-
+    if(!!this.authContext && this.authContext.isAuthenticated()) {
       this.http.configure(builder => {
         builder.withHeader('X-AuthAccess-AuthId', this.authContext.getAuthId());
         builder.withHeader('X-ClientId', this.authContext.getClientId());

@@ -72,11 +72,12 @@
 OK ## バッチサーバを分ける
 OK ## 認証のキャッシュまわりにredis 導入
 OK ## task-manageeにelasticsearch 導入
+OK ## widget-storeのデータソースをredisにする
+## AWSにデプロイ
 ## task-manageeにelasticsearchで日本語検索に対応する
-## widget-storeのデータソースをredisにする
 ## 受け入れテストをローカルの実行環境で実行できるようにする
 ## Jenkinsで ビルド、UT、AT を githubへのpush時に実行できるようにする
-## AWSにデプロイ
 
 #Bugs
 ユーザ登録が動かない
+タスクの登録時にはリロードせずに、タスクの変更はWebSocketで受け取ってリロードする
