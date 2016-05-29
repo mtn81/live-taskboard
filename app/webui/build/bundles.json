@@ -4,7 +4,7 @@
       "includes": [
         "[**/*]",
         "*.html!text",
-        "/styles/*.css!text"
+        "**/*.css!text"
       ],
       "options": {
         "inject": true,
@@ -33,7 +33,9 @@
         "underscore",
         "components/jqueryui",
         "jquery",
-        "css"
+        "css",
+        "bootstrap-select/js/bootstrap-select",
+        "bootstrap-select/css/bootstrap-select.css!text"
         
       ],
       "options": {

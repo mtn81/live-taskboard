@@ -16,6 +16,7 @@
     "jspm_packages/github/twbs//bootstrap@3.3.6/css/bootstrap.css",
     "jspm_packages/github/twbs//bootstrap@3.3.6/fonts/*",
     "jspm_packages/github/components/jqueryui@1.11.4/themes/base/jquery-ui.css",
-    "jspm_packages/github/components/jqueryui@1.11.4/themes/base/images/*"
+    "jspm_packages/github/components/jqueryui@1.11.4/themes/base/images/*",
+    "jspm_packages/github/silviomoreto/bootstrap-select@1.10.0/css/bootstrap-select.css"
   ]
 }

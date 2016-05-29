@@ -26,7 +26,9 @@ function getExportList() {
 }
 
 gulp.task('export-copy', function() {
-  return gulp.src(getExportList(), {base: '.'})
+  gulp.src(getExportList(), {base: '.'})
+    .pipe(gulp.dest(paths.exportSrv));
+  gulp.src('src/**/*.css', {base: 'src'})
     .pipe(gulp.dest(paths.exportSrv));
 });
 

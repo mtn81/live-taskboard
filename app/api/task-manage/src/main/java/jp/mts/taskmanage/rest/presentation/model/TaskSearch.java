@@ -10,8 +10,9 @@ import jp.mts.taskmanage.application.query.TaskSearchQuery;
 import jp.mts.taskmanage.application.query.TaskSearchQuery.SearchResult;
 import jp.mts.taskmanage.domain.model.task.TaskStatus;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.common.collect.Lists;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 
 public class TaskSearch {
@@ -54,7 +55,7 @@ public class TaskSearch {
 		results = taskSearchQuery.search(
 				groupId, 
 				keyword, 
-				org.apache.commons.lang3.StringUtils.isEmpty(members) 
+				StringUtils.isEmpty(members) 
 					? Lists.newArrayList() : Arrays.asList(members.split("\\,")));
 	}
 	
